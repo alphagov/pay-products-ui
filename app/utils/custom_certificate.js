@@ -1,11 +1,13 @@
-var path = require('path')
-var fs = require('fs')
+'use strict'
 
-var logger = require('winston')
+const path = require('path')
+const fs = require('fs')
+
+const logger = require('winston')
 
 module.exports = {
   addCertsToAgent: function (agent) {
-    var certsPath = process.env.CERTS_PATH || path.join(__dirname, '/../../certs')
+    let certsPath = process.env.CERTS_PATH || path.join(__dirname, '/../../certs')
 
     try {
       if (!fs.lstatSync(certsPath).isDirectory()) {

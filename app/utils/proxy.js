@@ -1,12 +1,12 @@
 'use strict'
 
-var tunnel = require('tunnel')
-var urlParse = require('url').parse
-var _ = require('lodash')
+const tunnel = require('tunnel')
+const urlParse = require('url').parse
+const _ = require('lodash')
 
 // import libraries + save request pre-patching
-var https = require('https')
-var originalHttpsRequest = https.request
+const https = require('https')
+const originalHttpsRequest = https.request
 
 // --- capture and rename env values ---
 // only this module should get them otherwise other libraries such as
@@ -37,13 +37,13 @@ function captureEnvironment () {
  * @return {boolean}
  */
 function shouldProxy (options) {
-  var noProxyList = (process.env.TUNNEL_NO_PROXY || '')
+  let noProxyList = (process.env.TUNNEL_NO_PROXY || '')
     .split(',')
     .map(e => '.' + e.toLowerCase())
-  var host
-  var port
-  var found
-  var parsedOptions = options
+  let host
+  let port
+  let found
+  let parsedOptions = options
 
   if (!parsedOptions.port) {
     // port not always set on options
@@ -65,7 +65,7 @@ function shouldProxy (options) {
 module.exports = {
   use: function () {
     captureEnvironment()
-    var httpsProxy = process.env.TUNNEL_HTTPS_PROXY
+    let httpsProxy = process.env.TUNNEL_HTTPS_PROXY
     // only dealing with HTTPS calls for now.
     if (httpsProxy) {
       httpsProxy = urlParse(httpsProxy)
@@ -77,7 +77,7 @@ module.exports = {
 
         if (shouldProxy(options)) {
           options.agent = tunnel.httpsOverHttp({
-            proxy: { host: httpsProxy.hostname, port: httpsProxy.port },
+            proxy: {host: httpsProxy.hostname, port: httpsProxy.port},
             ca: https.globalAgent.options.ca
           })
         }

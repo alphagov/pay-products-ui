@@ -1,4 +1,6 @@
-var logger = require('winston')
+'use strict'
+
+const logger = require('winston')
 
 module.exports.naxsiError = function (req, res) {
   res.status(400)

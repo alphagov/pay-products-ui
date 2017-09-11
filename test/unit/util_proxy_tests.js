@@ -1,3 +1,5 @@
+'use strict'
+
 const assert = require('assert')
 const proxy = require('../../app/utils/proxy.js')
 const https = require('https')

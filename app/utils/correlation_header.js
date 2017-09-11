@@ -1,10 +1,12 @@
+'use strict'
+
 const CORRELATION_HEADER = 'x-request-id'
-var logger = require('winston')
+const logger = require('winston')
 
 module.exports = (function () {
   'use strict'
 
-  var withCorrelationHeader = function (args, correlationId) {
+  let withCorrelationHeader = function (args, correlationId) {
     correlationId = correlationId || ''
 
     if (correlationId === '') {

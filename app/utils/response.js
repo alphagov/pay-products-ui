@@ -1,3 +1,5 @@
+'use strict'
+
 let logger = require('winston')
 let _ = require('lodash')
 
@@ -11,7 +13,7 @@ function response (req, res, template, data) {
 function errorResponse (req, res, msg, status) {
   if (!msg) msg = ERROR_MESSAGE
   let correlationId = req.correlationId
-  let data = { 'message': msg }
+  let data = {'message': msg}
   logger.error(`[${correlationId}] ${status} An error has occurred. Rendering error view -`, {errorMessage: msg})
   res.setHeader('Content-Type', 'text/html')
   if (status) {
