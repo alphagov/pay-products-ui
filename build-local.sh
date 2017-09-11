@@ -8,9 +8,9 @@ if [ -d "node_modules" ]; then
   mv node_modules node_modules_local
 fi
 
-docker build --file docker/build_and_test.Dockerfile -t govukpay/selfservice-build:local . &&\
-docker run --volume $(pwd):/app:rw govukpay/selfservice-build:local &&\
-docker build -t govukpay/selfservice:local .
+docker build --file docker/build_and_test.Dockerfile -t govukpay/products-ui-build:local . &&\
+docker run --volume $(pwd):/app:rw govukpay/products-ui-build:local &&\
+docker build -t govukpay/products-ui:local .
 
 if [ -d "node_modules" ]; then
   rm -rf node_modules
