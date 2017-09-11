@@ -1,2 +1,3 @@
-# pay-apps-ui
-pay apps user interface app
+# pay-products-ui 
+
+User interface app for products integrated with GOVUK Pay
