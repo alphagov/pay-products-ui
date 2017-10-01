@@ -8,12 +8,15 @@ const paths = require('./paths.js')
 // - Controllers
 const staticCtrl = require('./controllers/static_controller')
 const healthcheckCtrl = require('./controllers/healthcheck_controller')
+const payCtrl = require('./controllers/pay_controller')
 
+// Middleware
+const resolveProduct = require('./middleware/resolve_product')
 // - Middleware
 const correlationId = require('./middleware/correlation_id')
 
 // Assignments
-const { healthcheck, staticPaths } = paths
+const { healthcheck, staticPaths, pay } = paths
 
 // Exports
 module.exports.generateRoute = generateRoute
@@ -30,4 +33,6 @@ module.exports.bind = function (app) {
 
   // STATIC
   app.all(staticPaths.naxsiError, staticCtrl.naxsiError)
+
+  app.get(pay.product, resolveProduct, payCtrl.makePayment)
 }

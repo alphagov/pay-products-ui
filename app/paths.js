@@ -6,6 +6,9 @@ module.exports = {
   default: {
     index: '/'
   },
+  pay: {
+    product: '/pay/:externalProductId'
+  },
   healthcheck: {
     path: '/healthcheck'
   },

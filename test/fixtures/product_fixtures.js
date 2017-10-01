@@ -6,8 +6,24 @@ const pactProducts = pactBase()
 
 module.exports = {
 
-  validCreateProductRequest: (opts) => {
-    opts = opts || {}
+  validCreateChargeRequest: (opts = {}) => {
+    const externalProductId = opts.external_product_id || 'product-externalId'
+    const data = {
+      external_product_id: externalProductId,
+      amount: opts.amount || 990
+    }
+
+    return {
+      getPactified: () => {
+        return pactProducts.pactify(data)
+      },
+      getPlain: () => {
+        return data
+      }
+    }
+  },
+
+  validCreateProductRequest: (opts = {}) => {
     const externalServiceId = opts.service_external_id || 'service-externalId'
     const payApiToken = opts.pay_api_token || 'pay-api-token'
     const name = opts.name || 'A Product Name'
@@ -36,8 +52,37 @@ module.exports = {
     }
   },
 
-  validCreateProductResponse: (opts) => {
-    opts = opts || {}
+  validCreateChargeResponse: (opts = {}) => {
+    const externalProductId = opts.external_product_id || 'product-externalId'
+    const externalChargeId = opts.external_charge_id || 'charge-externalId'
+    const amount = opts.amount || 999
+    const description = opts.description || 'The product name'
+    const links = opts.links ||
+      [{
+        href: `http://products.url/v1/api/charges/${externalChargeId}`,
+        rel: 'self',
+        method: 'GET'
+      }]
+
+    const data = {
+      external_product_id: externalProductId,
+      external_charge_id: externalChargeId,
+      amount,
+      description,
+      _links: links
+    }
+
+    return {
+      getPactified: () => {
+        return pactProducts.pactify(data)
+      },
+      getPlain: () => {
+        return data
+      }
+    }
+  },
+
+  validCreateProductResponse: (opts = {}) => {
     const externalProductId = opts.external_product_id || 'product-externalId'
     const externalServiceId = opts.external_service_id || 'service-externalId'
     const payApiKey = opts.pay_api_key || 'a-valid_pay-api-key'

@@ -149,7 +149,7 @@ describe('products client - create a new product', function () {
         productsMock.finalize().then(() => done())
       })
 
-      it('should error unauthorised', function (done) {
+      it('should error bad request', function (done) {
         let productRequestData = invalidCreateProductRequest.getPlain()
 
         productsClient.createProduct(productRequestData).should.be.rejected.then(response => {
