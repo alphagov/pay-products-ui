@@ -9,16 +9,15 @@ class Product {
    * @param {Object} productData - raw 'product' object from server
    * @param {string} productData.external_product_id - The external ID of the product
    * @param {string} productData.external_service_id - The external ID of the service
-   * @param {string} productData.pay_api_key - API Key for GOVUK Pay account
    * @param {string} productData.name - The name of the product
    * @param {string} productData.description - The name of the product
    * @param {long} productData.price - price of the product
    * @param {string} productData.return_url - return url of where to redirect for any charge of this product
+   * @param {string} productData._links - links to stuff
    **/
   constructor (productData) {
     this.externalProductId = productData.external_product_id
     this.externalServiceId = productData.external_service_id
-    this.payApiKey = productData.pay_api_key
     this.name = productData.name
     this.description = productData.description || ''
     this.price = productData.price
@@ -36,7 +35,6 @@ class Product {
     return {
       external_product_id: this.externalProductId,
       external_service_id: this.externalServiceId,
-      pay_api_key: this.payApiKey,
       name: this.name,
       description: this.description,
       price: this.price,

@@ -85,7 +85,6 @@ module.exports = {
   validCreateProductResponse: (opts = {}) => {
     const externalProductId = opts.external_product_id || 'product-externalId'
     const externalServiceId = opts.external_service_id || 'service-externalId'
-    const payApiKey = opts.pay_api_key || 'a-valid_pay-api-key'
     const externalCatalogueId = opts.catalogue_external_id || 'catalogue-externalId'
     const name = opts.name || 'A Product Name'
     const description = opts.description || 'A Product description'
@@ -106,7 +105,6 @@ module.exports = {
       external_product_id: externalProductId,
       external_service_id: externalServiceId,
       external_catalogue_id: externalCatalogueId,
-      pay_api_key: payApiKey,
       name: name,
       description: description,
       price: price,

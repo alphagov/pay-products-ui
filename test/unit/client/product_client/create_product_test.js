@@ -81,7 +81,6 @@ describe('products client - create a new product', function () {
         let productRequestData = validCreateProductRequest.getPlain()
         productsClient.createProduct(productRequestData).should.be.fulfilled.then(product => {
           expect(product.externalProductId).to.equal('product-externalId')
-          expect(product.payApiKey).to.equal('a-valid_pay-api-key')
           expect(product.name).to.equal(productRequestData.name)
           expect(product.description).to.equal(productRequestData.description)
           expect(product.price).to.equal(productRequestData.price)

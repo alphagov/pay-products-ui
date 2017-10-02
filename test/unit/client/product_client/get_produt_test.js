@@ -76,7 +76,6 @@ describe('products client - find a new product', function () {
       it('should find an existing product', function (done) {
         productsClient.getProduct(externalProductId).should.be.fulfilled.then(product => {
           expect(product.externalProductId).to.equal(externalProductId)
-          expect(product.payApiKey).to.equal('a-valid_pay-api-key')
           expect(product.name).to.equal('A Product Name')
           expect(product.description).to.equal('A Product description')
           expect(product.price).to.equal(1000)
