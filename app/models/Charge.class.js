@@ -15,6 +15,7 @@ class Charge {
     this.amount = chargeData.amount
     this.externalProductId = chargeData.external_product_id
     this.selfLink = chargeData._links.find(link => link.rel === 'self')
+    this.nextLink = chargeData._links.find(link => link.rel === 'next')
   }
 
   /**
@@ -27,7 +28,7 @@ class Charge {
       description: this.description,
       amount: this.amount,
       external_product_id: this.externalProductId,
-      _links: [this.selfLink]
+      _links: [this.selfLink, this.nextLink]
     }
   }
 }

@@ -25,17 +25,18 @@ module.exports = {
     const product = req.product
     const correlationId = req.correlationId
     if (product) {
-      logger.info(`initiating a payment for product ${product.name}`)
-      productService.createCharge(product, null, correlationId)
+      logger.info(`[${correlationId}] creating charge for product ${product.name}`)
+      productService.createCharge(product, correlationId)
         .then(charge => {
-          // TODO make payment journey from this charge
+          logger.info(`[${correlationId}] initiating payment for charge ${charge.externalChargeId}`)
+          res.redirect(303, charge.nextLink)
         })
         .catch(err => {
-          logger.error(`error creating charge for product ${product.externalProductId}. err = ${err}`)
+          logger.error(`[${correlationId}] error creating charge for product ${product.externalProductId}. err = ${err}`)
           errorResponse(req, res, messages.internalError, 500)
         })
     } else {
-      logger.error(`product not found to make payment`)
+      logger.error(`[${correlationId}] product not found to make payment`)
       errorResponse(req, res, messages.internalError, 500)
     }
   }

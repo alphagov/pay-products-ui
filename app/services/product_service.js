@@ -26,7 +26,7 @@ function getProduct (externalProductId, correlationId) {
  * @param correlationId
  * @return {Promise.<Charge>}
  */
-function createCharge (product, priceOverride, correlationId) {
+function createCharge (product, priceOverride = undefined, correlationId) {
   return getProductsClient({correlationId})
     .createCharge(product, priceOverride)
 }
