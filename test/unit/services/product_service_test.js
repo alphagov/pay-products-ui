@@ -79,7 +79,6 @@ describe('product service', function () {
       description: productData.name,
       external_charge_id: externalChargeId
     }
-    let product = new Product(productFixtures.validCreateProductResponse(productData).getPlain())
 
     it('should create a charge successfully', function (done) {
       let chargeSuccessMock = () => {
@@ -91,7 +90,7 @@ describe('product service', function () {
       }
 
       productService(chargeSuccessMock)
-        .createCharge(product).should.be.fulfilled.then(charge => {
+        .createCharge(productData.external_product_id).should.be.fulfilled.then(charge => {
           expect(charge.externalProductId).to.equal(productData.external_product_id)
           expect(charge.description).to.equal(productData.name)
           expect(charge.amount).to.equal(productData.price)
@@ -109,7 +108,7 @@ describe('product service', function () {
       }
 
       productService(chargeFailMock)
-        .createCharge(product).should.be.rejected.should.notify(done)
+        .createCharge(productData.external_product_id).should.be.rejected.should.notify(done)
     })
   })
 })

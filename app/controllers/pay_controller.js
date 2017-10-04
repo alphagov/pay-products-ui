@@ -7,7 +7,6 @@ const logger = require('winston')
 const response = require('../utils/response')
 const errorResponse = response.renderErrorView
 const productService = require('../services/product_service')
-// const payService = require('../services/payService')
 
 // Constants
 const messages = {
@@ -26,18 +25,18 @@ module.exports = {
     const correlationId = req.correlationId
     if (product) {
       logger.info(`[${correlationId}] creating charge for product ${product.name}`)
-      productService.createCharge(product, correlationId)
+      productService.createCharge(product.externalProductId, correlationId)
         .then(charge => {
           logger.info(`[${correlationId}] initiating payment for charge ${charge.externalChargeId}`)
-          res.redirect(303, charge.nextLink)
+          return res.redirect(303, charge.nextLink)
         })
         .catch(err => {
           logger.error(`[${correlationId}] error creating charge for product ${product.externalProductId}. err = ${err}`)
-          errorResponse(req, res, messages.internalError, 500)
+          return errorResponse(req, res, messages.internalError, 500)
         })
     } else {
       logger.error(`[${correlationId}] product not found to make payment`)
-      errorResponse(req, res, messages.internalError, 500)
+      return errorResponse(req, res, messages.internalError, 500)
     }
   }
 }

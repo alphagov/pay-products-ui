@@ -5,14 +5,18 @@ const pactBase = require('./pact_base')
 const pactProducts = pactBase()
 
 module.exports = {
+  pactifyRandomData: (opts = {}) => {
+    pactProducts.pactify(opts)
+  },
 
   validCreateChargeRequest: (opts = {}) => {
     const externalProductId = opts.external_product_id || 'product-externalId'
     const data = {
-      external_product_id: externalProductId,
-      amount: opts.amount || 990
+      external_product_id: externalProductId
     }
-
+    if (opts.price_override) {
+      data.amount = opts.price_override
+    }
     return {
       getPactified: () => {
         return pactProducts.pactify(data)

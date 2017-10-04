@@ -10,7 +10,6 @@ const pactProxy = require('../../../test_helpers/pact_proxy')
 const PactInteractionBuilder = require('../../../fixtures/pact_interaction_builder').PactInteractionBuilder
 const getProductsClient = require('../../../../app/services/clients/products_client')
 const productFixtures = require('../../../fixtures/product_fixtures')
-const Product = require('../../../../app/models/Product.class')
 
 // Constants
 const CHARGE_RESOURCE = '/v1/api/charges'
@@ -49,16 +48,14 @@ describe('products client - create a new charge', function () {
   describe('creating a charge', function () {
     context('create a charge - success', () => {
       let externalProductId = 'a-valid-product-id'
-      let product = new Product(productFixtures.validCreateProductResponse({external_product_id: externalProductId}).getPlain())
       let validCreateChargeRequest = productFixtures.validCreateChargeRequest({
-        external_product_id: externalProductId,
-        amount: product.price
+        external_product_id: externalProductId
       })
       let validCreateChargeResponse = productFixtures.validCreateChargeResponse(
         {
           external_product_id: externalProductId,
-          description: product.name,
-          amount: product.price
+          description: 'charge description',
+          amount: 555
         })
       beforeEach((done) => {
         productsMock.addInteraction(
@@ -81,10 +78,10 @@ describe('products client - create a new charge', function () {
       })
 
       it('should create a new product', function (done) {
-        productsClient.createCharge(product).should.be.fulfilled.then(charge => {
+        productsClient.createCharge(externalProductId).should.be.fulfilled.then(charge => {
           expect(charge.externalProductId).to.equal(externalProductId)
-          expect(charge.description).to.equal(product.name)
-          expect(charge.amount).to.equal(product.price)
+          expect(charge.description).to.equal('charge description')
+          expect(charge.amount).to.equal(555)
           expect(charge.selfLink.href).to.equal(`http://products.url/v1/api/charges/${charge.externalChargeId}`)
         }).should.notify(done)
       })
@@ -92,7 +89,6 @@ describe('products client - create a new charge', function () {
 
     context('create a product - unauthorized', () => {
       const externalProductId = 'valid-id'
-      let product = new Product(productFixtures.validCreateProductResponse({external_product_id: externalProductId}).getPlain())
       let validCreateChargeRequest = productFixtures.validCreateChargeRequest({external_product_id: externalProductId})
 
       beforeEach((done) => {
@@ -120,28 +116,21 @@ describe('products client - create a new charge', function () {
           productsApiKey: 'invalid-api-key'
         })
 
-        productsClientWithInvalidToken.createCharge(product).should.be.rejected.then(response => {
+        productsClientWithInvalidToken.createCharge(externalProductId).should.be.rejected.then(response => {
           expect(response.errorCode).to.equal(401)
         }).should.notify(done)
       })
     })
 
     context('create a charge - bad request', () => {
-      const nonExistentProductId = 'invalid-id'
-      let product = new Product(productFixtures.validCreateProductResponse({
-        external_product_id: nonExistentProductId
-      }).getPlain())
-      let createChargeRequest = productFixtures.validCreateChargeRequest({
-        external_product_id: nonExistentProductId,
-        amount: product.price
-      })
+      let invalidCreateChargeRequest = {}
 
       beforeEach((done) => {
         productsMock.addInteraction(
           new PactInteractionBuilder(CHARGE_RESOURCE)
             .withUponReceiving('an invalid create charge request')
             .withMethod('POST')
-            .withRequestBody(createChargeRequest.getPactified())
+            .withRequestBody(productFixtures.pactifyRandomData(invalidCreateChargeRequest))
             .withStatusCode(400)
             .build()
         ).then(() => {
@@ -156,7 +145,7 @@ describe('products client - create a new charge', function () {
       })
 
       it('should error bad request', function (done) {
-        productsClient.createCharge(product).should.be.rejected.then(response => {
+        productsClient.createCharge('a-product-id').should.be.rejected.then(response => {
           expect(response.errorCode).to.equal(400)
         }).should.notify(done)
       })

@@ -105,16 +105,15 @@ module.exports = function (clientOptions = {}) {
     return defer.promise
   }
   /**
-   * @param {Product} product
+   * @param {String} productExternalId
    * @param {long} priceOverride. (Optional) if a different price need to be charged to the one that is defined in product.
    * @returns Promise<Charge>
    */
-  const createCharge = (product, priceOverride = undefined) => {
+  const createCharge = (productExternalId, priceOverride = undefined) => {
     const params = {
       correlationId: correlationId,
       payload: {
-        external_product_id: product.externalProductId,
-        amount: product.price
+        external_product_id: productExternalId
       },
       headers: {
         Authorization: `Bearer ${productsApiKey}`

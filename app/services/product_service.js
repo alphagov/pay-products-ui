@@ -21,12 +21,12 @@ function getProduct (externalProductId, correlationId) {
 }
 
 /**
- * @param {Product} product
+ * @param {Product} productExternalId
  * @param {long} priceOverride - override price in pence
  * @param correlationId
  * @return {Promise.<Charge>}
  */
-function createCharge (product, priceOverride = undefined, correlationId) {
+function createCharge (productExternalId, priceOverride = undefined, correlationId) {
   return getProductsClient({correlationId})
-    .createCharge(product, priceOverride)
+    .createCharge(productExternalId, priceOverride)
 }
