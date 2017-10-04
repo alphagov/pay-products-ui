@@ -66,6 +66,10 @@ module.exports = {
         href: `http://products.url/v1/api/charges/${externalChargeId}`,
         rel: 'self',
         method: 'GET'
+      }, {
+        href: `http://frontend.url/charges/${externalChargeId}`,
+        rel: 'next',
+        method: 'GET'
       }]
 
     const data = {
