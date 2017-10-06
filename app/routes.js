@@ -4,11 +4,13 @@
 const response = require('./utils/response.js').response
 const generateRoute = require('./utils/generate_route')
 const paths = require('./paths.js')
-const CORRELATION_HEADER = require('./utils/correlation_header').CORRELATION_HEADER
 
 // - Controllers
 const staticCtrl = require('./controllers/static_controller')
 const healthcheckCtrl = require('./controllers/healthcheck_controller')
+
+// - Middleware
+const correlationId = require('./middleware/correlation_id')
 
 // Assignments
 const { healthcheck, staticPaths } = paths
@@ -21,10 +23,7 @@ module.exports.bind = function (app) {
   app.get('/style-guide', (req, res) => response(req, res, 'style_guide'))
 
   // APPLY CORRELATION MIDDLEWARE
-  app.use('*', (req, res, next) => {
-    req.correlationId = req.headers[CORRELATION_HEADER] || ''
-    next()
-  })
+  app.use(correlationId)
 
   // HEALTHCHECK
   app.get(healthcheck.path, healthcheckCtrl.healthcheck)
