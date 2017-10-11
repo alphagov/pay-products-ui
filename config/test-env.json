@@ -1,6 +1,6 @@
 {
   "PRODUCTS_URL": "http://localhost:8004",
-  "PRODUCTS_API_KEY": "anfnuh7hufsf74hfsuni7nsjhfiurjdnjsfhushrufs8yrg0jfnuaeirg",
+  "PRODUCTS_API_TOKEN": "anfnuh7hufsf74hfsuni7nsjhfiurjdnjsfhushrufs8yrg0jfnuaeirg",
   "SECURE_COOKIE_OFF": "true",
   "COOKIE_MAX_AGE": "10800000",
   "COOKIE_MAX_AGE_GATEWAY_ACCOUNT": "2592000000",

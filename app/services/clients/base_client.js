@@ -24,7 +24,7 @@ const requestOptions = {
   // Adding retry on ECONNRESET as a temporary fix for PP-1727
   retryStrategy: retryOnECONNRESET()
 }
-requestOptions.headers.__defineGetter__(CORRELATION_HEADER_NAME, getCorrelationId)
+requestOptions.headers.__defineGetter__(CORRELATION_HEADER_NAME, getCorrelationHeaderValue)
 
 if (process.env.DISABLE_INTERNAL_HTTPS !== 'true') {
   customCertificate.addCertsToAgent(requestOptions.agentOptions)
@@ -39,6 +39,6 @@ function retryOnECONNRESET (err) {
   return err && ['ECONNRESET'].includes(err.code)
 }
 
-function getCorrelationId () {
+function getCorrelationHeaderValue () {
   return correlator.getId() || ''
 }

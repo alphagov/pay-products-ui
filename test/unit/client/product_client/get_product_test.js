@@ -11,10 +11,10 @@ const PactInteractionBuilder = require('../../../fixtures/pact_interaction_build
 const productFixtures = require('../../../fixtures/product_fixtures')
 
 // Constants
-const CHARGE_RESOURCE = '/v1/api/charges'
+const PRODUCT_RESOURCE = '/v1/api/products'
 const mockPort = Math.floor(Math.random() * 65535)
 const mockServer = pactProxy.create('localhost', mockPort)
-let productsMock, result, externalProductId
+let productsMock, response, result, externalProductId
 
 function getProductsClient (baseUrl = `http://localhost:${mockPort}`, productsApiKey = 'ABC1234567890DEF') {
   return proxyquire('../../../../app/services/clients/products_client', {
@@ -25,14 +25,14 @@ function getProductsClient (baseUrl = `http://localhost:${mockPort}`, productsAp
   })
 }
 
-describe('products client - creating a new charge', () => {
+describe('products client - find a new product', function () {
   /**
    * Start the server and set up Pact
    */
   before(function (done) {
     this.timeout(5000)
-    mockServer.start().then(() => {
-      productsMock = Pact({consumer: 'Selfservice-create-new-charge', provider: 'products', port: mockPort})
+    mockServer.start().then(function () {
+      productsMock = Pact({consumer: 'Selfservice-find-product', provider: 'products', port: mockPort})
       done()
     })
   })
@@ -46,28 +46,20 @@ describe('products client - creating a new charge', () => {
       .then(() => done())
   })
 
-  describe('when a charge is successfully created', () => {
-    before((done) => {
+  describe('when a product is successfully found', () => {
+    before(done => {
       const productsClient = getProductsClient()
-      externalProductId = 'a-valid-product-id'
-      const request = productFixtures.validCreateChargeRequest({
-        external_product_id: externalProductId
-      })
-      const response = productFixtures.validCreateChargeResponse({
-        external_product_id: externalProductId,
-        description: 'charge description',
-        amount: 555
-      })
+      externalProductId = 'existing-id'
+      response = productFixtures.validCreateProductResponse({external_product_id: externalProductId})
       productsMock.addInteraction(
-        new PactInteractionBuilder(CHARGE_RESOURCE)
-          .withUponReceiving('a valid create charge create request')
-          .withMethod('POST')
-          .withRequestBody(request.getPactified())
-          .withStatusCode(201)
+        new PactInteractionBuilder(`${PRODUCT_RESOURCE}/${externalProductId}`)
+          .withUponReceiving('a valid get product request')
+          .withMethod('GET')
+          .withStatusCode(200)
           .withResponseBody(response.getPactified())
           .build()
       )
-        .then(() => productsClient.createCharge(externalProductId))
+        .then(() => productsClient.getProduct(externalProductId))
         .then(res => {
           result = res
           done()
@@ -79,28 +71,29 @@ describe('products client - creating a new charge', () => {
       productsMock.finalize().then(() => done())
     })
 
-    it('should create a new product', () => {
+    it('should find an existing product', () => {
       expect(result.externalProductId).to.equal(externalProductId)
-      expect(result.description).to.equal('charge description')
-      expect(result.amount).to.equal(555)
-      expect(result.selfLink.href).to.equal(`http://products.url/v1/api/charges/${result.externalChargeId}`)
+      expect(result.name).to.equal('A Product Name')
+      expect(result.description).to.equal('A Product description')
+      expect(result.price).to.equal(1000)
+      expect(result.returnUrl).to.equal('http://some.return.url/')
+      expect(result.payLink.href).to.equal(`http://products-ui.url/pay/${externalProductId}`)
+      expect(result.selfLink.href).to.equal(`http://products.url/v1/api/products/${externalProductId}`)
     })
   })
 
   describe('when the request has invalid authorization credentials', () => {
-    before(done => {
+    beforeEach(done => {
       const productsClient = getProductsClient(`http://localhost:${mockPort}`, 'invalid-api-key')
-      externalProductId = 'valid-id'
-      const request = productFixtures.validCreateChargeRequest({external_product_id: externalProductId})
+      externalProductId = 'existing-id'
       productsMock.addInteraction(
-        new PactInteractionBuilder(CHARGE_RESOURCE)
-          .withUponReceiving('a valid create charge request with invalid PRODUCTS_API_TOKEN')
-          .withMethod('POST')
-          .withRequestBody(request.getPactified())
+        new PactInteractionBuilder(`${PRODUCT_RESOURCE}/${externalProductId}`)
+          .withUponReceiving('a valid find product request with invalid PRODUCTS_API_TOKEN')
+          .withMethod('GET')
           .withStatusCode(401)
           .build()
       )
-        .then(() => productsClient.createCharge(externalProductId), done)
+        .then(() => productsClient.getProduct(externalProductId), done)
         .then(() => done(new Error('Promise unexpectedly resolved')))
         .catch((err) => {
           result = err
@@ -108,28 +101,27 @@ describe('products client - creating a new charge', () => {
         })
     })
 
-    afterEach((done) => {
+    after((done) => {
       productsMock.finalize().then(() => done())
     })
 
-    it('should reject with error unauthorised', () => {
+    it('should reject with error: 401 unauthorised', () => {
       expect(result.errorCode).to.equal(401)
     })
   })
 
-  describe('when creating a charge using a malformed request', () => {
-    beforeEach(done => {
+  describe('when a product is not found', () => {
+    before(done => {
       const productsClient = getProductsClient()
-      const request = {}
+      externalProductId = 'non-existing-id'
       productsMock.addInteraction(
-        new PactInteractionBuilder(CHARGE_RESOURCE)
-          .withUponReceiving('an invalid create charge request')
-          .withMethod('POST')
-          .withRequestBody(productFixtures.pactifyRandomData(request))
-          .withStatusCode(400)
+        new PactInteractionBuilder(`${PRODUCT_RESOURCE}/${externalProductId}`)
+          .withUponReceiving('a valid find product request with non existing id')
+          .withMethod('GET')
+          .withStatusCode(404)
           .build()
       )
-        .then(() => productsClient.createCharge('a-product-id'), done)
+        .then(() => productsClient.getProduct(externalProductId), done)
         .then(() => done(new Error('Promise unexpectedly resolved')))
         .catch((err) => {
           result = err
@@ -137,12 +129,12 @@ describe('products client - creating a new charge', () => {
         })
     })
 
-    afterEach(done => {
+    after((done) => {
       productsMock.finalize().then(() => done())
     })
 
-    it('should reject with error: bad request', () => {
-      expect(result.errorCode).to.equal(400)
+    it('should reject with error: 404 not found', () => {
+      expect(result.errorCode).to.equal(404)
     })
   })
 })

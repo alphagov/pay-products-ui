@@ -1,154 +1,118 @@
 'use strict'
 
-const q = require('q')
-const requestLogger = require('../../utils/request_logger')
-const baseClient = require('./base_client')
+// Local Dependencies
 const Product = require('../../models/Product.class')
 const Charge = require('../../models/Charge.class')
-const createCallbackToPromiseConverter = require('../../utils/response_converter').createCallbackToPromiseConverter
+const baseClient = require('./base_client')
+const responseConverter = require('../../utils/response_converter')
+const {PRODUCTS_URL, PRODUCTS_API_TOKEN} = require('../../../config')
 
+// Constants
 const SERVICE_NAME = 'products'
-const PRODUCTS_URL = process.env.PRODUCTS_URL
-const PRODUCTS_API_KEY = process.env.PRODUCTS_API_KEY
 
-const responseBodyToProductTransformer = body => new Product(body)
-const responseBodyToChargeTransformer = body => new Charge(body)
+// Use baseurl to create a baseclient for the product microservice
+const baseUrl = `${PRODUCTS_URL}/v1/api`
+const headers = {
+  Authorization: `Bearer ${PRODUCTS_API_TOKEN}`
+}
 
-module.exports = function (clientOptions = {}) {
-  const baseUrl = clientOptions.baseUrl || PRODUCTS_URL
-  const productsApiKey = clientOptions.productsApiKey || PRODUCTS_API_KEY
-  const correlationId = clientOptions.correlationId || ''
-  const productResource = `${baseUrl}/v1/api/products`
-  const chargeResource = `${baseUrl}/v1/api/charges`
+// Exports
+module.exports = {
+  createProduct,
+  getProduct,
+  createCharge
+}
 
-  /**
-   * @param {String} externalProductId: external product id
-   * @returns {Promise<Product>}
-   */
-  const getProduct = (externalProductId) => {
-    const params = {
-      correlationId: correlationId,
-      headers: {
-        Authorization: `Bearer ${productsApiKey}`
-      }
-    }
-    const url = `${productResource}/${externalProductId}`
-    const defer = q.defer()
-    const startTime = new Date()
-    const context = {
-      url: url,
-      defer: defer,
-      startTime: startTime,
-      correlationId: correlationId,
-      method: 'GET',
-      description: 'find a product',
-      service: SERVICE_NAME
-    }
-
-    const callbackToPromiseConverter = createCallbackToPromiseConverter(context, responseBodyToProductTransformer)
-
-    requestLogger.logRequestStart(context)
-
-    baseClient.get(url, params, callbackToPromiseConverter)
-      .on('error', callbackToPromiseConverter)
-
-    return defer.promise
+/**
+ * @param {String} externalProductId: external product id
+ * @returns {Promise<Product>}
+ */
+function getProduct (externalProductId) {
+  const options = {
+    url: `/products/${externalProductId}`,
+    headers,
+    baseUrl
   }
-  /**
-   * @param {Object} productData
-   * @param {string} productData.external_service_id - The external service id of this gatewayAccountId
-   * @param {string} productData.name - The name of the product
-   * @param {long} productData.price - The price of product in pence
-   * @param {string} productData.description - (Optional) The description of the product
-   * @param {string} productData.return_url - (Optional) Where to redirect to upon completion of a charge for this product
-   * @returns {Promise<Product>}
-   */
-  const createProduct = (productData) => {
-    const params = {
-      correlationId: correlationId,
-      payload: {
-        external_service_id: productData.external_service_id,
-        pay_api_token: productData.pay_api_token,
-        name: productData.name,
-        description: productData.description,
-        price: productData.price
-      },
-      headers: {
-        Authorization: `Bearer ${productsApiKey}`
-      }
-    }
-
-    if (productData.return_url) {
-      params.payload.return_url = productData.return_url
-    }
-
-    const url = productResource
-    const defer = q.defer()
-    const startTime = new Date()
-    const context = {
-      url: url,
-      defer: defer,
-      startTime: startTime,
-      correlationId: correlationId,
-      method: 'POST',
-      description: 'create a product for a service',
-      service: SERVICE_NAME
-    }
-
-    const callbackToPromiseConverter = createCallbackToPromiseConverter(context, responseBodyToProductTransformer)
-
-    requestLogger.logRequestStart(context)
-
-    baseClient.post(url, params, callbackToPromiseConverter)
-      .on('error', callbackToPromiseConverter)
-
-    return defer.promise
-  }
-  /**
-   * @param {String} productExternalId
-   * @param {long} priceOverride. (Optional) if a different price need to be charged to the one that is defined in product.
-   * @returns Promise<Charge>
-   */
-  const createCharge = (productExternalId, priceOverride = undefined) => {
-    const params = {
-      correlationId: correlationId,
-      payload: {
-        external_product_id: productExternalId
-      },
-      headers: {
-        Authorization: `Bearer ${productsApiKey}`
-      }
-    }
-    if (priceOverride) {
-      params.payload.amount = priceOverride
-    }
-
-    const url = chargeResource
-    const defer = q.defer()
-    const startTime = new Date()
-    const context = {
-      url: url,
-      defer: defer,
-      startTime: startTime,
-      correlationId: correlationId,
-      method: 'POST',
-      description: 'create a charge for a product',
-      service: SERVICE_NAME
-    }
-
-    const callbackToPromiseConverter = createCallbackToPromiseConverter(context, responseBodyToChargeTransformer)
-
-    requestLogger.logRequestStart(context)
-
-    baseClient.post(url, params, callbackToPromiseConverter)
-      .on('error', callbackToPromiseConverter)
-
-    return defer.promise
+  const context = {
+    method: 'GET',
+    description: 'find a product',
+    service: SERVICE_NAME
   }
 
-  return {
-    createProduct,
-    getProduct,
-    createCharge
+  return new Promise((resolve, reject) => {
+    responseConverter.requestMethodPromisify(baseClient.get, context, options)
+      .then(product => resolve(new Product(product)))
+      .catch(err => reject(err))
+  })
+}
+
+/**
+ * @param {String} productExternalId
+ * @param {long} priceOverride. (Optional) if a different price need to be charged to the one that is defined in product.
+ * @returns Promise<Charge>
+ */
+function createCharge (productExternalId, priceOverride) {
+  const options = {
+    url: `/charges`,
+    headers,
+    baseUrl,
+    json: true,
+    body: {
+      external_product_id: productExternalId
+    }
   }
+  if (priceOverride) options.body.amount = priceOverride
+
+  const context = {
+    method: 'POST',
+    description: 'create a charge for a product',
+    service: SERVICE_NAME
+  }
+
+  return new Promise((resolve, reject) => {
+    responseConverter.requestMethodPromisify(baseClient.post, context, options)
+      .then(charge => resolve(new Charge(charge)))
+      .catch(err => reject(err))
+  })
+}
+
+/**
+ * @param {Object} productData
+ * @param {string} productData.external_service_id - The external service id of this gatewayAccountId
+ * @param {string} productData.name - The name of the product
+ * @param {long} productData.price - The price of product in pence
+ * @param {string} productData.description - (Optional) The description of the product
+ * @param {string} productData.return_url - (Optional) Where to redirect to upon completion of a charge for this product
+ * @returns {Promise<Product>}
+ */
+function createProduct (productData) {
+  const options = {
+    url: `/products`,
+    headers,
+    baseUrl,
+    json: true,
+    body: {
+      external_service_id: productData.external_service_id,
+      pay_api_token: productData.pay_api_token,
+      name: productData.name,
+      description: productData.description,
+      price: productData.price
+    }
+  }
+
+  if (productData.return_url) {
+    options.body.return_url = productData.return_url
+  }
+
+  const context = {
+    method: 'POST',
+    description: 'create a product for a service',
+    service: SERVICE_NAME
+  }
+
+  return new Promise((resolve, reject) => {
+    responseConverter.requestMethodPromisify(baseClient.post, context, options)
+      .then(product => resolve(new Product(product)))
+      .catch(err => reject(err))
+  })
 }

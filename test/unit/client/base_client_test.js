@@ -11,7 +11,7 @@ describe('baseClient', () => {
     correlationID = `${Math.floor(Math.random() * 100000) + 1}`
     nock('http://example.com').get('/').reply(200, 'success')
     correlator.withId(correlationID, () => {
-      baseClient.get('http://example.com/', (err, response) => {
+      baseClient.get({url: 'http://example.com/'}, (err, response) => {
         outboundRequest = response.request
         done(err)
       })
