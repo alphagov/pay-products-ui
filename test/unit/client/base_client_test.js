@@ -3,7 +3,7 @@ const correlator = require('correlation-id')
 const config = require('../../../config')
 const nock = require('nock')
 const {expect} = require('chai')
-const baseClient = require('../../../app/services/clients/base_client')
+const baseClient = require('../../../app/services/clients/base_client/base_client')
 let correlationID, outboundRequest
 
 describe('baseClient', () => {
@@ -24,5 +24,9 @@ describe('baseClient', () => {
 
   it(`should set outbound request's 'Content-Type' header to be 'application/json'`, () => {
     expect(outboundRequest.headers).to.have.property('Content-Type').to.equal('application/json')
+  })
+
+  it(`should return a promise`, () => {
+
   })
 })

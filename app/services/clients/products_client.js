@@ -3,8 +3,7 @@
 // Local Dependencies
 const Product = require('../../models/Product.class')
 const Charge = require('../../models/Charge.class')
-const baseClient = require('./base_client')
-const responseConverter = require('../../utils/response_converter')
+const baseClient = require('./base_client/base_client')
 const {PRODUCTS_URL, PRODUCTS_API_TOKEN} = require('../../../config')
 
 // Constants
@@ -28,22 +27,13 @@ module.exports = {
  * @returns {Promise<Product>}
  */
 function getProduct (externalProductId) {
-  const options = {
-    url: `/products/${externalProductId}`,
+  return baseClient.get({
     headers,
-    baseUrl
-  }
-  const context = {
-    method: 'GET',
+    baseUrl,
+    url: `/products/${externalProductId}`,
     description: 'find a product',
     service: SERVICE_NAME
-  }
-
-  return new Promise((resolve, reject) => {
-    responseConverter.requestMethodPromisify(baseClient.get, context, options)
-      .then(product => resolve(new Product(product)))
-      .catch(err => reject(err))
-  })
+  }).then(product => new Product(product))
 }
 
 /**
@@ -52,28 +42,18 @@ function getProduct (externalProductId) {
  * @returns Promise<Charge>
  */
 function createCharge (productExternalId, priceOverride) {
-  const options = {
-    url: `/charges`,
+  return baseClient.post({
     headers,
     baseUrl,
+    url: `/charges`,
     json: true,
     body: {
-      external_product_id: productExternalId
-    }
-  }
-  if (priceOverride) options.body.amount = priceOverride
-
-  const context = {
-    method: 'POST',
+      external_product_id: productExternalId,
+      amount: priceOverride
+    },
     description: 'create a charge for a product',
     service: SERVICE_NAME
-  }
-
-  return new Promise((resolve, reject) => {
-    responseConverter.requestMethodPromisify(baseClient.post, context, options)
-      .then(charge => resolve(new Charge(charge)))
-      .catch(err => reject(err))
-  })
+  }).then(charge => new Charge(charge))
 }
 
 /**
@@ -86,33 +66,20 @@ function createCharge (productExternalId, priceOverride) {
  * @returns {Promise<Product>}
  */
 function createProduct (productData) {
-  const options = {
-    url: `/products`,
+  return baseClient.post({
     headers,
     baseUrl,
+    url: `/products`,
     json: true,
     body: {
       external_service_id: productData.external_service_id,
       pay_api_token: productData.pay_api_token,
       name: productData.name,
       description: productData.description,
-      price: productData.price
-    }
-  }
-
-  if (productData.return_url) {
-    options.body.return_url = productData.return_url
-  }
-
-  const context = {
-    method: 'POST',
+      price: productData.price,
+      return_url: productData.return_url
+    },
     description: 'create a product for a service',
     service: SERVICE_NAME
-  }
-
-  return new Promise((resolve, reject) => {
-    responseConverter.requestMethodPromisify(baseClient.post, context, options)
-      .then(product => resolve(new Product(product)))
-      .catch(err => reject(err))
-  })
+  }).then(product => new Product(product))
 }
