@@ -14,7 +14,7 @@ const productFixtures = require('../../../fixtures/product_fixtures')
 const PRODUCT_RESOURCE = '/v1/api/products'
 const mockPort = Math.floor(Math.random() * 65535)
 const mockServer = pactProxy.create('localhost', mockPort)
-let productsMock, response, result, externalProductId
+let productsMock, response, result, productExternalId
 
 function getProductsClient (baseUrl = `http://localhost:${mockPort}`, productsApiKey = 'ABC1234567890DEF') {
   return proxyquire('../../../../app/services/clients/products_client', {
@@ -49,17 +49,23 @@ describe('products client - find a new product', function () {
   describe('when a product is successfully found', () => {
     before(done => {
       const productsClient = getProductsClient()
-      externalProductId = 'existing-id'
-      response = productFixtures.validCreateProductResponse({external_product_id: externalProductId})
+      productExternalId = 'existing-id'
+      response = productFixtures.validCreateProductResponse({
+        external_id: productExternalId,
+        price: 1000,
+        name: 'A Product Name',
+        description: 'About this product',
+        return_url: 'https://example.gov.uk'
+      })
       productsMock.addInteraction(
-        new PactInteractionBuilder(`${PRODUCT_RESOURCE}/${externalProductId}`)
+        new PactInteractionBuilder(`${PRODUCT_RESOURCE}/${productExternalId}`)
           .withUponReceiving('a valid get product request')
           .withMethod('GET')
           .withStatusCode(200)
           .withResponseBody(response.getPactified())
           .build()
       )
-        .then(() => productsClient.getProduct(externalProductId))
+        .then(() => productsClient.getProduct(productExternalId))
         .then(res => {
           result = res
           done()
@@ -72,28 +78,29 @@ describe('products client - find a new product', function () {
     })
 
     it('should find an existing product', () => {
-      expect(result.externalProductId).to.equal(externalProductId)
-      expect(result.name).to.equal('A Product Name')
-      expect(result.description).to.equal('A Product description')
-      expect(result.price).to.equal(1000)
-      expect(result.returnUrl).to.equal('http://some.return.url/')
-      expect(result.payLink.href).to.equal(`http://products-ui.url/pay/${externalProductId}`)
-      expect(result.selfLink.href).to.equal(`http://products.url/v1/api/products/${externalProductId}`)
+      const plainResponse = response.getPlain()
+      expect(result.externalId).to.equal(productExternalId)
+      expect(result.name).to.exist.and.equal(plainResponse.name)
+      expect(result.description).to.exist.and.equal(plainResponse.description)
+      expect(result.price).to.exist.and.equal(plainResponse.price)
+      expect(result.returnUrl).to.exist.and.equal(plainResponse.return_url)
+      expect(result.payLink.href).to.exist.and.equal(`http://products-ui.url/pay/${productExternalId}`)
+      expect(result.selfLink.href).to.exist.and.equal(`http://products.url/v1/api/products/${productExternalId}`)
     })
   })
 
   describe('when the request has invalid authorization credentials', () => {
     beforeEach(done => {
       const productsClient = getProductsClient(`http://localhost:${mockPort}`, 'invalid-api-key')
-      externalProductId = 'existing-id'
+      productExternalId = 'existing-id'
       productsMock.addInteraction(
-        new PactInteractionBuilder(`${PRODUCT_RESOURCE}/${externalProductId}`)
+        new PactInteractionBuilder(`${PRODUCT_RESOURCE}/${productExternalId}`)
           .withUponReceiving('a valid find product request with invalid PRODUCTS_API_TOKEN')
           .withMethod('GET')
           .withStatusCode(401)
           .build()
       )
-        .then(() => productsClient.getProduct(externalProductId), done)
+        .then(() => productsClient.getProduct(productExternalId), done)
         .then(() => done(new Error('Promise unexpectedly resolved')))
         .catch((err) => {
           result = err
@@ -113,15 +120,15 @@ describe('products client - find a new product', function () {
   describe('when a product is not found', () => {
     before(done => {
       const productsClient = getProductsClient()
-      externalProductId = 'non-existing-id'
+      productExternalId = 'non-existing-id'
       productsMock.addInteraction(
-        new PactInteractionBuilder(`${PRODUCT_RESOURCE}/${externalProductId}`)
+        new PactInteractionBuilder(`${PRODUCT_RESOURCE}/${productExternalId}`)
           .withUponReceiving('a valid find product request with non existing id')
           .withMethod('GET')
           .withStatusCode(404)
           .build()
       )
-        .then(() => productsClient.getProduct(externalProductId), done)
+        .then(() => productsClient.getProduct(productExternalId), done)
         .then(() => done(new Error('Promise unexpectedly resolved')))
         .catch((err) => {
           result = err

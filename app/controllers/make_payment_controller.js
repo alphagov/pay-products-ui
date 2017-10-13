@@ -18,13 +18,13 @@ module.exports = (req, res) => {
   const correlationId = req.correlationId
   if (product) {
     logger.info(`[${correlationId}] creating charge for product ${product.name}`)
-    return productsClient.createCharge(product.externalProductId)
+    return productsClient.createCharge(product.externalId)
       .then(charge => {
         logger.info(`[${correlationId}] initiating payment for charge ${charge.externalChargeId}`)
         return res.redirect(303, charge.nextLink.href)
       })
       .catch(err => {
-        logger.error(`[${correlationId}] error creating charge for product ${product.externalProductId}. err = ${err}`)
+        logger.error(`[${correlationId}] error creating charge for product ${product.externalId}. err = ${err}`)
         return errorResponse(req, res, messages.internalError, err.errorCode || 500)
       })
   } else {

@@ -28,24 +28,14 @@ module.exports = {
   },
 
   validCreateProductRequest: (opts = {}) => {
-    const externalServiceId = opts.service_external_id || 'service-externalId'
-    const payApiToken = opts.pay_api_token || 'pay-api-token'
-    const name = opts.name || 'A Product Name'
-    const description = opts.description || 'A Product description'
-    const price = opts.price || 1000
-
     const data = {
-      external_service_id: externalServiceId,
-      pay_api_token: payApiToken,
-      name: name,
-      description: description,
-      price: price
+      gateway_account_id: opts.gatewayAccountId || Math.round(Math.random() * 1000) + 1,
+      pay_api_token: opts.payApiToken || 'pay-api-token',
+      name: opts.name || 'A Product Name',
+      price: opts.price || Math.round(Math.random() * 10000) + 1
     }
-
-    if (opts.return_url) {
-      data.return_url = opts.return_url
-    }
-
+    if (opts.description) data.description = opts.description
+    if (opts.returnUrl) data.return_url = opts.returnUrl
     return {
       getPactified: () => {
         return pactProducts.pactify(data)
@@ -57,27 +47,20 @@ module.exports = {
   },
 
   validCreateChargeResponse: (opts = {}) => {
-    const externalProductId = opts.external_product_id || 'product-externalId'
-    const externalChargeId = opts.external_charge_id || 'charge-externalId'
-    const amount = opts.amount || 999
-    const description = opts.description || 'The product name'
-    const links = opts.links ||
-      [{
-        href: `http://products.url/v1/api/charges/${externalChargeId}`,
+    const data = {
+      external_product_id: opts.external_product_id || 'product-externalId',
+      external_charge_id: opts.external_charge_id || 'charge-externalId',
+      amount: opts.amount || Math.round(Math.random() * 1000) + 1,
+      description: opts.description || 'The product name',
+      _links: opts.links || [{
+        href: `http://products.url/v1/api/charges/${(opts.external_charge_id || 'charge-externalId')}`,
         rel: 'self',
         method: 'GET'
       }, {
-        href: `http://frontend.url/charges/${externalChargeId}`,
+        href: `http://frontend.url/charges/${(opts.external_charge_id || 'charge-externalId')}`,
         rel: 'next',
         method: 'GET'
       }]
-
-    const data = {
-      external_product_id: externalProductId,
-      external_charge_id: externalChargeId,
-      amount,
-      description,
-      _links: links
     }
 
     return {
@@ -91,33 +74,25 @@ module.exports = {
   },
 
   validCreateProductResponse: (opts = {}) => {
-    const externalProductId = opts.external_product_id || 'product-externalId'
-    const externalServiceId = opts.external_service_id || 'service-externalId'
-    const externalCatalogueId = opts.catalogue_external_id || 'catalogue-externalId'
-    const name = opts.name || 'A Product Name'
-    const description = opts.description || 'A Product description'
-    const price = opts.price || 1000
-    const returnUrl = opts.return_url || 'http://some.return.url/'
-    const links = opts.links ||
-      [{
-        href: `http://products.url/v1/api/products/${externalProductId}`,
+    const data = {
+      external_id: opts.external_id || 'product-external-id',
+      gateway_account_id: opts.gateway_account_id || Math.round(Math.random() * 1000) + 1,
+      name: opts.name || 'A Product Name',
+      price: opts.price || Math.round(Math.random() * 10000) + 1,
+      _links: opts.links
+    }
+    if (opts.description) data.description = opts.description
+    if (opts.return_url) data.return_url = opts.return_url
+    if (!data._links) {
+      data._links = [{
+        href: `http://products.url/v1/api/products/${data.external_id}`,
         rel: 'self',
         method: 'GET'
       }, {
-        href: `http://products-ui.url/pay/${externalProductId}`,
+        href: `http://products-ui.url/pay/${data.external_id}`,
         rel: 'pay',
         method: 'GET'
       }]
-
-    const data = {
-      external_product_id: externalProductId,
-      external_service_id: externalServiceId,
-      external_catalogue_id: externalCatalogueId,
-      name: name,
-      description: description,
-      price: price,
-      return_url: returnUrl,
-      _links: links
     }
 
     return {

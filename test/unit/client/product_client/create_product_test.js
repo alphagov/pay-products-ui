@@ -49,13 +49,12 @@ describe('products client - creating a new product', () => {
   describe('when a product is successfully created', () => {
     before(done => {
       const productsClient = getProductsClient()
-      request = productFixtures.validCreateProductRequest()
-      response = productFixtures.validCreateProductResponse({
-        name: request.getPlain().name,
-        description: request.getPlain().description,
-        external_service_id: request.getPlain().external_service_id,
-        price: request.getPlain().price
+      request = productFixtures.validCreateProductRequest({
+        description: 'a test product',
+        returnUrl: 'https://example.gov.uk/paid-for-somet'
       })
+      const requestPlain = request.getPlain()
+      response = productFixtures.validCreateProductResponse(requestPlain)
       productsMock.addInteraction(
         new PactInteractionBuilder(PRODUCT_RESOURCE)
           .withUponReceiving('a valid create product request')
@@ -65,7 +64,14 @@ describe('products client - creating a new product', () => {
           .withResponseBody(response.getPactified())
           .build()
       )
-        .then(() => productsClient.createProduct(request.getPlain()))
+        .then(() => productsClient.createProduct({
+          gatewayAccountId: requestPlain.gateway_account_id,
+          payApiToken: requestPlain.pay_api_token,
+          name: requestPlain.name,
+          price: requestPlain.price,
+          description: requestPlain.description,
+          returnUrl: requestPlain.return_url
+        }))
         .then(res => {
           result = res
           done()
@@ -78,14 +84,14 @@ describe('products client - creating a new product', () => {
     })
 
     it('should create a new product', () => {
-      const productRequest = request.getPlain()
-      expect(result.externalProductId).to.equal('product-externalId')
-      expect(result.name).to.equal(productRequest.name)
-      expect(result.description).to.equal(productRequest.description)
-      expect(result.price).to.equal(productRequest.price)
-      expect(result.returnUrl).to.equal('http://some.return.url/')
-      expect(result.payLink.href).to.equal(`http://products-ui.url/pay/product-externalId`)
-      expect(result.selfLink.href).to.equal(`http://products.url/v1/api/products/product-externalId`)
+      const requestPlain = request.getPlain()
+      expect(result.gatewayAccountId).to.equal(requestPlain.gateway_account_id)
+      expect(result.name).to.equal(requestPlain.name)
+      expect(result.description).to.equal(requestPlain.description)
+      expect(result.price).to.equal(requestPlain.price)
+      expect(result.returnUrl).to.equal('https://example.gov.uk/paid-for-somet')
+      expect(result.payLink.href).to.equal(`http://products-ui.url/pay/product-external-id`)
+      expect(result.selfLink.href).to.equal(`http://products.url/v1/api/products/product-external-id`)
     })
   })
 
@@ -93,6 +99,7 @@ describe('products client - creating a new product', () => {
     before(done => {
       const productsClient = getProductsClient(`http://localhost:${mockPort}`, 'invalid-api-key')
       request = productFixtures.validCreateProductRequest()
+      const requestPlain = request.getPlain()
       productsMock.addInteraction(
         new PactInteractionBuilder(PRODUCT_RESOURCE)
           .withUponReceiving('a valid create product request with invalid PRODUCTS_API_TOKEN')
@@ -101,7 +108,14 @@ describe('products client - creating a new product', () => {
           .withStatusCode(401)
           .build()
       )
-        .then(() => productsClient.createProduct(request.getPlain()), done)
+        .then(() => productsClient.createProduct({
+          gatewayAccountId: requestPlain.gateway_account_id,
+          payApiToken: requestPlain.pay_api_token,
+          name: requestPlain.name,
+          price: requestPlain.price,
+          description: requestPlain.description,
+          returnUrl: requestPlain.return_url
+        }), done)
         .then(() => done(new Error('Promise unexpectedly resolved')))
         .catch((err) => {
           result = err
@@ -122,6 +136,7 @@ describe('products client - creating a new product', () => {
     before(done => {
       const productsClient = getProductsClient()
       request = productFixtures.validCreateProductRequest({pay_api_token: ''})
+      const requestPlain = request.getPlain()
       productsMock.addInteraction(
         new PactInteractionBuilder(PRODUCT_RESOURCE)
           .withUponReceiving('an invalid create product request')
@@ -130,7 +145,14 @@ describe('products client - creating a new product', () => {
           .withStatusCode(400)
           .build()
       )
-        .then(() => productsClient.createProduct(request.getPlain()), done)
+        .then(() => productsClient.createProduct({
+          gatewayAccountId: requestPlain.gateway_account_id,
+          payApiToken: requestPlain.pay_api_token,
+          name: requestPlain.name,
+          price: requestPlain.price,
+          description: requestPlain.description,
+          returnUrl: requestPlain.return_url
+        }), done)
         .then(() => done(new Error('Promise unexpectedly resolved')))
         .catch((err) => {
           result = err

@@ -17,13 +17,13 @@ describe('make payment controller', function () {
   })
   describe('when charge creation is successful', () => {
     before(done => {
-      product = productFixtures.validCreateProductResponse().getPlain()
+      product = productFixtures.validCreateProductResponse({external_id: 'abc1234567890def'}).getPlain()
       charge = productFixtures.validCreateChargeResponse().getPlain()
-      nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_product_id}`).reply(200, product)
-      nock(config.PRODUCTS_URL).post('/v1/api/charges', {external_product_id: product.external_product_id}).reply(200, charge)
+      nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+      nock(config.PRODUCTS_URL).post('/v1/api/charges', {external_product_id: product.external_id}).reply(200, charge)
 
       supertest(createAppWithSession(getApp()))
-        .get(paths.pay.product.replace(':externalProductId', product.external_product_id))
+        .get(paths.pay.product.replace(':productExternalId', product.external_id))
         .end((err, res) => {
           response = res
           done(err)
@@ -39,10 +39,10 @@ describe('make payment controller', function () {
   describe('when charge creation fails', () => {
     before(done => {
       product = productFixtures.validCreateProductResponse().getPlain()
-      nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_product_id}`).reply(200, product)
-      nock(config.PRODUCTS_URL).post('/v1/api/charges', {external_product_id: product.external_product_id}).reply(400)
+      nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+      nock(config.PRODUCTS_URL).post('/v1/api/charges', {external_product_id: product.external_id}).reply(400)
       supertest(createAppWithSession(getApp()))
-        .get(paths.pay.product.replace(':externalProductId', product.external_product_id))
+        .get(paths.pay.product.replace(':productExternalId', product.external_id))
         .end((err, res) => {
           response = res
           $ = cheerio.load(res.text || '')
@@ -61,9 +61,9 @@ describe('make payment controller', function () {
   describe('when the product is not resolved', () => {
     before(done => {
       product = productFixtures.validCreateProductResponse().getPlain()
-      nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_product_id}`).reply(404)
+      nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(404)
       supertest(createAppWithSession(getApp()))
-        .get(paths.pay.product.replace(':externalProductId', product.external_product_id))
+        .get(paths.pay.product.replace(':productExternalId', product.external_id))
         .end((err, res) => {
           response = res
           $ = cheerio.load(res.text || '')

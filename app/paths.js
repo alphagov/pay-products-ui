@@ -7,7 +7,7 @@ module.exports = {
     index: '/'
   },
   pay: {
-    product: '/pay/:externalProductId'
+    product: '/pay/:productExternalId'
   },
   healthcheck: {
     path: '/healthcheck'
