@@ -85,13 +85,14 @@ describe('products client - creating a new product', () => {
 
     it('should create a new product', () => {
       const requestPlain = request.getPlain()
+      const responsePlain = response.getPlain()
       expect(result.gatewayAccountId).to.equal(requestPlain.gateway_account_id)
       expect(result.name).to.equal(requestPlain.name)
       expect(result.description).to.equal(requestPlain.description)
       expect(result.price).to.equal(requestPlain.price)
       expect(result.returnUrl).to.equal('https://example.gov.uk/paid-for-somet')
-      expect(result.payLink.href).to.equal(`http://products-ui.url/pay/product-external-id`)
-      expect(result.selfLink.href).to.equal(`http://products.url/v1/api/products/product-external-id`)
+      expect(result.payLink.href).to.equal(`http://products-ui.url/pay/${responsePlain.external_id}`)
+      expect(result.selfLink.href).to.equal(`http://products.url/v1/api/products/${responsePlain.external_id}`)
     })
   })
 

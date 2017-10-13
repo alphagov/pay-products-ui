@@ -25,8 +25,4 @@ describe('baseClient', () => {
   it(`should set outbound request's 'Content-Type' header to be 'application/json'`, () => {
     expect(outboundRequest.headers).to.have.property('Content-Type').to.equal('application/json')
   })
-
-  it(`should return a promise`, () => {
-
-  })
 })

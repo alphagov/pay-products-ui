@@ -9,7 +9,6 @@ class Charge {
    * @returns Charge
    */
   constructor (chargeData) {
-    console.log(`chargeData = ${JSON.stringify(chargeData)}`)
     this.externalChargeId = chargeData.external_charge_id
     this.description = chargeData.description
     this.amount = chargeData.amount

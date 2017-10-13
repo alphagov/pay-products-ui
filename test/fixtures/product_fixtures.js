@@ -4,6 +4,11 @@ const pactBase = require('./pact_base')
 // Global setup
 const pactProducts = pactBase()
 
+// Create random values if none provided
+const randomExternalId = () => Math.random().toString(36).substring(7)
+const randomGatewayAccountId = () => Math.round(Math.random() * 1000) + 1
+const randomPrice = () => Math.round(Math.random() * 10000) + 1
+
 module.exports = {
   pactifyRandomData: (opts = {}) => {
     pactProducts.pactify(opts)
@@ -29,10 +34,10 @@ module.exports = {
 
   validCreateProductRequest: (opts = {}) => {
     const data = {
-      gateway_account_id: opts.gatewayAccountId || Math.round(Math.random() * 1000) + 1,
+      gateway_account_id: opts.gatewayAccountId || randomGatewayAccountId(),
       pay_api_token: opts.payApiToken || 'pay-api-token',
       name: opts.name || 'A Product Name',
-      price: opts.price || Math.round(Math.random() * 10000) + 1
+      price: opts.price || randomPrice()
     }
     if (opts.description) data.description = opts.description
     if (opts.returnUrl) data.return_url = opts.returnUrl
@@ -48,16 +53,19 @@ module.exports = {
 
   validCreateChargeResponse: (opts = {}) => {
     const data = {
-      external_product_id: opts.external_product_id || 'product-externalId',
-      external_charge_id: opts.external_charge_id || 'charge-externalId',
-      amount: opts.amount || Math.round(Math.random() * 1000) + 1,
+      external_product_id: opts.external_product_id || randomExternalId(),
+      external_charge_id: opts.external_charge_id || randomExternalId(),
+      amount: opts.amount || randomPrice(),
       description: opts.description || 'The product name',
-      _links: opts.links || [{
-        href: `http://products.url/v1/api/charges/${(opts.external_charge_id || 'charge-externalId')}`,
+      _links: opts.links
+    }
+    if (!data._links) {
+      data._links = [{
+        href: `http://products.url/v1/api/charges/${(data.external_charge_id)}`,
         rel: 'self',
         method: 'GET'
       }, {
-        href: `http://frontend.url/charges/${(opts.external_charge_id || 'charge-externalId')}`,
+        href: `http://frontend.url/charges/${(data.external_charge_id)}`,
         rel: 'next',
         method: 'GET'
       }]
@@ -75,10 +83,10 @@ module.exports = {
 
   validCreateProductResponse: (opts = {}) => {
     const data = {
-      external_id: opts.external_id || 'product-external-id',
-      gateway_account_id: opts.gateway_account_id || Math.round(Math.random() * 1000) + 1,
+      external_id: opts.external_id || randomExternalId(),
+      gateway_account_id: opts.gateway_account_id || randomGatewayAccountId(),
       name: opts.name || 'A Product Name',
-      price: opts.price || Math.round(Math.random() * 10000) + 1,
+      price: opts.price || randomPrice(),
       _links: opts.links
     }
     if (opts.description) data.description = opts.description
