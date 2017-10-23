@@ -41,6 +41,7 @@ module.exports = function (method, verb) {
         requestLogger.logRequestFailure(context, response)
       }
     })
+    return call
     function defaultCallback (err, response, body) {
       if (err) {
         reject(err)
