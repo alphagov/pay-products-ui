@@ -8,15 +8,12 @@ const SUCCESS_CODES = [200, 201, 202, 204, 206]
 
 module.exports = function (method, verb) {
   return (uri, opts, cb) => new Promise((resolve, reject) => {
-    if (typeof uri === 'string') {
-      opts = opts || {}
-      opts.url = uri
-    } else {
-      cb = opts
-      opts = uri
-    }
+    const args = [uri, opts, cb]
+    uri = args.find(arg => typeof arg === 'string')
+    opts = args.find(arg => typeof arg === 'object') || {}
+    cb = args.find(arg => typeof arg === 'function')
     if (verb) opts.method = verb.toUpperCase()
-    if (!cb) cb = defaultCallback
+    if (uri && !opts.uri && !opts.url) opts.uri = uri
     const context = {
       correlationId: correlator.getId(),
       startTime: new Date(),
@@ -29,7 +26,18 @@ module.exports = function (method, verb) {
 
     // start request
     requestLogger.logRequestStart(context)
-    const call = method(opts, cb)
+    const call = method(opts, (err, response, body) => {
+      if (cb) cb(err, response, body)
+      if (err) {
+        reject(err)
+      } else if (response && SUCCESS_CODES.includes(response.statusCode)) {
+        resolve(body)
+      } else {
+        const err = new Error(response.body)
+        err.errorCode = response.statusCode
+        reject(err)
+      }
+    })
     // Add event listeners for logging
     call.on('error', err => {
       requestLogger.logRequestEnd(context)
@@ -42,16 +50,5 @@ module.exports = function (method, verb) {
       }
     })
     return call
-    function defaultCallback (err, response, body) {
-      if (err) {
-        reject(err)
-      } else if (response && SUCCESS_CODES.includes(response.statusCode)) {
-        resolve(body)
-      } else {
-        const err = new Error(response.body)
-        err.errorCode = response.statusCode
-        reject(err)
-      }
-    }
   })
 }

@@ -1,12 +1,15 @@
 'use strict'
 const correlator = require('correlation-id')
-const config = require('../../../config')
+const config = require('../../../../config/index')
 const http = require('http')
 const nock = require('nock')
 const {expect} = require('chai')
-const baseClient = require('../../../app/services/clients/base_client/base_client')
+const baseClient = require('../../../../app/services/clients/base_client/base_client')
 
 describe('baseClient', () => {
+  afterEach(() => {
+    nock.cleanAll()
+  })
   describe('headers', () => {
     let correlationID, request
     before(done => {
@@ -36,14 +39,15 @@ describe('baseClient', () => {
         res.writeHead(200)
         res.end()
       }).listen()
-      baseClient.get({url: `http://localhost:${server.address().port}/alpha`}, (err, response) => {
+      baseClient
+        .get({url: `http://localhost:${server.address().port}/alpha`}, captureConnection)
+        .then(() => baseClient.get({url: `http://localhost:${server.address().port}/beta`}, captureConnection))
+        .then(() => done())
+        .catch(done)
+
+      function captureConnection(err, response) {
         connections.push(response.connection)
-        if (err) return done(err)
-        baseClient.get({url: `http://localhost:${server.address().port}/beta`}, (err, response) => {
-          connections.push(response.connection)
-          done(err)
-        })
-      })
+      }
     })
     after(() => {
       server.close()
@@ -51,7 +55,7 @@ describe('baseClient', () => {
 
     it('should use the same connection for 2 requests to the same domain', () => {
       expect(connections.length).to.equal(2)
-      expect(connections[0]).to.equal(connections[1])
+      expect(connections[0] === connections[1]).to.equal(true)
     })
   })
 })

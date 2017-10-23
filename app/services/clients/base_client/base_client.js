@@ -1,14 +1,12 @@
 'use strict'
 
 // NPM Dependencies
-const correlator = require('correlation-id')
 const logger = require('winston')
 const request = require('requestretry')
 const wrapper = require('./wrapper')
 
 // Local Dependencies
 const customCertificate = require('../../../utils/custom_certificate')
-const CORRELATION_HEADER_NAME = require('../../../../config/index').CORRELATION_HEADER
 
 // Create request.defaults config
 const requestOptions = {
@@ -25,7 +23,6 @@ const requestOptions = {
   // Adding retry on ECONNRESET as a temporary fix for PP-1727
   retryStrategy: retryOnECONNRESET()
 }
-requestOptions.headers.__defineGetter__(CORRELATION_HEADER_NAME, getCorrelationHeaderValue)
 
 if (process.env.DISABLE_INTERNAL_HTTPS !== 'true') {
   customCertificate.addCertsToAgent(requestOptions.agentOptions)
@@ -46,8 +43,4 @@ module.exports = {
 
 function retryOnECONNRESET (err) {
   return err && ['ECONNRESET'].includes(err.code)
-}
-
-function getCorrelationHeaderValue () {
-  return correlator.getId() || ''
 }
