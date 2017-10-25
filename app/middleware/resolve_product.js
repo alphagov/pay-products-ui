@@ -5,11 +5,11 @@ const logger = require('winston')
 
 // Custom dependencies
 const {renderErrorView} = require('../utils/response')
-const {getProduct} = require('../services/clients/products_client')
+const productsClient = require('../services/clients/products_client')
 
 module.exports = function (req, res, next) {
   const productExternalId = req.params.productExternalId
-  getProduct(productExternalId)
+  productsClient.product.getByProductExternalId(productExternalId)
     .then(product => {
       req.product = product
       next()

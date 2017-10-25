@@ -6,18 +6,18 @@ const {expect} = require('chai')
 const proxyquire = require('proxyquire')
 
 // Custom dependencies
-const pactProxy = require('../../../test_helpers/pact_proxy')
-const PactInteractionBuilder = require('../../../fixtures/pact_interaction_builder').PactInteractionBuilder
-const productFixtures = require('../../../fixtures/product_fixtures')
+const pactProxy = require('../../../../test_helpers/pact_proxy')
+const PactInteractionBuilder = require('../../../../fixtures/pact_interaction_builder').PactInteractionBuilder
+const productFixtures = require('../../../../fixtures/product_fixtures')
 
 // Constants
-const CHARGE_RESOURCE = '/v1/api/charges'
+const PAYMENTS_RESOURCE = '/v1/api/payments'
 const mockPort = Math.floor(Math.random() * 65535)
 const mockServer = pactProxy.create('localhost', mockPort)
 let productsMock, result, externalProductId
 
 function getProductsClient (baseUrl = `http://localhost:${mockPort}`, productsApiKey = 'ABC1234567890DEF') {
-  return proxyquire('../../../../app/services/clients/products_client', {
+  return proxyquire('../../../../../app/services/clients/products_client', {
     '../../../config': {
       PRODUCTS_URL: baseUrl,
       PRODUCTS_API_TOKEN: productsApiKey
@@ -25,7 +25,7 @@ function getProductsClient (baseUrl = `http://localhost:${mockPort}`, productsAp
   })
 }
 
-describe('products client - creating a new charge', () => {
+describe('products client - creating a new payment', () => {
   /**
    * Start the server and set up Pact
    */
@@ -59,7 +59,7 @@ describe('products client - creating a new charge', () => {
         amount: 555
       })
       productsMock.addInteraction(
-        new PactInteractionBuilder(CHARGE_RESOURCE)
+        new PactInteractionBuilder(PAYMENTS_RESOURCE)
           .withUponReceiving('a valid create charge create request')
           .withMethod('POST')
           .withRequestBody(request.getPactified())
@@ -67,7 +67,7 @@ describe('products client - creating a new charge', () => {
           .withResponseBody(response.getPactified())
           .build()
       )
-        .then(() => productsClient.createCharge(externalProductId))
+        .then(() => productsClient.payment.create(externalProductId))
         .then(res => {
           result = res
           done()
@@ -93,14 +93,14 @@ describe('products client - creating a new charge', () => {
       externalProductId = 'valid-id'
       const request = productFixtures.validCreateChargeRequest({external_product_id: externalProductId})
       productsMock.addInteraction(
-        new PactInteractionBuilder(CHARGE_RESOURCE)
+        new PactInteractionBuilder(PAYMENTS_RESOURCE)
           .withUponReceiving('a valid create charge request with invalid PRODUCTS_API_TOKEN')
           .withMethod('POST')
           .withRequestBody(request.getPactified())
           .withStatusCode(401)
           .build()
       )
-        .then(() => productsClient.createCharge(externalProductId), done)
+        .then(() => productsClient.payment.create(externalProductId), err => done(err))
         .then(() => done(new Error('Promise unexpectedly resolved')))
         .catch((err) => {
           result = err
@@ -122,14 +122,14 @@ describe('products client - creating a new charge', () => {
       const productsClient = getProductsClient()
       const request = {}
       productsMock.addInteraction(
-        new PactInteractionBuilder(CHARGE_RESOURCE)
+        new PactInteractionBuilder(PAYMENTS_RESOURCE)
           .withUponReceiving('an invalid create charge request')
           .withMethod('POST')
           .withRequestBody(productFixtures.pactifyRandomData(request))
           .withStatusCode(400)
           .build()
       )
-        .then(() => productsClient.createCharge('a-product-id'), done)
+        .then(() => productsClient.payment.create('a-product-id'), done)
         .then(() => done(new Error('Promise unexpectedly resolved')))
         .catch((err) => {
           result = err

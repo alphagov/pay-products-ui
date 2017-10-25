@@ -18,7 +18,7 @@ module.exports = (req, res) => {
   const correlationId = req.correlationId
   if (product) {
     logger.info(`[${correlationId}] creating charge for product ${product.name}`)
-    return productsClient.createCharge(product.externalId)
+    return productsClient.payment.create(product.externalId)
       .then(charge => {
         logger.info(`[${correlationId}] initiating payment for charge ${charge.externalChargeId}`)
         return res.redirect(303, charge.nextLink.href)

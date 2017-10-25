@@ -49,11 +49,11 @@ function initialiseGlobalMiddleware (app) {
     next()
   })
 
-  app.use(middlwareUtils.excludingPaths(['/healthcheck'], function (req, res, next) {
-    // flash requires sessions which also excludes healthcheck endpoint (see below)
-    res.locals.flash = req.flash()
-    next()
-  }))
+  // app.use(middlwareUtils.excludingPaths(['/healthcheck'], function (req, res, next) {
+  //   // flash requires sessions which also excludes healthcheck endpoint (see below)
+  //   res.locals.flash = req.flash()
+  //   next()
+  // }))
 
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: true }))

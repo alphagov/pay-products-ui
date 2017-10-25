@@ -20,7 +20,7 @@ describe('make payment controller', function () {
       product = productFixtures.validCreateProductResponse().getPlain()
       charge = productFixtures.validCreateChargeResponse().getPlain()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
-      nock(config.PRODUCTS_URL).post('/v1/api/charges', {external_product_id: product.external_id}).reply(200, charge)
+      nock(config.PRODUCTS_URL).post('/v1/api/payments', {external_product_id: product.external_id}).reply(200, charge)
 
       supertest(createAppWithSession(getApp()))
         .get(paths.pay.product.replace(':productExternalId', product.external_id))
@@ -40,7 +40,7 @@ describe('make payment controller', function () {
     before(done => {
       product = productFixtures.validCreateProductResponse().getPlain()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
-      nock(config.PRODUCTS_URL).post('/v1/api/charges', {external_product_id: product.external_id}).reply(400)
+      nock(config.PRODUCTS_URL).post('/v1/api/payments', {external_product_id: product.external_id}).reply(400)
       supertest(createAppWithSession(getApp()))
         .get(paths.pay.product.replace(':productExternalId', product.external_id))
         .end((err, res) => {

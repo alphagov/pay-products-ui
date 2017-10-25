@@ -6,9 +6,9 @@ const {expect} = require('chai')
 const proxyquire = require('proxyquire')
 
 // Custom dependencies
-const pactProxy = require('../../../test_helpers/pact_proxy')
-const PactInteractionBuilder = require('../../../fixtures/pact_interaction_builder').PactInteractionBuilder
-const productFixtures = require('../../../fixtures/product_fixtures')
+const pactProxy = require('../../../../test_helpers/pact_proxy')
+const PactInteractionBuilder = require('../../../../fixtures/pact_interaction_builder').PactInteractionBuilder
+const productFixtures = require('../../../../fixtures/product_fixtures')
 
 // Constants
 const PRODUCT_RESOURCE = '/v1/api/products'
@@ -17,7 +17,7 @@ const mockServer = pactProxy.create('localhost', mockPort)
 let productsMock, response, result, productExternalId
 
 function getProductsClient (baseUrl = `http://localhost:${mockPort}`, productsApiKey = 'ABC1234567890DEF') {
-  return proxyquire('../../../../app/services/clients/products_client', {
+  return proxyquire('../../../../../app/services/clients/products_client', {
     '../../../config': {
       PRODUCTS_URL: baseUrl,
       PRODUCTS_API_TOKEN: productsApiKey
@@ -25,7 +25,7 @@ function getProductsClient (baseUrl = `http://localhost:${mockPort}`, productsAp
   })
 }
 
-describe('products client - find a new product', function () {
+describe('products client - find a product by it\'s external id', function () {
   /**
    * Start the server and set up Pact
    */
@@ -65,7 +65,7 @@ describe('products client - find a new product', function () {
           .withResponseBody(response.getPactified())
           .build()
       )
-        .then(() => productsClient.getProduct(productExternalId))
+        .then(() => productsClient.product.getByProductExternalId(productExternalId))
         .then(res => {
           result = res
           done()
@@ -100,7 +100,7 @@ describe('products client - find a new product', function () {
           .withStatusCode(401)
           .build()
       )
-        .then(() => productsClient.getProduct(productExternalId), done)
+        .then(() => productsClient.product.getByProductExternalId(productExternalId), done)
         .then(() => done(new Error('Promise unexpectedly resolved')))
         .catch((err) => {
           result = err
@@ -128,7 +128,7 @@ describe('products client - find a new product', function () {
           .withStatusCode(404)
           .build()
       )
-        .then(() => productsClient.getProduct(productExternalId), done)
+        .then(() => productsClient.product.getByProductExternalId(productExternalId), done)
         .then(() => done(new Error('Promise unexpectedly resolved')))
         .catch((err) => {
           result = err

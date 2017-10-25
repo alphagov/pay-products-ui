@@ -37,8 +37,8 @@ class Product {
     this.gatewayAccountId = opts.gateway_account_id
     this.name = opts.name
     this.price = opts.price
-    this.description = opts.description || ''
-    this.returnUrl = opts.return_url || ''
+    this.description = opts.description
+    this.returnUrl = opts.return_url
     this.payLink = opts._links.find(link => link.rel === 'pay')
     this.selfLink = opts._links.find(link => link.rel === 'self')
   }

@@ -17,45 +17,19 @@ const headers = {
 
 // Exports
 module.exports = {
-  createProduct,
-  getProduct,
-  createCharge
+  product: {
+    create: createProduct,
+    getByProductExternalId: getProductByExternalId,
+    getByGatewayAccountId: getProductsByGatewayAccountId
+  },
+  payment: {
+    create: createPayment,
+    getByPaymentExternalId: getPaymentByPaymentExternalId,
+    getByProductExternalId: getPaymentsByProductExternalId
+  }
 }
 
-/**
- * @param {String} externalProductId: the external id of the product you wish to retrieve
- * @returns {Promise<Product>}
- */
-function getProduct (externalProductId) {
-  return baseClient.get({
-    headers,
-    baseUrl,
-    url: `/products/${externalProductId}`,
-    description: 'find a product',
-    service: SERVICE_NAME
-  }).then(product => new Product(product))
-}
-
-/**
- * @param {String} productExternalId
- * @param {number=} priceOverride  if a different price need to be charged to the one that is defined in product
- * @returns Promise<Charge>
- */
-function createCharge (productExternalId, priceOverride) {
-  return baseClient.post({
-    headers,
-    baseUrl,
-    url: `/charges`,
-    json: true,
-    body: {
-      external_product_id: productExternalId,
-      amount: priceOverride
-    },
-    description: 'create a charge for a product',
-    service: SERVICE_NAME
-  }).then(charge => new Charge(charge))
-}
-
+// PRODUCT
 /**
  * @param {Object} options
  * @param {string} options.gatewayAccountId - The id of the gateway account you wish to use to pay for the product
@@ -83,4 +57,84 @@ function createProduct (options) {
     description: 'create a product for a service',
     service: SERVICE_NAME
   }).then(product => new Product(product))
+}
+
+/**
+ * @param {String} externalProductId: the external id of the product you wish to retrieve
+ * @returns {Promise<Product>}
+ */
+function getProductByExternalId (externalProductId) {
+  return baseClient.get({
+    headers,
+    baseUrl,
+    url: `/products/${externalProductId}`,
+    description: `find a product by it's external id`,
+    service: SERVICE_NAME
+  }).then(product => new Product(product))
+}
+
+/**
+ * @param {String} gatewayAccountId - The id of the gateway account to retrieve products associated with
+ * @returns {Promise<Array<Product>>}
+ */
+function getProductsByGatewayAccountId (gatewayAccountId) {
+  return baseClient.get({
+    headers,
+    baseUrl,
+    url: '/products',
+    qs: {
+      gatewayAccountId
+    },
+    description: 'find a list products associated with a gateway account',
+    service: SERVICE_NAME
+  }).then(products => products.map(product => new Product(product)))
+}
+
+// PAYMENT
+/**
+ * @param {String} productExternalId
+ * @param {number=} priceOverride  if a different price need to be charged to the one that is defined in product
+ * @returns Promise<Charge>
+ */
+function createPayment (productExternalId, priceOverride) {
+  return baseClient.post({
+    headers,
+    baseUrl,
+    url: `/payments`,
+    json: true,
+    body: {
+      external_product_id: productExternalId,
+      amount: priceOverride
+    },
+    description: 'create a payment for a product',
+    service: SERVICE_NAME
+  }).then(charge => new Charge(charge))
+}
+
+/**
+ * @param {String} paymentExternalId
+ * @returns Promise<Charge>
+ */
+function getPaymentByPaymentExternalId (paymentExternalId) {
+  return baseClient.get({
+    headers,
+    baseUrl,
+    url: `/payments/${paymentExternalId}`,
+    description: `find a payment by it's external id`,
+    service: SERVICE_NAME
+  }).then(charge => new Charge(charge))
+}
+
+/**
+ * @param {String} productExternalId
+ * @returns Promise<Array<Payment>>
+ */
+function getPaymentsByProductExternalId (productExternalId) {
+  return baseClient.get({
+    headers,
+    baseUrl,
+    url: `/products/${productExternalId}/payments`,
+    description: `find a payments associated with a particular product`,
+    service: SERVICE_NAME
+  }).then(charge => new Charge(charge))
 }

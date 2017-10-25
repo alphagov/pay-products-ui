@@ -33,7 +33,7 @@ module.exports = function (method, verb) {
       } else if (response && SUCCESS_CODES.includes(response.statusCode)) {
         resolve(body)
       } else {
-        const err = new Error(response.body)
+        const err = new Error(String(response.body))
         err.errorCode = response.statusCode
         reject(err)
       }
