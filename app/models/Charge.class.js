@@ -1,25 +1,25 @@
 'use strict'
 
 /**
- @class Charage
+ @class Payment
  */
-class Charge {
+class Payment {
   /**
-   * @param {Object} chargeData
-   * @returns Charge
+   * @param {Object} paymentData
+   * @returns Payment
    */
-  constructor (chargeData) {
-    this.externalChargeId = chargeData.external_charge_id
-    this.description = chargeData.description
-    this.amount = chargeData.amount
-    this.externalProductId = chargeData.external_product_id
-    this.selfLink = chargeData._links.find(link => link.rel === 'self')
-    this.nextLink = chargeData._links.find(link => link.rel === 'next')
+  constructor (paymentData) {
+    this.externalChargeId = paymentData.external_charge_id
+    this.description = paymentData.description
+    this.amount = paymentData.amount
+    this.externalProductId = paymentData.external_product_id
+    this.selfLink = paymentData._links.find(link => link.rel === 'self')
+    this.nextLink = paymentData._links.find(link => link.rel === 'next')
   }
 
   /**
    * @method toJson
-   * @returns {Object} json representation of the Charge
+   * @returns {Object} json representation of the Payment
    */
   toJson () {
     return {
@@ -32,4 +32,4 @@ class Charge {
   }
 }
 
-module.exports = Charge
+module.exports = Payment

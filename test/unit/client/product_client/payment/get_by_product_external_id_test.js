@@ -50,16 +50,16 @@ describe('products client - find a payment by it\'s associated product external 
     before(done => {
       const productsClient = getProductsClient()
       productExternalId = 'existing-id'
-      response = productFixtures.validCreateChargeResponse({
-        external_product_id: productExternalId,
-        description: 'charge description',
-        amount: 555
-      })
+      response = [
+        productFixtures.validCreateChargeResponse({external_product_id: productExternalId}),
+        productFixtures.validCreateChargeResponse({external_product_id: productExternalId}),
+        productFixtures.validCreateChargeResponse({external_product_id: productExternalId})
+      ]
       const interaction = new PactInteractionBuilder(`${PRODUCT_RESOURCE}/${productExternalId}/payments`)
         .withUponReceiving('a valid get payment request')
         .withMethod('GET')
         .withStatusCode(200)
-        .withResponseBody(response.getPactified())
+        .withResponseBody(response.map(item => item.getPactified()))
         .build()
       productsMock.addInteraction(interaction)
         .then(() => productsClient.payment.getByProductExternalId(productExternalId))
@@ -75,11 +75,14 @@ describe('products client - find a payment by it\'s associated product external 
     })
 
     it('should find an existing payment', () => {
-      const plainResponse = response.getPlain()
-      expect(result.externalProductId).to.equal(productExternalId)
-      expect(result.description).to.equal(plainResponse.description)
-      expect(result.amount).to.equal(plainResponse.amount)
-      expect(result.selfLink.href).to.equal(`http://products.url/v1/api/charges/${result.externalChargeId}`)
+      const plainResponse = response.map(item => item.getPlain())
+      expect(result.length).to.equal(3)
+      result.forEach((payment, index) => {
+        expect(payment.externalProductId).to.equal(productExternalId)
+        expect(payment.description).to.equal(plainResponse[index].description)
+        expect(payment.amount).to.equal(plainResponse[index].amount)
+        expect(payment.selfLink.href).to.equal(`http://products.url/v1/api/charges/${payment.externalChargeId}`)
+      })
     })
   })
 

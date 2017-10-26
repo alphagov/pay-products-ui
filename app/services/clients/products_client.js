@@ -2,7 +2,7 @@
 
 // Local Dependencies
 const Product = require('../../models/Product.class')
-const Charge = require('../../models/Charge.class')
+const Payment = require('../../models/Charge.class')
 const baseClient = require('./base_client/base_client')
 const {PRODUCTS_URL, PRODUCTS_API_TOKEN} = require('../../../config')
 
@@ -19,6 +19,7 @@ const headers = {
 module.exports = {
   product: {
     create: createProduct,
+    disable: disableProduct,
     getByProductExternalId: getProductByExternalId,
     getByGatewayAccountId: getProductsByGatewayAccountId
   },
@@ -90,11 +91,25 @@ function getProductsByGatewayAccountId (gatewayAccountId) {
   }).then(products => products.map(product => new Product(product)))
 }
 
+/**
+ * @param {String} productExternalId: the external id of the product you wish to disable
+ * @returns {undefined}
+ */
+function disableProduct (productExternalId) {
+  return baseClient.patch({
+    headers,
+    baseUrl,
+    url: `/products/${productExternalId}/disable`,
+    description: `disable a product`,
+    service: SERVICE_NAME
+  })
+}
+
 // PAYMENT
 /**
  * @param {String} productExternalId
  * @param {number=} priceOverride  if a different price need to be charged to the one that is defined in product
- * @returns Promise<Charge>
+ * @returns Promise<Payment>
  */
 function createPayment (productExternalId, priceOverride) {
   return baseClient.post({
@@ -108,12 +123,12 @@ function createPayment (productExternalId, priceOverride) {
     },
     description: 'create a payment for a product',
     service: SERVICE_NAME
-  }).then(charge => new Charge(charge))
+  }).then(charge => new Payment(charge))
 }
 
 /**
  * @param {String} paymentExternalId
- * @returns Promise<Charge>
+ * @returns Promise<Payment>
  */
 function getPaymentByPaymentExternalId (paymentExternalId) {
   return baseClient.get({
@@ -122,7 +137,7 @@ function getPaymentByPaymentExternalId (paymentExternalId) {
     url: `/payments/${paymentExternalId}`,
     description: `find a payment by it's external id`,
     service: SERVICE_NAME
-  }).then(charge => new Charge(charge))
+  }).then(charge => new Payment(charge))
 }
 
 /**
@@ -136,5 +151,5 @@ function getPaymentsByProductExternalId (productExternalId) {
     url: `/products/${productExternalId}/payments`,
     description: `find a payments associated with a particular product`,
     service: SERVICE_NAME
-  }).then(charge => new Charge(charge))
+  }).then(payments => payments.map(payment => new Payment(payment)))
 }
