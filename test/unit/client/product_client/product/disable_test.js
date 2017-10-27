@@ -13,7 +13,7 @@ const PactInteractionBuilder = require('../../../../fixtures/pact_interaction_bu
 const PRODUCT_RESOURCE = '/v1/api/products'
 const mockPort = Math.floor(Math.random() * 65535)
 const mockServer = pactProxy.create('localhost', mockPort)
-let productsMock, request, response, result, productExternalId
+let productsMock, result, productExternalId
 
 function getProductsClient (baseUrl = `http://localhost:${mockPort}`, productsApiKey = 'ABC1234567890DEF') {
   return proxyquire('../../../../../app/services/clients/products_client', {

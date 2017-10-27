@@ -21,7 +21,6 @@ const router = require('./app/routes')
 const noCache = require('./app/utils/no_cache')
 const customCertificate = require('./app/utils/custom_certificate')
 const proxy = require('./app/utils/proxy')
-const middlwareUtils = require('./app/utils/middleware')
 const errorHandler = require('./app/middleware/error_handler')
 
 // Global constants
@@ -48,13 +47,6 @@ function initialiseGlobalMiddleware (app) {
     noCache(res)
     next()
   })
-
-  // app.use(middlwareUtils.excludingPaths(['/healthcheck'], function (req, res, next) {
-  //   // flash requires sessions which also excludes healthcheck endpoint (see below)
-  //   res.locals.flash = req.flash()
-  //   next()
-  // }))
-
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: true }))
 }

@@ -50,11 +50,7 @@ describe('products client - find a payment by it\'s own external id', function (
     before(done => {
       const productsClient = getProductsClient()
       paymentExternalId = 'existing-id'
-      response = productFixtures.validCreateChargeResponse({
-        external_charge_id: paymentExternalId,
-        description: 'charge description',
-        amount: 555
-      })
+      response = productFixtures.validCreatePaymentResponse({external_id: paymentExternalId})
       const interaction = new PactInteractionBuilder(`${PAYMENT_RESOURCE}/${paymentExternalId}`)
         .withUponReceiving('a valid get payment request')
         .withMethod('GET')
@@ -76,11 +72,18 @@ describe('products client - find a payment by it\'s own external id', function (
 
     it('should find an existing payment', () => {
       const plainResponse = response.getPlain()
-      expect(result.externalChargeId).to.equal(paymentExternalId)
-      expect(result.externalProductId).to.equal(plainResponse.external_product_id)
-      expect(result.description).to.equal(plainResponse.description)
-      expect(result.amount).to.equal(plainResponse.amount)
-      expect(result.selfLink.href).to.equal(`http://products.url/v1/api/charges/${result.externalChargeId}`)
+      expect(result.productExternalId).to.equal(plainResponse.product_external_id)
+      expect(result.externalId).to.equal(plainResponse.external_id).and.to.equal(paymentExternalId)
+      expect(result.status).to.equal(plainResponse.status)
+      expect(result.nextUrl).to.equal(plainResponse.next_url)
+      expect(result).to.have.property('links')
+      expect(Object.keys(result.links).length).to.equal(2)
+      expect(result.links).to.have.property('self')
+      expect(result.links.self).to.have.property('method').to.equal(plainResponse._links.find(link => link.rel === 'self').method)
+      expect(result.links.self).to.have.property('href').to.equal(plainResponse._links.find(link => link.rel === 'self').href)
+      expect(result.links).to.have.property('pay')
+      expect(result.links.pay).to.have.property('method').to.equal(plainResponse._links.find(link => link.rel === 'pay').method)
+      expect(result.links.pay).to.have.property('href').to.equal(plainResponse._links.find(link => link.rel === 'pay').href)
     })
   })
 

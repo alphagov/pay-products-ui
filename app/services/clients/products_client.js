@@ -2,7 +2,7 @@
 
 // Local Dependencies
 const Product = require('../../models/Product.class')
-const Payment = require('../../models/Charge.class')
+const Payment = require('../../models/Payment.class')
 const baseClient = require('./base_client/base_client')
 const {PRODUCTS_URL, PRODUCTS_API_TOKEN} = require('../../../config')
 
@@ -107,23 +107,17 @@ function disableProduct (productExternalId) {
 
 // PAYMENT
 /**
- * @param {String} productExternalId
- * @param {number=} priceOverride  if a different price need to be charged to the one that is defined in product
+ * @param {String} productExternalId The external ID of the product to create a payment for
  * @returns Promise<Payment>
  */
-function createPayment (productExternalId, priceOverride) {
+function createPayment (productExternalId) {
   return baseClient.post({
     headers,
     baseUrl,
-    url: `/payments`,
-    json: true,
-    body: {
-      external_product_id: productExternalId,
-      amount: priceOverride
-    },
+    url: `/products/${productExternalId}/payments`,
     description: 'create a payment for a product',
     service: SERVICE_NAME
-  }).then(charge => new Payment(charge))
+  }).then(payment => new Payment(payment))
 }
 
 /**

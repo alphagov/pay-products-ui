@@ -14,24 +14,6 @@ module.exports = {
     pactProducts.pactify(opts)
   },
 
-  validCreateChargeRequest: (opts = {}) => {
-    const externalProductId = opts.external_product_id || 'product-externalId'
-    const data = {
-      external_product_id: externalProductId
-    }
-    if (opts.price_override) {
-      data.amount = opts.price_override
-    }
-    return {
-      getPactified: () => {
-        return pactProducts.pactify(data)
-      },
-      getPlain: () => {
-        return data
-      }
-    }
-  },
-
   validCreateProductRequest: (opts = {}) => {
     const data = {
       gateway_account_id: opts.gatewayAccountId || randomGatewayAccountId(),
@@ -51,23 +33,23 @@ module.exports = {
     }
   },
 
-  validCreateChargeResponse: (opts = {}) => {
+  validCreatePaymentResponse: (opts = {}) => {
     const data = {
-      external_product_id: opts.external_product_id || randomExternalId(),
-      external_charge_id: opts.external_charge_id || randomExternalId(),
-      amount: opts.amount || randomPrice(),
-      description: opts.description || 'The product name',
+      external_id: opts.external_id || randomExternalId(),
+      product_external_id: opts.product_external_id || randomExternalId(),
+      next_url: opts.next_url || `http://service.url/next`,
+      status: opts.status || 'CREATED',
       _links: opts.links
     }
     if (!data._links) {
       data._links = [{
-        href: `http://products.url/v1/api/charges/${(data.external_charge_id)}`,
+        href: `http://products.url/v1/api/payments/${(data.external_id)}`,
         rel: 'self',
         method: 'GET'
       }, {
-        href: `http://frontend.url/charges/${(data.external_charge_id)}`,
-        rel: 'next',
-        method: 'GET'
+        href: `http://frontend.url/charges/${(data.external_id)}`,
+        rel: 'pay',
+        method: 'POST'
       }]
     }
 

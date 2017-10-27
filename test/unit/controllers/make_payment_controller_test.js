@@ -10,17 +10,17 @@ const {createAppWithSession} = require('../../test_helpers/mock_session')
 const productFixtures = require('../../fixtures/product_fixtures')
 const paths = require('../../../app/paths')
 const expect = chai.expect
-let product, charge, response, $
+let product, payment, response, $
 describe('make payment controller', function () {
   afterEach(() => {
     nock.cleanAll()
   })
-  describe('when charge creation is successful', () => {
+  describe('when payment creation is successful', () => {
     before(done => {
       product = productFixtures.validCreateProductResponse().getPlain()
-      charge = productFixtures.validCreateChargeResponse().getPlain()
+      payment = productFixtures.validCreatePaymentResponse().getPlain()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
-      nock(config.PRODUCTS_URL).post('/v1/api/payments', {external_product_id: product.external_id}).reply(200, charge)
+      nock(config.PRODUCTS_URL).post(`/v1/api/products/${product.external_id}/payments`).reply(200, payment)
 
       supertest(createAppWithSession(getApp()))
         .get(paths.pay.product.replace(':productExternalId', product.external_id))
@@ -33,14 +33,14 @@ describe('make payment controller', function () {
       expect(response.statusCode).to.equal(303)
     })
     it('should redirect to next_url', () => {
-      expect(response.header).property('location').to.equal(charge._links.find(link => link.rel === 'next').href)
+      expect(response.header).property('location').to.equal(payment._links.find(link => link.rel === 'pay').href)
     })
   })
-  describe('when charge creation fails', () => {
+  describe('when payment creation fails', () => {
     before(done => {
       product = productFixtures.validCreateProductResponse().getPlain()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
-      nock(config.PRODUCTS_URL).post('/v1/api/payments', {external_product_id: product.external_id}).reply(400)
+      nock(config.PRODUCTS_URL).post(`/v1/api/products/${product.external_id}/payments`).reply(400)
       supertest(createAppWithSession(getApp()))
         .get(paths.pay.product.replace(':productExternalId', product.external_id))
         .end((err, res) => {

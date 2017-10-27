@@ -6,6 +6,7 @@ const {expect} = require('chai')
 const proxyquire = require('proxyquire')
 
 // Custom dependencies
+const Payment = require('../../../../../app/models/Payment.class')
 const pactProxy = require('../../../../test_helpers/pact_proxy')
 const PactInteractionBuilder = require('../../../../fixtures/pact_interaction_builder').PactInteractionBuilder
 const productFixtures = require('../../../../fixtures/product_fixtures')
@@ -51,9 +52,9 @@ describe('products client - find a payment by it\'s associated product external 
       const productsClient = getProductsClient()
       productExternalId = 'existing-id'
       response = [
-        productFixtures.validCreateChargeResponse({external_product_id: productExternalId}),
-        productFixtures.validCreateChargeResponse({external_product_id: productExternalId}),
-        productFixtures.validCreateChargeResponse({external_product_id: productExternalId})
+        productFixtures.validCreatePaymentResponse({product_external_id: productExternalId}),
+        productFixtures.validCreatePaymentResponse({product_external_id: productExternalId}),
+        productFixtures.validCreatePaymentResponse({product_external_id: productExternalId})
       ]
       const interaction = new PactInteractionBuilder(`${PRODUCT_RESOURCE}/${productExternalId}/payments`)
         .withUponReceiving('a valid get payment request')
@@ -74,14 +75,23 @@ describe('products client - find a payment by it\'s associated product external 
       productsMock.finalize().then(() => done())
     })
 
-    it('should find an existing payment', () => {
-      const plainResponse = response.map(item => item.getPlain())
+    it('should return a list of payments', () => {
       expect(result.length).to.equal(3)
+      expect(result.map(item => item.constructor)).to.deep.equal([Payment, Payment, Payment])
       result.forEach((payment, index) => {
-        expect(payment.externalProductId).to.equal(productExternalId)
-        expect(payment.description).to.equal(plainResponse[index].description)
-        expect(payment.amount).to.equal(plainResponse[index].amount)
-        expect(payment.selfLink.href).to.equal(`http://products.url/v1/api/charges/${payment.externalChargeId}`)
+        const plainResponse = response[index].getPlain()
+        expect(payment.productExternalId).to.equal(plainResponse.product_external_id).and.to.equal(productExternalId)
+        expect(payment.externalId).to.equal(plainResponse.external_id)
+        expect(payment.status).to.equal(plainResponse.status)
+        expect(payment.nextUrl).to.equal(plainResponse.next_url)
+        expect(payment).to.have.property('links')
+        expect(Object.keys(payment.links).length).to.equal(2)
+        expect(payment.links).to.have.property('self')
+        expect(payment.links.self).to.have.property('method').to.equal(plainResponse._links.find(link => link.rel === 'self').method)
+        expect(payment.links.self).to.have.property('href').to.equal(plainResponse._links.find(link => link.rel === 'self').href)
+        expect(payment.links).to.have.property('pay')
+        expect(payment.links.pay).to.have.property('method').to.equal(plainResponse._links.find(link => link.rel === 'pay').method)
+        expect(payment.links.pay).to.have.property('href').to.equal(plainResponse._links.find(link => link.rel === 'pay').href)
       })
     })
   })
