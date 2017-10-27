@@ -72,6 +72,7 @@
     "staticify": "0.0.8",
     "throng": "4.0.x",
     "tunnel": "0.0.5",
+    "url-join": "^2.0.2",
     "winston": "2.3.x",
     "yargs": "8.0.x"
   },

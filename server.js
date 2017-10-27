@@ -2,7 +2,7 @@
 const path = require('path')
 
 // Please leave here even though it looks unused - this enables Node.js metrics to be pushed to Hosted Graphite
-require(path.join(__dirname, '/app/utils/metrics')).metrics()
+require('./app/utils/metrics').metrics()
 
 // NPM dependencies
 const express = require('express')
@@ -17,15 +17,14 @@ const flash = require('connect-flash')
 const staticify = require('staticify')(path.join(__dirname, 'public'))
 
 // Custom dependencies
-const router = require(path.join(__dirname, '/app/routes'))
-const noCache = require(path.join(__dirname, '/app/utils/no_cache'))
-const customCertificate = require(path.join(__dirname, '/app/utils/custom_certificate'))
-const proxy = require(path.join(__dirname, '/app/utils/proxy'))
-const middlwareUtils = require(path.join(__dirname, '/app/utils/middleware'))
-const errorHandler = require(path.join(__dirname, '/app/middleware/error_handler'))
+const router = require('./app/routes')
+const noCache = require('./app/utils/no_cache')
+const customCertificate = require('./app/utils/custom_certificate')
+const proxy = require('./app/utils/proxy')
+const errorHandler = require('./app/middleware/error_handler')
 
 // Global constants
-const port = (process.env.PORT || 3000)
+const port = process.env.PORT || 3000
 const unconfiguredApp = express()
 
 function initialiseGlobalMiddleware (app) {
@@ -48,13 +47,6 @@ function initialiseGlobalMiddleware (app) {
     noCache(res)
     next()
   })
-
-  app.use(middlwareUtils.excludingPaths(['/healthcheck'], function (req, res, next) {
-    // flash requires sessions which also excludes healthcheck endpoint (see below)
-    res.locals.flash = req.flash()
-    next()
-  }))
-
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: true }))
 }

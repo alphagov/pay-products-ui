@@ -1,10 +1,13 @@
 'use strict'
 
-const path = require('path')
+const generateRoute = require('./utils/generate_route.js')
 
 module.exports = {
   default: {
     index: '/'
+  },
+  pay: {
+    product: '/pay/:productExternalId'
   },
   healthcheck: {
     path: '/healthcheck'
@@ -12,5 +15,5 @@ module.exports = {
   staticPaths: {
     naxsiError: '/request-denied'
   },
-  generateRoute: require(path.join(__dirname, '/utils/generate_route.js'))
+  generateRoute
 }

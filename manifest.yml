@@ -3,6 +3,6 @@ org: govuk-pay
 applications:
 - name: govukpay-products-ui
   memory: 1G
-  instances: 1
+  instances: 2
   health-check-type: http
   health-check-http-endpoint: /healthcheck
