@@ -3,3 +3,5 @@ release.tag=alpha_release-2
 release.alpha_release-2.date=2017-10-09:12:10:10
 
 staging-1.tag=FAILED-2
+
+staging-1.FAILED-2.date=
