@@ -5,10 +5,10 @@ const {renderErrorView} = require('../utils/response')
 const productsClient = require('../services/clients/products_client')
 
 module.exports = function (req, res, next) {
-  const {productExternalId} = req.params
-  productsClient.product.getByProductExternalId(productExternalId)
-    .then(product => {
-      req.product = product
+  const {paymentExternalId} = req.params
+  productsClient.payment.getByPaymentExternalId(paymentExternalId)
+    .then(payment => {
+      req.payment = payment
       next()
     })
     .catch(err => {
