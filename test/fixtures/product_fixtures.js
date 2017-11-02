@@ -48,7 +48,7 @@ module.exports = {
         method: 'GET'
       }, {
         href: `http://frontend.url/charges/${(data.external_id)}`,
-        rel: 'pay',
+        rel: 'next',
         method: 'POST'
       }]
     }
