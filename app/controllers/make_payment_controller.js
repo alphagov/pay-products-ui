@@ -21,7 +21,7 @@ module.exports = (req, res) => {
     return productsClient.payment.create(product.externalId)
       .then(payment => {
         logger.info(`[${correlationId}] initiating payment for charge ${payment.externalChargeId}`)
-        return res.redirect(303, payment.links.pay.href)
+        return res.redirect(303, payment.links.next.href)
       })
       .catch(err => {
         logger.error(`[${correlationId}] error creating charge for product ${product.externalId}. err = ${err}`)

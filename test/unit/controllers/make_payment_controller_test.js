@@ -33,7 +33,7 @@ describe('make payment controller', function () {
       expect(response.statusCode).to.equal(303)
     })
     it('should redirect to next_url', () => {
-      expect(response.header).property('location').to.equal(payment._links.find(link => link.rel === 'pay').href)
+      expect(response.header).property('location').to.equal(payment._links.find(link => link.rel === 'next').href)
     })
   })
   describe('when payment creation fails', () => {

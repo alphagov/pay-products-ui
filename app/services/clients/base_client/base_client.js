@@ -17,9 +17,6 @@ const requestOptions = {
   json: true,
   maxAttempts: 3,
   retryDelay: 5000,
-  headers: {
-    'Content-Type': 'application/json'
-  },
   // Adding retry on ECONNRESET as a temporary fix for PP-1727
   retryStrategy: retryOnECONNRESET()
 }

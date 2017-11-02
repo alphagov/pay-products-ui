@@ -3,7 +3,7 @@ const lodash = require('lodash')
 const joinURL = require('url-join')
 const correlator = require('correlation-id')
 const requestLogger = require('../../../utils/request_logger')
-const CORRELATION_HEADER = require('../../../../config/index').CORRELATION_HEADER
+const CORRELATION_HEADER = require('../../../../config').CORRELATION_HEADER
 const SUCCESS_CODES = [200, 201, 202, 204, 206]
 
 module.exports = function (method, verb) {
@@ -23,6 +23,7 @@ module.exports = function (method, verb) {
       service: opts.service
     }
     lodash.set(opts, `headers.${CORRELATION_HEADER}`, context.correlationId)
+    opts.headers['Content-Type'] = opts.headers['Content-Type'] || 'application/json'
 
     // start request
     requestLogger.logRequestStart(context)
@@ -33,7 +34,9 @@ module.exports = function (method, verb) {
       } else if (response && SUCCESS_CODES.includes(response.statusCode)) {
         resolve(body)
       } else {
-        const err = new Error(String(response.body))
+        let errors = lodash.get(body, 'message') || lodash.get(body, 'errors')
+        if (errors && errors.constructor.name === 'Array') errors = errors.join(', ')
+        const err = new Error(errors || body || 'Unknown error')
         err.errorCode = response.statusCode
         reject(err)
       }
