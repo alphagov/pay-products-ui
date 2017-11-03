@@ -29,7 +29,7 @@ module.exports.bind = function (app) {
   app.use('*', correlationId)
 
   // HEALTHCHECK
-  app.get(healthcheck.path, healthcheckCtrl.healthcheck)
+  app.get(healthcheck.path, healthcheckCtrl)
 
   // STATIC
   app.all(staticPaths.naxsiError, staticCtrl.naxsiError)
