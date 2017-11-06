@@ -16,6 +16,8 @@ const argv = require('minimist')(process.argv.slice(2))
 const flash = require('connect-flash')
 const staticify = require('staticify')(path.join(__dirname, 'public'))
 
+exports.staticify = staticify
+
 // Custom dependencies
 const router = require('./app/routes')
 const noCache = require('./app/utils/no_cache')
@@ -127,8 +129,5 @@ if (argv.i) {
   start()
 }
 
-module.exports = {
-  start: start,
-  getApp: initialise,
-  staticify: staticify
-}
+exports.start = start
+exports.getApp = initialise

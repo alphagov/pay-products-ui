@@ -9,6 +9,11 @@ module.exports = {
   pay: {
     product: '/pay/:productExternalId'
   },
+  demoPayment: {
+    complete: '/payment-complete/:paymentExternalId',
+    success: '/success',
+    failure: '/failed'
+  },
   healthcheck: {
     path: '/healthcheck'
   },

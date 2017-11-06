@@ -13,7 +13,6 @@ const productFixtures = require('../../fixtures/product_fixtures')
 const resolveProduct = require('../../../app/middleware/resolve_product')
 
 describe('resolve product middleware', () => {
-
   describe('when the product exists', () => {
     let req, res, next, product
 
@@ -114,5 +113,4 @@ describe('resolve product middleware', () => {
       expect(next.called).to.equal(false)
     })
   })
-
 })

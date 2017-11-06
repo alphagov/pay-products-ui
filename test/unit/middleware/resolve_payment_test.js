@@ -13,7 +13,6 @@ const productFixtures = require('../../fixtures/product_fixtures')
 const resolvePayment = require('../../../app/middleware/resolve_payment')
 
 describe('resolve product middleware', () => {
-
   describe('when the product exists', () => {
     let req, res, next, payment
 
@@ -114,5 +113,4 @@ describe('resolve product middleware', () => {
       expect(next.called).to.equal(false)
     })
   })
-
 })
