@@ -3,7 +3,7 @@
     {{$pageTitle}}GOV.UK Pay Self Service{{/pageTitle}}
 
     {{$homepageUrl}}/{{/homepageUrl}}
-    {{$globalHeaderText}}GOV.UK Pay{{/globalHeaderText}}
+    {{$globalHeaderText}}GOV.UK <span>Pay <strong class="phase-tag">Beta</strong></span>{{/globalHeaderText}}
 
     {{$head}}
       {{>includes/head}}
@@ -12,19 +12,28 @@
     {{/head}}
 
     {{$content}}
-        {{>includes/flash}}
-        <main id="content" role="main" class="{{$mainClasses}}{{/mainClasses}}">
-          <div class="main-content">
-            <div class="inner">
-              {{$mainContent}}{{/mainContent}}
+        <main id="content" role="main">
+            {{$full_width_content}}{{/full_width_content}}
+            <div class="grid-row">
+                <div class="column-two-thirds">
+                    {{$mainContent}}{{/mainContent}}
+                </div>
             </div>
-          </div>
         </main>
     {{/content}}
 
     {{$footerTop}}
       {{>includes/footer-categories}}
     {{/footerTop}}
+
+    {{$footerSupportLinks}}
+    <nav class="footer-nav">
+        <ul>
+            <li>Built by the <a href="https://www.gov.uk/government/organisations/government-digital-service">Government Digital Service</a></li>
+            <li><a href="https://www.payments.service.gov.uk/cookies/">Cookies</a></li>
+        </ul>
+    </nav>
+    {{/footerSupportLinks}}
 
     {{$licenceMessage}}
       {{>includes/license-message}}

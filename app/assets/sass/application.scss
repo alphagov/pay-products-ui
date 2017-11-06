@@ -1,0 +1,36 @@
+// Application reset
+@import "reset/_reset";
+
+// govuk_frontend_toolkit dependencies
+// https://github.com/alphagov/govuk_frontend_toolkit#usage
+@import "_shims";
+@import "_css3";
+@import "_conditionals";
+@import "_colours";
+@import "_measurements";
+@import "_typography";
+@import "_grid_layout";
+@import "design-patterns/_buttons";
+
+// Override New Transport font-stack from front-end toolkit
+$grey-8: #fff;
+
+@mixin media-down($mobile) {
+  @content;
+}
+
+@import "govuk-elements";
+
+// Application mixins and helpers
+@import "helpers/_headings";
+
+// Template
+@import "template/fonts";
+@import "template/header";
+@import "template/template";
+
+// Overrides
+@import "gov-uk-overrides/_grid";
+
+// Pages
+@import "modules/demo-confirmation";
