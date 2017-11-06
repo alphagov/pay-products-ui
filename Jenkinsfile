@@ -24,7 +24,7 @@ pipeline {
     }
     stage('Test') {
       steps {
-        runProductsEndToEnd("products-ui")
+        runProductsEndToEnd("productsui")
       }
     }
     stage('Docker Tag') {
