@@ -9,14 +9,18 @@ const paths = require('./paths.js')
 const staticCtrl = require('./controllers/static_controller')
 const healthcheckCtrl = require('./controllers/healthcheck_controller')
 const makePaymentCtrl = require('./controllers/make_payment_controller')
+const completeCtrl = require('./controllers/demo_payment/payment_complete_controller')
+const failedCtrl = require('./controllers/demo_payment/payment_failed_controller')
+const successCtrl = require('./controllers/demo_payment/payment_success_controller')
 
 // Middleware
 const resolveProduct = require('./middleware/resolve_product')
+const resolvePayment = require('./middleware/resolve_payment')
 // - Middleware
 const correlationId = require('./middleware/correlation_id')
 
 // Assignments
-const { healthcheck, staticPaths, pay } = paths
+const {healthcheck, staticPaths, pay, demoPayment} = paths
 
 // Exports
 module.exports.generateRoute = generateRoute
@@ -29,10 +33,16 @@ module.exports.bind = function (app) {
   app.use('*', correlationId)
 
   // HEALTHCHECK
-  app.get(healthcheck.path, healthcheckCtrl.healthcheck)
+  app.get(healthcheck.path, healthcheckCtrl)
 
   // STATIC
   app.all(staticPaths.naxsiError, staticCtrl.naxsiError)
 
+  // CREATE PAYMENT
   app.get(pay.product, resolveProduct, makePaymentCtrl)
+
+  // DEMO SPECIFIC SCREENS
+  app.get(demoPayment.complete, resolvePayment, completeCtrl)
+  app.get(demoPayment.failure, failedCtrl)
+  app.get(demoPayment.success, successCtrl)
 }
