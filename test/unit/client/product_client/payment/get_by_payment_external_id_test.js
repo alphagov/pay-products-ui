@@ -44,6 +44,7 @@ describe('products client - find a payment by it\'s own external id', function (
     mockServer.delete()
       .then(() => pactProxy.removeAll())
       .then(() => done())
+      .catch(done)
   })
 
   describe('when a product is successfully found', () => {
@@ -66,9 +67,7 @@ describe('products client - find a payment by it\'s own external id', function (
         .catch(e => done(e))
     })
 
-    after((done) => {
-      productsMock.finalize().then(() => done())
-    })
+    after(() => productsMock.finalize())
 
     it('should find an existing payment', () => {
       const plainResponse = response.getPlain()
@@ -106,9 +105,7 @@ describe('products client - find a payment by it\'s own external id', function (
         })
     })
 
-    after((done) => {
-      productsMock.finalize().then(() => done())
-    })
+    after(() => productsMock.finalize())
 
     it('should reject with error: 401 unauthorised', () => {
       expect(result.errorCode).to.equal(401)
@@ -134,9 +131,7 @@ describe('products client - find a payment by it\'s own external id', function (
         })
     })
 
-    after((done) => {
-      productsMock.finalize().then(() => done())
-    })
+    after(() => productsMock.finalize())
 
     it('should reject with error: 404 not found', () => {
       expect(result.errorCode).to.equal(404)

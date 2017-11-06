@@ -45,6 +45,7 @@ describe('products client - find a payment by it\'s associated product external 
     mockServer.delete()
       .then(() => pactProxy.removeAll())
       .then(() => done())
+      .catch(done)
   })
 
   describe('when a product is successfully found', () => {
@@ -71,9 +72,7 @@ describe('products client - find a payment by it\'s associated product external 
         .catch(e => done(e))
     })
 
-    after((done) => {
-      productsMock.finalize().then(() => done())
-    })
+    after(() => productsMock.finalize())
 
     it('should return a list of payments', () => {
       expect(result.length).to.equal(3)
@@ -115,9 +114,7 @@ describe('products client - find a payment by it\'s associated product external 
         })
     })
 
-    after((done) => {
-      productsMock.finalize().then(() => done())
-    })
+    after(() => productsMock.finalize())
 
     it('should reject with error: 401 unauthorised', () => {
       expect(result.errorCode).to.equal(401)
@@ -143,9 +140,7 @@ describe('products client - find a payment by it\'s associated product external 
         })
     })
 
-    after((done) => {
-      productsMock.finalize().then(() => done())
-    })
+    after(() => productsMock.finalize())
 
     it('should reject with error: 404 not found', () => {
       expect(result.errorCode).to.equal(404)
