@@ -11,7 +11,7 @@ module.exports = {
   },
   demoPayment: {
     complete: '/payment-complete/:paymentExternalId',
-    success: '/success',
+    success: '/successful',
     failure: '/failed'
   },
   healthcheck: {
