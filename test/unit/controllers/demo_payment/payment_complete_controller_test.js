@@ -18,7 +18,7 @@ describe('payment complete controller', () => {
       let payment, response
       before(done => {
         payment = productFixtures.validCreatePaymentResponse({
-          status: 'SUCCESS'
+          govuk_status: 'SUCCESS'
         }).getPlain()
         nock(PRODUCTS_URL).get(`/v1/api/payments/${payment.external_id}`).reply(200, payment)
 
@@ -43,7 +43,7 @@ describe('payment complete controller', () => {
       let payment, response
       before(done => {
         payment = productFixtures.validCreatePaymentResponse({
-          status: 'ERROR'
+          govuk_status: 'ERROR'
         }).getPlain()
         nock(PRODUCTS_URL).get(`/v1/api/payments/${payment.external_id}`).reply(200, payment)
 

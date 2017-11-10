@@ -39,6 +39,7 @@ module.exports = {
       product_external_id: opts.product_external_id || randomExternalId(),
       next_url: opts.next_url || `http://service.url/next`,
       status: opts.status || 'CREATED',
+      govuk_status: opts.govuk_status || 'success',
       _links: opts.links
     }
     if (!data._links) {
