@@ -11,14 +11,14 @@ const lodash = require('lodash')
  * @property {number} price
  * @property {string} description
  * @property {string} returnUrl
- * @property {object} payLink
- * @property {string} payLink.href - url to use to create a payment for the product
- * @property {string} payLink.method - the http method to use to create a payment for the product
- * @property {string} payLink.rel - the name of the link ('pay')
- * @property {object} selfLink
- * @property {string} selfLink.href - url to use to re-fetch the product
- * @property {string} selfLink.method - the http method to use to re-fetch the product
- * @property {string} selfLink.rel - the name of the link ('self')
+ * @property {string} govukStatus - the current status of the gov.uk pay charge
+ * @property {object} links
+ * @property {object} links.pay
+ * @property {string} links.pay.href - url to use to create a payment for the product
+ * @property {string} links.pay.method - the http method to use to create a payment for the product
+ * @property {object} links.self
+ * @property {string} links.self.href - url to use to re-fetch the product
+ * @property {string} links.self.method - the http method to use to re-fetch the product
  */
 class Product {
   /**
@@ -28,6 +28,7 @@ class Product {
    * @param {string} opts.gateway_account_id - The id of the product's associated gateway account
    * @param {string} opts.name - The name of the product
    * @param {number} opts.price - price of the product in pence
+   * @param {string} opts.govuk_status - the current status of the gov.uk pay charge
    * @param {Object[]} opts._links - links for the product ('self' to re-GET this product from the server, and 'pay' to create a payment for this product)
    * @param {string} opts._links[].href - url of the link
    * @param {string} opts._links[].method - the http method of the link
@@ -40,6 +41,7 @@ class Product {
     this.gatewayAccountId = opts.gateway_account_id
     this.name = opts.name
     this.price = opts.price
+    this.govukStatus = opts.govuk_status
     this.description = opts.description
     this.returnUrl = opts.return_url
     opts._links.forEach(link => lodash.set(this, `links.${link.rel}`, {method: link.method, href: link.href}))
