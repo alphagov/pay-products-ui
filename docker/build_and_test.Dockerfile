@@ -15,4 +15,4 @@ ADD package.json /tmp/package.json
 RUN cd /tmp && npm install
 WORKDIR /app
 
-CMD mkdir -p /app && cp -a /tmp/node_modules /app/ && npm run compile && npm test
+CMD rm -rf node_modules && ln -s /tmp/node_modules /app/node_modules && npm run compile && npm test && rm -rf node_modules
