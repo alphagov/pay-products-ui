@@ -1,3 +1,5 @@
 release.tag=alpha_release-11
 
 release.alpha_release-11.date=2017-11-16:13:33:34
+
+staging-1.tag=alpha_staging-1-11
