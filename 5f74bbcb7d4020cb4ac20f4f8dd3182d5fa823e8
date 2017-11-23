@@ -53,3 +53,5 @@ production-1.FAILED-12.status=failed
 staging-1.tag=FAILED-12
 
 staging-1.FAILED-12.date=
+
+staging-1.FAILED-12.status=failed
