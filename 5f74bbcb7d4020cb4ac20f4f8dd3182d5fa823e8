@@ -63,3 +63,5 @@ staging-1.alpha_staging-1-12.date=2017-11-23:09:51:22
 staging-1.alpha_staging-1-12.status=success
 
 production-1.tag=FAILED-12
+
+production-1.FAILED-12.date=
