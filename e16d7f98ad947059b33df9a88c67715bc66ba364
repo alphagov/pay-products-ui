@@ -13,3 +13,5 @@ production-1.tag=FAILED-16
 production-1.FAILED-16.date=
 
 production-1.FAILED-16.status=failed
+
+production-1.tag=alpha_production-1-16
