@@ -1,0 +1,18 @@
+{% extends "../layout.njk" %}
+
+{% block page_title %}After a failed payment - GOV.UK Pay{% endblock %}
+
+{% block main_content %}
+  <h1 class="page-title">After a failed payment</h1>
+  <p class="scenario-description">If the payment fails, the user will see a GOV.UK Pay error page. This includes a link to return to your service where you should give them useful next steps.</p>
+  <a class="scenario-docs-link" href="{{scenarioDocsLink}}">See what you should do after a failed payment in our documentation</a>
+
+  <h2 class="heading-medium error-page-header">This is an example error page</h2>
+  <img class="example-page" src="{{exampleImgSrc}}"/>
+
+  <p class="try-a-different-card-number"><a href="{{cardNumbersDocsLink}}">Try a different card number</a> to see a successful confirmation.</p>
+
+  <p class="transactions-prompt">You can now view this payment in your transactions list on GOV.UK Pay.</p>
+
+  <a class="button transactions-link" href="{{transactionsLink}}">Go to transactions</a>
+{% endblock %}

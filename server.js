@@ -54,7 +54,7 @@ function initialiseGlobalMiddleware (app) {
   app.use(staticify.middleware)
 
   app.use(function (req, res, next) {
-    res.locals.assetPath = '/public/'
+    res.locals.asset_path = '/public/'
     res.locals.routes = router.paths
     noCache(res)
     next()
