@@ -65,7 +65,7 @@ function initialiseAppVariables (app) {
 }
 
 function initialiseTemplateEngine (app) {
-  app.engine('html', require(path.join(__dirname, '/lib/template-engine.js')).__express)
+  // TODO: add Nunjucks
 }
 
 function initialisePublic (app) {
