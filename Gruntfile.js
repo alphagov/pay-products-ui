@@ -42,6 +42,13 @@ module.exports = function (grunt) {
             cwd: 'node_modules/govuk-elements-sass',
             src: '**',
             dest: 'govuk_modules/govuk-elements-sass/'
+          },
+          {
+            expand: true,
+            cwd: 'node_modules/govuk_template_jinja/',
+            src: '**',
+            dest: 'govuk_modules/govuk_template/',
+            rename: (dest, src) => dest + src.replace('html', 'njk')
           }
         ]
       },
