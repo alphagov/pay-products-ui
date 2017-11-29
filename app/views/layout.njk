@@ -9,6 +9,10 @@
   {% include "includes/head.njk" %}
 {% endblock %}
 
+{% block cookie_message %}
+{% include "includes/cookies.njk" %}
+{% endblock %}
+
 {% block content %}
 <main id="content" role="main">
   {% block full_width_content %}{% endblock %}
