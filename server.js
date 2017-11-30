@@ -6,6 +6,7 @@ require('./app/utils/metrics').metrics()
 
 // NPM dependencies
 const express = require('express')
+const nunjucks = require('nunjucks')
 const httpsAgent = require('https').globalAgent
 const favicon = require('serve-favicon')
 const bodyParser = require('body-parser')
@@ -26,8 +27,17 @@ const proxy = require('./app/utils/proxy')
 const errorHandler = require('./app/middleware/error_handler')
 
 // Global constants
-const port = process.env.PORT || 3000
+const CSS_PATH = staticify.getVersionedPath('/stylesheets/application.css')
+const JAVASCRIPT_PATH = staticify.getVersionedPath('/js/application.js')
+const PORT = process.env.PORT || 3000
+const {NODE_ENV} = process.env
 const unconfiguredApp = express()
+
+// Define app views
+const APP_VIEWS = [
+  path.join(__dirname, '/govuk_modules/govuk_template/views/layouts'),
+  path.join(__dirname, '/app/views')
+]
 
 function initialiseGlobalMiddleware (app) {
   app.use(cookieParser())
@@ -44,13 +54,13 @@ function initialiseGlobalMiddleware (app) {
   app.use(staticify.middleware)
 
   app.use(function (req, res, next) {
-    res.locals.assetPath = '/public/'
+    res.locals.asset_path = '/public/'
     res.locals.routes = router.paths
     noCache(res)
     next()
   })
   app.use(bodyParser.json())
-  app.use(bodyParser.urlencoded({ extended: true }))
+  app.use(bodyParser.urlencoded({extended: true}))
 }
 
 function initialiseProxy (app) {
@@ -58,14 +68,33 @@ function initialiseProxy (app) {
   proxy.use()
 }
 
-function initialiseAppVariables (app) {
-  app.set('view engine', 'html')
-  app.set('vendorViews', path.join(__dirname, '/govuk_modules/govuk_template/views/layouts'))
-  app.set('views', path.join(__dirname, '/app/views'))
-}
-
 function initialiseTemplateEngine (app) {
-  app.engine('html', require(path.join(__dirname, '/lib/template-engine.js')).__express)
+  // Configure nunjucks
+  // see https://mozilla.github.io/nunjucks/api.html#configure
+  const nunjucksConfiguration = {
+    express: app, // the express app that nunjucks should install to
+    autoescape: true, // controls if output with dangerous characters are escaped automatically
+    throwOnUndefined: false, // throw errors when outputting a null/undefined value
+    trimBlocks: true, // automatically remove trailing newlines from a block/tag
+    lstripBlocks: true, // automatically remove leading whitespace from a block/tag
+    watch: false, // reload templates when they are changed (server-side). To use watch, make sure optional dependency chokidar is installed
+    noCache: false // never use a cache and recompile templates each time (server-side)
+  }
+  if ((!NODE_ENV) || (NODE_ENV !== 'production')) {
+    nunjucksConfiguration.watch = true
+    nunjucksConfiguration.noCache = true
+  }
+
+  // Initialise nunjucks environment
+  const nunjucksEnvironment = nunjucks.configure(APP_VIEWS, nunjucksConfiguration)
+
+  // Set view engine
+  app.set('view engine', 'njk')
+
+  // Version static assets on production for better caching
+  // if it's not production we want to re-evaluate the assets on each file change
+  nunjucksEnvironment.addGlobal('css_path', NODE_ENV === 'production' ? CSS_PATH : staticify.getVersionedPath('/stylesheets/application.css'))
+  nunjucksEnvironment.addGlobal('js_path', NODE_ENV === 'production' ? JAVASCRIPT_PATH : staticify.getVersionedPath('/js/application.js'))
 }
 
 function initialisePublic (app) {
@@ -92,8 +121,8 @@ function initialiseErrorHandling (app) {
 
 function listen () {
   const app = initialise()
-  app.listen(port)
-  logger.log('Listening on port ' + port)
+  app.listen(PORT)
+  logger.log('Listening on port ' + PORT)
 }
 
 /**
@@ -108,7 +137,6 @@ function initialise () {
   initialiseProxy(app)
 
   initialiseGlobalMiddleware(app)
-  initialiseAppVariables(app)
   initialiseTemplateEngine(app)
   initialiseRoutes(app)
   initialisePublic(app)
