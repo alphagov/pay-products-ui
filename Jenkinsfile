@@ -4,7 +4,6 @@ pipeline {
   agent any
 
   options {
-    ansiColor('xterm')
     timestamps()
   }
 
@@ -42,6 +41,7 @@ pipeline {
       }
       steps {
         deployPaas("products-ui", "test", null, true)
+        deploy("products-ui", "test", null, true, false, "uk.gov.pay.endtoend.categories.SmokeProducts")
       }
     }
   }
