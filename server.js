@@ -10,7 +10,6 @@ const nunjucks = require('nunjucks')
 const httpsAgent = require('https').globalAgent
 const favicon = require('serve-favicon')
 const bodyParser = require('body-parser')
-const cookieParser = require('cookie-parser')
 const logger = require('winston')
 const loggingMiddleware = require('morgan')
 const argv = require('minimist')(process.argv.slice(2))
@@ -40,7 +39,6 @@ const APP_VIEWS = [
 ]
 
 function initialiseGlobalMiddleware (app) {
-  app.use(cookieParser())
   logger.stream = {
     write: function (message) {
       logger.info(message)

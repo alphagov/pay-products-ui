@@ -14,5 +14,5 @@ RUN apk add glibc-2.25-r0.apk
 ADD package.json /tmp/package.json
 RUN cd /tmp && npm install
 WORKDIR /app
-
+ENV LD_LIBRARY_PATH /app/node_modules/appmetrics
 CMD rm -rf node_modules && ln -s /tmp/node_modules /app/node_modules && npm run compile && npm test && rm -rf node_modules
