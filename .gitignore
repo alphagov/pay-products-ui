@@ -5,7 +5,6 @@
 .start.pid
 .project
 .settings
-.start.pid
 config/dev-env.json
 public
 govuk_modules
@@ -13,12 +12,11 @@ node_modules
 node_modules_local
 */node_modules/*
 pacts/
-
+coverage
 *.txt
 *.log
 
 # IntelliJ gubbins
-.idea
 *.iml
 *.ipr
 *.iws
