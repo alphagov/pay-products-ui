@@ -147,28 +147,6 @@ module.exports = function (grunt) {
           logConcurrentOutput: true
         }
       }
-    },
-
-    mochaTest: {
-      run: {
-        src: grunt.option('only')
-          ? [grunt.option('only')]
-          : ['test/**/*.js', '!test/test_helpers/*.js']
-      },
-      test: {
-        options: {
-          reporter: 'spec',
-          captureFile: 'mocha-test-results.txt'
-        }
-      }
-    },
-    env: {
-      test: {
-        src: 'config/test-env.json'
-      },
-      dev: {
-        src: 'config/dev-env.json'
-      }
     }
   });
 
@@ -180,9 +158,7 @@ module.exports = function (grunt) {
     'grunt-nodemon',
     'grunt-browserify',
     'grunt-text-replace',
-    'grunt-concurrent',
-    'grunt-mocha-test',
-    'grunt-env'
+    'grunt-concurrent'
   ].forEach(function (task) {
     grunt.loadNpmTasks(task)
   })
@@ -194,8 +170,6 @@ module.exports = function (grunt) {
     'browserify',
     'sass'
   ])
-
-  grunt.registerTask('test', ['env:test', 'mochaTest'])
 
   const defaultTasks = ['generate-assets', 'concurrent:target']
 
