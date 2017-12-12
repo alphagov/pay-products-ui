@@ -5,3 +5,5 @@ release.alpha_release-27.date=2017-12-11:15:33:53
 release.tag=alpha_release-28
 
 release.alpha_release-28.date=2017-12-11:15:37:06
+
+staging-1.tag=alpha_staging-1-27
