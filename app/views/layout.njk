@@ -6,28 +6,33 @@
 {% block page_title %}GOV.UK Pay{% endblock %}
 
 {% block head %}
-  {% include "includes/head.njk" %}
+    {% include "includes/head.njk" %}
 {% endblock %}
 
 {% block cookie_message %}
-{% include "includes/cookies.njk" %}
+    {% include "includes/cookies.njk" %}
 {% endblock %}
 
+{% block proposition_header %}
+    {% include "includes/propositional_navigation.njk" %}
+{% endblock %}
+{% block header_class %}with-proposition{% endblock %}
+
 {% block content %}
-<main id="content" role="main">
-  {% block full_width_content %}{% endblock %}
-  <div class="grid-row">
-    <div class="column-two-thirds">
-      {% block main_content %}{% endblock %}
+  <main id="content" role="main">
+      {% block full_width_content %}{% endblock %}
+    <div class="grid-row">
+      <div class="column-two-thirds">
+          {% block main_content %}{% endblock %}
+      </div>
     </div>
-  </div>
-</main>
+  </main>
 {% endblock %}
 
 {% block footer_top %}
-  {% include "includes/footer-categories.njk" %}
+    {% include "includes/footer-categories.njk" %}
 {% endblock %}
 
 {% block footer_support_links %}
-  {% include "includes/footer-support-links.njk" %}
+    {% include "includes/footer-support-links.njk" %}
 {% endblock %}

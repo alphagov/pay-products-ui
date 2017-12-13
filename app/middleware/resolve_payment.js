@@ -9,6 +9,7 @@ module.exports = function (req, res, next) {
   productsClient.payment.getByPaymentExternalId(paymentExternalId)
     .then(payment => {
       req.payment = payment
+      res.locals.payment = payment
       next()
     })
     .catch(err => {

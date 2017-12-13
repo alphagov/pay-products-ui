@@ -32,7 +32,8 @@
     "watch-live-reload": "./node_modules/.bin/grunt watch",
     "lint": "./node_modules/.bin/standard",
     "lint-sass": "./node_modules/.bin/sass-lint -v",
-    "test": "node ./node_modules/nyc/bin/nyc node ./node_modules/mocha/bin/mocha '!(node_modules)/**/*+(_test|_tests)'.js",
+    "test-with-coverage": "node ./node_modules/nyc/bin/nyc npm test",
+    "test": "node ./node_modules/mocha/bin/mocha '!(node_modules)/**/*+(_test|_tests)'.js",
     "snyk-protect": "snyk protect",
     "prepublish": "npm run snyk-protect"
   },
