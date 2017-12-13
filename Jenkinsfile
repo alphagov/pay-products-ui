@@ -41,7 +41,7 @@ pipeline {
       }
       steps {
         deployPaas("products-ui", "test", null, true)
-        deploy("products-ui", "test", null, true, false, "uk.gov.pay.endtoend.categories.SmokeProducts")
+        deploy("products-ui", "test", null, false, false, "uk.gov.pay.endtoend.categories.SmokeProducts")
       }
     }
   }
