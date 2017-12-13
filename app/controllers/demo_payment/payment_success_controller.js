@@ -13,8 +13,4 @@ const data = {
   exampleImgSrc: staticify.getVersionedPath('/images/confirmation-page.png')
 }
 
-module.exports = (req, res) => {
-  res
-    .status(200)
-    .render(CONFIRM_SUCCESS_VIEW, data)
-}
+module.exports = (req, res) => res.status(200).render(CONFIRM_SUCCESS_VIEW, data)

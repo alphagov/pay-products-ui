@@ -49,10 +49,6 @@
 }
 
 #global-header .header-proposition {
-  /* Trick to align the proposition menu to the right of the header */
-  @include media(desktop) {
-    text-align: right;
-  }
 
   /* Styles below make the header style match the product page */
   a.menu {

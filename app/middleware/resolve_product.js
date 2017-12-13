@@ -9,6 +9,7 @@ module.exports = function (req, res, next) {
   productsClient.product.getByProductExternalId(productExternalId)
     .then(product => {
       req.product = product
+      res.locals.product = product
       next()
     })
     .catch(err => {

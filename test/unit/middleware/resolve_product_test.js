@@ -21,6 +21,7 @@ describe('resolve product middleware', () => {
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
       req = {}
       res = {
+        locals: {},
         status: sinon.spy(),
         setHeader: sinon.spy(),
         render: sinon.spy(() => done(new Error('Resolve product middleware unexpectedly rendered a page')))

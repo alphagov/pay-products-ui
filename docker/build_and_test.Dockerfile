@@ -15,4 +15,4 @@ ADD package.json /tmp/package.json
 RUN cd /tmp && npm install
 WORKDIR /app
 ENV LD_LIBRARY_PATH /app/node_modules/appmetrics
-CMD rm -rf node_modules && ln -s /tmp/node_modules /app/node_modules && npm run compile && npm run lint && npm test -- --forbid-only --forbid-pending && rm -rf node_modules
+CMD rm -rf node_modules && ln -s /tmp/node_modules /app/node_modules && npm run compile && npm run lint && npm run test-with-coverage -- --forbid-only --forbid-pending && rm -rf node_modules

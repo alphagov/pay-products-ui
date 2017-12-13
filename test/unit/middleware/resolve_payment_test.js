@@ -12,8 +12,8 @@ const Payment = require('../../../app/models/Payment.class')
 const productFixtures = require('../../fixtures/product_fixtures')
 const resolvePayment = require('../../../app/middleware/resolve_payment')
 
-describe('resolve product middleware', () => {
-  describe('when the product exists', () => {
+describe('resolve payment middleware', () => {
+  describe('when the payment exists', () => {
     let req, res, next, payment
 
     before(done => {
@@ -21,6 +21,7 @@ describe('resolve product middleware', () => {
       nock(config.PRODUCTS_URL).get(`/v1/api/payments/${payment.external_id}`).reply(200, payment)
       req = {}
       res = {
+        locals: {},
         status: sinon.spy(),
         setHeader: sinon.spy(),
         render: sinon.spy(() => done(new Error('Resolve payment middleware unexpectedly rendered a page')))
@@ -34,7 +35,7 @@ describe('resolve product middleware', () => {
       nock.cleanAll()
     })
 
-    it(`should set 'req.product' equal to the returned Product`, () => {
+    it(`should set 'req.product' equal to the returned Payment`, () => {
       expect(req).to.have.property('payment').to.deep.equal(new Payment(payment))
     })
 
