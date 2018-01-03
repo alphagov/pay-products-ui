@@ -1,3 +1,5 @@
 # pay-products-ui 
 
-User interface app for products integrated with GOVUK Pay
+User interface app for product payments (Prototype/Demo/Ad-hoc ..etc) integrated with GOVUK Pay.
+
+
