@@ -1,8 +1,8 @@
 'use strict'
 
 // Local Dependencies
-const Product = require('../../models/Product.class')
-const Payment = require('../../models/Payment.class')
+const {Product} = require('../../models/product')
+const {Payment} = require('../../models/payment')
 const baseClient = require('./base_client/base_client')
 const {PRODUCTS_URL, PRODUCTS_API_TOKEN} = require('../../../config')
 
