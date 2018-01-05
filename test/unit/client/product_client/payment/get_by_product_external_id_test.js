@@ -6,7 +6,7 @@ const {expect} = require('chai')
 const proxyquire = require('proxyquire')
 
 // Custom dependencies
-const Payment = require('../../../../../app/models/Payment.class')
+const {Payment} = require('../../../../../app/models/payment')
 const pactProxy = require('../../../../test_helpers/pact_proxy')
 const PactInteractionBuilder = require('../../../../fixtures/pact_interaction_builder').PactInteractionBuilder
 const productFixtures = require('../../../../fixtures/product_fixtures')
