@@ -14,6 +14,9 @@ module.exports = {
     success: '/successful',
     failure: '/failed'
   },
+  adhocPayment: {
+    howToPay: '/adhoc/how-to-pay/:productExternalId'
+  },
   healthcheck: {
     path: '/healthcheck'
   },
