@@ -8,7 +8,7 @@ const lodash = require('lodash')
 
 // Local Dependencies
 const config = require('../../../config')
-const Product = require('../../../app/models/Product.class')
+const {Product} = require('../../../app/models/product')
 const productFixtures = require('../../fixtures/product_fixtures')
 const resolveProduct = require('../../../app/middleware/resolve_product')
 
