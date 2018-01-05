@@ -3,12 +3,6 @@
 // NPM Dependencies
 const lodash = require('lodash')
 
-const PRODUCT_TYPE = {
-  DEMO: 'DEMO',
-  PROTOTYPE: 'PROTOTYPE',
-  ADHOC: 'ADHOC'
-}
-
 /**
  @class Product
  * @property {string} externalId - The external ID of the product
@@ -32,7 +26,6 @@ class Product {
    * Create an instance of Product
    * @param {Object} opts - raw 'product' object from server
    * @param {string} opts.external_id - The external ID of the product
-   * @param {string} opts.type - The type of the product (@see PRODUCT_TYPE)
    * @param {string} opts.gateway_account_id - The id of the product's associated gateway account
    * @param {string} opts.name - The name of the product
    * @param {number} opts.price - price of the product in pence
@@ -47,7 +40,6 @@ class Product {
    **/
   constructor (opts) {
     this.externalId = opts.external_id
-    this.type = opts.type
     this.gatewayAccountId = opts.gateway_account_id
     this.name = opts.name
     this.price = opts.price
@@ -59,7 +51,4 @@ class Product {
   }
 }
 
-module.exports = {
-  PRODUCT_TYPE,
-  Product
-}
+module.exports = Product
