@@ -1,6 +1,5 @@
 'use strict'
 const pactBase = require('./pact_base')
-const {PRODUCT_TYPE} = require('../../app/models/product')
 
 // Global setup
 const pactProducts = pactBase()
@@ -68,7 +67,7 @@ module.exports = {
   validCreateProductResponse: (opts = {}) => {
     const data = {
       external_id: opts.external_id || randomExternalId(),
-      type: opts.type || PRODUCT_TYPE.DEMO,
+      type: opts.type || 'DEMO',
       gateway_account_id: opts.gateway_account_id || randomGatewayAccountId(),
       name: opts.name || 'A Product Name',
       price: opts.price || randomPrice(),

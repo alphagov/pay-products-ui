@@ -7,7 +7,6 @@ const logger = require('winston')
 const response = require('../utils/response')
 const errorResponse = response.renderErrorView
 
-const {PRODUCT_TYPE} = require('../models/product')
 const makePayment = require('./make_payment_controller')
 const paths = require('../paths.js')
 
@@ -22,10 +21,10 @@ module.exports = (req, res) => {
 
   logger.info(`[${correlationId}] routing product of type ${product.type}`)
   switch (product.type) {
-    case (PRODUCT_TYPE.DEMO):
-    case (PRODUCT_TYPE.PROTOTYPE):
+    case ('DEMO'):
+    case ('PROTOTYPE'):
       return makePayment(req, res)
-    case (PRODUCT_TYPE.ADHOC):
+    case ('ADHOC'):
       return res.redirect(303, paths.adhocPayment.howToPay.replace(/:productExternalId/, product.externalId))
   }
 

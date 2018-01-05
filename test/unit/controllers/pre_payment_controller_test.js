@@ -11,7 +11,7 @@ const productFixtures = require('../../fixtures/product_fixtures')
 const paths = require('../../../app/paths')
 const expect = chai.expect
 let product, payment, response, $
-describe.only('pre payment controller', function () {
+describe('pre payment controller', function () {
   afterEach(() => {
     nock.cleanAll()
   })
