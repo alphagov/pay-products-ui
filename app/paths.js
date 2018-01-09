@@ -7,10 +7,10 @@ module.exports = {
     index: '/'
   },
   pay: {
-    product: '/pay/:productExternalId'
+    product: '/pay/:productExternalId',
+    complete: '/payment-complete/:paymentExternalId'
   },
   demoPayment: {
-    complete: '/payment-complete/:paymentExternalId',
     success: '/successful',
     failure: '/failed'
   },

@@ -9,14 +9,14 @@ const paths = require('./paths.js')
 const staticCtrl = require('./controllers/static_controller')
 const healthcheckCtrl = require('./controllers/healthcheck_controller')
 const prePaymentCtrl = require('./controllers/pre_payment_controller')
-const completeCtrl = require('./controllers/demo_payment/payment_complete_controller')
+const completeCtrl = require('./controllers/payment_complete_controller')
 const failedCtrl = require('./controllers/demo_payment/payment_failed_controller')
 const successCtrl = require('./controllers/demo_payment/payment_success_controller')
 const howToPayCtrl = require('./controllers/adhoc_payment/how_to_pay_controller')
 
 // Middleware
 const resolveProduct = require('./middleware/resolve_product')
-const resolvePayment = require('./middleware/resolve_payment')
+const resolvePaymentAndProduct = require('./middleware/resolve_payment_and_product')
 // - Middleware
 const correlationId = require('./middleware/correlation_id')
 
@@ -43,7 +43,7 @@ module.exports.bind = function (app) {
   app.get(pay.product, resolveProduct, prePaymentCtrl)
 
   // DEMO SPECIFIC SCREENS
-  app.get(demoPayment.complete, resolvePayment, completeCtrl)
+  app.get(pay.complete, resolvePaymentAndProduct, completeCtrl)
   app.get(demoPayment.failure, failedCtrl)
   app.get(demoPayment.success, successCtrl)
 

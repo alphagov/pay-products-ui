@@ -10,14 +10,18 @@ const lodash = require('lodash')
 const config = require('../../../config')
 const Payment = require('../../../app/models/Payment.class')
 const productFixtures = require('../../fixtures/product_fixtures')
-const resolvePayment = require('../../../app/middleware/resolve_payment')
+const resolvePayment = require('../../../app/middleware/resolve_payment_and_product')
 
 describe('resolve payment middleware', () => {
   describe('when the payment exists', () => {
-    let req, res, next, payment
+    let req, res, next, product, payment
 
     before(done => {
-      payment = productFixtures.validCreatePaymentResponse().getPlain()
+      product = productFixtures.validCreateProductResponse({}).getPlain()
+      payment = productFixtures.validCreatePaymentResponse({
+        product_external_id: product.external_id
+      }).getPlain()
+      nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
       nock(config.PRODUCTS_URL).get(`/v1/api/payments/${payment.external_id}`).reply(200, payment)
       req = {}
       res = {
@@ -80,6 +84,41 @@ describe('resolve payment middleware', () => {
     })
   })
 
+  describe('Error when retrieving product for payment', () => {
+    let req, res, next, payment
+
+    before(done => {
+      payment = payment = productFixtures.validCreatePaymentResponse({})
+      nock(config.PRODUCTS_URL).get(`/v1/api/payments/${payment.external_id}`).reply(200, payment)
+      nock(config.PRODUCTS_URL).get(`/v1/api/products/${payment.product_external_id}`).reply(404)
+      req = {}
+      res = {
+        status: sinon.spy(),
+        setHeader: sinon.spy(),
+        render: sinon.spy(() => done())
+      }
+      lodash.set(req, 'params.paymentExternalId', payment.external_id)
+      next = sinon.spy(err => done(err))
+      resolvePayment(req, res, next)
+    })
+
+    after(() => {
+      nock.cleanAll()
+    })
+
+    it(`should return error 500 to the user`, () => {
+      expect(res.status.lastCall.args[0]).to.equal(500)
+    })
+
+    it(`should render the error view`, () => {
+      expect(res.render.lastCall.args[0]).to.equal('error')
+      expect(res.render.lastCall.args[1]).to.have.property('message').to.equal('Sorry, we are unable to process your request')
+    })
+
+    it(`it should not call 'next'`, () => {
+      expect(next.called).to.equal(false)
+    })
+  })
   describe('when some other error occurs while attempting to retrieve the payment', () => {
     let req, res, next, payment
 
