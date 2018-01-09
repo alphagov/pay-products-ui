@@ -10,7 +10,7 @@ const lodash = require('lodash')
 const config = require('../../../config')
 const Payment = require('../../../app/models/Payment.class')
 const productFixtures = require('../../fixtures/product_fixtures')
-const resolvePayment = require('../../../app/middleware/resolve_payment')
+const resolvePayment = require('../../../app/middleware/resolve_payment_and_product')
 
 describe('resolve payment middleware', () => {
   describe('when the payment exists', () => {

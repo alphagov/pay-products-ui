@@ -16,7 +16,7 @@ const howToPayCtrl = require('./controllers/adhoc_payment/how_to_pay_controller'
 
 // Middleware
 const resolveProduct = require('./middleware/resolve_product')
-const resolvePayment = require('./middleware/resolve_payment')
+const resolvePaymentAndProduct = require('./middleware/resolve_payment_and_product')
 // - Middleware
 const correlationId = require('./middleware/correlation_id')
 
@@ -43,7 +43,7 @@ module.exports.bind = function (app) {
   app.get(pay.product, resolveProduct, prePaymentCtrl)
 
   // DEMO SPECIFIC SCREENS
-  app.get(pay.complete, resolvePayment, completeCtrl)
+  app.get(pay.complete, resolvePaymentAndProduct, completeCtrl)
   app.get(demoPayment.failure, failedCtrl)
   app.get(demoPayment.success, successCtrl)
 

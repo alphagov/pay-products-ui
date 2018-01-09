@@ -26,7 +26,9 @@ module.exports = (req, res) => {
       break
     case ('PROTOTYPE'):
       res.redirect(product.returnUrl)
+      break
+    default:
+      logger.error(`[${correlationId}] error routing payment complete based on product type ${product.type}`)
+      return errorResponse(req, res, messages.internalError, 500)
   }
-  logger.error(`[${correlationId}] error routing payment complete based on product type ${product.type}`)
-  return errorResponse(req, res, messages.internalError, 500)
 }
