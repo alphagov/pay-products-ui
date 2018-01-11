@@ -16,7 +16,18 @@
     </label>
     <div class="currency-input__inner">
       <span class="currency-input__inner__unit">£</span>
-      <input class="form-control" aria-label="Enter amount in pounds" name="payment-amount" data-non-numeric="" type="text" id="payment-amount" value="" autofocus="" data-validate="required currency">
+      <input class="form-control"
+        aria-label="Enter amount in pounds"
+        name="payment-amount"
+        data-non-numeric=""
+        type="text"
+        id="payment-amount"
+        value=""
+        autofocus=""
+        data-validate="required currency"
+        data-confirmation="true"
+        data-confirmation-label="Amount to pay: "
+        data-confirmation-prepend="£"/>
     </div>
   </div>
   <button type="submit" class="button">

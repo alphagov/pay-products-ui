@@ -1,0 +1,17 @@
+.input-confirm {
+  @include core-19;
+  margin-top: -5px;
+
+  @include media(tablet) {
+    margin-top: $gutter-half * -1;
+  }
+
+  span {
+    display: block;
+  }
+
+  .input-confirmation {
+    @include core-24;
+    color: $text-colour;
+  }
+}

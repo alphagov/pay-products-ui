@@ -12,8 +12,6 @@ const validationErrorsTemplate = require('../views/includes/validation-errors.nj
 exports.enableFieldValidation = function () {
   const allForms = Array.prototype.slice.call(document.getElementsByTagName('form'))
 
-  console.log('hello', allForms)
-
   allForms.filter(form => {
     return form.hasAttribute('data-validate')
   }).map(form => {
