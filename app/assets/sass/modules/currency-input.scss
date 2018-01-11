@@ -1,0 +1,18 @@
+// One day `.currency-input` will be part of elements or patterns and tools -  https://github.com/alphagov/temporary-event-notice-prototype/blob/master/app/assets/sass/patterns/currency-input.scss
+
+.currency-input {
+  &__inner {
+    position: relative;
+
+    &__unit {
+      position: absolute;
+      bottom: $gutter / 6;
+      left: $gutter / 3;
+      font-weight: bold;
+    }
+  }
+
+  .form-control {
+    padding: 6px 0 3px 25px;
+  }
+}

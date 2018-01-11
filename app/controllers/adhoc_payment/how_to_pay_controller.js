@@ -3,5 +3,5 @@
 module.exports = (req, res) => {
   res
     .status(200)
-    .render('adhoc_payment/how-to-pay')
+    .render('adhoc-payment/how-to-pay')
 }

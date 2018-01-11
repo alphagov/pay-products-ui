@@ -13,6 +13,7 @@ const completeCtrl = require('./controllers/payment_complete_controller')
 const failedCtrl = require('./controllers/demo_payment/payment_failed_controller')
 const successCtrl = require('./controllers/demo_payment/payment_success_controller')
 const howToPayCtrl = require('./controllers/adhoc_payment/how_to_pay_controller')
+const adhocPaymentCtrl = require('./controllers/adhoc_payment')
 
 // Middleware
 const resolveProduct = require('./middleware/resolve_product')
@@ -49,4 +50,6 @@ module.exports.bind = function (app) {
 
   // ADHOC SPECIFIC SCREENS
   app.get(adhocPayment.howToPay, resolveProduct, howToPayCtrl)
+  app.get(adhocPayment.index, adhocPaymentCtrl.index)
+  app.get(adhocPayment.amount, adhocPaymentCtrl.amount)
 }

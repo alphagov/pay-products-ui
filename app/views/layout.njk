@@ -19,7 +19,7 @@
 {% block header_class %}with-proposition{% endblock %}
 
 {% block content %}
-  <main id="content" role="main">
+  <main id="content" class="pad-bottom" role="main">
       {% block full_width_content %}{% endblock %}
     <div class="grid-row">
       <div class="column-two-thirds">
@@ -35,4 +35,8 @@
 
 {% block footer_support_links %}
     {% include "includes/footer-support-links.njk" %}
+{% endblock %}
+
+{% block body_end %}
+  {% include "includes/scripts.njk" %}
 {% endblock %}
