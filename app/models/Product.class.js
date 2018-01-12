@@ -9,8 +9,8 @@ const lodash = require('lodash')
  * @property {string} gatewayAccountId
  * @property {string} name
  * @property {number} price
- * @property {string} type - The type of the product
  * @property {string} description
+ * @property {string} type - The type of the product
  * @property {string} returnUrl
  * @property {string} serviceName - the name of the service with which the product is associated
  * @property {object} links
@@ -26,7 +26,6 @@ class Product {
    * Create an instance of Product
    * @param {Object} opts - raw 'product' object from server
    * @param {string} opts.external_id - The external ID of the product
-   * @param {string} opts.type - The type of the product
    * @param {string} opts.gateway_account_id - The id of the product's associated gateway account
    * @param {string} opts.name - The name of the product
    * @param {number} opts.price - price of the product in pence
@@ -36,17 +35,18 @@ class Product {
    * @param {string} opts._links[].method - the http method of the link
    * @param {string} opts._links[].rel - the name of the link
    * @param {string=} opts.description - The name of the product
+   * @param {string=} opts.type - The type of the product
    * @param {string=} opts.return_url - return url of where to redirect for any charge of this product
    **/
   constructor (opts) {
     this.externalId = opts.external_id
-    this.type = opts.type
     this.gatewayAccountId = opts.gateway_account_id
     this.name = opts.name
     this.price = opts.price
     this.govukStatus = opts.govuk_status
-    this.serviceName = opts.service_name || 'Example Service Name'
+    this.serviceName = opts.service_name
     this.description = opts.description
+    this.type = opts.type
     this.returnUrl = opts.return_url
     opts._links.forEach(link => lodash.set(this, `links.${link.rel}`, {method: link.method, href: link.href}))
   }

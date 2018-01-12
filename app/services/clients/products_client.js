@@ -20,6 +20,7 @@ module.exports = {
   product: {
     create: createProduct,
     disable: disableProduct,
+    updateServiceNameOfProductsByGatewayAccountId: updateServiceNameOfProductsByGatewayAccountId,
     getByProductExternalId: getProductByExternalId,
     getByGatewayAccountId: getProductsByGatewayAccountId
   },
@@ -37,7 +38,9 @@ module.exports = {
  * @param {string} options.payApiToken - The API token to use to access GOV.UK Pay in order to initiate payments for the product
  * @param {string} options.name - The name of the product
  * @param {number} options.price - The price of product in pence
+ * @param {string} options.serviceName - The name of the service with which the product is associated
  * @param {string=} options.description - The description of the product
+ * @param {string=} options.type - The type of the product
  * @param {string=} options.returnUrl - Where to redirect to upon completion of a charge for this product
  * @returns {Promise<Product>}
  */
@@ -53,6 +56,8 @@ function createProduct (options) {
       name: options.name,
       price: options.price,
       description: options.description,
+      service_name: options.serviceName,
+      type: options.type,
       return_url: options.returnUrl
     },
     description: 'create a product for a service',
@@ -61,14 +66,14 @@ function createProduct (options) {
 }
 
 /**
- * @param {String} externalProductId: the external id of the product you wish to retrieve
+ * @param {String} productExternalId: the external id of the product you wish to retrieve
  * @returns {Promise<Product>}
  */
-function getProductByExternalId (externalProductId) {
+function getProductByExternalId (productExternalId) {
   return baseClient.get({
     headers,
     baseUrl,
-    url: `/products/${externalProductId}`,
+    url: `/products/${productExternalId}`,
     description: `find a product by it's external id`,
     service: SERVICE_NAME
   }).then(product => new Product(product))
@@ -92,8 +97,28 @@ function getProductsByGatewayAccountId (gatewayAccountId) {
 }
 
 /**
+ * @param {String} gatewayAccountId: the id of the gateway account whose service name you wish to update
+ * @returns {Promise<Product>}
+ */
+function updateServiceNameOfProductsByGatewayAccountId (gatewayAccountId, serviceName) {
+  return baseClient.patch({
+    headers,
+    baseUrl,
+    url: `/gateway-account/${gatewayAccountId}`,
+    json: true,
+    body: {
+      op: 'replace',
+      path: 'service_name',
+      value: serviceName
+    },
+    description: `update a product's service name`,
+    service: SERVICE_NAME
+  })
+}
+
+/**
  * @param {String} productExternalId: the external id of the product you wish to disable
- * @returns {undefined}
+ * @returns Promise<undefined>
  */
 function disableProduct (productExternalId) {
   return baseClient.patch({

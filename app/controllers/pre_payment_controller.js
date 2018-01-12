@@ -10,24 +10,19 @@ const errorResponse = response.renderErrorView
 const makePayment = require('./make_payment_controller')
 const paths = require('../paths.js')
 
-// Constants
-const messages = {
-  internalError: 'We are unable to process your request at this time'
-}
-
 module.exports = (req, res) => {
   const product = req.product
-  const correlationId = req.correlationId
-
-  logger.info(`[${correlationId}] routing product of type ${product.type}`)
+  logger.info(`[${req.correlationId}] routing product of type: ${product.type}`)
   switch (product.type) {
     case ('DEMO'):
     case ('PROTOTYPE'):
-      return makePayment(req, res)
+      makePayment(req, res)
+      break
     case ('ADHOC'):
-      return res.redirect(303, paths.adhocPayment.howToPay.replace(/:productExternalId/, product.externalId))
+      res.redirect(303, paths.adhocPayment.howToPay.replace(/:productExternalId/, product.externalId))
+      break
+    default:
+      logger.error(`[${req.correlationId}] error routing product of type: ${product.type}`)
+      errorResponse(req, res, 'We are unable to process your request at this time', 500)
   }
-
-  logger.error(`[${correlationId}] error routing product of type ${product.type}`)
-  return errorResponse(req, res, messages.internalError, 500)
 }
