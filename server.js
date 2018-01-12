@@ -14,6 +14,7 @@ const logger = require('winston')
 const loggingMiddleware = require('morgan')
 const argv = require('minimist')(process.argv.slice(2))
 const flash = require('connect-flash')
+const cookieParser = require('cookie-parser')
 const staticify = require('staticify')(path.join(__dirname, 'public'))
 
 exports.staticify = staticify
@@ -24,6 +25,8 @@ const noCache = require('./app/utils/no_cache')
 const customCertificate = require('./app/utils/custom_certificate')
 const proxy = require('./app/utils/proxy')
 const errorHandler = require('./app/middleware/error_handler')
+const middlewareUtils = require('./app/utils/middleware')
+const cookieUtil = require('./app/utils/cookie')
 
 // Global constants
 const CSS_PATH = staticify.getVersionedPath('/stylesheets/application.css')
@@ -39,6 +42,7 @@ const APP_VIEWS = [
 ]
 
 function initialiseGlobalMiddleware (app) {
+  app.use(cookieParser())
   logger.stream = {
     write: function (message) {
       logger.info(message)
@@ -117,6 +121,10 @@ function initialiseErrorHandling (app) {
   app.use(errorHandler)
 }
 
+function initialiseCookies (app) {
+  app.use(middlewareUtils.excludingPaths(['/healthcheck'], cookieUtil.sessionCookie()))
+}
+
 function listen () {
   const app = initialise()
   app.listen(PORT)
@@ -133,6 +141,7 @@ function initialise () {
   app.use(flash())
   initialiseTLS(app)
   initialiseProxy(app)
+  initialiseCookies(app)
 
   initialiseGlobalMiddleware(app)
   initialiseTemplateEngine(app)

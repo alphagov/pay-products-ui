@@ -4,5 +4,5 @@
 const response = require('../../utils/response').response
 
 module.exports = (req, res) => {
-  response(req, res, 'adhoc-payment/index', {})
+  response(req, res, 'adhoc-payment/amount', {})
 }

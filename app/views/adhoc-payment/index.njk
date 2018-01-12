@@ -1,16 +1,19 @@
 {% extends "../layout.njk" %}
 
 {% block page_title %}
-  Adhoc payments
+  {{serviceName}}
 {% endblock %}
 
 {% block main_content %}
 <h1 class="heading-large">
-  Pay for Lock and Weir fishing permit
+  {{productName}}
 </h1>
-<p>
-  Once you have successfully paid, you will receive a payment reference number as proof of payment. Your application will be processed within 10 days.
+<p id="description">
+  {{productDescription}}
 </p>
 
-<a href="/adhoc-amount" class="button">Continue</a>
+<form action="/pay/{{productExternalId}}" method="post" name="startPaymentForm" class="push-bottom">
+<input id="csrf" name="csrfToken" type="hidden" value="{{csrf}}"/>
+<input type="submit" class="button" value="Continue">
+</form>
 {% endblock %}

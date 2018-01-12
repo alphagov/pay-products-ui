@@ -97,11 +97,8 @@ describe('pre payment controller', function () {
           done(err)
         })
     })
-    it('should redirect with code: 303 \'See Other\'', () => {
-      expect(response.statusCode).to.equal(303)
-    })
-    it('should redirect to \'how-to-pay\'', () => {
-      expect(response.header).property('location').to.equal(`/adhoc/how-to-pay/${product.external_id}`)
+    it('should redirect with code: 200 \'OK\'', () => {
+      expect(response.statusCode).to.equal(200)
     })
   })
 
