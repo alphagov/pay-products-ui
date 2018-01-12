@@ -12,6 +12,7 @@ function createAppWithSession (app, sessionData = {}) {
   const proxyApp = express()
   proxyApp.all('*', (req, res, next) => {
     sessionData.destroy = sinon.stub()
+    sessionData.csrfSecret = sessionData.csrfSecret || '123'
     req.session = sessionData || {}
     next()
   })

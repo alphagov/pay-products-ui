@@ -1,14 +1,15 @@
 {% extends "../layout.njk" %}
 
 {% block page_title %}
-  Adhoc payments
+  {{serviceName}}
 {% endblock %}
 
 {% block main_content %}
 <h1 class="heading-large">
   Enter the amount you want to pay
 </h1>
-<form action="" data-validate>
+<form action="/pay/{{productExternalId}}/enter-amount" data-validate>
+  <input id="csrf" name="csrfToken" type="hidden" value="{{csrf}}"/>
   <div class="currency-input form-group">
     <label class="form-label-bold" for="payment-amount">
       Payment amount
