@@ -112,7 +112,7 @@ function disableProduct (productExternalId) {
  * @returns Promise<Payment>
  */
 function createPayment (productExternalId, price) {
-  let createPaymentRequest = {
+  const createPaymentRequest = {
     headers,
     baseUrl,
     url: `/products/${productExternalId}/payments`,
