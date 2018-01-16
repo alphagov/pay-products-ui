@@ -108,16 +108,24 @@ function disableProduct (productExternalId) {
 // PAYMENT
 /**
  * @param {String} productExternalId The external ID of the product to create a payment for
+ * @param {int} price: The override price for the payment. If not present it will default to product price
  * @returns Promise<Payment>
  */
-function createPayment (productExternalId) {
-  return baseClient.post({
+function createPayment (productExternalId, price) {
+  const createPaymentRequest = {
     headers,
     baseUrl,
     url: `/products/${productExternalId}/payments`,
     description: 'create a payment for a product',
     service: SERVICE_NAME
-  }).then(payment => new Payment(payment))
+  }
+  if (price) {
+    createPaymentRequest.body = {
+      price: price
+    }
+  }
+  return baseClient.post(createPaymentRequest)
+    .then(payment => new Payment(payment))
 }
 
 /**

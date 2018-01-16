@@ -9,6 +9,7 @@ const lodash = require('lodash')
  * @property {string} productExternalId - The external ID of the product associated with the payment
  * @property {string} status - The current status of the payment
  * @property {string} govukStatus - the current status of the gov.uk pay charge
+ * @property {int} amount - the payment amount
  * @property {object} links
  * @property {object} links.next - link to use to pay via pay-frontend
  * @property {string} links.next.href - url to use to pay via pay-frontend
@@ -23,6 +24,7 @@ class Payment {
    * @param {string} opts.external_id - The external ID of the payment
    * @param {string} opts.product_external_id - The external ID of the product associated with the payment
    * @param {status} opts.status - The current status of the payment
+   * @param {amount} opts.amount - The amount of the payment
    * @param {string} opts.govuk_status - the current status of the gov.uk pay charge
    * @param {Object[]} opts._links - Links relevent to the payment
    * @param {string} opts._links[].href - url of the link
@@ -34,6 +36,7 @@ class Payment {
     this.externalId = opts.external_id
     this.productExternalId = opts.product_external_id
     this.status = opts.status
+    this.amount = opts.amount
     this.govukStatus = opts.govuk_status
     this.nextUrl = opts.next_url
     opts._links.forEach(link => lodash.set(this, `links.${link.rel}`, {method: link.method, href: link.href}))
