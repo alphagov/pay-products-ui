@@ -87,6 +87,52 @@ describe('products client - creating a new payment', () => {
     })
   })
 
+  describe('when a charge is successfully created with overridden price', () => {
+    const priceOverride = 500
+    before((done) => {
+      const productsClient = getProductsClient()
+      productExternalId = 'another-valid-product-id'
+      response = productFixtures.validCreatePaymentResponse({
+        product_external_id: productExternalId,
+        amount: priceOverride
+      })
+      productsMock.addInteraction(
+        new PactInteractionBuilder(`${PRODUCTS_RESOURCE}/${productExternalId}/payments`)
+          .withUponReceiving('a valid create charge create request price override')
+          .withMethod('POST')
+          .withStatusCode(201)
+          .withRequestBody({price: priceOverride})
+          .withResponseBody(response.getPactified())
+          .build()
+      )
+        .then(() => productsClient.payment.create(productExternalId, priceOverride))
+        .then(res => {
+          result = res
+          done()
+        })
+        .catch(e => done(e))
+    })
+
+    after(() => productsMock.finalize())
+
+    it('should create a new product with the overridden price', () => {
+      const plainResponse = response.getPlain()
+      expect(result.productExternalId).to.equal(plainResponse.product_external_id).and.to.equal(productExternalId)
+      expect(result.externalId).to.equal(plainResponse.external_id)
+      expect(result.status).to.equal(plainResponse.status)
+      expect(result.amount).to.equal(priceOverride)
+      expect(result.nextUrl).to.equal(plainResponse.next_url)
+      expect(result).to.have.property('links')
+      expect(Object.keys(result.links).length).to.equal(2)
+      expect(result.links).to.have.property('self')
+      expect(result.links.self).to.have.property('method').to.equal(plainResponse._links.find(link => link.rel === 'self').method)
+      expect(result.links.self).to.have.property('href').to.equal(plainResponse._links.find(link => link.rel === 'self').href)
+      expect(result.links).to.have.property('next')
+      expect(result.links.next).to.have.property('method').to.equal(plainResponse._links.find(link => link.rel === 'next').method)
+      expect(result.links.next).to.have.property('href').to.equal(plainResponse._links.find(link => link.rel === 'next').href)
+    })
+  })
+
   describe('when the request has invalid authorization credentials', () => {
     before(done => {
       const productsClient = getProductsClient(`http://localhost:${mockPort}`, 'invalid-api-key')
