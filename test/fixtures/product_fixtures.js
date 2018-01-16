@@ -14,12 +14,41 @@ module.exports = {
     pactProducts.pactify(opts)
   },
 
+  validUpdateServiceNameOfProductsByGatewayAccountIdRequest: (serviceName) => {
+    const data = {
+      op: 'replace',
+      path: 'service_name',
+      value: serviceName || 'New Service Name'
+    }
+    return {
+      getPactified: () => {
+        return pactProducts.pactify(data)
+      },
+      getPlain: () => data
+    }
+  },
+
+  invalidUpdateServiceNameOfProductsByGatewayAccountIdRequest: () => {
+    const data = {
+      op: 'replace',
+      path: 'service_name'
+    }
+    return {
+      getPactified: () => {
+        return pactProducts.pactify(data)
+      },
+      getPlain: () => data
+    }
+  },
+
   validCreateProductRequest: (opts = {}) => {
     const data = {
       gateway_account_id: opts.gatewayAccountId || randomGatewayAccountId(),
       pay_api_token: opts.payApiToken || 'pay-api-token',
       name: opts.name || 'A Product Name',
-      price: opts.price || randomPrice()
+      service_name: opts.serviceName || 'Example Service',
+      price: opts.price || randomPrice(),
+      type: opts.type || 'DEMO'
     }
     if (opts.description) data.description = opts.description
     if (opts.returnUrl) data.return_url = opts.returnUrl
@@ -71,6 +100,7 @@ module.exports = {
       type: opts.type || 'DEMO',
       gateway_account_id: opts.gateway_account_id || randomGatewayAccountId(),
       name: opts.name || 'A Product Name',
+      service_name: opts.serviceName || 'Example Service',
       price: opts.price || randomPrice(),
       _links: opts.links
     }
