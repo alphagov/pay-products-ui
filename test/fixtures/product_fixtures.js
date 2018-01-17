@@ -72,7 +72,7 @@ module.exports = {
       gateway_account_id: opts.gateway_account_id || randomGatewayAccountId(),
       name: opts.name || 'A Product Name',
       service_name: opts.service_name || 'An example service name',
-      description: opts.description,
+      description: opts.description || '',
       price: opts.price || randomPrice(),
       _links: opts.links
     }

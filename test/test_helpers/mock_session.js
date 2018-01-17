@@ -5,7 +5,8 @@ const express = require('express')
 const sinon = require('sinon')
 
 module.exports = {
-  createAppWithSession
+  createAppWithSession,
+  getMockSession
 }
 
 function createAppWithSession (app, sessionData = {}) {
@@ -18,4 +19,10 @@ function createAppWithSession (app, sessionData = {}) {
   })
   proxyApp.use(app)
   return proxyApp
+}
+
+function getMockSession (opts = {}) {
+  return {
+    csrfSecret: opts.csrfSecret || '123'
+  }
 }
