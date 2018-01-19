@@ -9,7 +9,7 @@ const errorResponse = response.renderErrorView
 
 // Local dependencies
 const {success, failure} = require('../paths').demoPayment
-
+const paymentStatus = require('./payment_status_controller')
 // Constants
 const messages = {
   internalError: 'We are unable to process your request at this time'
@@ -26,6 +26,9 @@ module.exports = (req, res) => {
       break
     case ('PROTOTYPE'):
       res.redirect(product.returnUrl)
+      break
+    case ('ADHOC'):
+      paymentStatus(req, res)
       break
     default:
       logger.error(`[${correlationId}] error routing payment complete based on product type ${product.type}`)

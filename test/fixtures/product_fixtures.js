@@ -40,6 +40,7 @@ module.exports = {
       next_url: opts.next_url || `http://service.url/next`,
       status: opts.status || 'CREATED',
       amount: opts.amount || 100,
+      reference_number: opts.reference_number || 'CF3HFN8I9H',
       govuk_status: opts.govuk_status || 'success',
       _links: opts.links
     }
