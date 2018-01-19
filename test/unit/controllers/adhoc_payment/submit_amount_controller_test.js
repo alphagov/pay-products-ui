@@ -1,7 +1,6 @@
 'use strict'
 const chai = require('chai')
 const config = require('../../../../config')
-const cheerio = require('cheerio')
 const nock = require('nock')
 const csrf = require('csrf')
 const supertest = require('supertest')
@@ -10,7 +9,7 @@ const {getMockSession, createAppWithSession} = require('../../../test_helpers/mo
 const productFixtures = require('../../../fixtures/product_fixtures')
 const paths = require('../../../../app/paths')
 const expect = chai.expect
-let product, payment, response, session, $
+let product, payment, response, session
 
 describe('adhoc payment submit-amount controller', function () {
   afterEach(() => {
@@ -42,7 +41,6 @@ describe('adhoc payment submit-amount controller', function () {
         })
         .end((err, res) => {
           response = res
-          $ = cheerio.load(res.text || '')
           done(err)
         })
     })
@@ -57,7 +55,6 @@ describe('adhoc payment submit-amount controller', function () {
   })
 
   describe('when an empty amount is submitted', function () {
-
     before(done => {
       product = productFixtures.validCreateProductResponse({type: 'ADHOC'}).getPlain()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
@@ -69,7 +66,6 @@ describe('adhoc payment submit-amount controller', function () {
         })
         .end((err, res) => {
           response = res
-          $ = cheerio.load(res.text || '')
           done(err)
         })
     })
@@ -86,7 +82,6 @@ describe('adhoc payment submit-amount controller', function () {
   })
 
   describe('when an invalid amount is submitted', function () {
-
     before(done => {
       product = productFixtures.validCreateProductResponse({type: 'ADHOC'}).getPlain()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
@@ -100,7 +95,6 @@ describe('adhoc payment submit-amount controller', function () {
         })
         .end((err, res) => {
           response = res
-          $ = cheerio.load(res.text || '')
           done(err)
         })
     })
@@ -117,7 +111,6 @@ describe('adhoc payment submit-amount controller', function () {
   })
 
   describe('when the amount is bigger than the max amount supported by Pay', function () {
-
     before(done => {
       product = productFixtures.validCreateProductResponse({type: 'ADHOC'}).getPlain()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
@@ -131,7 +124,6 @@ describe('adhoc payment submit-amount controller', function () {
         })
         .end((err, res) => {
           response = res
-          $ = cheerio.load(res.text || '')
           done(err)
         })
     })
