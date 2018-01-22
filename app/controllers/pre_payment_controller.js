@@ -8,7 +8,7 @@ const response = require('../utils/response')
 const errorResponse = response.renderErrorView
 
 const makePayment = require('./make_payment_controller')
-const paths = require('../paths.js')
+const adhocPaymentCtrl = require('./adhoc_payment')
 
 // Constants
 const messages = {
@@ -25,7 +25,7 @@ module.exports = (req, res) => {
     case ('PROTOTYPE'):
       return makePayment(req, res)
     case ('ADHOC'):
-      return res.redirect(303, paths.adhocPayment.howToPay.replace(/:productExternalId/, product.externalId))
+      return adhocPaymentCtrl.index(req, res)
   }
 
   logger.error(`[${correlationId}] error routing product of type ${product.type}`)

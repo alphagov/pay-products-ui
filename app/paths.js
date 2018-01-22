@@ -15,7 +15,7 @@ module.exports = {
     failure: '/failed'
   },
   adhocPayment: {
-    howToPay: '/adhoc/how-to-pay/:productExternalId'
+    amount: '/pay/:productExternalId/enter-amount'
   },
   healthcheck: {
     path: '/healthcheck'

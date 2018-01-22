@@ -16,9 +16,10 @@ const messages = {
 module.exports = (req, res) => {
   const product = req.product
   const correlationId = req.correlationId
+  const paymentAmount = req.paymentAmount // should be undefined for non adhoc payments
   if (product) {
     logger.info(`[${correlationId}] creating charge for product ${product.name}`)
-    return productsClient.payment.create(product.externalId)
+    return productsClient.payment.create(product.externalId, paymentAmount)
       .then(payment => {
         logger.info(`[${correlationId}] initiating payment for charge ${payment.externalChargeId}`)
         return res.redirect(303, payment.links.next.href)

@@ -12,9 +12,10 @@ const prePaymentCtrl = require('./controllers/pre_payment_controller')
 const completeCtrl = require('./controllers/payment_complete_controller')
 const failedCtrl = require('./controllers/demo_payment/payment_failed_controller')
 const successCtrl = require('./controllers/demo_payment/payment_success_controller')
-const howToPayCtrl = require('./controllers/adhoc_payment/how_to_pay_controller')
+const adhocPaymentCtrl = require('./controllers/adhoc_payment')
 
 // Middleware
+const {validateAndRefreshCsrf, ensureSessionHasCsrfSecret} = require('./middleware/csrf')
 const resolveProduct = require('./middleware/resolve_product')
 const resolvePaymentAndProduct = require('./middleware/resolve_payment_and_product')
 // - Middleware
@@ -40,7 +41,7 @@ module.exports.bind = function (app) {
   app.all(staticPaths.naxsiError, staticCtrl.naxsiError)
 
   // CREATE PAYMENT
-  app.get(pay.product, resolveProduct, prePaymentCtrl)
+  app.get(pay.product, ensureSessionHasCsrfSecret, resolveProduct, prePaymentCtrl)
 
   // DEMO SPECIFIC SCREENS
   app.get(pay.complete, resolvePaymentAndProduct, completeCtrl)
@@ -48,5 +49,6 @@ module.exports.bind = function (app) {
   app.get(demoPayment.success, successCtrl)
 
   // ADHOC SPECIFIC SCREENS
-  app.get(adhocPayment.howToPay, resolveProduct, howToPayCtrl)
+  app.post(pay.product, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, adhocPaymentCtrl.getAmount)
+  app.post(adhocPayment.amount, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, adhocPaymentCtrl.submitAmount)
 }
