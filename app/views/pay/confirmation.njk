@@ -1,17 +1,17 @@
 {% extends "../layout.njk" %}
 
 {% block page_title %}
-Your payment was successful - {{currentServiceName}} {{currentGatewayAccount.full_type}} - GOV.UK Pay
+Your payment was successful - {{currentServiceName}} - GOV.UK Pay
 {% endblock %}
 
-{% block mainContent %}
+{% block main_content %}
 <div class="govuk-box-highlight">
   <h1 class="heading-xlarge">
     Your payment was successful
   </h1>
   <p class="font-large">
     Your payment reference number is <br>
-      {{ payment.reference }}
+      <div id="payment-reference">{{ payment.reference }}</div>
   </p>
 </div>
 
@@ -29,7 +29,7 @@ Your payment was successful - {{currentServiceName}} {{currentGatewayAccount.ful
     </tr>
     <tr>
       <td>Total amount:</td>
-      <td class="table-info">{{ payment.amount }}</td>
+      <td class="table-info"><div id="payment-amount">{{ payment.amount }}</div></td>
     </tr>
   </tbody>
 </table>
