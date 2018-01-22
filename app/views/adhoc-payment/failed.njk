@@ -1,0 +1,15 @@
+{% extends "../layout.njk" %}
+
+{% block page_title %}
+Your payment has been declined - {{currentServiceName}} - GOV.UK Pay
+{% endblock %}
+
+{% block mainContent %}
+<h2 class="heading-medium">Your payment has been declined</h2>
+<p>
+  Contact your bank for more details. No money has been taken from your account.
+</p>
+<p>
+  <a href="{{backToStartPage}}">Go back to try the payment again</a>
+</p>
+{% endblock %}
