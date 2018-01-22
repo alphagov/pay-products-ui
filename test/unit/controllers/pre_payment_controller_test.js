@@ -97,7 +97,7 @@ describe('pre payment controller', function () {
           done(err)
         })
     })
-    it('should redirect with code: 200 \'OK\'', () => {
+    it('should respond with code: 200 \'OK\'', () => {
       expect(response.statusCode).to.equal(200)
     })
   })

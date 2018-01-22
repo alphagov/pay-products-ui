@@ -13,7 +13,8 @@ module.exports = (req, res) => {
     productExternalId: product.externalId,
     serviceName: product.serviceName,
     productName: product.name,
-    productDescription: product.description
+    productDescription: product.description,
+    csrf: res.locals.csrf
   }
 
   logger.info(`[${correlationId}] initiating product payment for ${product.externalId}`)
