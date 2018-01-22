@@ -14,9 +14,9 @@ module.exports = () => {
   }
 
   function update (e) {
-    let input = e.target
-    let value = input.value
-    let confirmationId = `${input.id}-confirmation`
+    const input = e.target
+    const value = input.value
+    const confirmationId = `${input.id}-confirmation`
     let confirmation = document.getElementById(confirmationId)
     const confirmationLabel = input.dataset.confirmationLabel
     const confirmationPrepend = input.dataset.confirmationPrepend

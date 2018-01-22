@@ -19,7 +19,7 @@ module.exports = {
 
 // Middleware methods
 function validateAndRefreshCsrf (req, res, next) {
-  let session = req.session
+  const session = req.session
   if (!session) {
     logger.warn('Session is not defined')
     return errorView(req, res, errorMsg, 400)
@@ -42,7 +42,7 @@ function validateAndRefreshCsrf (req, res, next) {
 function ensureSessionHasCsrfSecret (req, res, next) {
   if (req.session.csrfSecret) return next()
   req.session.csrfSecret = csrf().secretSync()
-  let correlationId = req.headers[CORRELATION_HEADER] || ''
+  const correlationId = req.headers[CORRELATION_HEADER] || ''
   logger.debug(`[${correlationId}] Saved csrfSecret: ${req.session.csrfSecret}`)
 
   return next()
