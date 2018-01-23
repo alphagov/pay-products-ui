@@ -1,0 +1,36 @@
+{% extends "../layout.njk" %}
+
+{% block page_title %}
+Your payment was successful - {{currentServiceName}} - GOV.UK Pay
+{% endblock %}
+
+{% block main_content %}
+<div class="govuk-box-highlight">
+  <h1 class="heading-xlarge">
+    Your payment was successful
+  </h1>
+  <p class="font-large">
+    Your payment reference number is <br>
+      <div id="payment-reference">{{ payment.reference }}</div>
+  </p>
+</div>
+
+<h2 class="heading-medium">What happens next</h2>
+<p>
+  We have sent you a confirmation email.
+</p>
+
+<h2 class="heading-medium">Payment summary</h2>
+<table class="mb2">
+  <tbody>
+    <tr>
+      <td>Payment for:</td>
+      <td class="table-info">{{currentServiceName}}</td>
+    </tr>
+    <tr>
+      <td>Total amount:</td>
+      <td class="table-info"><div id="payment-amount">{{ payment.amount }}</div></td>
+    </tr>
+  </tbody>
+</table>
+{% endblock %}
