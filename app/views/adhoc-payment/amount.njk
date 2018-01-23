@@ -8,7 +8,7 @@
 <h1 class="heading-large">
   Enter the amount you want to pay
 </h1>
-<form action="/pay/{{productExternalId}}/enter-amount" data-validate>
+<form action="/pay/{{productExternalId}}/enter-amount" data-validate method="POST">
   <input id="csrf" name="csrfToken" type="hidden" value="{{csrf}}"/>
   <div class="currency-input form-group">
     <label class="form-label-bold" for="payment-amount">

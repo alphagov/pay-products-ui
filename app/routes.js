@@ -41,7 +41,7 @@ module.exports.bind = function (app) {
   app.all(staticPaths.naxsiError, staticCtrl.naxsiError)
 
   // CREATE PAYMENT
-  app.get(pay.product, ensureSessionHasCsrfSecret, resolveProduct, prePaymentCtrl)
+  app.get(pay.product, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, prePaymentCtrl)
 
   // DEMO SPECIFIC SCREENS
   app.get(pay.complete, resolvePaymentAndProduct, completeCtrl)
