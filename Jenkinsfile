@@ -40,8 +40,7 @@ pipeline {
         branch 'master'
       }
       steps {
-        deployPaas("products-ui", "test", null, true)
-        deploy("products-ui", "test", null, false, true, "uk.gov.pay.endtoend.categories.SmokeProducts", true)
+        deploy("products-ui", "test", null, true, true, "uk.gov.pay.endtoend.categories.SmokeProducts", true)
       }
     }
   }
