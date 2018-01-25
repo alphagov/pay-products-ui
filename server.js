@@ -138,12 +138,12 @@ function listen () {
 function initialise () {
   const app = unconfiguredApp
   app.disable('x-powered-by')
-  app.use(flash())
   initialiseTLS(app)
   initialiseProxy(app)
   initialiseCookies(app)
-
   initialiseGlobalMiddleware(app)
+
+  app.use(flash())
   initialiseTemplateEngine(app)
   initialiseRoutes(app)
   initialisePublic(app)

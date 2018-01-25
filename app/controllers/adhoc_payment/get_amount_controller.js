@@ -13,6 +13,11 @@ module.exports = (req, res) => {
     serviceName: product.serviceName,
     productExternalId: product.externalId
   }
+  if (req.errorMessage) {
+    data.flash = {
+      genericError: req.errorMessage
+    }
+  }
 
   logger.info(`[${correlationId}] getting amount for product payment ${product.externalId}`)
   response(req, res, 'adhoc-payment/amount', data)
