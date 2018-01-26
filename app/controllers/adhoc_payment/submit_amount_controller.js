@@ -12,10 +12,10 @@ module.exports = (req, res) => {
   let paymentAmount = req.body['payment-amount']
 
   if (!paymentAmount || isCurrency(paymentAmount)) {
-    req.flash('genericError', `<h2>Use valid characters only</h2> ${isCurrency(paymentAmount)}`)
+    req.errorMessage = `<h2>${isCurrency(paymentAmount)}</h2>`
     getAmount(req, res)
   } else if (isAboveMaxAmount(paymentAmount)) {
-    req.flash('genericError', `<h2>Enter a valid amount</h2> ${isAboveMaxAmount(paymentAmount)}`)
+    req.errorMessage = `<h2>${isAboveMaxAmount(paymentAmount)}</h2>`
     getAmount(req, res)
   } else {
     paymentAmount = paymentAmount.replace(/[^0-9.-]+/g, '')

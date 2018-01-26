@@ -3,13 +3,14 @@ const chai = require('chai')
 const config = require('../../../../config')
 const nock = require('nock')
 const csrf = require('csrf')
+const cheerio = require('cheerio')
 const supertest = require('supertest')
 const {getApp} = require('../../../../server')
 const {getMockSession, createAppWithSession} = require('../../../test_helpers/mock_session')
 const productFixtures = require('../../../fixtures/product_fixtures')
 const paths = require('../../../../app/paths')
 const expect = chai.expect
-let product, payment, response, session
+let product, payment, response, session, $
 
 describe('adhoc payment submit-amount controller', function () {
   afterEach(() => {
@@ -66,6 +67,7 @@ describe('adhoc payment submit-amount controller', function () {
         })
         .end((err, res) => {
           response = res
+          $ = cheerio.load(res.text || '')
           done(err)
         })
     })
@@ -75,9 +77,7 @@ describe('adhoc payment submit-amount controller', function () {
     })
 
     it('should add a relevant error message to the session \'flash\'', () => {
-      expect(session.flash).to.have.property('genericError')
-      expect(session.flash.genericError.length).to.equal(1)
-      expect(session.flash.genericError[0]).to.equal(`<h2>Use valid characters only</h2> Choose an amount in pounds and pence using digits and a decimal point. For example “10.50”`)
+      expect($('.generic-error').text()).to.include(`Choose an amount in pounds and pence using digits and a decimal point. For example “10.50”`)
     })
   })
 
@@ -95,6 +95,7 @@ describe('adhoc payment submit-amount controller', function () {
         })
         .end((err, res) => {
           response = res
+          $ = cheerio.load(res.text || '')
           done(err)
         })
     })
@@ -104,9 +105,7 @@ describe('adhoc payment submit-amount controller', function () {
     })
 
     it('should add a relevant error message to the session \'flash\'', () => {
-      expect(session.flash).to.have.property('genericError')
-      expect(session.flash.genericError.length).to.equal(1)
-      expect(session.flash.genericError[0]).to.equal(`<h2>Use valid characters only</h2> Choose an amount in pounds and pence using digits and a decimal point. For example “10.50”`)
+      expect($('.generic-error').text()).to.include(`Choose an amount in pounds and pence using digits and a decimal point. For example “10.50”`)
     })
   })
 
@@ -115,7 +114,7 @@ describe('adhoc payment submit-amount controller', function () {
       product = productFixtures.validCreateProductResponse({type: 'ADHOC'}).getPlain()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
       session = getMockSession()
-      const bigAmount = '10000000.50'
+      const bigAmount = '100000000.50'
       supertest(createAppWithSession(getApp(), session))
         .post(paths.adhocPayment.amount.replace(':productExternalId', product.external_id))
         .send({
@@ -124,6 +123,7 @@ describe('adhoc payment submit-amount controller', function () {
         })
         .end((err, res) => {
           response = res
+          $ = cheerio.load(res.text || '')
           done(err)
         })
     })
@@ -133,9 +133,7 @@ describe('adhoc payment submit-amount controller', function () {
     })
 
     it('should add a relevant error message to the session \'flash\'', () => {
-      expect(session.flash).to.have.property('genericError')
-      expect(session.flash.genericError.length).to.equal(1)
-      expect(session.flash.genericError[0]).to.equal(`<h2>Enter a valid amount</h2> Choose an amount under £10,000,000`)
+      expect($('.generic-error').text()).to.include(`Choose an amount under £10,000,000`)
     })
   })
 })

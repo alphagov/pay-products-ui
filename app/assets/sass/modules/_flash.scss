@@ -1,0 +1,24 @@
+.notification {
+  @include core-19;
+  margin-bottom: $gutter;
+  padding: $gutter $gutter / 2;
+  border: 5px solid $green;
+
+  h2 {
+    margin: 0 0 em(20, 24);
+    @include core-24;
+    font-weight: bold;
+  }
+
+  p:only-child {
+    margin-bottom: 0;
+  }
+}
+
+.generic-error {
+  border-color: $red;
+}
+
+.error-summary ul {
+  list-style: none;
+}

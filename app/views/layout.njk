@@ -20,7 +20,8 @@
 
 {% block content %}
   <main id="content" class="pad-bottom" role="main">
-      {% block full_width_content %}{% endblock %}
+    {% include "includes/flash.njk" %}
+    {% block full_width_content %}{% endblock %}
     <div class="grid-row">
       <div class="column-two-thirds">
           {% block main_content %}{% endblock %}

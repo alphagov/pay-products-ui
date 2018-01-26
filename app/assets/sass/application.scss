@@ -32,7 +32,8 @@ $grey-8: #fff;
 // Overrides
 @import "gov-uk-overrides/_grid";
 
-// Pages
+// Modules
 @import "modules/demo-confirmation";
 @import "modules/currency-input";
 @import "modules/input-confirm";
+@import "modules/flash";
