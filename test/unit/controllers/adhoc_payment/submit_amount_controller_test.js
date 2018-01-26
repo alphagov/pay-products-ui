@@ -12,7 +12,7 @@ const paths = require('../../../../app/paths')
 const expect = chai.expect
 let product, payment, response, session, $
 
-describe.only('adhoc payment submit-amount controller', function () {
+describe('adhoc payment submit-amount controller', function () {
   afterEach(() => {
     nock.cleanAll()
   })
