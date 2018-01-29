@@ -19,8 +19,7 @@ let productsMock, request, response, result
 function getProductsClient (baseUrl = `http://localhost:${mockPort}`, productsApiKey = 'ABC1234567890DEF') {
   return proxyquire('../../../../../app/services/clients/products_client', {
     '../../../config': {
-      PRODUCTS_URL: baseUrl,
-      PRODUCTS_API_TOKEN: productsApiKey
+      PRODUCTS_URL: baseUrl
     }
   })
 }
@@ -66,7 +65,6 @@ describe('products client - create a new product', () => {
       )
         .then(() => productsClient.product.create({
           gatewayAccountId: requestPlain.gateway_account_id,
-          payApiToken: requestPlain.pay_api_token,
           name: requestPlain.name,
           price: requestPlain.price,
           description: requestPlain.description,
@@ -109,7 +107,6 @@ describe('products client - create a new product', () => {
       const requestPlain = request.getPlain()
       productsMock.addInteraction(
         new PactInteractionBuilder(PRODUCT_RESOURCE)
-          .withUponReceiving('a valid create product request with invalid PRODUCTS_API_TOKEN')
           .withMethod('POST')
           .withRequestBody(request.getPactified())
           .withStatusCode(401)
@@ -117,7 +114,6 @@ describe('products client - create a new product', () => {
       )
         .then(() => productsClient.product.create({
           gatewayAccountId: requestPlain.gateway_account_id,
-          payApiToken: requestPlain.pay_api_token,
           name: requestPlain.name,
           price: requestPlain.price,
           description: requestPlain.description,
@@ -142,7 +138,7 @@ describe('products client - create a new product', () => {
   describe('create a product - bad request', () => {
     before(done => {
       const productsClient = getProductsClient()
-      request = productFixtures.validCreateProductRequest({pay_api_token: ''})
+      request = productFixtures.validCreateProductRequest()
       const requestPlain = request.getPlain()
       productsMock.addInteraction(
         new PactInteractionBuilder(PRODUCT_RESOURCE)
@@ -154,7 +150,6 @@ describe('products client - create a new product', () => {
       )
         .then(() => productsClient.product.create({
           gatewayAccountId: requestPlain.gateway_account_id,
-          payApiToken: requestPlain.pay_api_token,
           name: requestPlain.name,
           price: requestPlain.price,
           description: requestPlain.description,
