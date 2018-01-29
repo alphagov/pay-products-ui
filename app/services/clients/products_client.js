@@ -4,16 +4,13 @@
 const Product = require('../../models/Product.class')
 const Payment = require('../../models/Payment.class')
 const baseClient = require('./base_client/base_client')
-const {PRODUCTS_URL, PRODUCTS_API_TOKEN} = require('../../../config')
+const {PRODUCTS_URL} = require('../../../config')
 
 // Constants
 const SERVICE_NAME = 'products'
 
 // Use baseurl to create a baseclient for the product microservice
 const baseUrl = `${PRODUCTS_URL}/v1/api`
-const headers = {
-  Authorization: `Bearer ${PRODUCTS_API_TOKEN}`
-}
 
 // Exports
 module.exports = {
@@ -43,13 +40,11 @@ module.exports = {
  */
 function createProduct (options) {
   return baseClient.post({
-    headers,
     baseUrl,
     url: `/products`,
     json: true,
     body: {
       gateway_account_id: options.gatewayAccountId,
-      pay_api_token: options.payApiToken,
       name: options.name,
       price: options.price,
       description: options.description,
@@ -66,7 +61,6 @@ function createProduct (options) {
  */
 function getProductByExternalId (externalProductId) {
   return baseClient.get({
-    headers,
     baseUrl,
     url: `/products/${externalProductId}`,
     description: `find a product by it's external id`,
@@ -80,7 +74,6 @@ function getProductByExternalId (externalProductId) {
  */
 function getProductsByGatewayAccountId (gatewayAccountId) {
   return baseClient.get({
-    headers,
     baseUrl,
     url: '/products',
     qs: {
@@ -97,7 +90,6 @@ function getProductsByGatewayAccountId (gatewayAccountId) {
  */
 function disableProduct (productExternalId) {
   return baseClient.patch({
-    headers,
     baseUrl,
     url: `/products/${productExternalId}/disable`,
     description: `disable a product`,
@@ -113,7 +105,6 @@ function disableProduct (productExternalId) {
  */
 function createPayment (productExternalId, price) {
   const createPaymentRequest = {
-    headers,
     baseUrl,
     url: `/products/${productExternalId}/payments`,
     description: 'create a payment for a product',
@@ -134,7 +125,6 @@ function createPayment (productExternalId, price) {
  */
 function getPaymentByPaymentExternalId (paymentExternalId) {
   return baseClient.get({
-    headers,
     baseUrl,
     url: `/payments/${paymentExternalId}`,
     description: `find a payment by it's external id`,
@@ -148,7 +138,6 @@ function getPaymentByPaymentExternalId (paymentExternalId) {
  */
 function getPaymentsByProductExternalId (productExternalId) {
   return baseClient.get({
-    headers,
     baseUrl,
     url: `/products/${productExternalId}/payments`,
     description: `find a payments associated with a particular product`,

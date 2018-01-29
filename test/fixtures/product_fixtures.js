@@ -17,7 +17,6 @@ module.exports = {
   validCreateProductRequest: (opts = {}) => {
     const data = {
       gateway_account_id: opts.gatewayAccountId || randomGatewayAccountId(),
-      pay_api_token: opts.payApiToken || 'pay-api-token',
       name: opts.name || 'A Product Name',
       price: opts.price || randomPrice()
     }
