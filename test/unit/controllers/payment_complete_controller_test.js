@@ -160,13 +160,12 @@ describe('payment complete controller', () => {
           })
       })
 
-      it('should respond with status code 200', () => {
-        expect(response.statusCode).to.equal(200)
+      it('should redirect with status code 302', () => {
+        expect(response.statusCode).to.equal(302)
       })
 
-      it('should redirect to the payment success page', () => {
-        expect($('title').text()).to.include(`Your payment has been declined - ${product.service_name}`)
-        expect($('#restart-payment').children('a').attr('href')).to.equal(`/pay/${product.external_id}`)
+      it('should redirect to the payment start page', () => {
+        expect(response.header).property('location').to.include(`/pay/${product.external_id}`)
       })
     })
   })
