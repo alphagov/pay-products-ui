@@ -11,3 +11,5 @@ staging-2.alpha_staging-2-51.status=success
 production-2.tag=FAILED-51
 
 production-2.FAILED-51.date=
+
+production-2.FAILED-51.status=failed
