@@ -133,7 +133,7 @@ describe('adhoc payment submit-amount controller', function () {
     })
 
     it('should add a relevant error message to the session \'flash\'', () => {
-      expect($('.generic-error').text()).to.include(`Choose an amount under £10,000,000`)
+      expect($('.generic-error').text()).to.include(`Choose an amount under £100,000`)
     })
   })
 })
