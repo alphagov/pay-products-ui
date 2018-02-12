@@ -8,8 +8,8 @@ const {isAboveMaxAmount} = require('../../../app/browsered/field-validation-chec
 
 describe('field validation checks', () => {
   describe('isAboveMaxAmount', () => {
-    it('should return an error string if it is passed an currency string exceeding £10 million', () => {
-      expect(isAboveMaxAmount('10000000.01')).to.equal(`Choose an amount under £10,000,000`)
+    it('should return an error string if it is passed an currency string exceeding £100 thousands', () => {
+      expect(isAboveMaxAmount('10000000.01')).to.equal(`Choose an amount under £100,000`)
     })
 
     it('should not return false if it is not passed an currency string', () => {
