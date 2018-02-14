@@ -58,7 +58,7 @@ exports.isHttps = function (value) {
 }
 
 exports.isAboveMaxAmount = value => {
-  if (!exports.isCurrency(value) && parseFloat(value) >= MAX_AMOUNT) {
+  if (!exports.isCurrency(value) && parseFloat(value) > MAX_AMOUNT) {
     return validationErrors.isAboveMaxAmount
   }
   return false
