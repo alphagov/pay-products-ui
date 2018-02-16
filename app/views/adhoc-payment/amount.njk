@@ -1,38 +1,44 @@
 {% extends "../layout.njk" %}
 
-{% block page_title %}
-  Enter the amount you want to pay - {{serviceName}}
-{% endblock %}
+        {% block page_title %}
+        Enter the amount you want to pay - {{serviceName}}
+        {% endblock %}
 
-{% block main_content %}
+        {% block main_content %}
 <h1 class="heading-large page-title">
-  Enter the amount you want to pay
+    Enter the amount you want to pay
 </h1>
 <form action="/pay/{{productExternalId}}/enter-amount" data-validate method="POST">
-  <input id="csrf" name="csrfToken" type="hidden" value="{{csrf}}"/>
-  <div class="currency-input form-group">
+<input id="csrf" name="csrfToken" type="hidden" value="{{csrf}}"/>
+<div class="currency-input form-group">
     <label class="form-label-bold" for="payment-amount">
-      Payment amount
-      <span class="visually-hidden">in £</span>
+        Payment amount
+        <span class="visually-hidden">in £</span>
     </label>
-    <div class="currency-input__inner">
-      <span class="currency-input__inner__unit">£</span>
-      <input class="form-control"
-        aria-label="Enter amount in pounds"
-        name="payment-amount"
-        data-non-numeric=""
-        type="text"
-        id="payment-amount"
-        value=""
-        autofocus=""
-        data-validate="required currency"
-        data-confirmation="true"
-        data-confirmation-label="Amount to pay: "
-        data-confirmation-prepend="£"/>
-    </div>
-  </div>
-  <button type="submit" class="button">
+    {% if price %}
+        <div class="panel panel-border-wide">
+            <h2 id="payment-amount" class="lede">{{ price }}</h2>
+        </div>
+    {% else %}
+        <div class="currency-input__inner">
+            <span class="currency-input__inner__unit">£</span>
+            <input class="form-control"
+                   aria-label="Enter amount in pounds"
+                   name="payment-amount"
+                   data-non-numeric=""
+                   type="text"
+                   id="payment-amount"
+                   value=""
+                   autofocus=""
+                   data-validate="required currency"
+                   data-confirmation="true"
+                   data-confirmation-label="Amount to pay: "
+                   data-confirmation-prepend="£"/>
+        </div>
+    {% endif %}
+</div>
+<button type="submit" class="button">
     Proceed to payment
-  </button>
+</button>
 </form>
-{% endblock %}
+        {% endblock %}
