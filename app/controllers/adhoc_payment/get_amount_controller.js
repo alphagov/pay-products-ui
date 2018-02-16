@@ -2,9 +2,14 @@
 
 // Node.js core dependencies
 const logger = require('winston')
+const currencyFormatter = require('currency-formatter')
 
 // Custom dependencies
 const response = require('../../utils/response').response
+
+function asGBP (amountInPence) {
+  return currencyFormatter.format((amountInPence / 100).toFixed(2), {code: 'GBP'})
+}
 
 module.exports = (req, res) => {
   const product = req.product
@@ -12,6 +17,9 @@ module.exports = (req, res) => {
   const data = {
     serviceName: product.serviceName,
     productExternalId: product.externalId
+  }
+  if (product.price) {
+    data.price = asGBP(product.price)
   }
   if (req.errorMessage) {
     data.flash = {

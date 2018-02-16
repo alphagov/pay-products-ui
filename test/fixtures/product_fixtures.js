@@ -73,8 +73,11 @@ module.exports = {
       name: opts.name || 'A Product Name',
       service_name: opts.service_name || 'An example service name',
       description: opts.description || '',
-      price: opts.price || randomPrice(),
+      price: opts.price,
       _links: opts.links
+    }
+    if (data.type !== 'ADHOC') {
+      data.price = data.price || randomPrice()
     }
     if (opts.description) data.description = opts.description
     if (opts.return_url) data.return_url = opts.return_url
