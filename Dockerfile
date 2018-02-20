@@ -1,4 +1,4 @@
-FROM node:6.12.2-alpine
+FROM govukpay/nodejs:6.12.2
 
 RUN apk update &&\
     apk upgrade &&\
