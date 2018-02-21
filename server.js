@@ -23,7 +23,6 @@ exports.staticify = staticify
 const router = require('./app/routes')
 const noCache = require('./app/utils/no_cache')
 const customCertificate = require('./app/utils/custom_certificate')
-const proxy = require('./app/utils/proxy')
 const errorHandler = require('./app/middleware/error_handler')
 const middlewareUtils = require('./app/utils/middleware')
 const cookieUtil = require('./app/utils/cookie')
@@ -63,11 +62,6 @@ function initialiseGlobalMiddleware (app) {
   })
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({extended: true}))
-}
-
-function initialiseProxy (app) {
-  app.enable('trust proxy')
-  proxy.use()
 }
 
 function initialiseTemplateEngine (app) {
@@ -139,7 +133,6 @@ function initialise () {
   const app = unconfiguredApp
   app.disable('x-powered-by')
   initialiseTLS(app)
-  initialiseProxy(app)
   initialiseCookies(app)
   initialiseGlobalMiddleware(app)
 
