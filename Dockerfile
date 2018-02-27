@@ -8,6 +8,7 @@ ENV PORT 9000
 EXPOSE 9000
 
 ADD package.json /tmp/package.json
+ADD npm-shrinkwrap.json /tmp/npm-shrinkwrap.json
 RUN cd /tmp && npm install --production
 
 WORKDIR /app
