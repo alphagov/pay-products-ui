@@ -24,13 +24,13 @@ exports.addCertsToAgent = agentOptions => {
   }
 
   agentOptions.ca = agentOptions.ca || []
-    // Read everything from the certificates directories
-    // Get everything that isn't a directory (e.g. files, symlinks)
-    // Read it (assume it is a certificate)
-    // Add it to the agentOptions list of CAs
+  // Read everything from the certificates directories
+  // Get everything that isn't a directory (e.g. files, symlinks)
+  // Read it (assume it is a certificate)
+  // Add it to the agentOptions list of CAs
   fs.readdirSync(certsPath)
-      .map(certPath => path.join(certsPath, certPath))
-      .filter(fullCertPath => !fs.lstatSync(fullCertPath).isDirectory())
-      .map(fullCertPath => fs.readFileSync(fullCertPath))
-      .forEach(ca => agentOptions.ca.push(ca))
+    .map(certPath => path.join(certsPath, certPath))
+    .filter(fullCertPath => !fs.lstatSync(fullCertPath).isDirectory())
+    .map(fullCertPath => fs.readFileSync(fullCertPath))
+    .forEach(ca => agentOptions.ca.push(ca))
 }

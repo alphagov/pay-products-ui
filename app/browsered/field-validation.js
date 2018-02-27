@@ -25,7 +25,7 @@ function initValidation (e) {
   clearPreviousErrors()
 
   let validatedFields = findFields(form)
-  .map(field => validateField(form, field))
+    .map(field => validateField(form, field))
 
   if (every(validatedFields)) {
     form.submit()
