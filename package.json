@@ -85,7 +85,7 @@
     "grunt-contrib-copy": "1.0.x",
     "grunt-contrib-watch": "1.0.x",
     "grunt-nodemon": "0.4.x",
-    "grunt-sass": "2.1.0",
+    "grunt-sass": "2.1.x",
     "grunt-text-replace": "0.4.x",
     "html5shiv": "3.7.x",
     "jquery": "^3.2.1",
