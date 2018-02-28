@@ -26,8 +26,7 @@
   "scripts": {
     "compile": "grunt generate-assets",
     "clean": "grunt clean",
-    "start": "node_modules/forever/bin/forever --minUptime 1000 --spinSleepTime 500 start.js",
-    "stop": "node_modules/forever/bin/forever stop start.js",
+    "start": "node ./start.js",
     "watch": "chokidar app test *.js --initial -c 'npm run test'",
     "watch-live-reload": "./node_modules/.bin/grunt watch",
     "lint": "./node_modules/.bin/standard",
@@ -44,7 +43,6 @@
     "connect-flash": "^0.1.1",
     "correlation-id": "^2.0.0",
     "express": "4.16.x",
-    "forever": "0.15.x",
     "lodash": "4.17.x",
     "minimist": "1.2.x",
     "morgan": "1.9.x",
