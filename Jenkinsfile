@@ -40,7 +40,8 @@ pipeline {
         branch 'master'
       }
       steps {
-        deploy("products-ui", "test", null, true, true, "uk.gov.pay.endtoend.categories.SmokeProducts", true)
+        deploy("products-ui", "test", null, false, false, "uk.gov.pay.endtoend.categories.SmokeProducts", true)
+        deployEcs("products-ui", "test", null, true, true, "uk.gov.pay.endtoend.categories.SmokeProducts", true)
       }
     }
   }
