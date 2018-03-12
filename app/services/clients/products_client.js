@@ -75,10 +75,7 @@ function getProductByExternalId (externalProductId) {
 function getProductsByGatewayAccountId (gatewayAccountId) {
   return baseClient.get({
     baseUrl,
-    url: '/products',
-    qs: {
-      gatewayAccountId
-    },
+    url: `/gateway-account/${gatewayAccountId}/products`,
     description: 'find a list products associated with a gateway account',
     service: SERVICE_NAME
   }).then(products => products.map(product => new Product(product)))
