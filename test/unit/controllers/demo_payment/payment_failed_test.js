@@ -33,7 +33,7 @@ describe('payment failed controller', () => {
   it('should describe how failed payments are handled in GOV.UK Pay with a link to the documentation', () => {
     expect($('p.scenario-description').text()).to.equal('If the payment fails, the user will see a GOV.UK Pay error page. This includes a link to return to your service where you should give them useful next steps.')
     const docsLink = $('a.scenario-docs-link')
-    expect(docsLink.attr('href')).to.equal('https://govukpay-docs.cloudapps.digital#payment-flow-payment-fails')
+    expect(docsLink.attr('href')).to.equal('https://docs.payments.service.gov.uk#payment-flow-payment-fails')
     expect(docsLink.text()).to.equal('See what you should do after a failed payment in our documentation')
   })
 
@@ -46,7 +46,7 @@ describe('payment failed controller', () => {
     expect($('p.try-a-different-card-number').text()).to.equal('Try a different card number to see a successful confirmation.')
     const differentCardNumbersLink = $('p.try-a-different-card-number a')
     expect(differentCardNumbersLink.text()).to.equal('Try a different card number')
-    expect(differentCardNumbersLink.attr('href')).to.equal('https://govukpay-docs.cloudapps.digital#mock-card-numbers-for-testing-purposes')
+    expect(differentCardNumbersLink.attr('href')).to.equal('https://docs.payments.service.gov.uk#mock-card-numbers-for-testing-purposes')
   })
 
   it('should provide a link back to the transactions view in selfservice', () => {

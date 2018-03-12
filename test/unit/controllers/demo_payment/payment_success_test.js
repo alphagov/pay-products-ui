@@ -33,7 +33,7 @@ describe('payment success controller', () => {
   it('should describe how successful payments are handled in GOV.UK Pay with a link to the documentation', () => {
     expect($('p.scenario-description').text()).to.equal('The user will be directed back to your service where you should show a confirmation page.')
     const docsLink = $('a.scenario-docs-link')
-    expect(docsLink.attr('href')).to.equal('https://govukpay-docs.cloudapps.digital#confirmation-page')
+    expect(docsLink.attr('href')).to.equal('https://docs.payments.service.gov.uk#confirmation-page')
     expect(docsLink.text()).to.equal('See how to create a confirmation page in our documentation')
   })
 
