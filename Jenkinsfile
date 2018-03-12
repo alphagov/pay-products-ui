@@ -15,9 +15,14 @@ pipeline {
     stage('Docker Build') {
       steps {
         script {
-          buildApp{
+          buildAppWithMetrics {
             app = "products-ui"
           }
+        }
+      }
+      post {
+        failure {
+          postMetric("products-ui.docker-build.failure", 1, "new")
         }
       }
     }
@@ -29,9 +34,14 @@ pipeline {
     stage('Docker Tag') {
       steps {
         script {
-          dockerTag {
+          dockerTagWithMetrics {
             app = "products-ui"
           }
+        }
+      }
+      post {
+        failure {
+          postMetric("products-ui.docker-tag.failure", 1, "new")
         }
       }
     }
@@ -43,6 +53,14 @@ pipeline {
         deploy("products-ui", "test", null, false, false, "uk.gov.pay.endtoend.categories.SmokeProducts", true)
         deployEcs("products-ui", "test", null, true, true, "uk.gov.pay.endtoend.categories.SmokeProducts", true)
       }
+    }
+  }
+  post {
+    failure {
+      postMetric("products-ui.failure", 1, "new")
+    }
+    success {
+      postSuccessfulMetrics("products-ui")
     }
   }
 }
