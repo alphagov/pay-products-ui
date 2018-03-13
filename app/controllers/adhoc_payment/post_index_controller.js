@@ -4,7 +4,7 @@
 const {isCurrency, isAboveMaxAmount} = require('../../browsered/field-validation-checks')
 
 const makePayment = require('../make_payment_controller')
-const getAmount = require('./get_amount_controller')
+const index = require('./get_index_controller')
 
 const AMOUNT_FORMAT = /^([0-9]+)(?:\.([0-9]{2}))?$/
 
@@ -18,10 +18,10 @@ module.exports = (req, res) => {
   let paymentAmount = req.body['payment-amount']
   if (!paymentAmount || isCurrency(paymentAmount)) {
     req.errorMessage = `<h2>${isCurrency(paymentAmount)}</h2>`
-    return getAmount(req, res)
+    return index(req, res)
   } else if (isAboveMaxAmount(paymentAmount)) {
     req.errorMessage = `<h2>${isAboveMaxAmount(paymentAmount)}</h2>`
-    return getAmount(req, res)
+    return index(req, res)
   } else {
     paymentAmount = paymentAmount.replace(/[^0-9.-]+/g, '')
     const currencyMatch = AMOUNT_FORMAT.exec(paymentAmount)
