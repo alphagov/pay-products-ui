@@ -3,9 +3,8 @@ const chai = require('chai')
 const config = require('../../../../config')
 const cheerio = require('cheerio')
 const nock = require('nock')
-const csrf = require('csrf')
-const supertest = require('supertest')
 const currencyFormatter = require('currency-formatter')
+const supertest = require('supertest')
 const {getApp} = require('../../../../server')
 const {createAppWithSession} = require('../../../test_helpers/mock_session')
 const productFixtures = require('../../../fixtures/product_fixtures')
@@ -17,7 +16,7 @@ function asGBP (amountInPence) {
   return currencyFormatter.format((amountInPence / 100).toFixed(2), {code: 'GBP'})
 }
 
-describe('adhoc payment get-amount controller', function () {
+describe('adhoc payment index controller', function () {
   afterEach(() => {
     nock.cleanAll()
   })
@@ -33,8 +32,7 @@ describe('adhoc payment get-amount controller', function () {
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
 
       supertest(createAppWithSession(getApp()))
-        .post(paths.pay.product.replace(':productExternalId', product.external_id))
-        .send({csrfToken: csrf().create('123')})
+        .get(paths.pay.product.replace(':productExternalId', product.external_id))
         .end((err, res) => {
           response = res
           $ = cheerio.load(res.text || '')
@@ -46,17 +44,24 @@ describe('adhoc payment get-amount controller', function () {
       expect(response.statusCode).to.equal(200)
     })
 
-    it('should render adhoc payment get amount page', () => {
+    it('should render adhoc payment start page', () => {
       expect($('title').text()).to.include(product.service_name)
-      expect($('form').attr('action')).to.equal(`/pay/${product.external_id}/enter-amount`)
+      expect($('h1.heading-large').text()).to.include(product.name)
+      expect($('p#description').text()).to.include(product.description)
+      expect($('form').attr('action')).to.equal(`/pay/${product.external_id}`)
+    })
+
+    it('should show the amount input', () => {
+      expect($('.form-label-bold').text()).to.include('Payment amount')
+      expect($('#payment-amount').text()).to.include('')
     })
   })
 
-  describe('Fixed amount adhoc payment', function () {
+  describe('fixed amount adhoc payment', function () {
     before(done => {
       product = productFixtures.validCreateProductResponse({
         type: 'ADHOC',
-        price: 3000,
+        price: 600,
         product_name: 'Super duper product',
         service_name: 'Super GOV service',
         description: 'Super duper product description'
@@ -64,8 +69,7 @@ describe('adhoc payment get-amount controller', function () {
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
 
       supertest(createAppWithSession(getApp()))
-        .post(paths.pay.product.replace(':productExternalId', product.external_id))
-        .send({csrfToken: csrf().create('123')})
+        .get(paths.pay.product.replace(':productExternalId', product.external_id))
         .end((err, res) => {
           response = res
           $ = cheerio.load(res.text || '')
@@ -77,10 +81,16 @@ describe('adhoc payment get-amount controller', function () {
       expect(response.statusCode).to.equal(200)
     })
 
-    it('should render adhoc payment get amount page', () => {
+    it('should render adhoc payment start page', () => {
       expect($('title').text()).to.include(product.service_name)
-      expect($('h2#payment-amount').text()).to.include(asGBP(product.price))
-      expect($('form').attr('action')).to.equal(`/pay/${product.external_id}/enter-amount`)
+      expect($('h1.heading-large').text()).to.include(product.name)
+      expect($('p#description').text()).to.include(product.description)
+      expect($('form').attr('action')).to.equal(`/pay/${product.external_id}`)
+    })
+
+    it('should show the fixed amount', () => {
+      expect($('.form-label-bold').text()).to.include('Payment amount')
+      expect($('#payment-amount').text()).to.include(asGBP(product.price))
     })
   })
 })
