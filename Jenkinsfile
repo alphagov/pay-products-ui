@@ -22,7 +22,7 @@ pipeline {
       }
       post {
         failure {
-          postMetric("products-ui.docker-build.failure", 1, "new")
+          postMetric("products-ui.docker-build.failure", 1)
         }
       }
     }
@@ -41,7 +41,7 @@ pipeline {
       }
       post {
         failure {
-          postMetric("products-ui.docker-tag.failure", 1, "new")
+          postMetric("products-ui.docker-tag.failure", 1)
         }
       }
     }
@@ -50,17 +50,16 @@ pipeline {
         branch 'master'
       }
       steps {
-        deploy("products-ui", "test", null, false, false, "uk.gov.pay.endtoend.categories.SmokeProducts", true)
         deployEcs("products-ui", "test", null, true, true, "uk.gov.pay.endtoend.categories.SmokeProducts", true)
       }
     }
   }
   post {
     failure {
-      postMetric("products-ui.failure", 1, "new")
+      postMetric(appendBranchSuffix("products-ui") + ".failure", 1)
     }
     success {
-      postSuccessfulMetrics("products-ui")
+      postSuccessfulMetrics(appendBranchSuffix("products-ui"))
     }
   }
 }
