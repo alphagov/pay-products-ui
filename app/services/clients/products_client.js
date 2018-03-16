@@ -18,6 +18,7 @@ module.exports = {
     create: createProduct,
     disable: disableProduct,
     getByProductExternalId: getProductByExternalId,
+    getByProductPath: getProductByPath,
     getByGatewayAccountId: getProductsByGatewayAccountId
   },
   payment: {
@@ -64,6 +65,20 @@ function getProductByExternalId (externalProductId) {
     baseUrl,
     url: `/products/${externalProductId}`,
     description: `find a product by it's external id`,
+    service: SERVICE_NAME
+  }).then(product => new Product(product))
+}
+
+/**
+ * @param {String} serviceNamePath: the service name path of the product you wish to retrieve
+ * @param {String} productNamePath: the product name path of the product you wish to retrieve
+ * @returns {Promise<Product>}
+ */
+function getProductByPath (serviceNamePath, productNamePath) {
+  return baseClient.get({
+    baseUrl,
+    url: `/products?serviceNamePath=${serviceNamePath}&productNamePath=${productNamePath}`,
+    description: `find a product by it's product path`,
     service: SERVICE_NAME
   }).then(product => new Product(product))
 }
