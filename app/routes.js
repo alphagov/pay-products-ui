@@ -25,7 +25,6 @@ const correlationId = require('./middleware/correlation_id')
 // Assignments
 const {healthcheck, staticPaths, friendlyUrl, pay, demoPayment} = paths
 
-
 // Exports
 module.exports.generateRoute = generateRoute
 module.exports.paths = paths
