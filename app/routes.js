@@ -8,6 +8,7 @@ const paths = require('./paths.js')
 // - Controllers
 const staticCtrl = require('./controllers/static_controller')
 const healthcheckCtrl = require('./controllers/healthcheck_controller')
+const friendlyUrlRedirectCtrl = require('./controllers/friendly_url_redirect_controller')
 const prePaymentCtrl = require('./controllers/pre_payment_controller')
 const completeCtrl = require('./controllers/payment_complete_controller')
 const failedCtrl = require('./controllers/demo_payment/payment_failed_controller')
@@ -22,7 +23,8 @@ const resolvePaymentAndProduct = require('./middleware/resolve_payment_and_produ
 const correlationId = require('./middleware/correlation_id')
 
 // Assignments
-const {healthcheck, staticPaths, pay, demoPayment} = paths
+const {healthcheck, staticPaths, friendlyUrl, pay, demoPayment} = paths
+
 
 // Exports
 module.exports.generateRoute = generateRoute
@@ -39,6 +41,9 @@ module.exports.bind = function (app) {
 
   // STATIC
   app.all(staticPaths.naxsiError, staticCtrl.naxsiError)
+
+  // FRIENDLY URL
+  app.get(friendlyUrl.redirect, friendlyUrlRedirectCtrl)
 
   // CREATE PAYMENT
   app.get(pay.product, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, prePaymentCtrl)

@@ -6,6 +6,9 @@ module.exports = {
   default: {
     index: '/'
   },
+  friendlyUrl: {
+    redirect: '/redirect/:serviceNamePath/:productNamePath'
+  },
   pay: {
     product: '/pay/:productExternalId',
     complete: '/payment-complete/:paymentExternalId'

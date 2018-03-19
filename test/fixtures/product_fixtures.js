@@ -83,6 +83,8 @@ module.exports = {
     }
     if (opts.description) data.description = opts.description
     if (opts.return_url) data.return_url = opts.return_url
+    if (opts.service_name_path) data.service_name_path = opts.service_name_path
+    if (opts.product_name_path) data.product_name_path = opts.product_name_path
     if (!data._links) {
       data._links = [{
         href: `http://products.url/v1/api/products/${data.external_id}`,
