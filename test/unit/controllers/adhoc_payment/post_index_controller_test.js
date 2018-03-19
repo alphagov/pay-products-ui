@@ -12,7 +12,7 @@ const paths = require('../../../../app/paths')
 const expect = chai.expect
 let product, payment, response, session, $
 
-describe('adhoc payment submit-amount controller', function () {
+describe.only('adhoc payment submit-amount controller', function () {
   afterEach(() => {
     nock.cleanAll()
   })
@@ -36,7 +36,7 @@ describe('adhoc payment submit-amount controller', function () {
         nock(config.PRODUCTS_URL).post(`/v1/api/products/${product.external_id}/payments`, {price: priceOverride}).reply(200, payment)
 
         supertest(createAppWithSession(getApp()))
-          .post(paths.adhocPayment.amount.replace(':productExternalId', product.external_id))
+          .post(paths.pay.product.replace(':productExternalId', product.external_id))
           .send({
             'payment-amount': '125.50',
             csrfToken: csrf().create('123')
@@ -62,7 +62,7 @@ describe('adhoc payment submit-amount controller', function () {
         nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         session = getMockSession()
         supertest(createAppWithSession(getApp(), session))
-          .post(paths.adhocPayment.amount.replace(':productExternalId', product.external_id))
+          .post(paths.pay.product.replace(':productExternalId', product.external_id))
           .send({
             csrfToken: csrf().create('123')
           })
@@ -90,7 +90,7 @@ describe('adhoc payment submit-amount controller', function () {
         session = getMockSession()
         const invalidAmount = 'GHTR89&&'
         supertest(createAppWithSession(getApp(), session))
-          .post(paths.adhocPayment.amount.replace(':productExternalId', product.external_id))
+          .post(paths.pay.product.replace(':productExternalId', product.external_id))
           .send({
             'payment-amount': invalidAmount,
             csrfToken: csrf().create('123')
@@ -118,7 +118,7 @@ describe('adhoc payment submit-amount controller', function () {
         session = getMockSession()
         const bigAmount = '100000000.50'
         supertest(createAppWithSession(getApp(), session))
-          .post(paths.adhocPayment.amount.replace(':productExternalId', product.external_id))
+          .post(paths.pay.product.replace(':productExternalId', product.external_id))
           .send({
             'payment-amount': bigAmount,
             csrfToken: csrf().create('123')
@@ -159,7 +159,7 @@ describe('adhoc payment submit-amount controller', function () {
         nock(config.PRODUCTS_URL).post(`/v1/api/products/${product.external_id}/payments`).reply(200, payment)
 
         supertest(createAppWithSession(getApp()))
-          .post(paths.adhocPayment.amount.replace(':productExternalId', product.external_id))
+          .post(paths.pay.product.replace(':productExternalId', product.external_id))
           .send({
             csrfToken: csrf().create('123')
           })

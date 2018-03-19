@@ -22,7 +22,7 @@ const resolvePaymentAndProduct = require('./middleware/resolve_payment_and_produ
 const correlationId = require('./middleware/correlation_id')
 
 // Assignments
-const {healthcheck, staticPaths, pay, demoPayment, adhocPayment} = paths
+const {healthcheck, staticPaths, pay, demoPayment} = paths
 
 // Exports
 module.exports.generateRoute = generateRoute
@@ -49,6 +49,5 @@ module.exports.bind = function (app) {
   app.get(demoPayment.success, successCtrl)
 
   // ADHOC SPECIFIC SCREENS
-  app.post(pay.product, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, adhocPaymentCtrl.getAmount)
-  app.post(adhocPayment.amount, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, adhocPaymentCtrl.submitAmount)
+  app.post(pay.product, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, adhocPaymentCtrl.postIndex)
 }
