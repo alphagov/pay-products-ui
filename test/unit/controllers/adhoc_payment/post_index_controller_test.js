@@ -12,7 +12,7 @@ const paths = require('../../../../app/paths')
 const expect = chai.expect
 let product, payment, response, session, $
 
-describe.only('adhoc payment submit-amount controller', function () {
+describe('adhoc payment submit-amount controller', function () {
   afterEach(() => {
     nock.cleanAll()
   })
@@ -69,7 +69,6 @@ describe.only('adhoc payment submit-amount controller', function () {
           .end((err, res) => {
             response = res
             $ = cheerio.load(res.text || '')
-            console.log(`${$.html()}`)
             done(err)
           })
       })
