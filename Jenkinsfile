@@ -50,7 +50,36 @@ pipeline {
         branch 'master'
       }
       steps {
-        deployEcs("products-ui", "test", null, true, true, "uk.gov.pay.endtoend.categories.SmokeProducts", true)
+        deployEcs("products-ui", "test", null, false, false)
+      }
+    }
+    stage('Smoke Tests') {
+      when {
+        branch 'master'
+      }
+      steps {
+        runProductsSmokeTest()
+      }
+    }
+    stage('Complete') {
+      failFast true
+      parallel {
+        stage('Tag Build') {
+          when {
+            branch 'master'
+          }
+          steps {
+            tagDeployment("products-ui")
+          }
+        }
+        stage('Trigger Deploy Notification') {
+          when {
+            branch 'master'
+          }
+          steps {
+            triggerGraphiteDeployEvent("products-ui")
+          }
+        }
       }
     }
   }
