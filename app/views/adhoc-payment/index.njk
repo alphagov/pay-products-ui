@@ -9,7 +9,7 @@
   {{productName}}
 </h1>
 <p id="description">
-  {{productDescription}}
+  {{ productDescription | striptags(true) | escape | nl2br }}
 </p>
 
 <form action="/pay/{{productExternalId}}" method="post" name="startPaymentForm" class="push-bottom">
