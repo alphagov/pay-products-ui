@@ -28,7 +28,7 @@ pipeline {
     }
     stage('Test') {
       steps {
-        runProductsE2E("productsui")
+        runProductsE2E("products-ui")
       }
     }
     stage('Docker Tag') {
@@ -50,7 +50,7 @@ pipeline {
         branch 'master'
       }
       steps {
-        deployEcs("products-ui", "test", null, false, false)
+        deployEcs("products-ui")
       }
     }
     stage('Smoke Tests') {
