@@ -17,6 +17,7 @@ module.exports = {
   product: {
     create: createProduct,
     disable: disableProduct,
+    delete: deleteProduct,
     getByProductExternalId: getProductByExternalId,
     getByProductPath: getProductByPath,
     getByGatewayAccountId: getProductsByGatewayAccountId
@@ -105,6 +106,19 @@ function disableProduct (productExternalId) {
     baseUrl,
     url: `/products/${productExternalId}/disable`,
     description: `disable a product`,
+    service: SERVICE_NAME
+  })
+}
+
+/**
+ * @param {String} productExternalId: the external id of the product you wish to delete
+ * @returns {undefined}
+ */
+function deleteProduct (productExternalId) {
+  return baseClient.delete({
+    baseUrl,
+    url: `/products/${productExternalId}`,
+    description: `delete a product`,
     service: SERVICE_NAME
   })
 }
