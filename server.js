@@ -33,7 +33,13 @@ const JAVASCRIPT_PATH = staticify.getVersionedPath('/js/application.js')
 const PORT = process.env.PORT || 3000
 const {NODE_ENV} = process.env
 const unconfiguredApp = express()
+const {ANALYTICS_TRACKING_ID} = process.env || ''
 
+function warnIfAnalyticsNotSet () {
+  if (ANALYTICS_TRACKING_ID === '') {
+    logger.warn('Google Analytics Tracking ID [ANALYTICS_TRACKING_ID] is not set')
+  }
+}
 // Define app views
 const APP_VIEWS = [
   path.join(__dirname, '/govuk_modules/govuk_template/views/layouts'),
@@ -57,6 +63,7 @@ function initialiseGlobalMiddleware (app) {
   app.use(function (req, res, next) {
     res.locals.asset_path = '/public/'
     res.locals.routes = router.paths
+    res.locals.analyticsTrackingId = ANALYTICS_TRACKING_ID
     noCache(res)
     next()
   })
@@ -141,6 +148,7 @@ function initialise () {
   initialiseRoutes(app)
   initialisePublic(app)
   initialiseErrorHandling(app)
+  warnIfAnalyticsNotSet()
 
   return app
 }
