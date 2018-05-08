@@ -1,22 +1,24 @@
 'use strict'
 
 // NPM dependencies
+const path = require('path')
 const Pact = require('pact')
 const {expect} = require('chai')
 const proxyquire = require('proxyquire')
 
 // Custom dependencies
-const pactProxy = require('../../../../test_helpers/pact_proxy')
 const PactInteractionBuilder = require('../../../../fixtures/pact_interaction_builder').PactInteractionBuilder
 const productFixtures = require('../../../../fixtures/product_fixtures')
 
 // Constants
 const PRODUCTS_RESOURCE = '/v1/api/products'
-const mockPort = Math.floor(Math.random() * 65535)
-const mockServer = pactProxy.create('localhost', mockPort)
-let productsMock, result, response, productExternalId
+const port = Math.floor(Math.random() * 48127) + 1024
 
-function getProductsClient (baseUrl = `http://localhost:${mockPort}`, productsApiKey = 'ABC1234567890DEF') {
+let result
+let response
+let productExternalId
+
+function getProductsClient (baseUrl = `http://localhost:${port}`, productsApiKey = 'ABC1234567890DEF') {
   return proxyquire('../../../../../app/services/clients/products_client', {
     '../../../config': {
       PRODUCTS_URL: baseUrl
@@ -25,33 +27,25 @@ function getProductsClient (baseUrl = `http://localhost:${mockPort}`, productsAp
 }
 
 describe('products client - creating a new payment', () => {
-  /**
-   * Start the server and set up Pact
-   */
-  before(function (done) {
-    this.timeout(5000)
-    mockServer.start().then(() => {
-      productsMock = Pact({consumer: 'Selfservice-create-new-charge', provider: 'products', port: mockPort})
-      done()
-    })
+  const provider = Pact({
+    consumer: 'products-ui-to-be',
+    provider: 'products',
+    port: port,
+    log: path.resolve(process.cwd(), 'logs', 'mockserver-integration.log'),
+    dir: path.resolve(process.cwd(), 'pacts'),
+    spec: 2,
+    pactfileWriteMode: 'merge'
   })
 
-  /**
-   * Remove the server and publish pacts to broker
-   */
-  after(done => {
-    mockServer.delete()
-      .then(() => pactProxy.removeAll())
-      .then(() => done())
-      .catch(done)
-  })
+  before(() => provider.setup())
+  after((done) => provider.finalize().then(done()))
 
   describe('when a charge is successfully created', () => {
     before((done) => {
       const productsClient = getProductsClient()
       productExternalId = 'a-valid-product-id'
       response = productFixtures.validCreatePaymentResponse({product_external_id: productExternalId})
-      productsMock.addInteraction(
+      provider.addInteraction(
         new PactInteractionBuilder(`${PRODUCTS_RESOURCE}/${productExternalId}/payments`)
           .withUponReceiving('a valid create charge create request')
           .withMethod('POST')
@@ -66,8 +60,6 @@ describe('products client - creating a new payment', () => {
         })
         .catch(e => done(e))
     })
-
-    after(() => productsMock.finalize())
 
     it('should create a new product', () => {
       const plainResponse = response.getPlain()
@@ -95,7 +87,7 @@ describe('products client - creating a new payment', () => {
         product_external_id: productExternalId,
         amount: priceOverride
       })
-      productsMock.addInteraction(
+      provider.addInteraction(
         new PactInteractionBuilder(`${PRODUCTS_RESOURCE}/${productExternalId}/payments`)
           .withUponReceiving('a valid create charge create request price override')
           .withMethod('POST')
@@ -111,8 +103,6 @@ describe('products client - creating a new payment', () => {
         })
         .catch(e => done(e))
     })
-
-    after(() => productsMock.finalize())
 
     it('should create a new product with the overridden price', () => {
       const plainResponse = response.getPlain()
@@ -136,7 +126,7 @@ describe('products client - creating a new payment', () => {
     beforeEach(done => {
       const productsClient = getProductsClient()
       productExternalId = 'invalid-id'
-      productsMock.addInteraction(
+      provider.addInteraction(
         new PactInteractionBuilder(`${PRODUCTS_RESOURCE}/${productExternalId}/payments`)
           .withUponReceiving('an invalid create charge request')
           .withMethod('POST')
@@ -150,8 +140,6 @@ describe('products client - creating a new payment', () => {
           done()
         })
     })
-
-    after(() => productsMock.finalize())
 
     it('should reject with error: bad request', () => {
       expect(result.errorCode).to.equal(400)

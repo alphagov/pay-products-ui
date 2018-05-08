@@ -1,21 +1,22 @@
 'use strict'
 
 // NPM dependencies
+const path = require('path')
 const Pact = require('pact')
 const {expect} = require('chai')
 const proxyquire = require('proxyquire')
 
 // Custom dependencies
-const pactProxy = require('../../../../test_helpers/pact_proxy')
 const PactInteractionBuilder = require('../../../../fixtures/pact_interaction_builder').PactInteractionBuilder
 
 // Constants
 const PRODUCT_RESOURCE = '/v1/api/products'
-const mockPort = Math.floor(Math.random() * 65535)
-const mockServer = pactProxy.create('localhost', mockPort)
-let productsMock, result, productExternalId
+const port = Math.floor(Math.random() * 48127) + 1024
 
-function getProductsClient (baseUrl = `http://localhost:${mockPort}`, productsApiKey = 'ABC1234567890DEF') {
+let result
+let productExternalId
+
+function getProductsClient (baseUrl = `http://localhost:${port}`, productsApiKey = 'ABC1234567890DEF') {
   return proxyquire('../../../../../app/services/clients/products_client', {
     '../../../config': {
       PRODUCTS_URL: baseUrl
@@ -24,31 +25,24 @@ function getProductsClient (baseUrl = `http://localhost:${mockPort}`, productsAp
 }
 
 describe('products client - disable a product', () => {
-  /**
-   * Start the server and set up Pact
-   */
-  before(function (done) {
-    this.timeout(5000)
-    mockServer.start().then(function () {
-      productsMock = Pact({consumer: 'Selfservice-create-new-product', provider: 'products', port: mockPort})
-      done()
-    })
+  const provider = Pact({
+    consumer: 'products-ui-to-be',
+    provider: 'products',
+    port: port,
+    log: path.resolve(process.cwd(), 'logs', 'mockserver-integration.log'),
+    dir: path.resolve(process.cwd(), 'pacts'),
+    spec: 2,
+    pactfileWriteMode: 'merge'
   })
 
-  /**
-   * Remove the server and publish pacts to broker
-   */
-  after(done => {
-    mockServer.delete()
-      .then(() => pactProxy.removeAll())
-      .then(() => done())
-  })
+  before(() => provider.setup())
+  after((done) => provider.finalize().then(done()))
 
   describe('when a product is successfully disabled', () => {
     before(done => {
       const productsClient = getProductsClient()
       productExternalId = 'a_valid_external_id'
-      productsMock.addInteraction(
+      provider.addInteraction(
         new PactInteractionBuilder(`${PRODUCT_RESOURCE}/${productExternalId}/disable`)
           .withUponReceiving('a valid disable product request')
           .withMethod('PATCH')
@@ -63,10 +57,6 @@ describe('products client - disable a product', () => {
         .catch(e => done(e))
     })
 
-    afterEach(done => {
-      productsMock.finalize().then(() => done())
-    })
-
     it('should create a new product', () => {
       expect(result).to.equal(undefined)
     })
@@ -76,7 +66,7 @@ describe('products client - disable a product', () => {
     before(done => {
       const productsClient = getProductsClient()
       productExternalId = 'a_non_existant_external_id'
-      productsMock.addInteraction(
+      provider.addInteraction(
         new PactInteractionBuilder(`${PRODUCT_RESOURCE}/${productExternalId}/disable`)
           .withUponReceiving('an invalid create product request')
           .withMethod('PATCH')
@@ -89,10 +79,6 @@ describe('products client - disable a product', () => {
           result = err
           done()
         })
-    })
-
-    afterEach(done => {
-      productsMock.finalize().then(() => done())
     })
 
     it('should reject with error: bad request', () => {

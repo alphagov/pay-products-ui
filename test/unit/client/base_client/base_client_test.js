@@ -1,9 +1,13 @@
 'use strict'
+
+// npm dependencies
 const correlator = require('correlation-id')
-const config = require('../../../../config/index')
 const http = require('http')
 const nock = require('nock')
 const {expect} = require('chai')
+
+// local dependencies
+const config = require('../../../../config/index')
 const baseClient = require('../../../../app/services/clients/base_client/base_client')
 
 describe('baseClient', () => {
