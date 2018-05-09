@@ -1,9 +1,12 @@
 'use strict'
+
+// npm dependencies
 const request = require('request')
 const nock = require('nock')
 const {expect} = require('chai')
 const sinon = require('sinon')
 const proxyquire = require('proxyquire')
+
 const requestLogger = {}
 const wrapper = proxyquire('../../../../app/services/clients/base_client/wrapper', {
   '../../../utils/request_logger': requestLogger
@@ -14,7 +17,9 @@ describe('wrapper: request scenarios', () => {
     nock.cleanAll()
   })
   describe('when the request returns successfully with statusCode 200', () => {
-    let cb, resolved, returnee
+    let cb
+    let resolved
+    let returnee
     before(done => {
       requestLogger.logRequestStart = sinon.spy()
       requestLogger.logRequestEnd = sinon.spy()
@@ -50,7 +55,9 @@ describe('wrapper: request scenarios', () => {
     })
   })
   describe('when the request fails', () => {
-    let cb, rejected, returnee
+    let cb
+    let rejected
+    let returnee
     before(done => {
       requestLogger.logRequestStart = sinon.spy()
       requestLogger.logRequestEnd = sinon.spy()
@@ -89,7 +96,9 @@ describe('wrapper: request scenarios', () => {
   })
 
   describe('when the request errors', () => {
-    let cb, rejected, returnee
+    let cb
+    let rejected
+    let returnee
     before(done => {
       requestLogger.logRequestStart = sinon.spy()
       requestLogger.logRequestEnd = sinon.spy()

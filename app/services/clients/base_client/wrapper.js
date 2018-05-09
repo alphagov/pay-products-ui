@@ -1,8 +1,14 @@
 'use strict'
+
+// npm dependencies
 const lodash = require('lodash')
 const joinURL = require('url-join')
 const correlator = require('correlation-id')
+
+// local dependencies
 const requestLogger = require('../../../utils/request_logger')
+
+// constants
 const CORRELATION_HEADER = require('../../../../config').CORRELATION_HEADER
 const SUCCESS_CODES = [200, 201, 202, 204, 206]
 
@@ -17,14 +23,13 @@ module.exports = function (method, verb) {
     const context = {
       correlationId: correlator.getId(),
       startTime: new Date(),
-      url: joinURL(lodash.get(opts, 'baseUrl', ''), opts.url),
+      url: joinURL(lodash.get(opts, 'baseUrl', ''), opts.url || opts.uri),
       method: opts.method,
       description: opts.description,
       service: opts.service
     }
     lodash.set(opts, `headers.${CORRELATION_HEADER}`, context.correlationId)
     opts.headers['Content-Type'] = opts.headers['Content-Type'] || 'application/json'
-
     // start request
     requestLogger.logRequestStart(context)
     const call = method(opts, (err, response, body) => {

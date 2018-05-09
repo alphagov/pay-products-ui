@@ -1,22 +1,24 @@
 'use strict'
 
 // NPM dependencies
+const path = require('path')
 const Pact = require('pact')
 const {expect} = require('chai')
 const proxyquire = require('proxyquire')
 
 // Custom dependencies
-const pactProxy = require('../../../../test_helpers/pact_proxy')
 const PactInteractionBuilder = require('../../../../fixtures/pact_interaction_builder').PactInteractionBuilder
 const productFixtures = require('../../../../fixtures/product_fixtures')
 
 // Constants
 const PAYMENT_RESOURCE = '/v1/api/payments'
-const mockPort = Math.floor(Math.random() * 65535)
-const mockServer = pactProxy.create('localhost', mockPort)
-let productsMock, response, result, paymentExternalId
+const port = Math.floor(Math.random() * 48127) + 1024
 
-function getProductsClient (baseUrl = `http://localhost:${mockPort}`, productsApiKey = 'ABC1234567890DEF') {
+let response
+let result
+let paymentExternalId
+
+function getProductsClient (baseUrl = `http://localhost:${port}`, productsApiKey = 'ABC1234567890DEF') {
   return proxyquire('../../../../../app/services/clients/products_client', {
     '../../../config': {
       PRODUCTS_URL: baseUrl
@@ -25,26 +27,18 @@ function getProductsClient (baseUrl = `http://localhost:${mockPort}`, productsAp
 }
 
 describe('products client - find a payment by it\'s own external id', function () {
-  /**
-   * Start the server and set up Pact
-   */
-  before(function (done) {
-    this.timeout(5000)
-    mockServer.start().then(function () {
-      productsMock = Pact({consumer: 'Selfservice-find-product', provider: 'products', port: mockPort})
-      done()
-    })
+  const provider = Pact({
+    consumer: 'products-ui-to-be',
+    provider: 'products',
+    port: port,
+    log: path.resolve(process.cwd(), 'logs', 'mockserver-integration.log'),
+    dir: path.resolve(process.cwd(), 'pacts'),
+    spec: 2,
+    pactfileWriteMode: 'merge'
   })
 
-  /**
-   * Remove the server and publish pacts to broker
-   */
-  after(done => {
-    mockServer.delete()
-      .then(() => pactProxy.removeAll())
-      .then(() => done())
-      .catch(done)
-  })
+  before(() => provider.setup())
+  after((done) => provider.finalize().then(done()))
 
   describe('when a product is successfully found', () => {
     before(done => {
@@ -57,7 +51,7 @@ describe('products client - find a payment by it\'s own external id', function (
         .withStatusCode(200)
         .withResponseBody(response.getPactified())
         .build()
-      productsMock.addInteraction(interaction)
+      provider.addInteraction(interaction)
         .then(() => productsClient.payment.getByPaymentExternalId(paymentExternalId))
         .then(res => {
           result = res
@@ -65,8 +59,6 @@ describe('products client - find a payment by it\'s own external id', function (
         })
         .catch(e => done(e))
     })
-
-    after(() => productsMock.finalize())
 
     it('should find an existing payment', () => {
       const plainResponse = response.getPlain()
@@ -89,7 +81,7 @@ describe('products client - find a payment by it\'s own external id', function (
     before(done => {
       const productsClient = getProductsClient()
       paymentExternalId = 'non-existing-id'
-      productsMock.addInteraction(
+      provider.addInteraction(
         new PactInteractionBuilder(`${PAYMENT_RESOURCE}/${paymentExternalId}`)
           .withUponReceiving('a valid find product request with non existing id')
           .withMethod('GET')
@@ -103,8 +95,6 @@ describe('products client - find a payment by it\'s own external id', function (
           done()
         })
     })
-
-    after(() => productsMock.finalize())
 
     it('should reject with error: 404 not found', () => {
       expect(result.errorCode).to.equal(404)
