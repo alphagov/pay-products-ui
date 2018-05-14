@@ -1,6 +1,6 @@
 {% extends "../../govuk_modules/govuk_template/views/layouts/govuk_template.njk" %}
 
-{% set homepage_url = '/' %}
+{% set homepage_url = 'https://www.gov.uk' %}
 
 {% block page_title %}GOV.UK Pay{% endblock %}
 
@@ -29,12 +29,8 @@
   </main>
 {% endblock %}
 
-{% block footer_top %}
-    {% include "includes/footer-categories.njk" %}
-{% endblock %}
-
 {% block footer_support_links %}
-    {% include "includes/footer-support-links.njk" %}
+  {% include "includes/footer-support-links.njk" %}
 {% endblock %}
 
 {% block body_end %}
