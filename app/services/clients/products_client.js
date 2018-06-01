@@ -25,7 +25,8 @@ module.exports = {
   payment: {
     create: createPayment,
     getByPaymentExternalId: getPaymentByPaymentExternalId,
-    getByProductExternalId: getPaymentsByProductExternalId
+    getByProductExternalId: getPaymentsByProductExternalId,
+    getByGatewayAccountIdAndReference: getPaymentByGatewayExternalIdAndReference
   }
 }
 
@@ -169,4 +170,18 @@ function getPaymentsByProductExternalId (productExternalId) {
     description: `find a payments associated with a particular product`,
     service: SERVICE_NAME
   }).then(payments => payments.map(payment => new Payment(payment)))
+}
+
+/**
+ * @param {String} gatewayAccountId
+ * @param {String} paymentReference
+ * @returns Promise<Payment>
+ */
+function getPaymentByGatewayExternalIdAndReference (gatewayAccountId, paymentReference) {
+  return baseClient.get({
+    baseUrl,
+    url: `/payments/${gatewayAccountId}/${paymentReference}`,
+    description: `find a payment by gateway account id and reference`,
+    service: SERVICE_NAME
+  }).then((value) => new Payment(value))
 }
