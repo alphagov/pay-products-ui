@@ -85,20 +85,51 @@ describe('pre payment controller', function () {
     })
   })
 
-  describe(`when the payment type is ADHOC`, () => {
+  describe(`when the payment type is ADHOC and reference is disabled`, () => {
     before(done => {
-      product = productFixtures.validCreateProductResponse({type: 'ADHOC'}).getPlain()
+      product = productFixtures.validCreateProductResponse({type: 'ADHOC', name: 'A Product Name'}).getPlain()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
 
       supertest(createAppWithSession(getApp()))
         .get(paths.pay.product.replace(':productExternalId', product.external_id))
         .end((err, res) => {
           response = res
+          $ = cheerio.load(res.text || '')
           done(err)
         })
     })
     it('should respond with code: 200 \'OK\'', () => {
       expect(response.statusCode).to.equal(200)
+    })
+
+    it('should render the payment amount page', () => {
+      expect($('.page-title').text()).to.include('A Product Name')
+    })
+  })
+
+  describe(`when the payment type is ADHOC and reference is enabled`, () => {
+    before(done => {
+      const opts = {
+        type: 'ADHOC',
+        name: 'Featured Product',
+        reference_enabled: 'true'
+      }
+      product = productFixtures.validCreateProductResponse(opts).getPlain()
+      nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+
+      supertest(createAppWithSession(getApp()))
+        .get(paths.pay.reference.replace(':productExternalId', product.external_id))
+        .end((err, res) => {
+          response = res
+          $ = cheerio.load(res.text || '')
+          done(err)
+        })
+    })
+    it('should respond with code: 200 \'OK\'', () => {
+      expect(response.statusCode).to.equal(200)
+    })
+    it('should render the payment reference page', () => {
+      expect($('.page-title').text()).to.include('Pay for Featured Product')
     })
   })
 
@@ -111,6 +142,7 @@ describe('pre payment controller', function () {
         .get(paths.pay.product.replace(':productExternalId', product.external_id))
         .end((err, res) => {
           response = res
+          $ = cheerio.load(res.text || '')
           done(err)
         })
     })
