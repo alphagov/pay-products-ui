@@ -1,0 +1,46 @@
+{% extends "../layout.njk" %}
+
+{% block page_title %}
+  {{ serviceName }}
+{% endblock %}
+
+{% block main_content %}
+  <h1 class="heading-large page-title">
+    Pay for {{ productName }}
+  </h1>
+  <p id="description">
+    {{ productDescription | striptags(true) | escape | nl2br }}
+  </p>
+
+  <form action="/pay/reference/{{ productExternalId }}" method="post" name="referencePaymentForm" class="push-bottom">
+    <input id="csrf" name="csrfToken" type="hidden" value="{{ csrf }}"/>
+    <div class="form-group">
+      <label id="product-reference-label" for="payment-reference" class="form-label-bold">
+        <span id="product-reference-label-span">{{ productReferenceLabel }}</span>
+        <span id="product-reference-label-hint" class="form-hint">{{ productReferenceHint }}</span>
+      </label>
+      {% if productReference %}
+        <div class="panel panel-border-wide">
+          <h2 id="payment-reference" class="lede">{{ paymentReference }}</h2>
+        </div>
+      {% else %}
+        <div>
+          <input class="form-control"
+                 aria-label=""
+                 name="payment-reference"
+                 data-non-numeric=""
+                 type="text"
+                 id="payment-reference"
+                 value=""
+                 autofocus=""
+                 data-validate="required field"
+                 data-confirmation="true"
+                 data-confirmation-label="Payment reference: "/>
+        </div>
+      {% endif %}
+    </div>
+    <button type="submit" class="button">
+      Continue
+    </button>
+  </form>
+{% endblock %}

@@ -14,6 +14,7 @@ const completeCtrl = require('./controllers/payment_complete_controller')
 const failedCtrl = require('./controllers/demo_payment/payment_failed_controller')
 const successCtrl = require('./controllers/demo_payment/payment_success_controller')
 const adhocPaymentCtrl = require('./controllers/adhoc_payment')
+const productReferenceCtrl = require('./controllers/product_reference')
 
 // Middleware
 const {validateAndRefreshCsrf, ensureSessionHasCsrfSecret} = require('./middleware/csrf')
@@ -46,6 +47,10 @@ module.exports.bind = function (app) {
 
   // CREATE PAYMENT
   app.get(pay.product, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, prePaymentCtrl)
+
+  // CREATE REFERENCE
+  app.get(pay.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, prePaymentCtrl)
+  app.post(pay.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, productReferenceCtrl.postReference)
 
   // DEMO SPECIFIC SCREENS
   app.get(pay.complete, resolvePaymentAndProduct, completeCtrl)

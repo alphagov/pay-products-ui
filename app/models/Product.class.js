@@ -13,6 +13,9 @@ const lodash = require('lodash')
  * @property {string} description
  * @property {string} returnUrl
  * @property {string} serviceName - the name of the service with which the product is associated
+ * @property {Object} referenceEnabled - a flag that when enabled will ask for the payer to input a reference
+ * @property {Object} referenceLabel - a required field when reference is enabled
+ * @property {Object} referenceHint - a an optional field when reference is enabled
  * @property {object} links
  * @property {object} links.pay
  * @property {string} links.pay.href - url to use to create a payment for the product
@@ -31,6 +34,9 @@ class Product {
    * @param {string} opts.name - The name of the product
    * @param {number} opts.price - price of the product in pence
    * @param {string} opts.service_name - the name of the service with which the product is associated
+   * @param {string} opts.reference_enabled - when enabled will ask the user to input a reference for the payment
+   * @param {string} opts.reference_label - mandatory field that will display when reference is enabled
+   * @param {string} opts.reference_hint - optional field that will display when reference is enabled
    * @param {Object[]} opts._links - links for the product ('self' to re-GET this product from the server, and 'pay' to create a payment for this product)
    * @param {string} opts._links[].href - url of the link
    * @param {string} opts._links[].method - the http method of the link
@@ -48,6 +54,9 @@ class Product {
     this.serviceName = opts.service_name || 'Example Service Name'
     this.description = opts.description
     this.returnUrl = opts.return_url
+    this.reference_enabled = opts.reference_enabled
+    this.reference_label = opts.reference_label
+    this.reference_hint = opts.reference_hint
     opts._links.forEach(link => lodash.set(this, `links.${link.rel}`, {method: link.method, href: link.href}))
   }
 }

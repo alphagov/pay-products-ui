@@ -11,7 +11,8 @@ module.exports = {
   },
   pay: {
     product: '/pay/:productExternalId',
-    complete: '/payment-complete/:paymentExternalId'
+    complete: '/payment-complete/:paymentExternalId',
+    reference: '/pay/reference/:productExternalId'
   },
   demoPayment: {
     success: '/successful',
