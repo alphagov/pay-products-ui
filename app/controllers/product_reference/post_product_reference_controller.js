@@ -14,7 +14,7 @@ module.exports = (req, res) => {
 
   const referenceNumber = req.body['payment-reference']
   if (!referenceNumber) {
-    req.errorMessage = `<h2>This is field cannot be blank</h2>`
+    req.errorMessage = `<h2>This field cannot be blank</h2>`
     return index(req, res)
   } else {
     client.payment.getByGatewayAccountIdAndReference(req.product.gatewayAccountId, referenceNumber)

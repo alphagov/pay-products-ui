@@ -122,7 +122,7 @@ describe('product reference post controller', function () {
       expect($('h1.heading-large').text()).to.include(product.name)
       expect($('p#description').text()).to.include(product.description)
       expect($('form').attr('action')).to.equal(`/pay/reference/${product.external_id}`)
-      expect($('.generic-error').text()).to.include('This is field cannot be blank')
+      expect($('.generic-error').text()).to.include('This field cannot be blank')
     })
   })
 
