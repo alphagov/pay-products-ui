@@ -14,12 +14,15 @@ module.exports = (req, res) => {
 
   const referenceNumber = req.body['payment-reference']
   if (!referenceNumber) {
-    req.errorMessage = `<h2>This field cannot be blank</h2>`
+    req.errorMessage = `<h2>Enter a ${product.reference_label}</h2>`
+    return index(req, res)
+  } else if (referenceNumber.trim().length > 255) {
+    req.errorMessage = `<h2>The ${product.reference_label} is not valid</h2>`
     return index(req, res)
   } else {
     client.payment.getByGatewayAccountIdAndReference(req.product.gatewayAccountId, referenceNumber)
       .then(payment => {
-        req.errorMessage = `<h2>This reference has been used before</h2>`
+        req.errorMessage = `<h2>The ${product.reference_label} is not valid</h2>`
         return index(req, res)
       })
       .catch(err => {
