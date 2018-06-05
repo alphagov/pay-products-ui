@@ -129,7 +129,7 @@ describe('pre payment controller', function () {
       expect(response.statusCode).to.equal(200)
     })
     it('should render the payment reference page', () => {
-      expect($('.page-title').text()).to.include('Pay for Featured Product')
+      expect($('.page-title').text()).to.include('Featured Product')
     })
   })
 

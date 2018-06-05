@@ -14,8 +14,10 @@ module.exports = (req, res) => {
     serviceName: product.serviceName,
     productName: product.name,
     productDescription: product.description,
-    productReferenceLabel: product.reference_label,
-    productReferenceHint: product.reference_hint
+    paymentReferenceLabel: product.reference_label
+  }
+  if (product.reference_hint) {
+    data.paymentReferenceHint = product.reference_hint
   }
 
   if (req.errorMessage) {
