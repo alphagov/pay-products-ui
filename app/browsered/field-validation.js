@@ -71,6 +71,9 @@ function validateField (form, field) {
       case 'belowMaxAmount' :
         result = checks.isAboveMaxAmount(field.value)
         break
+      case 'isNaxsiSafe':
+        result = checks.isNaxsiSafe(field.value)
+        break
       default :
         result = checks.isEmpty(field.value)
         break

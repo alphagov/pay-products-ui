@@ -13,7 +13,9 @@ const validationErrors = {
   phoneNumber: 'Must be a 11 digit phone number',
   validEmail: 'Please use a valid email address',
   isHttps: 'URL must begin with https://',
-  isAboveMaxAmount: `Choose an amount under £${MAX_AMOUNT.toLocaleString()}`
+  isAboveMaxAmount: `Choose an amount under £${MAX_AMOUNT.toLocaleString()}`,
+  isGreaterThanMaxLengthChars: `The text is too long`,
+  invalidCharacters: `You cannot use any of the following characters < > ; : \` ( ) " ' = | , ~ [ ]`
 }
 
 exports.isEmpty = function (value) {
@@ -62,4 +64,12 @@ exports.isAboveMaxAmount = value => {
     return validationErrors.isAboveMaxAmount
   }
   return false
+}
+
+exports.isNaxsiSafe = function (value) {
+  if (/[<>;:`()"'=|,~[\]]+/g.test(value)) {
+    return validationErrors.invalidCharacters
+  } else {
+    return false
+  }
 }
