@@ -46,9 +46,12 @@ describe('product reference post controller', function () {
     })
 
     it('should navigate to adhoc payment start page after form submission', () => {
-      expect($('h1.heading-large').text()).to.include(product.name)
-      expect($('p#description').text()).to.include(product.description)
       expect($('form').attr('action')).to.equal(`/pay/${product.external_id}`)
+    })
+
+    it('should hide the title and description on payment amount page', () => {
+      expect($('h1.heading-large').text()).to.equal('')
+      expect($('p#description').text()).to.equal('')
     })
   })
 
@@ -88,7 +91,7 @@ describe('product reference post controller', function () {
       expect($('h1.heading-large').text()).to.include(product.name)
       expect($('p#description').text()).to.include(product.description)
       expect($('form').attr('action')).to.equal(`/pay/reference/${product.external_id}`)
-      expect($('.generic-error').text()).to.include('This reference has been used before')
+      expect($('.generic-error').text()).to.include(`The Test reference label is not valid`)
     })
   })
 
@@ -122,7 +125,43 @@ describe('product reference post controller', function () {
       expect($('h1.heading-large').text()).to.include(product.name)
       expect($('p#description').text()).to.include(product.description)
       expect($('form').attr('action')).to.equal(`/pay/reference/${product.external_id}`)
-      expect($('.generic-error').text()).to.include('This field cannot be blank')
+      expect($('.generic-error').text()).to.include(`Enter a Test reference label`)
+    })
+  })
+
+  describe('when reference field exceeds max length 255', function () {
+    before(done => {
+      product = productFixtures.validCreateProductResponse({
+        type: 'ADHOC',
+        reference_enabled: true,
+        reference_label: 'Test reference label'
+      }).getPlain()
+      nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+
+      const referenceNumber = 'This_is_a_256_characters_long_String_This_is_a_256_characters_long_String_This_is_a_256_characters_long_String_This_is_a_256_characters_long_String_This_is_a_256_characters_long_String_This_is_a_256_characters_long_String_This_is_a_256_characters_long_Stri'
+      supertest(createAppWithSession(getApp()))
+        .post(paths.pay.reference.replace(':productExternalId', product.external_id))
+        .send({
+          'payment-reference': referenceNumber,
+          csrfToken: csrf().create('123')
+        })
+        .end((err, res) => {
+          response = res
+          $ = cheerio.load(res.text || '')
+          done(err)
+        })
+    })
+
+    it('should respond with code: 200 OK', () => {
+      expect(response.statusCode).to.equal(200)
+    })
+
+    it('should render product reference start page with error message', () => {
+      expect($('title').text()).to.include(product.service_name)
+      expect($('h1.heading-large').text()).to.include(product.name)
+      expect($('p#description').text()).to.include(product.description)
+      expect($('form').attr('action')).to.equal(`/pay/reference/${product.external_id}`)
+      expect($('.generic-error').text()).to.include(`The Test reference label is not valid`)
     })
   })
 

@@ -18,7 +18,8 @@ module.exports = (req, res) => {
     productExternalId: product.externalId,
     serviceName: product.serviceName,
     productName: product.name,
-    productDescription: product.description
+    productDescription: product.description,
+    productReferenceEnabled: product.reference_enabled
   }
 
   if (product.price) {
