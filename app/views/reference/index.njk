@@ -12,7 +12,7 @@
     {{ productDescription | striptags(true) | escape | nl2br }}
   </p>
 
-  <form action="/pay/reference/{{ productExternalId }}" method="post" name="referencePaymentForm" class="push-bottom">
+  <form action="/pay/reference/{{ productExternalId }}" method="post" name="referencePaymentForm" class="push-bottom" data-validate>
     <input id="csrf" name="csrfToken" type="hidden" value="{{ csrf }}"/>
     <div class="form-group">
       <label id="payment-reference-label" class="form-label form-label-bold" for="payment-reference">
@@ -30,7 +30,8 @@
              autofocus=""
              autocomplete="off"
              maxlength="255"
-             data-validate="required field"/>
+             data-validate="isNaxsiSafe"
+             data-validate-max-lengt="255"/>
     </div>
     <button type="submit" class="button">
       Continue
