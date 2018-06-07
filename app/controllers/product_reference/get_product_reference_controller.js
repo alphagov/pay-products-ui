@@ -16,6 +16,9 @@ module.exports = (req, res) => {
     productDescription: product.description,
     paymentReferenceLabel: product.reference_label
   }
+  if (req.referenceNumber) {
+    data.referenceNumber = req.referenceNumber
+  }
   if (product.reference_hint) {
     data.paymentReferenceHint = product.reference_hint
   }

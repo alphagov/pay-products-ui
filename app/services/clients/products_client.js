@@ -130,17 +130,19 @@ function deleteProduct (productExternalId) {
  * @param {int} price: The override price for the payment. If not present it will default to product price
  * @returns Promise<Payment>
  */
-function createPayment (productExternalId, price) {
+function createPayment (productExternalId, price, referenceNumber) {
   const createPaymentRequest = {
     baseUrl,
     url: `/products/${productExternalId}/payments`,
     description: 'create a payment for a product',
     service: SERVICE_NAME
   }
+  createPaymentRequest.body = {}
   if (price) {
-    createPaymentRequest.body = {
-      price: price
-    }
+    createPaymentRequest.body.price = price
+  }
+  if (referenceNumber) {
+    createPaymentRequest.body.reference_number = referenceNumber
   }
   return baseClient.post(createPaymentRequest)
     .then(payment => new Payment(payment))

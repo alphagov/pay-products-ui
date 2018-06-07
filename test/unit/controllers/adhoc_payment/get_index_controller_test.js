@@ -21,7 +21,7 @@ describe('adhoc payment index controller', function () {
     nock.cleanAll()
   })
 
-  describe('variable amount adhoc payment', function () {
+  describe('variable amount ADHOC payment with reference disabled', function () {
     before(done => {
       product = productFixtures.validCreateProductResponse({
         type: 'ADHOC',
@@ -57,7 +57,7 @@ describe('adhoc payment index controller', function () {
     })
   })
 
-  describe('fixed amount adhoc payment', function () {
+  describe('fixed amount ADHOC payment with reference disabled', function () {
     before(done => {
       product = productFixtures.validCreateProductResponse({
         type: 'ADHOC',
@@ -91,6 +91,38 @@ describe('adhoc payment index controller', function () {
     it('should show the fixed amount', () => {
       expect($('.form-label-bold').text()).to.include('Payment amount')
       expect($('#payment-amount').text()).to.include(asGBP(product.price))
+    })
+  })
+
+  describe('ADHOC payment with reference enabled and no reference number set', function () {
+    before(done => {
+      product = productFixtures.validCreateProductResponse({
+        type: 'ADHOC',
+        product_name: 'Test ADHOC Product Name',
+        service_name: 'Test ADHOC GOV service',
+        description: 'Test ADHOC product description',
+        reference_enabled: true
+      }).getPlain()
+      nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+
+      supertest(createAppWithSession(getApp()))
+        .get(paths.pay.product.replace(':productExternalId', product.external_id))
+        .end((err, res) => {
+          response = res
+          $ = cheerio.load(res.text || '')
+          done(err)
+        })
+    })
+
+    it('should respond with code:200 OK', () => {
+      expect(response.statusCode).to.equal(200)
+    })
+
+    it('should render payment reference start page', () => {
+      expect($('title').text()).to.include(product.service_name)
+      expect($('h1.heading-large').text()).to.include(product.name)
+      expect($('p#description').text()).to.include(product.description)
+      expect($('form').attr('action')).to.equal(`/pay/reference/${product.external_id}`)
     })
   })
 })
