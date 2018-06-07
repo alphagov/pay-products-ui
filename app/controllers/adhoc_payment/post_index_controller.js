@@ -5,11 +5,22 @@ const {isCurrency, isAboveMaxAmount} = require('../../browsered/field-validation
 
 const makePayment = require('../make_payment_controller')
 const index = require('./get_index_controller')
+const productReferenceCtrl = require('../product_reference')
 
 const AMOUNT_FORMAT = /^([0-9]+)(?:\.([0-9]{2}))?$/
 
 module.exports = (req, res) => {
   const product = req.product
+
+  if (product.reference_enabled) {
+    let referenceNumber = req.body['reference-number']
+    if (referenceNumber) {
+      req.referenceNumber = referenceNumber
+    } else {
+      productReferenceCtrl.index(req, res)
+    }
+  }
+
   if (product.price) {
     req.paymentAmount = product.price
     return makePayment(req, res)

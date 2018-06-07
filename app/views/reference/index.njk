@@ -21,6 +21,18 @@
           <span id="payment-reference-hint" class="form-hint">{{ paymentReferenceHint }}</span>
         {% endif %}
       </label>
+      {% if referenceNumber %}
+      <input class="form-control"
+             aria-label=""
+             name="payment-reference"
+             type="text"
+             id="payment-reference"
+             value="{{ referenceNumber }}"
+             autofocus=""
+             autocomplete="off"
+             maxlength="255"
+             data-validate="required field"/>
+      {% else %}
       <input class="form-control"
              aria-label=""
              name="payment-reference"
@@ -33,6 +45,7 @@
              data-validate="isNaxsiSafe"
              data-validate-max-lengt="255"/>
     </div>
+    {% endif %}
     <button type="submit" class="button">
       Continue
     </button>

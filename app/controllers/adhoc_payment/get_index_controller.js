@@ -5,7 +5,8 @@ const logger = require('winston')
 const currencyFormatter = require('currency-formatter')
 
 // Custom dependencies
-const response = require('../../utils/response').response
+const {response} = require('../../utils/response')
+const productReferenceCtrl = require('../product_reference')
 
 function asGBP (amountInPence) {
   return currencyFormatter.format((amountInPence / 100).toFixed(2), {code: 'GBP'})
@@ -20,6 +21,14 @@ module.exports = (req, res) => {
     productName: product.name,
     productDescription: product.description,
     productReferenceEnabled: product.reference_enabled
+  }
+  if (product.reference_enabled) {
+    const referenceNumber = req.referenceNumber
+    if (referenceNumber) {
+      data.referenceNumber = referenceNumber
+    } else {
+      productReferenceCtrl.index(req, res)
+    }
   }
 
   if (product.price) {
