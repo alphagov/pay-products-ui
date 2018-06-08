@@ -47,7 +47,7 @@ describe('products client - creating a new payment', () => {
       response = productFixtures.validCreatePaymentResponse({product_external_id: productExternalId})
       provider.addInteraction(
         new PactInteractionBuilder(`${PRODUCTS_RESOURCE}/${productExternalId}/payments`)
-          .withUponReceiving('a valid create charge create request')
+          .withUponReceiving('a valid create charge create request 1')
           .withMethod('POST')
           .withStatusCode(201)
           .withResponseBody(response.getPactified())
@@ -110,6 +110,46 @@ describe('products client - creating a new payment', () => {
       expect(result.externalId).to.equal(plainResponse.external_id)
       expect(result.status).to.equal(plainResponse.status)
       expect(result.amount).to.equal(priceOverride)
+      expect(result.nextUrl).to.equal(plainResponse.next_url)
+      expect(result).to.have.property('links')
+      expect(Object.keys(result.links).length).to.equal(2)
+      expect(result.links).to.have.property('self')
+      expect(result.links.self).to.have.property('method').to.equal(plainResponse._links.find(link => link.rel === 'self').method)
+      expect(result.links.self).to.have.property('href').to.equal(plainResponse._links.find(link => link.rel === 'self').href)
+      expect(result.links).to.have.property('next')
+      expect(result.links.next).to.have.property('method').to.equal(plainResponse._links.find(link => link.rel === 'next').method)
+      expect(result.links.next).to.have.property('href').to.equal(plainResponse._links.find(link => link.rel === 'next').href)
+    })
+  })
+
+  describe('when a charge is successfully created with price and reference', () => {
+    before((done) => {
+      const productsClient = getProductsClient()
+      productExternalId = 'a-valid-product-id-1'
+      const testReferenceNumber = 'test reference number'
+      response = productFixtures.validCreatePaymentResponse({product_external_id: productExternalId, reference_number: testReferenceNumber})
+      provider.addInteraction(
+        new PactInteractionBuilder(`${PRODUCTS_RESOURCE}/${productExternalId}/payments`)
+          .withUponReceiving('a valid create charge create request with reference')
+          .withMethod('POST')
+          .withStatusCode(201)
+          .withResponseBody(response.getPactified())
+          .build()
+      )
+        .then(() => productsClient.payment.create(productExternalId, testReferenceNumber))
+        .then(res => {
+          result = res
+          done()
+        })
+        .catch(e => done(e))
+    })
+
+    it('should create a new product', () => {
+      const plainResponse = response.getPlain()
+      expect(result.productExternalId).to.equal(plainResponse.product_external_id).and.to.equal(productExternalId)
+      expect(result.externalId).to.equal(plainResponse.external_id)
+      expect(result.status).to.equal(plainResponse.status)
+      expect(result.referenceNumber).to.equal(plainResponse.reference_number)
       expect(result.nextUrl).to.equal(plainResponse.next_url)
       expect(result).to.have.property('links')
       expect(Object.keys(result.links).length).to.equal(2)

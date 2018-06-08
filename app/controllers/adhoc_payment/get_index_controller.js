@@ -7,6 +7,7 @@ const currencyFormatter = require('currency-formatter')
 // Custom dependencies
 const {response} = require('../../utils/response')
 const productReferenceCtrl = require('../product_reference')
+const {getSessionVariable} = require('../../utils/cookie')
 
 function asGBP (amountInPence) {
   return currencyFormatter.format((amountInPence / 100).toFixed(2), {code: 'GBP'})
@@ -23,11 +24,9 @@ module.exports = (req, res) => {
     productReferenceEnabled: product.reference_enabled
   }
   if (product.reference_enabled) {
-    const referenceNumber = req.referenceNumber
-    if (referenceNumber) {
-      data.referenceNumber = referenceNumber
-    } else {
-      productReferenceCtrl.index(req, res)
+    const sessionReferenceNumber = getSessionVariable(req, 'referenceNumber')
+    if (!sessionReferenceNumber) {
+      return productReferenceCtrl.index(req, res)
     }
   }
 

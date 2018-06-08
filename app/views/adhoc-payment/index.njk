@@ -16,9 +16,6 @@
 
   <form action="/pay/{{ productExternalId }}" method="post" name="startPaymentForm" class="push-bottom">
     <input id="csrf" name="csrfToken" type="hidden" value="{{ csrf }}"/>
-    {% if referenceNumber %}
-      <input id="reference-number" name="reference-number" type="hidden" value="{{ referenceNumber }}">
-    {% endif %}
     <div class="currency-input form-group">
       <label class="form-label-bold" for="payment-amount">
         Payment amount
