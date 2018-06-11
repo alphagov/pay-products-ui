@@ -6,6 +6,7 @@ const {isCurrency, isAboveMaxAmount} = require('../../browsered/field-validation
 const makePayment = require('../make_payment_controller')
 const index = require('./get_index_controller')
 const productReferenceCtrl = require('../product_reference')
+const {getSessionVariable} = require('../../utils/cookie')
 
 const AMOUNT_FORMAT = /^([0-9]+)(?:\.([0-9]{2}))?$/
 
@@ -13,9 +14,9 @@ module.exports = (req, res) => {
   const product = req.product
 
   if (product.reference_enabled) {
-    let referenceNumber = req.body['reference-number']
-    if (referenceNumber) {
-      req.referenceNumber = referenceNumber
+    const sessionReferenceNumber = getSessionVariable(req, 'referenceNumber')
+    if (sessionReferenceNumber) {
+      req.referenceNumber = sessionReferenceNumber
     } else {
       productReferenceCtrl.index(req, res)
     }

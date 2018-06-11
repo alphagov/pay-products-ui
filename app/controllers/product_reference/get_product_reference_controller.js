@@ -5,6 +5,7 @@ const logger = require('winston')
 
 // Custom dependencies
 const response = require('../../utils/response').response
+const {getSessionVariable} = require('../../utils/cookie')
 
 module.exports = (req, res) => {
   const product = req.product
@@ -16,8 +17,9 @@ module.exports = (req, res) => {
     productDescription: product.description,
     paymentReferenceLabel: product.reference_label
   }
-  if (req.referenceNumber) {
-    data.referenceNumber = req.referenceNumber
+  const sessionReferenceNumber = getSessionVariable(req, 'referenceNumber')
+  if (sessionReferenceNumber) {
+    data.referenceNumber = sessionReferenceNumber
   }
   if (product.reference_hint) {
     data.paymentReferenceHint = product.reference_hint

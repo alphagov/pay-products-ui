@@ -31,7 +31,8 @@
              autofocus=""
              autocomplete="off"
              maxlength="255"
-             data-validate="required field"/>
+             data-validate="isNaxsiSafe"
+             data-validate-max-lengt="255"/>
       {% else %}
       <input class="form-control"
              aria-label=""
@@ -44,8 +45,8 @@
              maxlength="255"
              data-validate="isNaxsiSafe"
              data-validate-max-lengt="255"/>
+      {% endif %}
     </div>
-    {% endif %}
     <button type="submit" class="button">
       Continue
     </button>

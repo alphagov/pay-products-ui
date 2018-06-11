@@ -9,38 +9,73 @@ const responseSpy = sinon.spy()
 const mockResponses = {
   response: responseSpy
 }
-const adhocCtrl = proxyquire('../../../../app/controllers/adhoc_payment/get_index_controller', {
-  '../../utils/response': mockResponses
-})
+const indexSpy = sinon.spy()
+const mockReferenceCtrl = {
+  index: indexSpy
+}
 
 let req, res
 
-describe('get adhoc controller with reference enabled and reference set ', () => {
+describe('get adhoc controller with reference enabled', () => {
+  const mockCookie = {
+    getSessionVariable: sinon.stub().returns('Test reference')
+  }
+  const adhocCtrl = proxyquire('../../../../app/controllers/adhoc_payment/get_index_controller', {
+    '../../utils/response': mockResponses,
+    '../product_reference': mockReferenceCtrl,
+    '../../utils/cookie': mockCookie
+  })
+
   const product = productFixtures.validCreateProductResponse({
+    type: 'ADHOC',
     reference_enabled: true
   }).getPlain()
+  describe(`when reference set `, () => {
+    before(() => {
+      res = {}
+      req = {
+        correlationId: '123',
+        product
+      }
+      adhocCtrl(req, res)
+    })
 
-  before(() => {
-    res = {}
-    req = {
-      correlationId: '123',
-      referenceNumber: 'Test reference',
-      product
+    it('should call method response', () => {
+      expect(responseSpy.called).to.equal(true)
+    })
+
+    it(`should pass req, res and 'adhoc-payment/index' to the response method to navigate to load view payment amount`, () => {
+      expect(mockResponses.response.args[0]).to.include(req)
+      expect(mockResponses.response.args[0]).to.include(res)
+      expect(mockResponses.response.args[0]).to.include('adhoc-payment/index')
+    })
+  })
+  describe(`when reference not set `, () => {
+    const mockCookie = {
+      getSessionVariable: sinon.stub().returns(undefined)
     }
-    adhocCtrl(req, res)
-  })
+    const adhocCtrl = proxyquire('../../../../app/controllers/adhoc_payment/get_index_controller', {
+      '../../utils/response': mockResponses,
+      '../product_reference': mockReferenceCtrl,
+      '../../utils/cookie': mockCookie
+    })
 
-  it('should call method response', () => {
-    expect(responseSpy.called).to.equal(true)
-  })
+    before(() => {
+      res = {}
+      req = {
+        correlationId: '123',
+        product
+      }
+      adhocCtrl(req, res)
+    })
 
-  it(`should pass req, res and 'adhoc-payment/index' to the response method`, () => {
-    expect(mockResponses.response.args[0]).to.include(req)
-    expect(mockResponses.response.args[0]).to.include(res)
-    expect(mockResponses.response.args[0]).to.include('adhoc-payment/index')
-  })
+    it('should call method response', () => {
+      expect(indexSpy.called).to.equal(true)
+    })
 
-  it(`should pass data to the responses.response method with a 'referenceNumber' property equal to 'Test reference'`, () => {
-    expect(mockResponses.response.args[0][3]).to.have.property('referenceNumber').to.equal('Test reference')
+    it(`should pass req, res to the response method to navigate back to reference page`, () => {
+      expect(mockReferenceCtrl.index.args[0]).to.include(req)
+      expect(mockReferenceCtrl.index.args[0]).to.include(res)
+    })
   })
 })

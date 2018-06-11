@@ -4,6 +4,7 @@ const index = require('./get_product_reference_controller')
 const client = require('../../services/clients/products_client')
 const adhocPaymentCtrl = require('../adhoc_payment')
 const {renderErrorView} = require('../../utils/response')
+const {setSessionVariable} = require('../../utils/cookie')
 
 module.exports = (req, res) => {
   const product = req.product
@@ -27,7 +28,7 @@ module.exports = (req, res) => {
       })
       .catch(err => {
         if (err.errorCode === 404) {
-          req.referenceNumber = referenceNumber
+          setSessionVariable(req, 'referenceNumber', referenceNumber)
           return adhocPaymentCtrl.index(req, res)
         } else {
           renderErrorView(req, res, 'Sorry, we are unable to process your request', err.errorCode || 500)
