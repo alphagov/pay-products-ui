@@ -6,10 +6,10 @@ const {COOKIE_MAX_AGE, SESSION_ENCRYPTION_KEY} = process.env
 const SESSION_COOKIE_NAME = 'session'
 
 function checkEnv () {
-  if (!isValidKey(SESSION_ENCRYPTION_KEY)) {
+  if (!isValidStringKey(SESSION_ENCRYPTION_KEY)) {
     throw new Error('cookie encryption key is not set')
   }
-  if (!isValidKey(COOKIE_MAX_AGE)) {
+  if (!isValidStringKey(COOKIE_MAX_AGE)) {
     throw new Error('cookie max age is not set')
   }
 }
@@ -20,7 +20,7 @@ function checkEnv () {
  * @param {string} key
  * @returns {boolean}
  */
-function isValidKey (key) {
+function isValidStringKey (key) {
   return !!key && typeof key === 'string'
 }
 
@@ -73,7 +73,7 @@ function getSessionVariable (req, key) {
  * @returns {string}
  */
 function getSessionCookieName () {
-  if (isValidKey(SESSION_ENCRYPTION_KEY)) {
+  if (isValidStringKey(SESSION_ENCRYPTION_KEY)) {
     return SESSION_COOKIE_NAME
   }
 }

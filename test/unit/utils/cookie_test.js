@@ -11,8 +11,8 @@ const getCookiesUtil = sessionsStub => {
 }
 
 describe('cookie configuration', function () {
-  describe('when setting the config', function () {
-    it('should configure cookie correctly', function () {
+  describe('when setting the config correctly', function () {
+    it('should set session with expected values', function () {
       const clientSessionsStub = sinon.stub()
       const cookies = getCookiesUtil(clientSessionsStub)
 
@@ -32,6 +32,8 @@ describe('cookie configuration', function () {
 
       expect(clientSessionsStub.calledWith(expectedConfig)).to.equal(true)
     })
+  })
+  describe(`when missing SESSION_ENCRYPTION_KEY`, () => {
     it('should throw an error if no session key is set', function () {
       process.env.SESSION_ENCRYPTION_KEY = ''
 
@@ -40,8 +42,10 @@ describe('cookie configuration', function () {
 
       expect(() => cookies.sessionCookie()).to.throw(/cookie encryption key is not set/)
     })
+  })
+  describe(`when missing COOKIE_MAX_AGE`, () => {
     it('should throw an error if no max age is set', function () {
-      process.env.SESSION_ENCRYPTION_KEY = 'test encryption'
+      process.env.SESSION_ENCRYPTION_KEY = 'naskjwefvwei72rjkwfmjwfi72rfkjwefmjwefiuwefjkbwfiu24fmjbwfk'
       process.env.COOKIE_MAX_AGE = ''
 
       const clientSessionsStub = sinon.stub()
@@ -53,7 +57,6 @@ describe('cookie configuration', function () {
 
   describe(`when setting value on cookie 'session'`, function () {
     it(`should set value on cookie 'session' if SESSION_ENCRYPTION_KEY set`, function () {
-      process.env.SESSION_ENCRYPTION_KEY = 'naskjwefvwei72rjkwfmjwfi72rfkjwefmjwefiuwefjkbwfiu24fmjbwfk'
       const cookies = getCookiesUtil()
       const req = {
         session: {}
@@ -73,9 +76,8 @@ describe('cookie configuration', function () {
     })
   })
 
-  describe(`should get value from cookie 'session'`, function () {
-    it('only if SESSION_ENCRYPTION_KEY is set and cookie exists', function () {
-      process.env.SESSION_ENCRYPTION_KEY = 'naskjwefvwei72rjkwfmjwfi72rfkjwefmjwefiuwefjkbwfiu24fmjbwfk'
+  describe(`when SESSION_ENCRYPTION_KEY is set and cookie exists`, function () {
+    it(`should get value from cookie 'session'`, function () {
       const cookies = getCookiesUtil()
       const req = {
         session: {
@@ -87,9 +89,8 @@ describe('cookie configuration', function () {
     })
   })
 
-  describe(`should NOT get value from cookie 'session'`, function () {
-    it('when session key is NOT set', function () {
-      process.env.SESSION_ENCRYPTION_KEY = 'naskjwefvwei72rjkwfmjwfi72rfkjwefmjwefiuwefjkbwfiu24fmjbwfk'
+  describe(`when session key is NOT set`, function () {
+    it(`should NOT get value from cookie`, function () {
       const cookies = getCookiesUtil()
       const req = {
         session: {}
@@ -99,9 +100,8 @@ describe('cookie configuration', function () {
     })
   })
 
-  describe(`should NOT get value`, function () {
-    it('when cookie does NOT exist', function () {
-      process.env.SESSION_ENCRYPTION_KEY = 'naskjwefvwei72rjkwfmjwfi72rfkjwefmjwefiuwefjkbwfiu24fmjbwfk'
+  describe(`when cookie does NOT exist`, function () {
+    it('should NOT get value', function () {
       const cookies = getCookiesUtil()
       const req = {}
 

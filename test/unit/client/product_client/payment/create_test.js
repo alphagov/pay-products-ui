@@ -47,7 +47,7 @@ describe('products client - creating a new payment', () => {
       response = productFixtures.validCreatePaymentResponse({product_external_id: productExternalId})
       provider.addInteraction(
         new PactInteractionBuilder(`${PRODUCTS_RESOURCE}/${productExternalId}/payments`)
-          .withUponReceiving('a valid create charge create request 1')
+          .withUponReceiving('a valid create charge create request')
           .withMethod('POST')
           .withStatusCode(201)
           .withResponseBody(response.getPactified())
