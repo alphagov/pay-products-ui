@@ -23,8 +23,9 @@ module.exports = (req, res) => {
   }
 
   if (payment.govukStatus.toLowerCase() === 'success') {
+    const reference = product.reference_enabled ? payment.referenceNumber : beautify(payment.referenceNumber)
     data.payment = {
-      reference: beautify(payment.referenceNumber),
+      reference: reference,
       amount: asGBP(payment.amount)
     }
     return response(req, res, 'pay/confirmation', data)
