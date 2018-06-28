@@ -59,4 +59,8 @@ module.exports.bind = function (app) {
 
   // ADHOC SPECIFIC SCREENS
   app.post(pay.product, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, adhocPaymentCtrl.postIndex)
+
+  // route to gov.uk 404 page
+  // this has to be the last route registered otherwise it will redirect other routes
+  app.all('*', (req, res) => res.redirect('https://www.gov.uk/404'))
 }
