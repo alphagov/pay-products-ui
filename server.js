@@ -147,7 +147,7 @@ function initialise () {
   initialiseTemplateEngine(app)
   initialisePublic(app)
   initialiseErrorHandling(app)
-  initialiseRoutes(app)
+  initialiseRoutes(app) // This contains the 404 override and so should be last
   warnIfAnalyticsNotSet()
 
   return app
