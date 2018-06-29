@@ -145,9 +145,9 @@ function initialise () {
 
   app.use(flash())
   initialiseTemplateEngine(app)
-  initialiseRoutes(app)
   initialisePublic(app)
   initialiseErrorHandling(app)
+  initialiseRoutes(app)
   warnIfAnalyticsNotSet()
 
   return app
