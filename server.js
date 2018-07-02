@@ -145,9 +145,9 @@ function initialise () {
 
   app.use(flash())
   initialiseTemplateEngine(app)
-  initialiseRoutes(app)
   initialisePublic(app)
   initialiseErrorHandling(app)
+  initialiseRoutes(app) // This contains the 404 override and so should be last
   warnIfAnalyticsNotSet()
 
   return app
