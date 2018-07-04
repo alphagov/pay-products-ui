@@ -4,6 +4,7 @@ const session = require('client-sessions')
 const _ = require('lodash')
 const {COOKIE_MAX_AGE, SESSION_ENCRYPTION_KEY} = process.env
 const SESSION_COOKIE_NAME = 'session'
+const DISABLE_INTERNAL_HTTPS = process.env.DISABLE_INTERNAL_HTTPS === 'true'
 
 function checkEnv () {
   if (!isValidStringKey(SESSION_ENCRYPTION_KEY)) {
@@ -34,7 +35,7 @@ function sessionCookie () {
     cookie: {
       ephemeral: false, // when true, cookie expires when the browser closes
       httpOnly: true, // when true, cookie is not accessible from javascript
-      secureProxy: true
+      secureProxy: !DISABLE_INTERNAL_HTTPS
     }
   })
 }
