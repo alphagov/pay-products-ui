@@ -6,13 +6,13 @@
 
     &__unit {
       position: absolute;
-      bottom: $gutter / 6;
-      left: $gutter / 3;
-      font-weight: bold;
+      bottom: govuk-spacing(1);
+      left: govuk-spacing(2);
+      @include govuk-font($size: 19, $weight: bold);
     }
   }
 
-  .form-control {
+  input {
     padding: 6px 0 3px 25px;
   }
 }

@@ -1,54 +1,47 @@
 {% extends "../layout.njk" %}
+{% from "components/button/macro.njk" import govukButton %}
+{% from "components/input/macro.njk" import govukInput %}
 
-{% block page_title %}
+{% block pageTitle %}
   {{ serviceName }}
 {% endblock %}
 
-{% block main_content %}
-  <h1 class="heading-large page-title">
-    {{ productName }}
-  </h1>
-  <p id="description">
-    {{ productDescription | striptags(true) | escape | nl2br }}
-  </p>
+{% block contentBody %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-l">
+      {{ productName }}
+    </h1>
+      <p class="govuk-body" id="description">
+      {{ productDescription | striptags(true) | escape | nl2br }}
+    </p>
 
-  <form action="/pay/reference/{{ productExternalId }}" method="post" name="referencePaymentForm" class="push-bottom" data-validate>
-    <input id="csrf" name="csrfToken" type="hidden" value="{{ csrf }}"/>
-    <div class="form-group">
-      <label id="payment-reference-label" class="form-label form-label-bold" for="payment-reference">
-        {{ paymentReferenceLabel }}
-        {% if paymentReferenceHint %}
-          <span id="payment-reference-hint" class="form-hint">{{ paymentReferenceHint }}</span>
-        {% endif %}
-      </label>
-      {% if referenceNumber %}
-      <input class="form-control"
-             aria-label=""
-             name="payment-reference"
-             type="text"
-             id="payment-reference"
-             value="{{ referenceNumber }}"
-             autofocus=""
-             autocomplete="off"
-             maxlength="255"
-             data-validate="isNaxsiSafe"
-             data-validate-max-lengt="255"/>
-      {% else %}
-      <input class="form-control"
-             aria-label=""
-             name="payment-reference"
-             type="text"
-             id="payment-reference"
-             value=""
-             autofocus=""
-             autocomplete="off"
-             maxlength="255"
-             data-validate="isNaxsiSafe"
-             data-validate-max-lengt="255"/>
-      {% endif %}
-    </div>
-    <button type="submit" class="button">
-      Continue
-    </button>
-  </form>
+    <form action="/pay/reference/{{ productExternalId }}" method="post" name="referencePaymentForm" class="push-bottom" data-validate>
+      <input id="csrf" name="csrfToken" type="hidden" value="{{ csrf }}"/>
+
+      {{ govukInput({
+        label: {
+          text: paymentReferenceLabel,
+          classes: "govuk-!-font-weight-bold"
+        },
+        hint: {
+          text: paymentReferenceHint
+        },
+        id: "payment-reference",
+        name: "payment-reference",
+        classes: "govuk-!-width-one-third",
+        value: referenceNumber,
+        attributes: {
+          autofocus: "",
+          maxlength: "255",
+          "data-validate": "isNaxsiSafe",
+          "data-validate-max-lengt": "255"
+        }
+      }) }}
+      {{ govukButton({
+        text: "Continue"
+      }) }}
+    </form>
+  </div>
+</div>
 {% endblock %}

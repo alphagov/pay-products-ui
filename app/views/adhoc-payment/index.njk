@@ -1,34 +1,38 @@
 {% extends "../layout.njk" %}
+{% from "components/button/macro.njk" import govukButton %}
+{% from "components/inset-text/macro.njk" import govukInsetText %}
 
-{% block page_title %}
+{% block pageTitle %}
   {{ serviceName }}
 {% endblock %}
 
-{% block main_content %}
+{% block contentBody %}
   {% if not product.reference_enabled %}
-    <h1 class="heading-large page-title">
+    <h1 class="govuk-heading-l">
       {{ productName }}
     </h1>
-    <p id="description">
+    <p class="govuk-body" id="description">
       {{ productDescription | striptags(true) | escape | nl2br }}
     </p>
   {% endif %}
 
   <form action="/pay/{{ productExternalId }}" method="post" name="startPaymentForm" class="push-bottom">
     <input id="csrf" name="csrfToken" type="hidden" value="{{ csrf }}"/>
-    <div class="currency-input form-group">
-      <label class="form-label-bold" for="payment-amount">
+    <div class="currency-input govuk-form-group">
+      <label class="govuk-label govuk-!-font-weight-bold govuk-!-width-one-quarter" for="payment-amount">
         Payment amount
-        <span class="visually-hidden">in £</span>
+        <span class="govuk-visually-hidden">in £</span>
       </label>
       {% if price %}
-        <div class="panel panel-border-wide">
-          <h2 id="payment-amount" class="lede">{{ price }}</h2>
-        </div>
+        {{ govukInsetText({
+          text: price,
+          id: "payment-amount",
+          classes: "govuk-!-font-weight-bold"
+        }) }}
       {% else %}
         <div class="currency-input__inner">
           <span class="currency-input__inner__unit">£</span>
-          <input class="form-control"
+          <input class="govuk-input govuk-!-width-one-quarter"
                  aria-label="Enter amount in pounds"
                  name="payment-amount"
                  data-non-numeric=""
@@ -43,8 +47,8 @@
         </div>
       {% endif %}
     </div>
-    <button type="submit" class="button">
-      Proceed to payment
-    </button>
+    {{ govukButton({
+      text: "Proceed to payment"
+    }) }}
   </form>
 {% endblock %}

@@ -35,11 +35,11 @@ function initValidation (e) {
 }
 
 function clearPreviousErrors () {
-  let previousErrorsMessages = Array.prototype.slice.call(document.querySelectorAll('.error-message, .error-summary'))
-  let previousErrorsFields = Array.prototype.slice.call(document.querySelectorAll('.form-group.error'))
+  let previousErrorsMessages = Array.prototype.slice.call(document.querySelectorAll('.govuk-error-message, .govuk-error-summary'))
+  let previousErrorsFields = Array.prototype.slice.call(document.querySelectorAll('.govuk-form-group.govuk-form-group--error'))
 
   previousErrorsMessages.map(error => error.remove())
-  previousErrorsFields.map(errorField => errorField.classList.remove('error'))
+  previousErrorsFields.map(errorField => errorField.classList.remove('govuk-form-group--error'))
 }
 
 function findFields (form) {
@@ -89,16 +89,16 @@ function validateField (form, field) {
 }
 
 function applyErrorMessaging (form, field, result) {
-  let formGroup = field.closest('.form-group')
-  if (!formGroup.classList.contains('error')) {
-    formGroup.classList.add('error')
+  let formGroup = field.closest('.govuk-form-group')
+  if (!formGroup.classList.contains('govuk-form-group--error')) {
+    formGroup.classList.add('govuk-form-group--error')
     document.querySelector('label[for="' + field.name + '"]').insertAdjacentHTML('beforeend',
-      '<span class="error-message">' + result + '</span>')
+      '<span class="govuk-error-message">' + result + '</span>')
   }
 }
 
 function populateErrorSummary (form) {
-  let erroringFields = Array.prototype.slice.call(form.querySelectorAll('.form-group.error label'))
+  let erroringFields = Array.prototype.slice.call(form.querySelectorAll('.govuk-form-group--error label'))
   let configuration = {
     fields: erroringFields.map(field => {
       let label = field.innerHTML.split('<')[0].trim()

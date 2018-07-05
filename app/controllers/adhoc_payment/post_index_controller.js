@@ -29,10 +29,10 @@ module.exports = (req, res) => {
 
   let paymentAmount = req.body['payment-amount']
   if (!paymentAmount || isCurrency(paymentAmount)) {
-    req.errorMessage = `<h2>${isCurrency(paymentAmount)}</h2>`
+    req.errorMessage = `<h2 class="govuk-heading-m govuk-!-margin-bottom-0">${isCurrency(paymentAmount)}</h2>`
     return index(req, res)
   } else if (isAboveMaxAmount(paymentAmount)) {
-    req.errorMessage = `<h2>${isAboveMaxAmount(paymentAmount)}</h2>`
+    req.errorMessage = `<h2 class="govuk-heading-m govuk-!-margin-bottom-0">${isAboveMaxAmount(paymentAmount)}</h2>`
     return index(req, res)
   } else {
     paymentAmount = paymentAmount.replace(/[^0-9.-]+/g, '')

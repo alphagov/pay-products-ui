@@ -68,7 +68,7 @@ describe('friendly url redirect controller', function () {
       expect(response.statusCode).to.equal(404)
     })
     it('should render error page', () => {
-      expect($('.page-title').text()).to.equal('An error occurred:')
+      expect($('.govuk-heading-l').text()).to.equal('An error occurred:')
       expect($('#errorMsg').text()).to.equal('We are unable to process your request at this time')
     })
   })

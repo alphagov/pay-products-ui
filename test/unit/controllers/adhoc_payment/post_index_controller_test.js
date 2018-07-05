@@ -78,7 +78,7 @@ describe('adhoc payment submit-amount controller', function () {
       })
 
       it('should add a relevant error message to the session \'flash\'', () => {
-        expect($('.generic-error').text()).to.include(`Choose an amount in pounds and pence using digits and a decimal point. For example “10.50”`)
+        expect($('.govuk-heading-m').text()).to.include(`Choose an amount in pounds and pence using digits and a decimal point. For example “10.50”`)
       })
     })
 
@@ -106,7 +106,7 @@ describe('adhoc payment submit-amount controller', function () {
       })
 
       it('should add a relevant error message to the session \'flash\'', () => {
-        expect($('.generic-error').text()).to.include(`Choose an amount in pounds and pence using digits and a decimal point. For example “10.50”`)
+        expect($('.govuk-heading-m').text()).to.include(`Choose an amount in pounds and pence using digits and a decimal point. For example “10.50”`)
       })
     })
 
@@ -134,7 +134,7 @@ describe('adhoc payment submit-amount controller', function () {
       })
 
       it('should add a relevant error message to the session \'flash\'', () => {
-        expect($('.generic-error').text()).to.include(`Choose an amount under £100,000`)
+        expect($('.govuk-heading-m').text()).to.include(`Choose an amount under £100,000`)
       })
     })
   })

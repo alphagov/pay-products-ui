@@ -1,36 +1,41 @@
 {% extends "../layout.njk" %}
 
-{% block page_title %}
-Your payment was successful - {{currentServiceName}} - GOV.UK Pay
+{% block pageTitle %}
+Your payment was successful - {{serviceName}} - GOV.UK Pay
 {% endblock %}
 
-{% block main_content %}
-<div class="govuk-box-highlight">
-  <h1 class="heading-xlarge">
-    Your payment was successful
-  </h1>
-  <p class="font-large">
-    Your payment reference number is <br>
-      <strong class="bold" id="payment-reference">{{ payment.reference }}</strong>
-  </p>
+{% block contentBody %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-panel govuk-panel--confirmation">
+      <h2 class="govuk-panel__title">
+        Your payment was successful
+      </h2>
+      <div class="govuk-panel__body">
+        Your payment reference number is <br>
+        <strong class="bold" id="payment-reference">{{ payment.reference }}</strong>
+      </div>
+    </div>
+
+    <h2 class="govuk-heading-m govuk-!-margin-top-6">What happens next</h2>
+    <p class="govuk-body">
+      We have sent you a confirmation email.
+    </p>
+
+    <h2 class="govuk-heading-m">Payment summary</h2>
+
+    <table class="govuk-table">
+      <tbody class="govuk-table__body">
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell" scope="row">Payment for:</td>
+          <td class="govuk-table__cell">{{serviceName}}</td>
+        </tr>
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell" scope="row">Total amount:</td>
+          <td class="govuk-table__cell" id="payment-amount">{{payment.amount}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
-
-<h2 class="heading-medium">What happens next</h2>
-<p>
-  We have sent you a confirmation email.
-</p>
-
-<h2 class="heading-medium">Payment summary</h2>
-<table class="mb2">
-  <tbody>
-    <tr>
-      <td>Payment for:</td>
-      <td class="table-info">{{currentServiceName}}</td>
-    </tr>
-    <tr>
-      <td>Total amount:</td>
-      <td class="table-info"><div id="payment-amount">{{ payment.amount }}</div></td>
-    </tr>
-  </tbody>
-</table>
 {% endblock %}

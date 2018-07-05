@@ -19,7 +19,7 @@ module.exports = (req, res) => {
   const product = req.product
   const payment = req.payment
   const data = {
-    currentServiceName: product.serviceName
+    serviceName: product.serviceName
   }
 
   if (payment.govukStatus.toLowerCase() === 'success') {

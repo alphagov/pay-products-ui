@@ -1,9 +1,9 @@
 {% extends "layout.njk" %}
 
-{% block page_title %}An error occurred - GOV.UK Pay{% endblock %}
+{% block pageTitle %}An error occurred - GOV.UK Pay{% endblock %}
 
-{% block main_content %}
-  <h1 class="page-title">An error occurred:</h1>
+{% block contentBody %}
+  <h1 class="govuk-heading-l">An error occurred:</h1>
 
-  <div id="errorMsg">{{message}}</div>
+  <div id="errorMsg" class="govuk-body">{{message}}</div>
 {% endblock %}

@@ -82,10 +82,10 @@ describe('product reference post controller', function () {
 
     it('should render product reference start page with error message', () => {
       expect($('title').text()).to.include(product.service_name)
-      expect($('h1.heading-large').text()).to.include(product.name)
+      expect($('h1').text()).to.include(product.name)
       expect($('p#description').text()).to.include(product.description)
       expect($('form').attr('action')).to.equal(`/pay/reference/${product.external_id}`)
-      expect($('.generic-error').text()).to.include(`Enter a Test reference label`)
+      expect($('.govuk-heading-m').text()).to.include(`Enter a Test reference label`)
     })
   })
 
@@ -118,10 +118,10 @@ describe('product reference post controller', function () {
 
     it('should render product reference start page with error message', () => {
       expect($('title').text()).to.include(product.service_name)
-      expect($('h1.heading-large').text()).to.include(product.name)
+      expect($('h1').text()).to.include(product.name)
       expect($('p#description').text()).to.include(product.description)
       expect($('form').attr('action')).to.equal(`/pay/reference/${product.external_id}`)
-      expect($('.generic-error').text()).to.include(`The Test reference label is not valid`)
+      expect($('.govuk-heading-m').text()).to.include(`The Test reference label is not valid`)
     })
   })
 })
