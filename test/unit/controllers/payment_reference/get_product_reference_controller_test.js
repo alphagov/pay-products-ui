@@ -44,10 +44,10 @@ describe('product reference index controller', function () {
 
     it('should render product reference start page with all fields', () => {
       expect($('title').text()).to.include(product.service_name)
-      expect($('h1.heading-large').text()).to.include(product.name)
+      expect($('h1').text()).to.include(product.name)
       expect($('p#description').text()).to.include(product.description)
       expect($('form').attr('action')).to.equal(`/pay/reference/${product.external_id}`)
-      expect($('#payment-reference-label').text()).to.include('Test reference label')
+      expect($('.govuk-label').text()).to.include('Test reference label')
       expect($('#payment-reference-hint').text()).to.include('Test reference hint')
     })
   })
@@ -79,11 +79,11 @@ describe('product reference index controller', function () {
 
     it('should render product reference start page with all fields', () => {
       expect($('title').text()).to.include(product.service_name)
-      expect($('h1.heading-large').text()).to.include(product.name)
+      expect($('h1').text()).to.include(product.name)
       expect($('p#description').text()).to.include(product.description)
       expect($('form').attr('action')).to.equal(`/pay/reference/${product.external_id}`)
-      expect($('#payment-reference-label').text()).to.include('Test reference label')
-      expect($('#payment-reference-hint').text()).to.equal('')
+      expect($('.govuk-label').text()).to.include('Test reference label')
+      expect($('#payment-reference-hint').text().trim()).to.equal('')
     })
   })
 
@@ -114,12 +114,12 @@ describe('product reference index controller', function () {
 
     it('should render product reference start page with reference pre-populated', () => {
       expect($('title').text()).to.include(product.service_name)
-      expect($('h1.heading-large').text()).to.include(product.name)
+      expect($('h1').text()).to.include(product.name)
       expect($('p#description').text()).to.include(product.description)
       expect($('form').attr('action')).to.equal(`/pay/reference/${product.external_id}`)
       expect($('#payment-reference').attr('value')).to.equal('Test reference')
-      expect($('#payment-reference-label').text()).to.include('Test reference label')
-      expect($('#payment-reference-hint').text()).to.equal('')
+      expect($('.govuk-label').text()).to.include('Test reference label')
+      expect($('#payment-reference-hint').text().trim()).to.equal('')
     })
   })
 })

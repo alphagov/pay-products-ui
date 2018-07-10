@@ -46,13 +46,13 @@ describe('adhoc payment index controller', function () {
 
     it('should render adhoc payment start page', () => {
       expect($('title').text()).to.include(product.service_name)
-      expect($('h1.heading-large').text()).to.include(product.name)
+      expect($('h1').text()).to.include(product.name)
       expect($('p#description').text()).to.include(product.description)
       expect($('form').attr('action')).to.equal(`/pay/${product.external_id}`)
     })
 
     it('should show the amount input', () => {
-      expect($('.form-label-bold').text()).to.include('Payment amount')
+      expect($('.govuk-label').text()).to.include('Payment amount')
       expect($('#payment-amount').text()).to.include('')
     })
   })
@@ -83,13 +83,13 @@ describe('adhoc payment index controller', function () {
 
     it('should render adhoc payment start page', () => {
       expect($('title').text()).to.include(product.service_name)
-      expect($('h1.heading-large').text()).to.include(product.name)
+      expect($('h1').text()).to.include(product.name)
       expect($('p#description').text()).to.include(product.description)
       expect($('form').attr('action')).to.equal(`/pay/${product.external_id}`)
     })
 
     it('should show the fixed amount', () => {
-      expect($('.form-label-bold').text()).to.include('Payment amount')
+      expect($('.govuk-label').text()).to.include('Payment amount')
       expect($('#payment-amount').text()).to.include(asGBP(product.price))
     })
   })
@@ -120,7 +120,7 @@ describe('adhoc payment index controller', function () {
 
     it('should render payment reference start page', () => {
       expect($('title').text()).to.include(product.service_name)
-      expect($('h1.heading-large').text()).to.include(product.name)
+      expect($('h1').text()).to.include(product.name)
       expect($('p#description').text()).to.include(product.description)
       expect($('form').attr('action')).to.equal(`/pay/reference/${product.external_id}`)
     })

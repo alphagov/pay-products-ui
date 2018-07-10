@@ -58,7 +58,7 @@ describe('pre payment controller', function () {
           expect(response.statusCode).to.equal(400)
         })
         it('should render error page', () => {
-          expect($('.page-title').text()).to.equal('An error occurred:')
+          expect($('.govuk-heading-l').text()).to.equal('An error occurred:')
           expect($('#errorMsg').text()).to.equal('We are unable to process your request at this time')
         })
       })
@@ -78,7 +78,7 @@ describe('pre payment controller', function () {
           expect(response.statusCode).to.equal(404)
         })
         it('should render error page', () => {
-          expect($('.page-title').text()).to.equal('An error occurred:')
+          expect($('.govuk-heading-l').text()).to.equal('An error occurred:')
           expect($('#errorMsg').text()).to.equal('Sorry, we are unable to process your request')
         })
       })
@@ -103,7 +103,7 @@ describe('pre payment controller', function () {
     })
 
     it('should render the payment amount page', () => {
-      expect($('.page-title').text()).to.include('A Product Name')
+      expect($('.govuk-heading-l').text()).to.include('A Product Name')
     })
   })
 
@@ -129,7 +129,7 @@ describe('pre payment controller', function () {
       expect(response.statusCode).to.equal(200)
     })
     it('should render the payment reference page', () => {
-      expect($('.page-title').text()).to.include('Featured Product')
+      expect($('.govuk-heading-l').text()).to.include('Featured Product')
     })
   })
 
@@ -150,7 +150,7 @@ describe('pre payment controller', function () {
       expect(response.statusCode).to.equal(500)
     })
     it('should render error page', () => {
-      expect($('.page-title').text()).to.equal('An error occurred:')
+      expect($('.govuk-heading-l').text()).to.equal('An error occurred:')
       expect($('#errorMsg').text()).to.equal('Sorry, we are unable to process your request')
     })
   })

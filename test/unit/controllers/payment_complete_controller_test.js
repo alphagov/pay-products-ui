@@ -189,7 +189,7 @@ describe('payment complete controller', () => {
       expect(response.statusCode).to.equal(404)
     })
     it('should render error page', () => {
-      expect($('.page-title').text()).to.equal('An error occurred:')
+      expect($('.govuk-heading-l').text()).to.equal('An error occurred:')
       expect($('#errorMsg').text()).to.equal('Sorry, we are unable to process your request')
     })
   })

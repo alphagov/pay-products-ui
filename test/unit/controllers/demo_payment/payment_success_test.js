@@ -39,13 +39,13 @@ describe('payment success controller', () => {
 
   it('should show a picture of an example error page', () => {
     expect($('h2.error-page-header').text()).to.equal('This is an example confirmation page')
-    expect($('img.example-page').attr('src')).to.contain('/images/confirmation-page')
+    expect($('img').attr('src')).to.contain('/images/confirmation-page')
   })
 
   it('should provide a link back to the transactions view in selfservice', () => {
     expect($('p.transactions-prompt').text()).to.equal('You can now view this payment in your transactions list on GOV.UK Pay.')
     const transactionsLink = $('a.transactions-link')
-    expect(transactionsLink.text()).to.equal('Go to transactions')
+    expect(transactionsLink.text()).to.contain('Go to transactions')
     expect(transactionsLink.attr('href')).to.equal(SELFSERVICE_TRANSACTIONS_URL)
   })
 })
