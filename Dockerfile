@@ -1,8 +1,8 @@
-FROM govukpay/nodejs:8.11.3
+FROM govukpay/nodejs:alpine-3.8
 
 RUN apk update &&\
     apk upgrade &&\
-    apk add --update bash libc6-compat
+    apk add --update bash
 
 ENV PORT 9000
 EXPOSE 9000
