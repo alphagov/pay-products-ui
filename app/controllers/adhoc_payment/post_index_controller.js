@@ -35,12 +35,12 @@ module.exports = (req, res) => {
     req.errorMessage = `<h2 class="govuk-heading-m govuk-!-margin-bottom-0">${isAboveMaxAmount(paymentAmount)}</h2>`
     return index(req, res)
   } else {
-    paymentAmount = paymentAmount.replace(/[^0-9.-]+/g, '')
+    paymentAmount = paymentAmount.replace(/[^0-9.]+/g, '')
     const currencyMatch = AMOUNT_FORMAT.exec(paymentAmount)
     if (!currencyMatch[2]) {
       paymentAmount = paymentAmount + '.00'
     }
-    req.paymentAmount = Math.trunc(paymentAmount * 100)
+    req.paymentAmount = Number(paymentAmount.replace('.', ''))
     makePayment(req, res)
   }
 }
