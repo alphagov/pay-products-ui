@@ -19,7 +19,7 @@ describe('adhoc payment submit-amount controller', function () {
 
   describe('variable amount ADHOC payment', function () {
     describe('when a valid amount is submitted', function () {
-      const priceOverride = 12550
+      const priceOverride = 995
       before(done => {
         product = productFixtures.validCreateProductResponse({
           type: 'ADHOC',
@@ -38,7 +38,7 @@ describe('adhoc payment submit-amount controller', function () {
         supertest(createAppWithSession(getApp()))
           .post(paths.pay.product.replace(':productExternalId', product.external_id))
           .send({
-            'payment-amount': '125.50',
+            'payment-amount': '9.95',
             csrfToken: csrf().create('123')
           })
           .end((err, res) => {
