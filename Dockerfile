@@ -1,4 +1,4 @@
-FROM govukpay/nodejs:alpine-3.8
+FROM govukpay/nodejs:alpine-3.8.1
 
 RUN apk update &&\
     apk upgrade &&\
