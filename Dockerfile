@@ -1,8 +1,7 @@
 FROM govukpay/nodejs:alpine-3.8.1
 
-RUN apk update &&\
-    apk upgrade &&\
-    apk add --update bash
+RUN apk --no-cache upgrade
+RUN apk add --no-cache bash
 
 ENV PORT 9000
 EXPOSE 9000
