@@ -30,8 +30,7 @@ const middlewareUtils = require('./app/utils/middleware')
 const cookieUtil = require('./app/utils/cookie')
 
 // Global constants
-const CSS_PATH = staticify.getVersionedPath('/stylesheets/application.css')
-const JAVASCRIPT_PATH = staticify.getVersionedPath('/js/application.js')
+const JAVASCRIPT_PATH = staticify.getVersionedPath('/js/application.min.js')
 const PORT = process.env.PORT || 3000
 const {NODE_ENV} = process.env
 const unconfiguredApp = express()
@@ -98,7 +97,7 @@ function initialiseTemplateEngine (app) {
 
   // Version static assets on production for better caching
   // if it's not production we want to re-evaluate the assets on each file change
-  nunjucksEnvironment.addGlobal('css_path', NODE_ENV === 'production' ? CSS_PATH : staticify.getVersionedPath('/stylesheets/application.css'))
+  nunjucksEnvironment.addGlobal('css_path', staticify.getVersionedPath('/stylesheets/application.min.css'))
   nunjucksEnvironment.addGlobal('js_path', NODE_ENV === 'production' ? JAVASCRIPT_PATH : staticify.getVersionedPath('/js/application.js'))
 }
 
