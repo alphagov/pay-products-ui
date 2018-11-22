@@ -20,7 +20,7 @@ module.exports = function (grunt) {
             cwd: 'app/assets/sass',
             src: ['*.scss'],
             dest: 'public/stylesheets/',
-            ext: '.css'
+            ext: '.min.css'
           }
         ]
       }
@@ -60,6 +60,14 @@ module.exports = function (grunt) {
           livereload: true
         }
       },
+      js: {
+        files: ['app/browsered.js', 'app/browsered/*.js'],
+        tasks: ['browserify', 'babel'],
+        options: {
+          spawn: false,
+          livereload: true
+        }
+      },
       assets: {
         files: ['app/assets/**/*', '!app/assets/sass/**'],
         tasks: ['copy:assets'],
@@ -72,20 +80,10 @@ module.exports = function (grunt) {
     browserify: {
       'public/js/application.js': ['app/browsered.js'],
       options: {
-        browserifyOptions: { standalone: 'module' },
+        browserifyOptions: {
+          standalone: 'module'
+        },
         transform: [
-          [
-            'babelify',
-            {
-              presets: [
-                ['env', {
-                  'targets': {
-                    'browsers': ['last 2 versions', 'safari >= 7', 'ie >= 10']
-                  }
-                }]
-              ]
-            }
-          ],
           [
             'nunjucksify',
             {
@@ -95,36 +93,35 @@ module.exports = function (grunt) {
       }
     },
 
-    // nodemon watches for changes and restarts app
-    nodemon: {
-      dev: {
-        script: 'server.js',
-        options: {
-          ext: 'js',
-          ignore: ['node_modules/**', 'app/assets/**', 'public/**'],
-          args: ['-i=true']
+    babel: {
+      options: {
+        presets: ['@babel/preset-env'],
+        compact: false
+      },
+      dist: {
+        files: {
+          'public/js/application.js': 'public/js/application.js'
         }
       }
     },
 
-    concurrent: {
-      target: {
-        tasks: ['watch', 'nodemon'],
-        options: {
-          logConcurrentOutput: true
+    uglify: {
+      my_target: {
+        files: {
+          'public/js/application.min.js': ['public/js/application.js']
         }
       }
     }
   });
 
   [
-    'grunt-contrib-copy',
-    'grunt-contrib-watch',
-    'grunt-contrib-clean',
-    'grunt-sass',
-    'grunt-nodemon',
+    'grunt-babel',
     'grunt-browserify',
-    'grunt-concurrent'
+    'grunt-contrib-copy',
+    'grunt-contrib-clean',
+    'grunt-contrib-watch',
+    'grunt-contrib-uglify',
+    'grunt-sass'
   ].forEach(function (task) {
     grunt.loadNpmTasks(task)
   })
@@ -132,8 +129,10 @@ module.exports = function (grunt) {
   grunt.registerTask('generate-assets', [
     'clean',
     'copy',
+    'sass',
     'browserify',
-    'sass'
+    'babel',
+    'uglify'
   ])
 
   const defaultTasks = ['generate-assets', 'concurrent:target']
