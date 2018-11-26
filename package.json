@@ -75,7 +75,7 @@
     "@babel/core": "^7.1.6",
     "@babel/preset-env": "^7.1.6",
     "@pact-foundation/pact-node": "6.16.0",
-    "chai": "^4.1.2",
+    "chai": "^4.2.0",
     "cheerio": "^1.0.0-rc.2",
     "chokidar-cli": "latest",
     "envfile": "^2.3.0",
