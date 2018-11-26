@@ -61,7 +61,7 @@
     "minimist": "1.2.x",
     "morgan": "1.9.x",
     "nunjucks": "^3.1.2",
-    "request": "^2.85.0",
+    "request": "^2.88.0",
     "requestretry": "^1.13.0",
     "rfc822-validate": "^1.0.0",
     "serve-favicon": "2.5.0",
