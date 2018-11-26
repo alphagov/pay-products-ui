@@ -101,7 +101,7 @@
     "sass-lint": "^1.12.1",
     "sinon": "5.0.x",
     "snyk": "1.78.x",
-    "standard": "^11.0.1",
+    "standard": "^12.0.1",
     "supertest": "^3.0.0"
   },
   "snyk": true
