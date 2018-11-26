@@ -5,8 +5,8 @@ const config = require('../../../config')
 const cheerio = require('cheerio')
 const nock = require('nock')
 const supertest = require('supertest')
-const {getApp} = require('../../../server')
-const {createAppWithSession} = require('../../test_helpers/mock_session')
+const { getApp } = require('../../../server')
+const { createAppWithSession } = require('../../test_helpers/mock_session')
 const productFixtures = require('../../fixtures/product_fixtures')
 const paths = require('../../../app/paths')
 const expect = chai.expect
@@ -25,7 +25,7 @@ describe('friendly url redirect controller', function () {
       }).getPlain()
       nock(config.PRODUCTS_URL)
         .get(`/v1/api/products`)
-        .query({'serviceNamePath': product.service_name_path, 'productNamePath': product.product_name_path})
+        .query({ 'serviceNamePath': product.service_name_path, 'productNamePath': product.product_name_path })
         .reply(200, product)
 
       supertest(createAppWithSession(getApp()))
@@ -51,7 +51,7 @@ describe('friendly url redirect controller', function () {
     before(done => {
       nock(config.PRODUCTS_URL)
         .get(`/v1/api/products`)
-        .query({'serviceNamePath': serviceNamePath, 'productNamePath': productNamePath})
+        .query({ 'serviceNamePath': serviceNamePath, 'productNamePath': productNamePath })
         .reply(404)
 
       supertest(createAppWithSession(getApp()))

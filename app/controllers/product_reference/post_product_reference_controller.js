@@ -2,7 +2,7 @@
 
 const index = require('./get_product_reference_controller')
 const adhocPaymentCtrl = require('../adhoc_payment')
-const {setSessionVariable} = require('../../utils/cookie')
+const { setSessionVariable } = require('../../utils/cookie')
 
 module.exports = (req, res) => {
   const product = req.product

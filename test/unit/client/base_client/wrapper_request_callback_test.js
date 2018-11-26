@@ -3,7 +3,7 @@
 // npm dependencies
 const request = require('request')
 const nock = require('nock')
-const {expect} = require('chai')
+const { expect } = require('chai')
 const sinon = require('sinon')
 const proxyquire = require('proxyquire')
 

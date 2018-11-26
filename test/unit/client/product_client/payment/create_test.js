@@ -3,7 +3,7 @@
 // NPM dependencies
 const path = require('path')
 const Pact = require('pact')
-const {expect} = require('chai')
+const { expect } = require('chai')
 const proxyquire = require('proxyquire')
 
 // Custom dependencies
@@ -44,7 +44,7 @@ describe('products client - creating a new payment', () => {
     before((done) => {
       const productsClient = getProductsClient()
       productExternalId = 'a-valid-product-id'
-      response = productFixtures.validCreatePaymentResponse({product_external_id: productExternalId})
+      response = productFixtures.validCreatePaymentResponse({ product_external_id: productExternalId })
       provider.addInteraction(
         new PactInteractionBuilder(`${PRODUCTS_RESOURCE}/${productExternalId}/payments`)
           .withUponReceiving('a valid create charge create request')
@@ -92,7 +92,7 @@ describe('products client - creating a new payment', () => {
           .withUponReceiving('a valid create charge create request price override')
           .withMethod('POST')
           .withStatusCode(201)
-          .withRequestBody({price: priceOverride})
+          .withRequestBody({ price: priceOverride })
           .withResponseBody(response.getPactified())
           .build()
       )
@@ -127,7 +127,7 @@ describe('products client - creating a new payment', () => {
       const productsClient = getProductsClient()
       productExternalId = 'a-valid-product-id-1'
       const testReferenceNumber = 'test reference number'
-      response = productFixtures.validCreatePaymentResponse({product_external_id: productExternalId, reference_number: testReferenceNumber})
+      response = productFixtures.validCreatePaymentResponse({ product_external_id: productExternalId, reference_number: testReferenceNumber })
       provider.addInteraction(
         new PactInteractionBuilder(`${PRODUCTS_RESOURCE}/${productExternalId}/payments`)
           .withUponReceiving('a valid create charge create request with reference')

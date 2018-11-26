@@ -17,14 +17,14 @@ const adhocPaymentCtrl = require('./controllers/adhoc_payment')
 const productReferenceCtrl = require('./controllers/product_reference')
 
 // Middleware
-const {validateAndRefreshCsrf, ensureSessionHasCsrfSecret} = require('./middleware/csrf')
+const { validateAndRefreshCsrf, ensureSessionHasCsrfSecret } = require('./middleware/csrf')
 const resolveProduct = require('./middleware/resolve_product')
 const resolvePaymentAndProduct = require('./middleware/resolve_payment_and_product')
 // - Middleware
 const correlationId = require('./middleware/correlation_id')
 
 // Assignments
-const {healthcheck, staticPaths, friendlyUrl, pay, demoPayment} = paths
+const { healthcheck, staticPaths, friendlyUrl, pay, demoPayment } = paths
 
 // Exports
 module.exports.generateRoute = generateRoute

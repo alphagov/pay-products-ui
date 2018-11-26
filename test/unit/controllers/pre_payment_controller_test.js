@@ -5,8 +5,8 @@ const config = require('../../../config')
 const cheerio = require('cheerio')
 const nock = require('nock')
 const supertest = require('supertest')
-const {getApp} = require('../../../server')
-const {createAppWithSession} = require('../../test_helpers/mock_session')
+const { getApp } = require('../../../server')
+const { createAppWithSession } = require('../../test_helpers/mock_session')
 const productFixtures = require('../../fixtures/product_fixtures')
 const paths = require('../../../app/paths')
 const expect = chai.expect
@@ -22,7 +22,7 @@ describe('pre payment controller', function () {
     describe(`when the payment type is ${type}`, () => {
       describe('and payment creation is successful', () => {
         before(done => {
-          product = productFixtures.validCreateProductResponse({type: type}).getPlain()
+          product = productFixtures.validCreateProductResponse({ type: type }).getPlain()
           payment = productFixtures.validCreatePaymentResponse().getPlain()
           nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
           nock(config.PRODUCTS_URL).post(`/v1/api/products/${product.external_id}/payments`).reply(200, payment)
@@ -43,7 +43,7 @@ describe('pre payment controller', function () {
       })
       describe('and payment creation fails', () => {
         before(done => {
-          product = productFixtures.validCreateProductResponse({type: type}).getPlain()
+          product = productFixtures.validCreateProductResponse({ type: type }).getPlain()
           nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
           nock(config.PRODUCTS_URL).post(`/v1/api/products/${product.external_id}/payments`).reply(400)
           supertest(createAppWithSession(getApp()))
@@ -64,7 +64,7 @@ describe('pre payment controller', function () {
       })
       describe('and the product is not resolved', () => {
         before(done => {
-          product = productFixtures.validCreateProductResponse({type: type}).getPlain()
+          product = productFixtures.validCreateProductResponse({ type: type }).getPlain()
           nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(404)
           supertest(createAppWithSession(getApp()))
             .get(paths.pay.product.replace(':productExternalId', product.external_id))
@@ -87,7 +87,7 @@ describe('pre payment controller', function () {
 
   describe(`when the payment type is ADHOC and reference is disabled`, () => {
     before(done => {
-      product = productFixtures.validCreateProductResponse({type: 'ADHOC', name: 'A Product Name'}).getPlain()
+      product = productFixtures.validCreateProductResponse({ type: 'ADHOC', name: 'A Product Name' }).getPlain()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
 
       supertest(createAppWithSession(getApp()))
@@ -135,7 +135,7 @@ describe('pre payment controller', function () {
 
   describe(`when the payment type is UNKNOWN`, () => {
     before(done => {
-      product = productFixtures.validCreateProductResponse({type: 'UNKNOWN'}).getPlain()
+      product = productFixtures.validCreateProductResponse({ type: 'UNKNOWN' }).getPlain()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
 
       supertest(createAppWithSession(getApp()))

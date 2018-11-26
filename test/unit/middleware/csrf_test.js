@@ -14,7 +14,7 @@ describe('CSRF', function () {
       .returns('newly-created token')
 
     var csrf = proxyquire(path.join(__dirname, '/../../../app/middleware/csrf.js'),
-      {'csrf': () => {
+      { 'csrf': () => {
         return {
           verify: verify,
           create: create
@@ -23,12 +23,12 @@ describe('CSRF', function () {
       }).validateAndRefreshCsrf
 
     var req = {
-      route: {methods: {post: {}}},
-      session: {csrfSecret: "it's a secret"},
-      body: {csrfToken: 'submitted token'}
+      route: { methods: { post: {} } },
+      session: { csrfSecret: "it's a secret" },
+      body: { csrfToken: 'submitted token' }
     }
 
-    var res = {locals: {}}
+    var res = { locals: {} }
 
     var next = sinon.spy()
 
@@ -47,11 +47,11 @@ describe('CSRF', function () {
     }).validateAndRefreshCsrf
 
     var req = {
-      route: {methods: {post: {}}},
-      body: {csrfToken: 'submitted token'}
+      route: { methods: { post: {} } },
+      body: { csrfToken: 'submitted token' }
     }
 
-    var res = {locals: {}}
+    var res = { locals: {} }
 
     var next = sinon.spy()
 
@@ -69,12 +69,12 @@ describe('CSRF', function () {
     }).validateAndRefreshCsrf
 
     var req = {
-      route: {methods: {post: {}}},
+      route: { methods: { post: {} } },
       session: {},
-      body: {csrfToken: 'submitted token'}
+      body: { csrfToken: 'submitted token' }
     }
 
-    var res = {locals: {}}
+    var res = { locals: {} }
 
     var next = sinon.spy()
 
@@ -100,12 +100,12 @@ describe('CSRF', function () {
     }).validateAndRefreshCsrf
 
     var req = {
-      route: {methods: {post: {}}},
-      session: {csrfSecret: "it's a secret"},
-      body: {csrfToken: 'forged token - call the police'}
+      route: { methods: { post: {} } },
+      session: { csrfSecret: "it's a secret" },
+      body: { csrfToken: 'forged token - call the police' }
     }
 
-    var res = {locals: {}}
+    var res = { locals: {} }
 
     var next = sinon.spy()
 
@@ -124,7 +124,7 @@ describe('CSRF', function () {
       .returns('newly-created token')
 
     var csrf = proxyquire(path.join(__dirname, '/../../../app/middleware/csrf.js'),
-      {'csrf': () => {
+      { 'csrf': () => {
         return {
           verify: verify,
           create: create
@@ -134,11 +134,11 @@ describe('CSRF', function () {
 
     var req = {
       method: 'GET',
-      session: {csrfSecret: "it's a secret"},
-      body: {csrfToken: "submitted forged token - but we don't really care"}
+      session: { csrfSecret: "it's a secret" },
+      body: { csrfToken: "submitted forged token - but we don't really care" }
     }
 
-    var res = {locals: {}}
+    var res = { locals: {} }
 
     var next = sinon.spy()
 

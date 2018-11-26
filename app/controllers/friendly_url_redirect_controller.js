@@ -14,7 +14,7 @@ const messages = {
 }
 
 module.exports = (req, res) => {
-  const {serviceNamePath, productNamePath} = req.params
+  const { serviceNamePath, productNamePath } = req.params
   productsClient.product.getByProductPath(serviceNamePath, productNamePath)
     .then(product => {
       logger.info(`Redirecting to ${product.links.pay.href}`)

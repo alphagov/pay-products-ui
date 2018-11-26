@@ -5,10 +5,10 @@ const currencyFormatter = require('currency-formatter')
 
 // Custom dependencies
 const response = require('../utils/response').response
-const {pay} = require('../paths')
+const { pay } = require('../paths')
 
 function asGBP (amountInPence) {
-  return currencyFormatter.format((amountInPence / 100).toFixed(2), {code: 'GBP'})
+  return currencyFormatter.format((amountInPence / 100).toFixed(2), { code: 'GBP' })
 }
 
 function beautify (reference) {

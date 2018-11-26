@@ -2,7 +2,7 @@
 
 const proxyquire = require('proxyquire')
 const sinon = require('sinon')
-const {expect} = require('chai')
+const { expect } = require('chai')
 
 const productFixtures = require('../../../fixtures/product_fixtures')
 const responseSpy = sinon.spy()

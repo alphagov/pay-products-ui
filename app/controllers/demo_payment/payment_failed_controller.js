@@ -3,7 +3,7 @@
 const urlJoin = require('url-join')
 
 const staticify = require('../../../server').staticify
-const {SELFSERVICE_TRANSACTIONS_URL, DOCS_URL} = require('../../../config/index')
+const { SELFSERVICE_TRANSACTIONS_URL, DOCS_URL } = require('../../../config/index')
 
 const CONFIRM_FAILURE_VIEW = 'confirm_demo_payment/failed'
 

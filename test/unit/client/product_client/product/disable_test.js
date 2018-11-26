@@ -3,7 +3,7 @@
 // NPM dependencies
 const path = require('path')
 const Pact = require('pact')
-const {expect} = require('chai')
+const { expect } = require('chai')
 const proxyquire = require('proxyquire')
 
 // Custom dependencies

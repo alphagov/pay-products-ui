@@ -1,12 +1,12 @@
 'use strict'
 
 // npm dependencies
-const {expect} = require('chai')
+const { expect } = require('chai')
 const sinon = require('sinon')
 const proxyquire = require('proxyquire').noPreserveCache()
 
 const getCookiesUtil = sessionsStub => {
-  if (sessionsStub) return proxyquire('../../../app/utils/cookie', {'client-sessions': sessionsStub})
+  if (sessionsStub) return proxyquire('../../../app/utils/cookie', { 'client-sessions': sessionsStub })
   return proxyquire('../../../app/utils/cookie', {})
 }
 

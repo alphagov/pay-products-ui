@@ -1,13 +1,13 @@
 'use strict'
 
 // NPM dependencies
-const {expect} = require('chai')
+const { expect } = require('chai')
 const cheerio = require('cheerio')
 const supertest = require('supertest')
 
 // Local dependencies
-const {SELFSERVICE_TRANSACTIONS_URL} = require('../../../../config')
-const {getApp} = require('../../../../server')
+const { SELFSERVICE_TRANSACTIONS_URL } = require('../../../../config')
+const { getApp } = require('../../../../server')
 const paths = require('../../../../app/paths')
 
 describe('payment failed controller', () => {

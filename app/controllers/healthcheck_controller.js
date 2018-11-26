@@ -1,5 +1,5 @@
 'use strict'
 
 module.exports = (req, res) => {
-  res.json({'ping': {'healthy': true}})
+  res.json({ 'ping': { 'healthy': true } })
 }

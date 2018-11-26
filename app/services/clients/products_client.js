@@ -4,7 +4,7 @@
 const Product = require('../../models/Product.class')
 const Payment = require('../../models/Payment.class')
 const baseClient = require('./base_client/base_client')
-const {PRODUCTS_URL} = require('../../../config')
+const { PRODUCTS_URL } = require('../../../config')
 
 // Constants
 const SERVICE_NAME = 'products'

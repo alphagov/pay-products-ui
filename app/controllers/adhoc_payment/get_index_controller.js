@@ -5,12 +5,12 @@ const logger = require('winston')
 const currencyFormatter = require('currency-formatter')
 
 // Custom dependencies
-const {response} = require('../../utils/response')
+const { response } = require('../../utils/response')
 const productReferenceCtrl = require('../product_reference')
-const {getSessionVariable} = require('../../utils/cookie')
+const { getSessionVariable } = require('../../utils/cookie')
 
 function asGBP (amountInPence) {
-  return currencyFormatter.format((amountInPence / 100).toFixed(2), {code: 'GBP'})
+  return currencyFormatter.format((amountInPence / 100).toFixed(2), { code: 'GBP' })
 }
 
 module.exports = (req, res) => {

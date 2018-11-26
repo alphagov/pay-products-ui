@@ -5,7 +5,7 @@ const logger = require('winston')
 
 // Custom dependencies
 const response = require('../../utils/response').response
-const {getSessionVariable} = require('../../utils/cookie')
+const { getSessionVariable } = require('../../utils/cookie')
 
 module.exports = (req, res) => {
   const product = req.product

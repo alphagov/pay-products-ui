@@ -7,7 +7,7 @@ const throng = require('throng')
 const server = require('./server')
 const environment = require('./app/services/environment')
 const pidFile = path.join(__dirname, '/.start.pid')
-const fileOptions = {encoding: 'utf-8'}
+const fileOptions = { encoding: 'utf-8' }
 let pid
 
 /**

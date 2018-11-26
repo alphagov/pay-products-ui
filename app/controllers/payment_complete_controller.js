@@ -8,7 +8,7 @@ const response = require('../utils/response')
 const errorResponse = response.renderErrorView
 
 // Local dependencies
-const {demoPayment, pay} = require('../paths')
+const { demoPayment, pay } = require('../paths')
 const paymentStatus = require('./payment_status_controller')
 // Constants
 const messages = {

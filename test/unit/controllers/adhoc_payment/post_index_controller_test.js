@@ -5,8 +5,8 @@ const nock = require('nock')
 const csrf = require('csrf')
 const cheerio = require('cheerio')
 const supertest = require('supertest')
-const {getApp} = require('../../../../server')
-const {getMockSession, createAppWithSession} = require('../../../test_helpers/mock_session')
+const { getApp } = require('../../../../server')
+const { getMockSession, createAppWithSession } = require('../../../test_helpers/mock_session')
 const productFixtures = require('../../../fixtures/product_fixtures')
 const paths = require('../../../../app/paths')
 const expect = chai.expect
@@ -33,7 +33,7 @@ describe('adhoc payment submit-amount controller', function () {
           amount: priceOverride
         }).getPlain()
         nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
-        nock(config.PRODUCTS_URL).post(`/v1/api/products/${product.external_id}/payments`, {price: priceOverride}).reply(200, payment)
+        nock(config.PRODUCTS_URL).post(`/v1/api/products/${product.external_id}/payments`, { price: priceOverride }).reply(200, payment)
 
         supertest(createAppWithSession(getApp()))
           .post(paths.pay.product.replace(':productExternalId', product.external_id))
@@ -58,7 +58,7 @@ describe('adhoc payment submit-amount controller', function () {
 
     describe('when an empty amount is submitted', function () {
       before(done => {
-        product = productFixtures.validCreateProductResponse({type: 'ADHOC'}).getPlain()
+        product = productFixtures.validCreateProductResponse({ type: 'ADHOC' }).getPlain()
         nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         session = getMockSession()
         supertest(createAppWithSession(getApp(), session))
@@ -84,7 +84,7 @@ describe('adhoc payment submit-amount controller', function () {
 
     describe('when an invalid amount is submitted', function () {
       before(done => {
-        product = productFixtures.validCreateProductResponse({type: 'ADHOC'}).getPlain()
+        product = productFixtures.validCreateProductResponse({ type: 'ADHOC' }).getPlain()
         nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         session = getMockSession()
         const invalidAmount = 'GHTR89&&'
@@ -112,7 +112,7 @@ describe('adhoc payment submit-amount controller', function () {
 
     describe('when the amount is bigger than the max amount supported by Pay', function () {
       before(done => {
-        product = productFixtures.validCreateProductResponse({type: 'ADHOC'}).getPlain()
+        product = productFixtures.validCreateProductResponse({ type: 'ADHOC' }).getPlain()
         nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         session = getMockSession()
         const bigAmount = '100000000.50'

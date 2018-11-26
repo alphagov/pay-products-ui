@@ -1,11 +1,11 @@
 'use strict'
 
 // Custom dependencies
-const {renderErrorView} = require('../utils/response')
+const { renderErrorView } = require('../utils/response')
 const productsClient = require('../services/clients/products_client')
 
 module.exports = function (req, res, next) {
-  const {productExternalId} = req.params
+  const { productExternalId } = req.params
   productsClient.product.getByProductExternalId(productExternalId)
     .then(product => {
       req.product = product
