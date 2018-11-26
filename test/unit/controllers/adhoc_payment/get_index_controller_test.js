@@ -5,15 +5,15 @@ const cheerio = require('cheerio')
 const nock = require('nock')
 const currencyFormatter = require('currency-formatter')
 const supertest = require('supertest')
-const {getApp} = require('../../../../server')
-const {createAppWithSession} = require('../../../test_helpers/mock_session')
+const { getApp } = require('../../../../server')
+const { createAppWithSession } = require('../../../test_helpers/mock_session')
 const productFixtures = require('../../../fixtures/product_fixtures')
 const paths = require('../../../../app/paths')
 const expect = chai.expect
 let product, response, $
 
 function asGBP (amountInPence) {
-  return currencyFormatter.format((amountInPence / 100).toFixed(2), {code: 'GBP'})
+  return currencyFormatter.format((amountInPence / 100).toFixed(2), { code: 'GBP' })
 }
 
 describe('adhoc payment index controller', function () {

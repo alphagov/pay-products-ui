@@ -3,7 +3,7 @@
 // NPM Dependencies
 const nock = require('nock')
 const sinon = require('sinon')
-const {expect} = require('chai')
+const { expect } = require('chai')
 const lodash = require('lodash')
 
 // Local Dependencies

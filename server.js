@@ -32,9 +32,9 @@ const cookieUtil = require('./app/utils/cookie')
 // Global constants
 const JAVASCRIPT_PATH = staticify.getVersionedPath('/js/application.min.js')
 const PORT = process.env.PORT || 3000
-const {NODE_ENV} = process.env
+const { NODE_ENV } = process.env
 const unconfiguredApp = express()
-const {ANALYTICS_TRACKING_ID} = process.env || ''
+const { ANALYTICS_TRACKING_ID } = process.env || ''
 
 function warnIfAnalyticsNotSet () {
   if (ANALYTICS_TRACKING_ID === '') {
@@ -69,7 +69,7 @@ function initialiseGlobalMiddleware (app) {
     next()
   })
   app.use(bodyParser.json())
-  app.use(bodyParser.urlencoded({extended: true}))
+  app.use(bodyParser.urlencoded({ extended: true }))
 }
 
 function initialiseTemplateEngine (app) {

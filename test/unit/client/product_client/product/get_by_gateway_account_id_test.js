@@ -3,7 +3,7 @@
 // NPM dependencies
 const path = require('path')
 const Pact = require('pact')
-const {expect} = require('chai')
+const { expect } = require('chai')
 const proxyquire = require('proxyquire')
 
 // Custom dependencies
@@ -45,9 +45,9 @@ describe('products client - find products associated with a particular gateway a
       const productsClient = getProductsClient()
       gatewayAccountId = 123456
       response = [
-        productFixtures.validCreateProductResponse({gateway_account_id: gatewayAccountId}),
-        productFixtures.validCreateProductResponse({gateway_account_id: gatewayAccountId}),
-        productFixtures.validCreateProductResponse({gateway_account_id: gatewayAccountId})
+        productFixtures.validCreateProductResponse({ gateway_account_id: gatewayAccountId }),
+        productFixtures.validCreateProductResponse({ gateway_account_id: gatewayAccountId }),
+        productFixtures.validCreateProductResponse({ gateway_account_id: gatewayAccountId })
       ]
       const interaction = new PactInteractionBuilder(`${API_RESOURCE}/gateway-account/${gatewayAccountId}/products`)
         .withUponReceiving('a valid get product by gateway account id request')

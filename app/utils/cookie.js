@@ -2,7 +2,7 @@
 
 const session = require('client-sessions')
 const _ = require('lodash')
-const {COOKIE_MAX_AGE, SESSION_ENCRYPTION_KEY} = process.env
+const { COOKIE_MAX_AGE, SESSION_ENCRYPTION_KEY } = process.env
 const SESSION_COOKIE_NAME = 'session'
 const DISABLE_INTERNAL_HTTPS = process.env.DISABLE_INTERNAL_HTTPS === 'true'
 

@@ -1,14 +1,14 @@
 'use strict'
 
 // NPM dependencies
-const {expect} = require('chai')
+const { expect } = require('chai')
 const cheerio = require('cheerio')
 const nock = require('nock')
 const supertest = require('supertest')
 
 // Local dependencies
-const {PRODUCTS_URL} = require('../../../config/index')
-const {getApp} = require('../../../server')
+const { PRODUCTS_URL } = require('../../../config/index')
+const { getApp } = require('../../../server')
 const productFixtures = require('../../fixtures/product_fixtures')
 const paths = require('../../../app/paths')
 
@@ -17,7 +17,7 @@ describe('payment complete controller', () => {
     describe('and the payment was successful', () => {
       let product, payment, response
       before(done => {
-        product = productFixtures.validCreateProductResponse({type: 'DEMO'}).getPlain()
+        product = productFixtures.validCreateProductResponse({ type: 'DEMO' }).getPlain()
         payment = productFixtures.validCreatePaymentResponse({
           govuk_status: 'SUCCESS',
           product_external_id: product.external_id
@@ -45,7 +45,7 @@ describe('payment complete controller', () => {
     describe('but the payment failed', () => {
       let product, payment, response
       before(done => {
-        product = productFixtures.validCreateProductResponse({type: 'DEMO'}).getPlain()
+        product = productFixtures.validCreateProductResponse({ type: 'DEMO' }).getPlain()
         payment = productFixtures.validCreatePaymentResponse({
           govuk_status: 'ERROR',
           product_external_id: product.external_id

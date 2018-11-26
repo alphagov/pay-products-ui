@@ -1,11 +1,11 @@
 'use strict'
 
 // NPM dependencies
-const {expect} = require('chai')
+const { expect } = require('chai')
 const supertest = require('supertest')
 
 // Local dependencies
-const {getApp} = require('../../../server')
+const { getApp } = require('../../../server')
 const paths = require('../../../app/paths')
 
 describe('healthcheck controller', () => {

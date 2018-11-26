@@ -42,7 +42,7 @@ class Payment {
     this.govukStatus = opts.govuk_status
     this.referenceNumber = opts.reference_number
     this.nextUrl = opts.next_url
-    opts._links.forEach(link => lodash.set(this, `links.${link.rel}`, {method: link.method, href: link.href}))
+    opts._links.forEach(link => lodash.set(this, `links.${link.rel}`, { method: link.method, href: link.href }))
   }
 }
 

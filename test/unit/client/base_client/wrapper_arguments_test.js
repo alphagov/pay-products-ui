@@ -1,7 +1,7 @@
 'use strict'
 
 // npm dependencies
-const {expect} = require('chai')
+const { expect } = require('chai')
 const sinon = require('sinon')
 
 // local dependencies
@@ -11,7 +11,7 @@ describe('wrapper: arguments handling', () => {
   describe('wrapper arguments', () => {
     describe('when the verb argument is set', () => {
       const method = function (options, callback) {
-        callback(null, {statusCode: 200, request: options})
+        callback(null, { statusCode: 200, request: options })
       }
       const methodSpy = sinon.spy(method)
       before(done => {
@@ -28,7 +28,7 @@ describe('wrapper: arguments handling', () => {
 
     describe('when the verb argument is not set', () => {
       const method = function (options, callback) {
-        callback(null, {statusCode: 200, request: options})
+        callback(null, { statusCode: 200, request: options })
       }
       const methodSpy = sinon.spy(method)
       before(done => {
@@ -50,11 +50,11 @@ describe('wrapper: arguments handling', () => {
         const uri = 'http://example.com/'
         const cb = sinon.spy()
         const method = function (options, callback) {
-          callback(null, {statusCode: 200, request: options}, 'success')
+          callback(null, { statusCode: 200, request: options }, 'success')
         }
         const methodSpy = sinon.spy(method)
         before(done => {
-          wrapper(methodSpy)(uri, {method: 'GET'}, cb)
+          wrapper(methodSpy)(uri, { method: 'GET' }, cb)
             .then(() => done())
             .catch(done)
         })
@@ -73,7 +73,7 @@ describe('wrapper: arguments handling', () => {
         const uri = 'http://example.com/'
         const cb = sinon.spy()
         const method = function (options, callback) {
-          callback(null, {statusCode: 200, request: options}, 'success')
+          callback(null, { statusCode: 200, request: options }, 'success')
         }
         const methodSpy = sinon.spy(method)
         before(done => {
@@ -92,10 +92,10 @@ describe('wrapper: arguments handling', () => {
       })
 
       describe('when it only passed an options object', () => {
-        const opts = {uri: 'http://example.com/'}
+        const opts = { uri: 'http://example.com/' }
         const cb = sinon.spy()
         const method = function (options, callback) {
-          callback(null, {statusCode: 200, request: options}, 'success')
+          callback(null, { statusCode: 200, request: options }, 'success')
         }
         const methodSpy = sinon.spy(method)
         before(done => {

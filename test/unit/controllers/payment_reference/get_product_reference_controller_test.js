@@ -4,8 +4,8 @@ const config = require('../../../../config')
 const cheerio = require('cheerio')
 const nock = require('nock')
 const supertest = require('supertest')
-const {getApp} = require('../../../../server')
-const {createAppWithSession} = require('../../../test_helpers/mock_session')
+const { getApp } = require('../../../../server')
+const { createAppWithSession } = require('../../../test_helpers/mock_session')
 const productFixtures = require('../../../fixtures/product_fixtures')
 const paths = require('../../../../app/paths')
 const expect = chai.expect
@@ -99,7 +99,7 @@ describe('product reference index controller', function () {
       }).getPlain()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
 
-      supertest(createAppWithSession(getApp(), {referenceNumber: 'Test reference'}))
+      supertest(createAppWithSession(getApp(), { referenceNumber: 'Test reference' }))
         .get(paths.pay.reference.replace(':productExternalId', product.external_id))
         .end((err, res) => {
           response = res

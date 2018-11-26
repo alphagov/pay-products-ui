@@ -3,7 +3,7 @@
 // NPM dependencies
 const path = require('path')
 const Pact = require('pact')
-const {expect} = require('chai')
+const { expect } = require('chai')
 const proxyquire = require('proxyquire')
 
 // Custom dependencies
@@ -42,7 +42,7 @@ describe('products client - find a payment by gateway account id and payment ref
       const productsClient = getProductsClient()
       gatewayAccountId = 'existing-id'
       referenceNumber = 'REFERENCE1'
-      response = productFixtures.validCreatePaymentResponse({reference_number: referenceNumber})
+      response = productFixtures.validCreatePaymentResponse({ reference_number: referenceNumber })
       const interaction = new PactInteractionBuilder(`/v1/api/payments/${gatewayAccountId}/${referenceNumber}`)
         .withUponReceiving('a valid get payment request')
         .withMethod('GET')

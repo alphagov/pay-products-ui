@@ -103,7 +103,7 @@ function populateErrorSummary (form) {
     fields: erroringFields.map(field => {
       let label = field.innerHTML.split('<')[0].trim()
       let id = field.getAttribute('for')
-      return {label, id}
+      return { label, id }
     })
   }
 

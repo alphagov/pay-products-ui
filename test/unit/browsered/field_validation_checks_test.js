@@ -1,10 +1,10 @@
 'use strict'
 
 // NPM dependencies
-const {expect} = require('chai')
+const { expect } = require('chai')
 
 // Local dependencies
-const {isAboveMaxAmount} = require('../../../app/browsered/field-validation-checks')
+const { isAboveMaxAmount } = require('../../../app/browsered/field-validation-checks')
 
 describe('field validation checks', () => {
   describe('isAboveMaxAmount', () => {
