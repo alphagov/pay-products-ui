@@ -60,7 +60,7 @@
     "lodash": "4.17.x",
     "minimist": "1.2.x",
     "morgan": "1.9.x",
-    "nunjucks": "^3.1.2",
+    "nunjucks": "^3.1.4",
     "request": "^2.88.0",
     "requestretry": "^3.0.2",
     "rfc822-validate": "^1.0.0",
