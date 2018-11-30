@@ -91,7 +91,7 @@
     "grunt-sass": "3.0.x",
     "html5shiv": "3.7.x",
     "mocha": "5.2.x",
-    "nock": "9.2.x",
+    "nock": "10.0.x",
     "node-sass": "4.10.x",
     "nodemon": "^1.18.7",
     "nunjucksify": "^2.2.0",
