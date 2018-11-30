@@ -54,7 +54,7 @@
     "cookie-parser": "1.4.x",
     "correlation-id": "^2.1.2",
     "csrf": "3.0.x",
-    "currency-formatter": "^1.4.2",
+    "currency-formatter": "^1.5.3",
     "express": "4.16.x",
     "govuk-frontend": "^2.4.0",
     "lodash": "4.17.x",
