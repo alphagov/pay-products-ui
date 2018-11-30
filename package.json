@@ -52,7 +52,7 @@
     "client-sessions": "^0.8.0",
     "connect-flash": "^0.1.1",
     "cookie-parser": "1.4.x",
-    "correlation-id": "^2.1.2",
+    "correlation-id": "^3.0.1",
     "csrf": "3.0.x",
     "currency-formatter": "^1.5.3",
     "express": "4.16.x",
