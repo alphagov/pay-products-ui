@@ -7,6 +7,7 @@ const GOVUKFrontend = require('govuk-frontend')
 const fieldValidation = require('./browsered/field-validation')
 const inputConfim = require('./browsered/input-confirm')
 
+GOVUKFrontend.initAll()
+
 fieldValidation.enableFieldValidation()
 inputConfim()
-GOVUKFrontend.initAll()
