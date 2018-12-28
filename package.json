@@ -56,7 +56,7 @@
     "csrf": "3.0.x",
     "currency-formatter": "^1.5.3",
     "express": "4.16.x",
-    "govuk-frontend": "^2.4.0",
+    "govuk-frontend": "^2.4.1",
     "lodash": "4.17.x",
     "minimist": "1.2.x",
     "morgan": "1.9.x",
