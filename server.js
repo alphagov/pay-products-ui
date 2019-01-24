@@ -54,7 +54,7 @@ function initialiseGlobalMiddleware (app) {
       logger.info(message)
     }
   }
-  if (!process.env.DISABLE_REQUEST_LOGGING === 'true') {
+  if (process.env.DISABLE_REQUEST_LOGGING !== 'true') {
     app.use(/\/((?!public|favicon.ico).)*/, loggingMiddleware(
       ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" - total time :response-time ms'))
   }
@@ -139,7 +139,7 @@ function listen () {
 function initialise () {
   const app = unconfiguredApp
   app.disable('x-powered-by')
-  initialiseTLS(app)
+  initialiseTLS()
   initialiseCookies(app)
   initialiseGlobalMiddleware(app)
 
