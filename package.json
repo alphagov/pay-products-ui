@@ -95,7 +95,7 @@
     "node-sass": "4.11.x",
     "nodemon": "^1.18.10",
     "nunjucksify": "^2.2.0",
-    "nyc": "^13.2.0",
+    "nyc": "^13.3.0",
     "pact": "4.3.2",
     "proxyquire": "~2.1.0",
     "sass-lint": "^1.12.1",
