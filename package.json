@@ -90,7 +90,7 @@
     "grunt-contrib-watch": "1.1.x",
     "grunt-sass": "3.0.x",
     "html5shiv": "3.7.x",
-    "mocha": "5.2.x",
+    "mocha": "6.0.x",
     "nock": "10.0.x",
     "node-sass": "4.11.x",
     "nodemon": "^1.18.10",
