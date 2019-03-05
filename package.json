@@ -74,7 +74,7 @@
   "devDependencies": {
     "@babel/core": "^7.3.4",
     "@babel/preset-env": "^7.3.4",
-    "@pact-foundation/pact-node": "6.21.5",
+    "@pact-foundation/pact-node": "7.0.0",
     "chai": "^4.2.0",
     "cheerio": "^1.0.0-rc.2",
     "chokidar-cli": "latest",
