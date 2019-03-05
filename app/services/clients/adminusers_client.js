@@ -9,10 +9,10 @@ const { ADMINUSERS_URL } = require('../../../config')
 const SERVICE_NAME = 'adminusers'
 const baseUrl = `${ADMINUSERS_URL}/v1/api`
 
-function getServiceByGatewayAccountId (gatewayAccountExternalId, correlationId) {
+function getServiceByGatewayAccountId (gatewayAccountId, correlationId) {
   return baseClient.get({
     baseUrl,
-    url: `/services?gatewayAccountId=${gatewayAccountExternalId}`,
+    url: `/services?gatewayAccountId=${gatewayAccountId}`,
     description: `find a product by it's external id`,
     service: SERVICE_NAME,
     correlationId: correlationId

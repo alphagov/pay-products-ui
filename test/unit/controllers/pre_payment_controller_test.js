@@ -8,9 +8,10 @@ const supertest = require('supertest')
 const { getApp } = require('../../../server')
 const { createAppWithSession } = require('../../test_helpers/mock_session')
 const productFixtures = require('../../fixtures/product_fixtures')
+const serviceFixtures = require('../../fixtures/service_fixtures')
 const paths = require('../../../app/paths')
 const expect = chai.expect
-let product, payment, response, $
+let product, payment, service, response, $
 describe('pre payment controller', function () {
   afterEach(() => {
     nock.cleanAll()
@@ -24,8 +25,10 @@ describe('pre payment controller', function () {
         before(done => {
           product = productFixtures.validCreateProductResponse({ type: type }).getPlain()
           payment = productFixtures.validCreatePaymentResponse().getPlain()
+          service = serviceFixtures.validServiceResponse().getPlain()
           nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
           nock(config.PRODUCTS_URL).post(`/v1/api/products/${product.external_id}/payments`).reply(200, payment)
+          nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
           supertest(createAppWithSession(getApp()))
             .get(paths.pay.product.replace(':productExternalId', product.external_id))
@@ -44,8 +47,11 @@ describe('pre payment controller', function () {
       describe('and payment creation fails', () => {
         before(done => {
           product = productFixtures.validCreateProductResponse({ type: type }).getPlain()
+          service = serviceFixtures.validServiceResponse().getPlain()
           nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
           nock(config.PRODUCTS_URL).post(`/v1/api/products/${product.external_id}/payments`).reply(400)
+          nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
+
           supertest(createAppWithSession(getApp()))
             .get(paths.pay.product.replace(':productExternalId', product.external_id))
             .end((err, res) => {
@@ -88,7 +94,9 @@ describe('pre payment controller', function () {
   describe(`when the payment type is ADHOC and reference is disabled`, () => {
     before(done => {
       product = productFixtures.validCreateProductResponse({ type: 'ADHOC', name: 'A Product Name' }).getPlain()
+      service = serviceFixtures.validServiceResponse().getPlain()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+      nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
       supertest(createAppWithSession(getApp()))
         .get(paths.pay.product.replace(':productExternalId', product.external_id))
@@ -115,7 +123,9 @@ describe('pre payment controller', function () {
         reference_enabled: 'true'
       }
       product = productFixtures.validCreateProductResponse(opts).getPlain()
+      service = serviceFixtures.validServiceResponse().getPlain()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+      nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
       supertest(createAppWithSession(getApp()))
         .get(paths.pay.reference.replace(':productExternalId', product.external_id))
@@ -136,7 +146,9 @@ describe('pre payment controller', function () {
   describe(`when the payment type is UNKNOWN`, () => {
     before(done => {
       product = productFixtures.validCreateProductResponse({ type: 'UNKNOWN' }).getPlain()
+      service = serviceFixtures.validServiceResponse().getPlain()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+      nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
       supertest(createAppWithSession(getApp()))
         .get(paths.pay.product.replace(':productExternalId', product.external_id))
