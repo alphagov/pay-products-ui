@@ -10,19 +10,22 @@ const lodash = require('lodash')
 const config = require('../../../config')
 const Payment = require('../../../app/models/Payment.class')
 const productFixtures = require('../../fixtures/product_fixtures')
+const serviceFixtures = require('../../fixtures/service_fixtures')
 const resolvePayment = require('../../../app/middleware/resolve_payment_and_product')
 
 describe('resolve payment middleware', () => {
   describe('when the payment exists', () => {
-    let req, res, next, product, payment
+    let req, res, next, product, payment, service
 
     before(done => {
       product = productFixtures.validCreateProductResponse({}).getPlain()
       payment = productFixtures.validCreatePaymentResponse({
         product_external_id: product.external_id
       }).getPlain()
+      service = serviceFixtures.validServiceResponse().getPlain()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
       nock(config.PRODUCTS_URL).get(`/v1/api/payments/${payment.external_id}`).reply(200, payment)
+      nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
       req = {}
       res = {
         locals: {},

@@ -8,9 +8,10 @@ const supertest = require('supertest')
 const { getApp } = require('../../../../server')
 const { getMockSession, createAppWithSession } = require('../../../test_helpers/mock_session')
 const productFixtures = require('../../../fixtures/product_fixtures')
+const serviceFixtures = require('../../../fixtures/service_fixtures')
 const paths = require('../../../../app/paths')
 const expect = chai.expect
-let product, payment, response, session, $
+let product, service, payment, response, session, $
 
 describe('adhoc payment submit-amount controller', function () {
   afterEach(() => {
@@ -32,8 +33,16 @@ describe('adhoc payment submit-amount controller', function () {
           product_external_id: product.external_id,
           amount: priceOverride
         }).getPlain()
+        service = serviceFixtures.validServiceResponse({
+          gateway_account_ids: [product.gateway_account_id],
+          service_name: {
+            en: 'Super GOV service'
+          },
+          name: 'Super Duper Service'
+        }).getPlain()
         nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         nock(config.PRODUCTS_URL).post(`/v1/api/products/${product.external_id}/payments`, { price: priceOverride }).reply(200, payment)
+        nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
         supertest(createAppWithSession(getApp()))
           .post(paths.pay.product.replace(':productExternalId', product.external_id))
@@ -59,7 +68,9 @@ describe('adhoc payment submit-amount controller', function () {
     describe('when an empty amount is submitted', function () {
       before(done => {
         product = productFixtures.validCreateProductResponse({ type: 'ADHOC' }).getPlain()
+        service = serviceFixtures.validServiceResponse().getPlain()
         nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+        nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
         session = getMockSession()
         supertest(createAppWithSession(getApp(), session))
           .post(paths.pay.product.replace(':productExternalId', product.external_id))
@@ -85,7 +96,9 @@ describe('adhoc payment submit-amount controller', function () {
     describe('when an invalid amount is submitted', function () {
       before(done => {
         product = productFixtures.validCreateProductResponse({ type: 'ADHOC' }).getPlain()
+        service = serviceFixtures.validServiceResponse().getPlain()
         nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+        nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
         session = getMockSession()
         const invalidAmount = 'GHTR89&&'
         supertest(createAppWithSession(getApp(), session))
@@ -113,7 +126,9 @@ describe('adhoc payment submit-amount controller', function () {
     describe('when the amount is bigger than the max amount supported by Pay', function () {
       before(done => {
         product = productFixtures.validCreateProductResponse({ type: 'ADHOC' }).getPlain()
+        service = serviceFixtures.validServiceResponse().getPlain()
         nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+        nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
         session = getMockSession()
         const bigAmount = '100000000.50'
         supertest(createAppWithSession(getApp(), session))
@@ -154,9 +169,10 @@ describe('adhoc payment submit-amount controller', function () {
           product_external_id: product.external_id,
           amount: product.price
         }).getPlain()
+        service = serviceFixtures.validServiceResponse().getPlain()
         nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         nock(config.PRODUCTS_URL).post(`/v1/api/products/${product.external_id}/payments`).reply(200, payment)
-
+        nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
         supertest(createAppWithSession(getApp()))
           .post(paths.pay.product.replace(':productExternalId', product.external_id))
           .send({

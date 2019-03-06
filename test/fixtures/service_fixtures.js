@@ -13,8 +13,8 @@ module.exports = {
 
     const data = {
       external_id: serviceData.external_id || random.randomUuid(),
-      service_name: serviceData.service_name || { en: 'my service name' },
-      name: serviceData.name || 'service name',
+      service_name: serviceData.service_name || { en: 'Super GOV service' },
+      name: serviceData.name || 'Super Duper service',
       gateway_account_ids: serviceData.gateway_account_ids || [random.randomInt(1, 9999999)],
       custom_branding: serviceData.custom_branding || defaultCustomBranding
     }

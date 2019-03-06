@@ -8,9 +8,10 @@ const supertest = require('supertest')
 const { getApp } = require('../../../../server')
 const { createAppWithSession } = require('../../../test_helpers/mock_session')
 const productFixtures = require('../../../fixtures/product_fixtures')
+const serviceFixtures = require('../../../fixtures/service_fixtures')
 const paths = require('../../../../app/paths')
 const expect = chai.expect
-let product, response, $
+let product, response, service, $
 
 function asGBP (amountInPence) {
   return currencyFormatter.format((amountInPence / 100).toFixed(2), { code: 'GBP' })
@@ -26,10 +27,17 @@ describe('adhoc payment index controller', function () {
       product = productFixtures.validCreateProductResponse({
         type: 'ADHOC',
         product_name: 'Super duper product',
-        service_name: 'Super GOV service',
         description: 'Super duper product description'
       }).getPlain()
+      service = serviceFixtures.validServiceResponse({
+        gateway_account_ids: [product.gateway_account_id],
+        service_name: {
+          en: 'Super GOV service'
+        },
+        name: 'Super Duper Service'
+      }).getPlain()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+      nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
       supertest(createAppWithSession(getApp()))
         .get(paths.pay.product.replace(':productExternalId', product.external_id))
@@ -45,7 +53,7 @@ describe('adhoc payment index controller', function () {
     })
 
     it('should render adhoc payment start page', () => {
-      expect($('title').text()).to.include(product.service_name)
+      expect($('title').text()).to.include(service.service_name.en)
       expect($('h1').text()).to.include(product.name)
       expect($('p#description').text()).to.include(product.description)
       expect($('form').attr('action')).to.equal(`/pay/${product.external_id}`)
@@ -66,7 +74,15 @@ describe('adhoc payment index controller', function () {
         service_name: 'Super GOV service',
         description: 'Super duper product description'
       }).getPlain()
+      service = serviceFixtures.validServiceResponse({
+        gateway_account_ids: [product.gateway_account_id],
+        service_name: {
+          en: 'Super GOV service'
+        },
+        name: 'Super Duper Service'
+      }).getPlain()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+      nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
       supertest(createAppWithSession(getApp()))
         .get(paths.pay.product.replace(':productExternalId', product.external_id))
@@ -82,7 +98,7 @@ describe('adhoc payment index controller', function () {
     })
 
     it('should render adhoc payment start page', () => {
-      expect($('title').text()).to.include(product.service_name)
+      expect($('title').text()).to.include(service.service_name.en)
       expect($('h1').text()).to.include(product.name)
       expect($('p#description').text()).to.include(product.description)
       expect($('form').attr('action')).to.equal(`/pay/${product.external_id}`)
@@ -103,7 +119,15 @@ describe('adhoc payment index controller', function () {
         description: 'Test ADHOC product description',
         reference_enabled: true
       }).getPlain()
+      service = serviceFixtures.validServiceResponse({
+        gateway_account_ids: [product.gateway_account_id],
+        service_name: {
+          en: 'Super GOV service'
+        },
+        name: 'Super Duper Service'
+      }).getPlain()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+      nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
       supertest(createAppWithSession(getApp()))
         .get(paths.pay.product.replace(':productExternalId', product.external_id))
@@ -119,7 +143,7 @@ describe('adhoc payment index controller', function () {
     })
 
     it('should render payment reference start page', () => {
-      expect($('title').text()).to.include(product.service_name)
+      expect($('title').text()).to.include(service.service_name.en)
       expect($('h1').text()).to.include(product.name)
       expect($('p#description').text()).to.include(product.description)
       expect($('form').attr('action')).to.equal(`/pay/reference/${product.external_id}`)

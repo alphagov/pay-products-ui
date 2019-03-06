@@ -10,15 +10,18 @@ const lodash = require('lodash')
 const config = require('../../../config')
 const Product = require('../../../app/models/Product.class')
 const productFixtures = require('../../fixtures/product_fixtures')
+const serviceFixtures = require('../../fixtures/service_fixtures')
 const resolveProduct = require('../../../app/middleware/resolve_product')
 
 describe('resolve product middleware', () => {
   describe('when the product exists', () => {
-    let req, res, next, product
+    let req, res, next, product, service
 
     before(done => {
       product = productFixtures.validCreateProductResponse().getPlain()
+      service = serviceFixtures.validServiceResponse().getPlain()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+      nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
       req = {}
       res = {
         locals: {},

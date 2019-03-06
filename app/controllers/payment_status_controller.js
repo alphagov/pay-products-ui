@@ -18,8 +18,9 @@ function beautify (reference) {
 module.exports = (req, res) => {
   const product = req.product
   const payment = req.payment
+  const service = req.service
   const data = {
-    serviceName: product.serviceName
+    serviceName: service.serviceName.en
   }
 
   if (payment.govukStatus.toLowerCase() === 'success') {

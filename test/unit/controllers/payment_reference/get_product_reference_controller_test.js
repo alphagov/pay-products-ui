@@ -7,9 +7,10 @@ const supertest = require('supertest')
 const { getApp } = require('../../../../server')
 const { createAppWithSession } = require('../../../test_helpers/mock_session')
 const productFixtures = require('../../../fixtures/product_fixtures')
+const serviceFixtures = require('../../../fixtures/service_fixtures')
 const paths = require('../../../../app/paths')
 const expect = chai.expect
-let product, response, $
+let product, service, response, $
 
 describe('product reference index controller', function () {
   afterEach(() => {
@@ -27,7 +28,9 @@ describe('product reference index controller', function () {
         reference_label: 'Test reference label',
         reference_hint: 'Test reference hint'
       }).getPlain()
+      service = serviceFixtures.validServiceResponse().getPlain()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+      nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
       supertest(createAppWithSession(getApp()))
         .get(paths.pay.reference.replace(':productExternalId', product.external_id))
@@ -43,7 +46,7 @@ describe('product reference index controller', function () {
     })
 
     it('should render product reference start page with all fields', () => {
-      expect($('title').text()).to.include(product.service_name)
+      expect($('title').text()).to.include(service.service_name.en)
       expect($('h1').text()).to.include(product.name)
       expect($('p#description').text()).to.include(product.description)
       expect($('form').attr('action')).to.equal(`/pay/reference/${product.external_id}`)
@@ -62,7 +65,9 @@ describe('product reference index controller', function () {
         reference_enabled: true,
         reference_label: 'Test reference label'
       }).getPlain()
+      service = serviceFixtures.validServiceResponse().getPlain()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+      nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
       supertest(createAppWithSession(getApp()))
         .get(paths.pay.reference.replace(':productExternalId', product.external_id))
@@ -78,7 +83,7 @@ describe('product reference index controller', function () {
     })
 
     it('should render product reference start page with all fields', () => {
-      expect($('title').text()).to.include(product.service_name)
+      expect($('title').text()).to.include(service.service_name.en)
       expect($('h1').text()).to.include(product.name)
       expect($('p#description').text()).to.include(product.description)
       expect($('form').attr('action')).to.equal(`/pay/reference/${product.external_id}`)
@@ -97,7 +102,9 @@ describe('product reference index controller', function () {
         reference_enabled: true,
         reference_label: 'Test reference label'
       }).getPlain()
+      service = serviceFixtures.validServiceResponse().getPlain()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+      nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
       supertest(createAppWithSession(getApp(), { referenceNumber: 'Test reference' }))
         .get(paths.pay.reference.replace(':productExternalId', product.external_id))
@@ -113,7 +120,7 @@ describe('product reference index controller', function () {
     })
 
     it('should render product reference start page with reference pre-populated', () => {
-      expect($('title').text()).to.include(product.service_name)
+      expect($('title').text()).to.include(service.service_name.en)
       expect($('h1').text()).to.include(product.name)
       expect($('p#description').text()).to.include(product.description)
       expect($('form').attr('action')).to.equal(`/pay/reference/${product.external_id}`)

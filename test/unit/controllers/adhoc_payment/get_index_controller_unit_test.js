@@ -5,6 +5,8 @@ const sinon = require('sinon')
 const { expect } = require('chai')
 
 const productFixtures = require('../../../fixtures/product_fixtures')
+const serviceFixtures = require('../../../fixtures/service_fixtures')
+const Service = require('../../../../app/models/Service.class')
 const responseSpy = sinon.spy()
 const mockResponses = {
   response: responseSpy
@@ -30,12 +32,14 @@ describe('get adhoc controller with reference enabled', () => {
     type: 'ADHOC',
     reference_enabled: true
   }).getPlain()
+  const service = new Service(serviceFixtures.validServiceResponse().getPlain())
   describe(`when reference set `, () => {
     before(() => {
       res = {}
       req = {
         correlationId: '123',
-        product
+        product,
+        service
       }
       adhocCtrl(req, res)
     })
@@ -64,7 +68,8 @@ describe('get adhoc controller with reference enabled', () => {
       res = {}
       req = {
         correlationId: '123',
-        product
+        product,
+        service
       }
       adhocCtrl(req, res)
     })

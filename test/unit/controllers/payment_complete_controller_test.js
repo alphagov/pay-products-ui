@@ -7,23 +7,26 @@ const nock = require('nock')
 const supertest = require('supertest')
 
 // Local dependencies
-const { PRODUCTS_URL } = require('../../../config/index')
+const { PRODUCTS_URL, ADMINUSERS_URL } = require('../../../config/index')
 const { getApp } = require('../../../server')
 const productFixtures = require('../../fixtures/product_fixtures')
+const serviceFixtures = require('../../fixtures/service_fixtures')
 const paths = require('../../../app/paths')
 
 describe('payment complete controller', () => {
   describe('when a demo payment is returned', () => {
     describe('and the payment was successful', () => {
-      let product, payment, response
+      let product, payment, service, response
       before(done => {
         product = productFixtures.validCreateProductResponse({ type: 'DEMO' }).getPlain()
         payment = productFixtures.validCreatePaymentResponse({
           govuk_status: 'SUCCESS',
           product_external_id: product.external_id
         }).getPlain()
+        service = serviceFixtures.validServiceResponse().getPlain()
         nock(PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         nock(PRODUCTS_URL).get(`/v1/api/payments/${payment.external_id}`).reply(200, payment)
+        nock(ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
         supertest(getApp())
           .get(paths.pay.complete.replace(':paymentExternalId', payment.external_id))
@@ -43,15 +46,17 @@ describe('payment complete controller', () => {
     })
 
     describe('but the payment failed', () => {
-      let product, payment, response
+      let product, payment, service, response
       before(done => {
         product = productFixtures.validCreateProductResponse({ type: 'DEMO' }).getPlain()
         payment = productFixtures.validCreatePaymentResponse({
           govuk_status: 'ERROR',
           product_external_id: product.external_id
         }).getPlain()
+        service = serviceFixtures.validServiceResponse().getPlain()
         nock(PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         nock(PRODUCTS_URL).get(`/v1/api/payments/${payment.external_id}`).reply(200, payment)
+        nock(ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
         supertest(getApp())
           .get(paths.pay.complete.replace(':paymentExternalId', payment.external_id))
@@ -72,7 +77,7 @@ describe('payment complete controller', () => {
   })
 
   describe('when a PROTOTYPE payment is returned', () => {
-    let product, payment, response
+    let product, payment, service, response
     before(done => {
       product = productFixtures.validCreateProductResponse({
         type: 'PROTOTYPE',
@@ -81,8 +86,10 @@ describe('payment complete controller', () => {
       payment = productFixtures.validCreatePaymentResponse({
         product_external_id: product.external_id
       }).getPlain()
+      service = serviceFixtures.validServiceResponse().getPlain()
       nock(PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
       nock(PRODUCTS_URL).get(`/v1/api/payments/${payment.external_id}`).reply(200, payment)
+      nock(ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
       supertest(getApp())
         .get(paths.pay.complete.replace(':paymentExternalId', payment.external_id))
@@ -102,7 +109,7 @@ describe('payment complete controller', () => {
   })
 
   describe('when a ADHOC payment is returned', () => {
-    let product, payment, response, $
+    let product, payment, service, response, $
     describe('when the payment was a success', () => {
       before(done => {
         product = productFixtures.validCreateProductResponse({
@@ -114,8 +121,10 @@ describe('payment complete controller', () => {
           reference_number: 'ABCD1234EF',
           govuk_status: 'success'
         }).getPlain()
+        service = serviceFixtures.validServiceResponse().getPlain()
         nock(PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         nock(PRODUCTS_URL).get(`/v1/api/payments/${payment.external_id}`).reply(200, payment)
+        nock(ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
         supertest(getApp())
           .get(paths.pay.complete.replace(':paymentExternalId', payment.external_id))
@@ -131,7 +140,7 @@ describe('payment complete controller', () => {
       })
 
       it('should redirect to the payment success page', () => {
-        expect($('title').text()).to.include(`Your payment was successful - ${product.service_name}`)
+        expect($('title').text()).to.include(`Your payment was successful - ${service.service_name.en}`)
         expect($('#payment-reference').text()).to.include(`ABC D123 4EF`)
         expect($('#payment-amount').text()).to.include(`£20.00`)
       })
@@ -148,8 +157,10 @@ describe('payment complete controller', () => {
           reference_number: 'ABCD1234EF',
           govuk_status: 'failure'
         }).getPlain()
+        service = serviceFixtures.validServiceResponse().getPlain()
         nock(PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         nock(PRODUCTS_URL).get(`/v1/api/payments/${payment.external_id}`).reply(200, payment)
+        nock(ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
         supertest(getApp())
           .get(paths.pay.complete.replace(':paymentExternalId', payment.external_id))
