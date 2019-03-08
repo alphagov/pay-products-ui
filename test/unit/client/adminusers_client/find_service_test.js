@@ -61,7 +61,7 @@ describe('adminusers client - find a service associated with a particular gatewa
         .withResponseBody(response.getPactified())
         .build()
       provider.addInteraction(interaction)
-        .then(() => adminusersClient.getServiceByGatewayAccountId(gatewayAccountId, 'correlation_id'))
+        .then(() => adminusersClient.getServiceByGatewayAccountId(gatewayAccountId, 'correlation_id'), done)
         .then(res => {
           result = res
           done()
@@ -80,7 +80,7 @@ describe('adminusers client - find a service associated with a particular gatewa
     })
   })
 
-  describe('when a product is not found', () => {
+  describe('when a service is not found', () => {
     before(done => {
       const adminusersClient = getAdminusersClient()
       gatewayAccountId = 123457
