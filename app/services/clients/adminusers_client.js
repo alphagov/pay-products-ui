@@ -13,7 +13,7 @@ function getServiceByGatewayAccountId (gatewayAccountId, correlationId) {
   return baseClient.get({
     baseUrl,
     url: `/services?gatewayAccountId=${gatewayAccountId}`,
-    description: `find a product by it's external id`,
+    description: `find a service by it's external id`,
     service: SERVICE_NAME,
     correlationId: correlationId
   }).then(service => new Service(service))
