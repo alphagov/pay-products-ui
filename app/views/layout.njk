@@ -8,12 +8,20 @@
   {% include "includes/head.njk" %}
 {% endblock %}
 
+{% if service and service.customBranding and service.customBranding.cssUrl %}
+  {% set bodyClasses = "custom-branding" %}
+{% endif %}
+
 {% block header %}
-  {{ govukHeader({
-    homepageUrl: 'https://www.gov.uk',
-    serviceName: serviceName,
-    serviceUrl: '/'
-  }) }}
+  {% if service and service.customBranding and service.customBranding.cssUrl %}
+    {% include "includes/custom.njk" %}
+  {% else %}
+    {{ govukHeader({
+      homepageUrl: 'https://www.gov.uk',
+      serviceName: service.serviceName.en,
+      serviceUrl: '/'
+    }) }}
+  {% endif %}
 {% endblock %}
 
 {% block content %}
