@@ -13,7 +13,8 @@ module.exports = function (grunt) {
           style: 'expanded',
           sourcemap: true,
           includePaths: [
-            'node_modules'
+            'node_modules',
+            'app/assets/sass'
           ],
           outputStyle: 'compressed'
         },
@@ -22,6 +23,14 @@ module.exports = function (grunt) {
             expand: true,
             cwd: 'app/assets/sass',
             src: ['*.scss'],
+            dest: 'public/stylesheets/',
+            ext: '.min.css'
+          },
+          // This builds custom branding css
+          {
+            expand: true,
+            cwd: 'node_modules/@govuk-pay/pay-js-commons/sass/',
+            src: ['**/*.scss'],
             dest: 'public/stylesheets/',
             ext: '.min.css'
           }
