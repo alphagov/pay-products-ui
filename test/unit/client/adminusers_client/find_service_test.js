@@ -35,7 +35,7 @@ describe('adminusers client - find a service associated with a particular gatewa
   let gatewayAccountId, response, result
 
   before(() => provider.setup())
-  after((done) => provider.finalize().then(() => { done() }))
+  after(() => provider.finalize())
 
   describe('when a service is found', () => {
     const customBranding = {
