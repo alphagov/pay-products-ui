@@ -103,6 +103,7 @@ function initialiseTemplateEngine (app) {
 
 function initialisePublic (app) {
   app.use('/public', express.static(path.join(__dirname, '/public')))
+  app.use('/public', express.static(path.join(__dirname, '/node_modules/@govuk-pay/pay-js-commons/')))
   app.use('/', express.static(path.join(__dirname, '/node_modules/govuk-frontend/')))
 }
 
