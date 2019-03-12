@@ -35,7 +35,7 @@ describe('products client - find a payment by gateway account id and payment ref
   })
 
   before(() => provider.setup())
-  after((done) => provider.finalize().then(done()))
+  after((done) => provider.finalize().then(() => { done() }))
 
   describe('when a payment is successfully found', () => {
     before((done) => {
