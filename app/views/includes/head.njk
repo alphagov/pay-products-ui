@@ -1,4 +1,8 @@
-<link href="{{ css_path }}" media="all" rel="stylesheet" />
+{% if service and service.customBranding and service.customBranding.cssUrl  %}
+  <link href="{{ service.customBranding.cssUrl }}" media="all" rel="stylesheet" />
+{% else %}
+  <link href="{{ css_path }}" media="all" rel="stylesheet" />
+{% endif %}
 
 {% if analyticsTrackingId %}
 <!-- Google Analytics -->
@@ -15,7 +19,7 @@
 
   ga('send', 'pageview', {
     'page': '{{ analytics.path }}',
-    'dimension1': '{{product.serviceName}}'
+    'dimension1': '{{service.serviceName.en}}'
   });
 </script>
 <!-- End Google Analytics -->
