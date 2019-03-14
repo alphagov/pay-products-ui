@@ -29,12 +29,23 @@
     "start": "node ./start.js",
     "watch": "chokidar app test *.js --initial -c 'npm run test'",
     "watch-live-reload": "./node_modules/.bin/grunt watch",
-    "lint": "./node_modules/.bin/standard",
+    "lint": "./node_modules/.bin/standard --fix",
     "lint-sass": "./node_modules/.bin/sass-lint -v",
     "test-with-coverage": "node ./node_modules/nyc/bin/nyc npm test",
     "test": "node ./node_modules/mocha/bin/mocha '!(node_modules)/**/*+(_test|_tests)'.js",
     "snyk-protect": "snyk protect",
     "prepublish": "npm run snyk-protect"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "npm run lint",
+      "git add"
+    ]
   },
   "nodemonConfig": {
     "ignore": [
@@ -91,6 +102,8 @@
     "grunt-contrib-watch": "1.1.x",
     "grunt-sass": "3.0.x",
     "html5shiv": "3.7.x",
+    "husky": "^1.3.1",
+    "lint-staged": "^8.1.5",
     "mocha": "6.0.x",
     "nock": "10.0.x",
     "node-sass": "4.11.x",
