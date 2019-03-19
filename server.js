@@ -18,6 +18,7 @@ const argv = require('minimist')(process.argv.slice(2))
 const flash = require('connect-flash')
 const cookieParser = require('cookie-parser')
 const staticify = require('staticify')(path.join(__dirname, 'public'))
+const i18n = require('i18n')
 
 exports.staticify = staticify
 
@@ -28,6 +29,7 @@ const customCertificate = require('./app/utils/custom_certificate')
 const errorHandler = require('./app/middleware/error_handler')
 const middlewareUtils = require('./app/utils/middleware')
 const cookieUtil = require('./app/utils/cookie')
+const i18nConfig = require('./config/i18n')
 
 // Global constants
 const JAVASCRIPT_PATH = staticify.getVersionedPath('/js/application.min.js')
@@ -107,6 +109,11 @@ function initialisePublic (app) {
   app.use('/', express.static(path.join(__dirname, '/node_modules/govuk-frontend/')))
 }
 
+function initialisei18n (app) {
+  i18n.configure(i18nConfig)
+  app.use(i18n.init)
+}
+
 function initialiseRoutes (app) {
   router.bind(app)
 }
@@ -143,6 +150,7 @@ function initialise () {
   initialiseTLS()
   initialiseCookies(app)
   initialiseGlobalMiddleware(app)
+  initialisei18n(app)
 
   app.use(flash())
   initialiseTemplateEngine(app)
