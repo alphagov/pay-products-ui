@@ -114,7 +114,7 @@
     "proxyquire": "~2.1.0",
     "sass-lint": "^1.12.1",
     "sinon": "7.2.x",
-    "snyk": "1.136.x",
+    "snyk": "1.137.x",
     "standard": "^12.0.1",
     "supertest": "^4.0.2"
   },
