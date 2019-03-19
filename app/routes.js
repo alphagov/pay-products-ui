@@ -20,6 +20,7 @@ const productReferenceCtrl = require('./controllers/product_reference')
 const { validateAndRefreshCsrf, ensureSessionHasCsrfSecret } = require('./middleware/csrf')
 const resolveProduct = require('./middleware/resolve_product')
 const resolvePaymentAndProduct = require('./middleware/resolve_payment_and_product')
+const resolveLanguage = require('./middleware/resolve-language')
 // - Middleware
 const correlationId = require('./middleware/correlation_id')
 
@@ -46,11 +47,11 @@ module.exports.bind = function (app) {
   app.get(friendlyUrl.redirect, friendlyUrlRedirectCtrl)
 
   // CREATE PAYMENT
-  app.get(pay.product, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, prePaymentCtrl)
+  app.get(pay.product, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, prePaymentCtrl)
 
   // CREATE REFERENCE
-  app.get(pay.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, prePaymentCtrl)
-  app.post(pay.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, productReferenceCtrl.postReference)
+  app.get(pay.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, prePaymentCtrl)
+  app.post(pay.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, productReferenceCtrl.postReference)
 
   // DEMO SPECIFIC SCREENS
   app.get(pay.complete, resolvePaymentAndProduct, completeCtrl)
@@ -58,7 +59,7 @@ module.exports.bind = function (app) {
   app.get(demoPayment.success, successCtrl)
 
   // ADHOC SPECIFIC SCREENS
-  app.post(pay.product, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, adhocPaymentCtrl.postIndex)
+  app.post(pay.product, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, adhocPaymentCtrl.postIndex)
 
   // route to gov.uk 404 page
   // this has to be the last route registered otherwise it will redirect other routes
