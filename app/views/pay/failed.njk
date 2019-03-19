@@ -1,17 +1,17 @@
 {% extends "../layout.njk" %}
 
 {% block pageTitle %}
-Your payment has been declined - {{serviceName}} - GOV.UK Pay
+{{ __('failed.title') }} - {{serviceName}} - GOV.UK Pay
 {% endblock %}
 
 {% block contentBody %}
-<h2 class="heading-medium">Your payment has been declined</h2>
+<h2 class="heading-medium">{{ __('failed.title') }}</h2>
 <p>
-  Contact your bank for more details. No money has been taken from your account.
+  {{ __('failed.body') }}
 </p>
 <p>
   <div id="restart-payment">
-    <a href="{{backToStartPage}}">Go back to try the payment again</a>
+    <a href="{{backToStartPage}}">{{ __('failed.tryAgain') }}</a>
   </div>
 </p>
 {% endblock %}
