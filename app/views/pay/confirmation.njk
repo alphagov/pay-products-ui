@@ -1,7 +1,7 @@
 {% extends "../layout.njk" %}
 
 {% block pageTitle %}
-Your payment was successful - {{serviceName}} - GOV.UK Pay
+{{ __('confirmation.title') }} - {{serviceName}} - GOV.UK Pay
 {% endblock %}
 
 {% block contentBody %}
@@ -9,29 +9,29 @@ Your payment was successful - {{serviceName}} - GOV.UK Pay
   <div class="govuk-grid-column-two-thirds">
     <div class="govuk-panel govuk-panel--confirmation">
       <h2 class="govuk-panel__title">
-        Your payment was successful
+        {{ __('confirmation.title') }}
       </h2>
       <div class="govuk-panel__body">
-        Your payment reference number is <br>
+         {{ __('confirmation.referenceNumber') }} <br>
         <strong class="bold" id="payment-reference">{{ payment.reference }}</strong>
       </div>
     </div>
 
-    <h2 class="govuk-heading-m govuk-!-margin-top-6">What happens next</h2>
+    <h2 class="govuk-heading-m govuk-!-margin-top-6">{{ __('confirmation.next.title') }}</h2>
     <p class="govuk-body">
-      We have sent you a confirmation email.
+      {{ __('confirmation.next.body') }}
     </p>
 
-    <h2 class="govuk-heading-m">Payment summary</h2>
+    <h2 class="govuk-heading-m">{{ __('paymentSummary.title') }}</h2>
 
     <table class="govuk-table">
       <tbody class="govuk-table__body">
         <tr class="govuk-table__row">
-          <td class="govuk-table__cell" scope="row">Payment for:</td>
+          <td class="govuk-table__cell" scope="row">{{ __('paymentSummary.description') }}</td>
           <td class="govuk-table__cell">{{serviceName}}</td>
         </tr>
         <tr class="govuk-table__row">
-          <td class="govuk-table__cell" scope="row">Total amount:</td>
+          <td class="govuk-table__cell" scope="row">{{ __('paymentSummary.amount') }}</td>
           <td class="govuk-table__cell" id="payment-amount">{{payment.amount}}</td>
         </tr>
       </tbody>

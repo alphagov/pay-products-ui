@@ -1,0 +1,35 @@
+{
+  "adhoc": {
+    "paymentAmount": "Payment amount",
+    "inCurrency": "in £",
+    "currencyInput": {
+      "ariaLabel": "Enter amount in pounds",
+      "confirmationLabel": "Amount to pay:"
+    }
+  },
+  "buttons": {
+    "proceed": "Proceed to payment",
+    "continue": "Continue"
+  },
+  "error": {
+    "title": "An error occurred:"
+  },
+  "confirmation": {
+    "title": "Your payment was successful",
+    "referenceNumber": "Your payment reference number is",
+    "next": {
+      "title": "What happens next",
+      "body": "We have sent you a confirmation email."
+    },
+    "paymentSummary": {
+      "title": "Payment summary",
+      "description": "Payment for:",
+      "amount": "Total amount:"
+    }
+  },
+  "failed": {
+    "title": "Your payment has been declined",
+    "body": "Contact your bank for more details. No money has been taken from your account.",
+    "tryAgain": "Go back to try the payment again"
+  }
+}

@@ -53,7 +53,8 @@
       "browsered/*",
       "Gruntfile.js",
       "app/browsered.js",
-      "public/js/*"
+      "public/js/*",
+      "locales/*"
     ]
   },
   "dependencies": {
@@ -69,6 +70,7 @@
     "currency-formatter": "^1.5.3",
     "express": "4.16.x",
     "govuk-frontend": "^2.8.0",
+    "i18n": "^0.8.3",
     "lodash": "4.17.x",
     "minimist": "1.2.x",
     "morgan": "1.9.x",

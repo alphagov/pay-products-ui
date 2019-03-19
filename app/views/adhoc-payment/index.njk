@@ -20,8 +20,8 @@
     <input id="csrf" name="csrfToken" type="hidden" value="{{ csrf }}"/>
     <div class="currency-input govuk-form-group">
       <label class="govuk-label govuk-!-font-weight-bold govuk-!-width-one-quarter" for="payment-amount">
-        Payment amount
-        <span class="govuk-visually-hidden">in £</span>
+        {{ __('adhoc.paymentAmount') }}
+        <span class="govuk-visually-hidden">{{ __('adhoc.inCurrency') }}</span>
       </label>
       {% if price %}
         {{ govukInsetText({
@@ -33,7 +33,7 @@
         <div class="currency-input__inner">
           <span class="currency-input__inner__unit">£</span>
           <input class="govuk-input govuk-!-width-one-quarter"
-                 aria-label="Enter amount in pounds"
+                 aria-label="{{ __('adhoc.currencyInput.ariaLabel') }}"
                  name="payment-amount"
                  data-non-numeric=""
                  type="text"
@@ -42,13 +42,13 @@
                  autofocus=""
                  data-validate="required currency"
                  data-confirmation="true"
-                 data-confirmation-label="Amount to pay: "
+                 data-confirmation-label="{{ __('adhoc.currencyInput.confirmationLabel') }} "
                  data-confirmation-prepend="£"/>
         </div>
       {% endif %}
     </div>
     {{ govukButton({
-      text: "Proceed to payment"
+      text: __('buttons.proceed')
     }) }}
   </form>
 {% endblock %}
