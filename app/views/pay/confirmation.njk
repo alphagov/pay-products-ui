@@ -22,16 +22,16 @@
       {{ __('confirmation.next.body') }}
     </p>
 
-    <h2 class="govuk-heading-m">{{ __('paymentSummary.title') }}</h2>
+    <h2 class="govuk-heading-m">{{ __('confirmation.paymentSummary.title') }}</h2>
 
     <table class="govuk-table">
       <tbody class="govuk-table__body">
         <tr class="govuk-table__row">
-          <td class="govuk-table__cell" scope="row">{{ __('paymentSummary.description') }}</td>
+          <td class="govuk-table__cell" scope="row">{{ __('confirmation.paymentSummary.description') }}</td>
           <td class="govuk-table__cell">{{serviceName}}</td>
         </tr>
         <tr class="govuk-table__row">
-          <td class="govuk-table__cell" scope="row">{{ __('paymentSummary.amount') }}</td>
+          <td class="govuk-table__cell" scope="row">{{ __('confirmation.paymentSummary.amount') }}</td>
           <td class="govuk-table__cell" id="payment-amount">{{payment.amount}}</td>
         </tr>
       </tbody>
