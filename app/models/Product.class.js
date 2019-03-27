@@ -16,6 +16,7 @@ const lodash = require('lodash')
  * @property {Object} referenceEnabled - a flag that when enabled will ask for the payer to input a reference
  * @property {Object} referenceLabel - a required field when reference is enabled
  * @property {Object} referenceHint - a an optional field when reference is enabled
+ * @property {Object} language - the iso639 2 character code for the language to display pages in
  * @property {object} links
  * @property {object} links.pay
  * @property {string} links.pay.href - url to use to create a payment for the product
@@ -37,6 +38,7 @@ class Product {
    * @param {string} opts.reference_enabled - when enabled will ask the user to input a reference for the payment
    * @param {string} opts.reference_label - mandatory field that will display when reference is enabled
    * @param {string} opts.reference_hint - optional field that will display when reference is enabled
+   * @param {string} opts.language - the language pages are displayed in for the product
    * @param {Object[]} opts._links - links for the product ('self' to re-GET this product from the server, and 'pay' to create a payment for this product)
    * @param {string} opts._links[].href - url of the link
    * @param {string} opts._links[].method - the http method of the link
@@ -57,6 +59,7 @@ class Product {
     this.reference_enabled = opts.reference_enabled
     this.reference_label = opts.reference_label
     this.reference_hint = opts.reference_hint
+    this.language = opts.language
     opts._links.forEach(link => lodash.set(this, `links.${link.rel}`, { method: link.method, href: link.href }))
   }
 }

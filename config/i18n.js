@@ -4,7 +4,7 @@ const path = require('path')
 const { NODE_ENV } = process.env
 
 module.exports = {
-  locales: ['en'],
+  locales: ['en', 'cy'],
   directory: path.join(__dirname, '../locales'),
   objectNotation: true,
   defaultLocale: 'en',
