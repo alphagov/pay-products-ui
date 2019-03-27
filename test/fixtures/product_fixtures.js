@@ -76,6 +76,7 @@ module.exports = {
       service_name: opts.service_name || 'An example service name',
       description: opts.description || '',
       price: opts.price,
+      language: opts.language || 'en',
       _links: opts.links
     }
     if (data.type !== 'ADHOC') {

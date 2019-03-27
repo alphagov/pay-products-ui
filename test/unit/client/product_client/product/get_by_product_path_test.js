@@ -55,7 +55,8 @@ describe('products client - find a product by it\'s product path', function () {
         description: 'About this product',
         return_url: 'https://example.gov.uk',
         service_name_path: serviceNamePath,
-        product_name_path: productNamePath
+        product_name_path: productNamePath,
+        language: 'en'
       })
       provider.addInteraction(
         new PactInteractionBuilder(`${PRODUCT_RESOURCE}`)
@@ -82,6 +83,7 @@ describe('products client - find a product by it\'s product path', function () {
       expect(result.description).to.exist.and.equal(plainResponse.description)
       expect(result.price).to.exist.and.equal(plainResponse.price)
       expect(result.returnUrl).to.exist.and.equal(plainResponse.return_url)
+      expect(result.language).to.exist.and.equal(plainResponse.language)
       expect(result).to.have.property('links')
       expect(Object.keys(result.links).length).to.equal(3)
       expect(result.links).to.have.property('self')
