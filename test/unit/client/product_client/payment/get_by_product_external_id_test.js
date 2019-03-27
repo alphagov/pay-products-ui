@@ -39,7 +39,7 @@ describe('products client - find a payment by it\'s associated product external 
   })
 
   before(() => provider.setup())
-  after((done) => provider.finalize().then(done()))
+  after(() => provider.finalize())
 
   describe('when a product is successfully found', () => {
     before(done => {
@@ -51,7 +51,7 @@ describe('products client - find a payment by it\'s associated product external 
         productFixtures.validCreatePaymentResponse({ product_external_id: productExternalId })
       ]
       const interaction = new PactInteractionBuilder(`${PRODUCT_RESOURCE}/${productExternalId}/payments`)
-        .withUponReceiving('a valid get payment request')
+        .withUponReceiving('a valid get payments by product external id request')
         .withMethod('GET')
         .withStatusCode(200)
         .withResponseBody(response.map(item => item.getPactified()))
