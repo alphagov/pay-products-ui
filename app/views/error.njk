@@ -1,9 +1,9 @@
 {% extends "layout.njk" %}
 
-{% block pageTitle %}{{ __('error.title') }} - GOV.UK Pay{% endblock %}
+{% block pageTitle %}{{ __p('error.title') }} - GOV.UK Pay{% endblock %}
 
 {% block contentBody %}
-  <h1 class="govuk-heading-l">{{ __('error.title') }}</h1>
+  <h1 class="govuk-heading-l">{{ __p('error.title') }}</h1>
 
   <div id="errorMsg" class="govuk-body">{{message}}</div>
 {% endblock %}
