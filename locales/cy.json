@@ -1,0 +1,35 @@
+{
+  "adhoc": {
+    "paymentAmount": "Swm y taliad",
+    "inCurrency": "in £",
+    "currencyInput": {
+      "ariaLabel": "Enter amount in pounds",
+      "confirmationLabel": "Amount to pay:"
+    }
+  },
+  "buttons": {
+    "proceed": "Mynd ati i dalu",
+    "continue": "Parhau"
+  },
+  "error": {
+    "title": "Digwyddodd gwall:"
+  },
+  "confirmation": {
+    "title": "Roedd eich taliad yn llwyddiannus",
+    "referenceNumber": "Rhif cyfeirnod eich taliad yw",
+    "next": {
+      "title": "Beth sy'n digwydd nesaf",
+      "body": "Rydym wedi anfon e-bost atoch yn cadarnhau eich bod wedi gwneud taliad."
+    },
+    "paymentSummary": {
+      "title": "Crynodeb o'r taliad",
+      "description": "Taliad am:",
+      "amount": "Cyfanswm:"
+    }
+  },
+  "failed": {
+    "title": "Mae eich taliad wedi cael ei wrthod",
+    "body": "Nid oes arian wedi cael ei dynnu o’ch cyfrif. Cysylltwch â’ch banc am ragor o fanylion.",
+    "tryAgain": "Mynd yn ôl i geisio’r taliad eto"
+  }
+}
