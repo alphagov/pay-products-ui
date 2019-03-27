@@ -1,17 +1,17 @@
 {% extends "../layout.njk" %}
 
 {% block pageTitle %}
-{{ __('failed.title') }} - {{serviceName}} - GOV.UK Pay
+{{ __p('failed.title') }} - {{serviceName}} - GOV.UK Pay
 {% endblock %}
 
 {% block contentBody %}
-<h2 class="heading-medium">{{ __('failed.title') }}</h2>
+<h2 class="heading-medium">{{ __p('failed.title') }}</h2>
 <p>
-  {{ __('failed.body') }}
+  {{ __p('failed.body') }}
 </p>
 <p>
   <div id="restart-payment">
-    <a href="{{backToStartPage}}">{{ __('failed.tryAgain') }}</a>
+    <a href="{{backToStartPage}}">{{ __p('failed.tryAgain') }}</a>
   </div>
 </p>
 {% endblock %}
