@@ -36,7 +36,7 @@ describe('products client - disable a product', () => {
   })
 
   before(() => provider.setup())
-  after((done) => provider.finalize().then(done()))
+  after(() => provider.finalize())
 
   describe('when a product is successfully disabled', () => {
     before(done => {
@@ -62,13 +62,13 @@ describe('products client - disable a product', () => {
     })
   })
 
-  describe('create a product - bad request', () => {
+  describe('disable a product - bad request', () => {
     before(done => {
       const productsClient = getProductsClient()
-      productExternalId = 'a_non_existant_external_id'
+      productExternalId = 'a_non_existent_external_id'
       provider.addInteraction(
         new PactInteractionBuilder(`${PRODUCT_RESOURCE}/${productExternalId}/disable`)
-          .withUponReceiving('an invalid create product request')
+          .withUponReceiving('an invalid disable product request')
           .withMethod('PATCH')
           .withStatusCode(400)
           .build()

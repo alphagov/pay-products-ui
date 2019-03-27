@@ -35,7 +35,7 @@ describe('products client - find a payment by gateway account id and payment ref
   })
 
   before(() => provider.setup())
-  after((done) => provider.finalize().then(done()))
+  after(() => provider.finalize())
 
   describe('when a payment is successfully found', () => {
     before((done) => {
@@ -44,7 +44,7 @@ describe('products client - find a payment by gateway account id and payment ref
       referenceNumber = 'REFERENCE1'
       response = productFixtures.validCreatePaymentResponse({ reference_number: referenceNumber })
       const interaction = new PactInteractionBuilder(`/v1/api/payments/${gatewayAccountId}/${referenceNumber}`)
-        .withUponReceiving('a valid get payment request')
+        .withUponReceiving('a valid get payment by gateway account id and reference request')
         .withMethod('GET')
         .withStatusCode(200)
         .withResponseBody(response.getPactified())

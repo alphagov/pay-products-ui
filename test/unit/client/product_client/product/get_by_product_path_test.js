@@ -40,7 +40,7 @@ describe('products client - find a product by it\'s product path', function () {
   })
 
   before(() => provider.setup())
-  after((done) => provider.finalize().then(done()))
+  after(() => provider.finalize())
 
   describe('when a product is successfully found', () => {
     before(done => {
@@ -61,7 +61,7 @@ describe('products client - find a product by it\'s product path', function () {
         new PactInteractionBuilder(`${PRODUCT_RESOURCE}`)
           .withQuery('serviceNamePath', serviceNamePath)
           .withQuery('productNamePath', productNamePath)
-          .withUponReceiving('a valid get product request')
+          .withUponReceiving('a valid get product by path request')
           .withMethod('GET')
           .withStatusCode(200)
           .withResponseBody(response.getPactified())

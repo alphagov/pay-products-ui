@@ -38,7 +38,7 @@ describe('products client - find a product by it\'s external id', function () {
   })
 
   before(() => provider.setup())
-  after((done) => provider.finalize().then(done()))
+  after(() => provider.finalize())
 
   describe('when a product is successfully found', () => {
     before(done => {
@@ -53,7 +53,7 @@ describe('products client - find a product by it\'s external id', function () {
       })
       provider.addInteraction(
         new PactInteractionBuilder(`${PRODUCT_RESOURCE}/${productExternalId}`)
-          .withUponReceiving('a valid get product request')
+          .withUponReceiving('a valid get product by external id request')
           .withMethod('GET')
           .withStatusCode(200)
           .withResponseBody(response.getPactified())
@@ -91,7 +91,7 @@ describe('products client - find a product by it\'s external id', function () {
       productExternalId = 'non-existing-id'
       provider.addInteraction(
         new PactInteractionBuilder(`${PRODUCT_RESOURCE}/${productExternalId}`)
-          .withUponReceiving('a valid find product request with non existing id')
+          .withUponReceiving('a valid find product by external id request with non existing id')
           .withMethod('GET')
           .withStatusCode(404)
           .build()

@@ -38,7 +38,7 @@ describe('products client - find a payment by it\'s own external id', function (
   })
 
   before(() => provider.setup())
-  after((done) => provider.finalize().then(done()))
+  after(() => provider.finalize())
 
   describe('when a product is successfully found', () => {
     before(done => {
@@ -46,7 +46,7 @@ describe('products client - find a payment by it\'s own external id', function (
       paymentExternalId = 'existing-id'
       response = productFixtures.validCreatePaymentResponse({ external_id: paymentExternalId })
       const interaction = new PactInteractionBuilder(`${PAYMENT_RESOURCE}/${paymentExternalId}`)
-        .withUponReceiving('a valid get payment request')
+        .withUponReceiving('a valid get payment by external id request')
         .withMethod('GET')
         .withStatusCode(200)
         .withResponseBody(response.getPactified())
@@ -83,7 +83,7 @@ describe('products client - find a payment by it\'s own external id', function (
       paymentExternalId = 'non-existing-id'
       provider.addInteraction(
         new PactInteractionBuilder(`${PAYMENT_RESOURCE}/${paymentExternalId}`)
-          .withUponReceiving('a valid find product request with non existing id')
+          .withUponReceiving('a valid get payment by external id request with non existing id')
           .withMethod('GET')
           .withStatusCode(404)
           .build()
