@@ -18,6 +18,7 @@ module.exports = function (req, res, next) {
     })
     .then(service => {
       req.service = service
+      res.locals.service = service
       next()
     })
     .catch(err => {

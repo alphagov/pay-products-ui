@@ -18,10 +18,7 @@ function beautify (reference) {
 module.exports = (req, res) => {
   const product = req.product
   const payment = req.payment
-  const service = req.service
-  const data = {
-    serviceName: service.serviceName.en
-  }
+  const data = {}
 
   if (payment.govukStatus.toLowerCase() === 'success') {
     const reference = product.reference_enabled ? payment.referenceNumber : beautify(payment.referenceNumber)
