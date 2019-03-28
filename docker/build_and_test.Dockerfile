@@ -10,4 +10,4 @@ ADD package-lock.json /tmp/package-lock.json
 RUN cd /tmp && npm install
 WORKDIR /app
 ENV LD_LIBRARY_PATH /app/node_modules/appmetrics
-CMD rm -rf node_modules && ln -s /tmp/node_modules /app/node_modules && npm run compile && npm run lint && npm run test-with-coverage -- --forbid-only --forbid-pending && rm -rf node_modules
+CMD ./docker/build_and_test.sh
