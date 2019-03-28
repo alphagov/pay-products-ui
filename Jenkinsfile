@@ -67,6 +67,7 @@ pipeline {
         branch 'master'
       }
       steps {
+        checkPactCompatibility("products-ui", gitCommit(), "test")
         deployEcs("products-ui")
       }
     }
