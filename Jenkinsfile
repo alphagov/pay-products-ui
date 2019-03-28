@@ -26,6 +26,23 @@ pipeline {
         }
       }
     }
+    stage('Contract Tests') {
+      steps {
+        script {
+          env.PACT_TAG = gitBranchName()
+        }
+        ws('contract-tests-wp') {
+          runPactProviderTests("pay-products", "${env.PACT_TAG}")
+        }
+      }
+      post {
+        always {
+          ws('contract-tests-wp') {
+            deleteDir()
+          }
+        }
+      }
+    }
     stage('Test') {
       steps {
         runProductsE2E("products-ui")
@@ -59,6 +76,15 @@ pipeline {
       }
       steps {
         runProductsSmokeTest()
+      }
+    }
+    stage('Pact Tag') {
+      when {
+        branch 'master'
+      }
+      steps {
+        echo 'Tagging consumer pact with "test"'
+        tagPact("products-ui", gitCommit(), "test")
       }
     }
     stage('Complete') {
