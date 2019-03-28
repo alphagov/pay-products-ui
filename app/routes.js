@@ -53,8 +53,10 @@ module.exports.bind = function (app) {
   app.get(pay.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, prePaymentCtrl)
   app.post(pay.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, productReferenceCtrl.postReference)
 
+  // PAYMENT COMPLETE
+  app.get(pay.complete, resolvePaymentAndProduct, resolveLanguage, completeCtrl)
+
   // DEMO SPECIFIC SCREENS
-  app.get(pay.complete, resolvePaymentAndProduct, completeCtrl)
   app.get(demoPayment.failure, failedCtrl)
   app.get(demoPayment.success, successCtrl)
 
