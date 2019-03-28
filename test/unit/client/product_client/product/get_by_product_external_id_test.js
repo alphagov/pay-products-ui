@@ -28,7 +28,7 @@ function getProductsClient (baseUrl = `http://localhost:${port}`, productsApiKey
 
 describe('products client - find a product by it\'s external id', function () {
   const provider = Pact({
-    consumer: 'products-ui-to-be',
+    consumer: 'products-ui',
     provider: 'products',
     port: port,
     log: path.resolve(process.cwd(), 'logs', 'mockserver-integration.log'),
@@ -55,6 +55,7 @@ describe('products client - find a product by it\'s external id', function () {
       provider.addInteraction(
         new PactInteractionBuilder(`${PRODUCT_RESOURCE}/${productExternalId}`)
           .withUponReceiving('a valid get product by external id request')
+          .withState('a product with external id existing-id exists')
           .withMethod('GET')
           .withStatusCode(200)
           .withResponseBody(response.getPactified())
@@ -96,6 +97,7 @@ describe('products client - find a product by it\'s external id', function () {
           .withUponReceiving('a valid find product by external id request with non existing id')
           .withMethod('GET')
           .withStatusCode(404)
+          .withResponseHeaders({})
           .build()
       )
         .then(() => productsClient.product.getByProductExternalId(productExternalId), done)

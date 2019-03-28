@@ -30,7 +30,7 @@ function getProductsClient (baseUrl = `http://localhost:${port}`) {
 
 describe('products client - find a product by it\'s product path', function () {
   const provider = Pact({
-    consumer: 'products-ui-to-be',
+    consumer: 'products-ui',
     provider: 'products',
     port: port,
     log: path.resolve(process.cwd(), 'logs', 'mockserver-integration.log'),
@@ -63,6 +63,7 @@ describe('products client - find a product by it\'s product path', function () {
           .withQuery('serviceNamePath', serviceNamePath)
           .withQuery('productNamePath', productNamePath)
           .withUponReceiving('a valid get product by path request')
+          .withState('a product with path service-name-path/product-name-path exists')
           .withMethod('GET')
           .withStatusCode(200)
           .withResponseBody(response.getPactified())
@@ -110,6 +111,7 @@ describe('products client - find a product by it\'s product path', function () {
           .withUponReceiving('a valid find product request with non existing product path')
           .withMethod('GET')
           .withStatusCode(404)
+          .withResponseHeaders({})
           .build()
       )
         .then(() => productsClient.product.getByProductPath(serviceNamePath, productNamePath), done)
