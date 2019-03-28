@@ -28,7 +28,7 @@ function getProductsClient (baseUrl = `http://localhost:${port}`, productsApiKey
 
 describe('products client - find a product by it\'s external id', function () {
   const provider = Pact({
-    consumer: 'products-ui-to-be',
+    consumer: 'products-ui',
     provider: 'products',
     port: port,
     log: path.resolve(process.cwd(), 'logs', 'mockserver-integration.log'),
@@ -49,11 +49,13 @@ describe('products client - find a product by it\'s external id', function () {
         price: 1000,
         name: 'A Product Name',
         description: 'About this product',
-        return_url: 'https://example.gov.uk'
+        return_url: 'https://example.gov.uk',
+        language: 'en'
       })
       provider.addInteraction(
         new PactInteractionBuilder(`${PRODUCT_RESOURCE}/${productExternalId}`)
           .withUponReceiving('a valid get product by external id request')
+          .withState('a product with external id existing-id exists')
           .withMethod('GET')
           .withStatusCode(200)
           .withResponseBody(response.getPactified())
@@ -74,6 +76,7 @@ describe('products client - find a product by it\'s external id', function () {
       expect(result.description).to.exist.and.equal(plainResponse.description)
       expect(result.price).to.exist.and.equal(plainResponse.price)
       expect(result.returnUrl).to.exist.and.equal(plainResponse.return_url)
+      expect(result.language).to.exist.and.equal(plainResponse.language)
       expect(result).to.have.property('links')
       expect(Object.keys(result.links).length).to.equal(2)
       expect(result.links).to.have.property('self')
@@ -94,6 +97,7 @@ describe('products client - find a product by it\'s external id', function () {
           .withUponReceiving('a valid find product by external id request with non existing id')
           .withMethod('GET')
           .withStatusCode(404)
+          .withResponseHeaders({})
           .build()
       )
         .then(() => productsClient.product.getByProductExternalId(productExternalId), done)

@@ -30,7 +30,7 @@ function getProductsClient (baseUrl = `http://localhost:${port}`) {
 
 describe('products client - find a product by it\'s product path', function () {
   const provider = Pact({
-    consumer: 'products-ui-to-be',
+    consumer: 'products-ui',
     provider: 'products',
     port: port,
     log: path.resolve(process.cwd(), 'logs', 'mockserver-integration.log'),
@@ -55,13 +55,15 @@ describe('products client - find a product by it\'s product path', function () {
         description: 'About this product',
         return_url: 'https://example.gov.uk',
         service_name_path: serviceNamePath,
-        product_name_path: productNamePath
+        product_name_path: productNamePath,
+        language: 'en'
       })
       provider.addInteraction(
         new PactInteractionBuilder(`${PRODUCT_RESOURCE}`)
           .withQuery('serviceNamePath', serviceNamePath)
           .withQuery('productNamePath', productNamePath)
           .withUponReceiving('a valid get product by path request')
+          .withState('a product with path service-name-path/product-name-path exists')
           .withMethod('GET')
           .withStatusCode(200)
           .withResponseBody(response.getPactified())
@@ -82,6 +84,7 @@ describe('products client - find a product by it\'s product path', function () {
       expect(result.description).to.exist.and.equal(plainResponse.description)
       expect(result.price).to.exist.and.equal(plainResponse.price)
       expect(result.returnUrl).to.exist.and.equal(plainResponse.return_url)
+      expect(result.language).to.exist.and.equal(plainResponse.language)
       expect(result).to.have.property('links')
       expect(Object.keys(result.links).length).to.equal(3)
       expect(result.links).to.have.property('self')
@@ -108,6 +111,7 @@ describe('products client - find a product by it\'s product path', function () {
           .withUponReceiving('a valid find product request with non existing product path')
           .withMethod('GET')
           .withStatusCode(404)
+          .withResponseHeaders({})
           .build()
       )
         .then(() => productsClient.product.getByProductPath(serviceNamePath, productNamePath), done)
