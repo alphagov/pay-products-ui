@@ -141,6 +141,50 @@ describe('payment complete controller', () => {
 
       it('should redirect to the payment success page', () => {
         expect($('title').text()).to.include(`Your payment was successful - ${service.service_name.en}`)
+        expect($('.govuk-header__content').text()).to.include(service.service_name.en)
+        expect($('#payment-reference').text()).to.include(`ABC D123 4EF`)
+        expect($('#payment-amount').text()).to.include(`£20.00`)
+      })
+    })
+
+    describe('when the payment was a success for a Welsh product', () => {
+      before(done => {
+        product = productFixtures.validCreateProductResponse({
+          type: 'ADHOC',
+          language: 'cy'
+        }).getPlain()
+        payment = productFixtures.validCreatePaymentResponse({
+          product_external_id: product.external_id,
+          amount: 2000,
+          reference_number: 'ABCD1234EF',
+          govuk_status: 'success'
+        }).getPlain()
+        service = serviceFixtures.validServiceResponse({
+          service_name: {
+            en: 'English service',
+            cy: 'gwasanaeth Cymraeg'
+          }
+        }).getPlain()
+        nock(PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+        nock(PRODUCTS_URL).get(`/v1/api/payments/${payment.external_id}`).reply(200, payment)
+        nock(ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
+
+        supertest(getApp())
+          .get(paths.pay.complete.replace(':paymentExternalId', payment.external_id))
+          .end((err, res) => {
+            response = res
+            $ = cheerio.load(res.text || '')
+            done(err)
+          })
+      })
+
+      it('should respond with status code 200', () => {
+        expect(response.statusCode).to.equal(200)
+      })
+
+      it('should redirect to the payment success page', () => {
+        expect($('title').text()).to.include(`Roedd eich taliad yn llwyddiannus - ${service.service_name.cy}`)
+        expect($('.govuk-header__content').text()).to.include(service.service_name.cy)
         expect($('#payment-reference').text()).to.include(`ABC D123 4EF`)
         expect($('#payment-amount').text()).to.include(`£20.00`)
       })
