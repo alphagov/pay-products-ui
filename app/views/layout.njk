@@ -14,13 +14,19 @@
   {% set bodyClasses = "custom-branding" %}
 {% endif %}
 
+{% set serviceName = service.serviceName[language] %}
+
+{% if not serviceName %}
+  {% set serviceName = service.serviceName.en %}
+{% endif %}
+
 {% block header %}
   {% if service and service.customBranding and service.customBranding.cssUrl %}
     {% include "includes/custom.njk" %}
   {% else %}
     {{ govukHeader({
       homepageUrl: 'https://www.gov.uk',
-      serviceName: service.serviceName.en,
+      serviceName: serviceName,
       serviceUrl: '/'
     }) }}
   {% endif %}
