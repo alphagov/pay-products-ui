@@ -33,8 +33,7 @@ describe('adhoc payment index controller', function () {
         gateway_account_ids: [product.gateway_account_id],
         service_name: {
           en: 'Super GOV service'
-        },
-        name: 'Super Duper Service'
+        }
       }).getPlain()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
       nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
@@ -61,6 +60,46 @@ describe('adhoc payment index controller', function () {
 
     it('should show the amount input', () => {
       expect($('.govuk-label').text()).to.include('Payment amount')
+      expect($('#payment-amount').text()).to.include('')
+    })
+  })
+
+  describe('enter amount page for a Welsh product', function () {
+    before(done => {
+      product = productFixtures.validCreateProductResponse({
+        type: 'ADHOC',
+        language: 'cy'
+      }).getPlain()
+      service = serviceFixtures.validServiceResponse({
+        gateway_account_ids: [product.gateway_account_id],
+        service_name: {
+          en: 'English service',
+          cy: 'gwasanaeth Cymraeg'
+        }
+      }).getPlain()
+      nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+      nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
+
+      supertest(createAppWithSession(getApp()))
+        .get(paths.pay.product.replace(':productExternalId', product.external_id))
+        .end((err, res) => {
+          response = res
+          $ = cheerio.load(res.text || '')
+          done(err)
+        })
+    })
+
+    it('should respond with code:200 OK', () => {
+      expect(response.statusCode).to.equal(200)
+    })
+
+    it('should render adhoc payment start page with Welsh translations', () => {
+      expect($('title').text()).to.include(service.service_name.cy)
+      expect($('.govuk-header__content').text()).to.include(service.service_name.cy)
+    })
+
+    it('should show the amount input with Welsh translations', () => {
+      expect($('.govuk-label').text()).to.include('Swm y taliad')
       expect($('#payment-amount').text()).to.include('')
     })
   })
