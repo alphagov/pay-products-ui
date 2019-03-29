@@ -23,7 +23,7 @@ function getAdminusersClient (baseUrl = `http://localhost:${port}`) {
 
 describe('adminusers client - find a service associated with a particular gateway account id', function () {
   const provider = Pact({
-    consumer: 'products-ui-to-be',
+    consumer: 'products-ui',
     provider: 'adminusers',
     port: port,
     log: path.resolve(process.cwd(), 'logs', 'mockserver-integration.log'),
@@ -44,9 +44,9 @@ describe('adminusers client - find a service associated with a particular gatewa
     }
     before(done => {
       const adminusersClient = getAdminusersClient()
-      gatewayAccountId = 123456
+      gatewayAccountId = 111
       const serviceData = {
-        gateway_account_ids: [gatewayAccountId],
+        gateway_account_ids: [`${gatewayAccountId}`],
         custom_branding: customBranding
       }
 
@@ -55,7 +55,7 @@ describe('adminusers client - find a service associated with a particular gatewa
       const interaction = new PactInteractionBuilder(ADMINUSERS_RESOURCE)
         .withQuery('gatewayAccountId', `${gatewayAccountId}`)
         .withUponReceiving('a valid get service by gateway account id request')
-        .withRequestHeaders({})
+        .withState('a service exists with custom branding and a gateway account with id 111')
         .withMethod('GET')
         .withStatusCode(200)
         .withResponseBody(response.getPactified())
@@ -74,7 +74,7 @@ describe('adminusers client - find a service associated with a particular gatewa
       expect(result.serviceName.en).to.equal(plainResponse.service_name.en)
       expect(result.name).to.equal(plainResponse.name)
       expect(result.externalId).to.equal(plainResponse.external_id)
-      expect(result.gatewayAccountIds[0]).to.equal(gatewayAccountId)
+      expect(result.gatewayAccountIds[0]).to.equal(`${gatewayAccountId}`)
       expect(result.customBranding.cssUrl).to.equal(plainResponse.custom_branding.css_url)
       expect(result.customBranding.imageUrl).to.equal(plainResponse.custom_branding.image_url)
     })
@@ -88,9 +88,9 @@ describe('adminusers client - find a service associated with a particular gatewa
         new PactInteractionBuilder(ADMINUSERS_RESOURCE)
           .withQuery('gatewayAccountId', `${gatewayAccountId}`)
           .withUponReceiving('a valid find service request with non existing gateway account id')
-          .withRequestHeaders({})
           .withMethod('GET')
           .withStatusCode(404)
+          .withResponseHeaders({})
           .build()
       )
         .then(() => adminusersClient.getServiceByGatewayAccountId(gatewayAccountId, 'correlation_id'), done)
