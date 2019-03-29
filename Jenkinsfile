@@ -11,6 +11,10 @@ pipeline {
     lib("pay-jenkins-library@master")
   }
 
+  environment {
+    JAVA_HOME="/usr/lib/jvm/java-1.11.0-openjdk-amd64"
+  }
+
   stages {
     stage('Docker Build') {
       steps {
@@ -33,6 +37,7 @@ pipeline {
         }
         ws('contract-tests-wp') {
           runPactProviderTests("pay-products", "${env.PACT_TAG}")
+          runPactProviderTests("pay-adminusers", "${env.PACT_TAG}")
         }
       }
       post {
