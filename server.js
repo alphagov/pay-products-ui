@@ -9,7 +9,6 @@ if (process.env.DISABLE_APPMETRICS !== 'true') {
 // NPM dependencies
 const express = require('express')
 const nunjucks = require('nunjucks')
-const httpsAgent = require('https').globalAgent
 const favicon = require('serve-favicon')
 const bodyParser = require('body-parser')
 const logger = require('winston')
@@ -26,7 +25,6 @@ exports.staticify = staticify
 // Custom dependencies
 const router = require('./app/routes')
 const noCache = require('./app/utils/no_cache')
-const customCertificate = require('./app/utils/custom_certificate')
 const errorHandler = require('./app/middleware/error_handler')
 const middlewareUtils = require('./app/utils/middleware')
 const cookieUtil = require('./app/utils/cookie')
@@ -121,9 +119,7 @@ function initialiseRoutes (app) {
 }
 
 function initialiseTLS () {
-  if (process.env.DISABLE_INTERNAL_HTTPS !== 'true') {
-    customCertificate.addCertsToAgent(httpsAgent)
-  } else {
+  if (process.env.DISABLE_INTERNAL_HTTPS === 'true') {
     logger.warn('DISABLE_INTERNAL_HTTPS is set.')
   }
 }
