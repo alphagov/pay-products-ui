@@ -1,12 +1,8 @@
 'use strict'
 
 // NPM Dependencies
-const logger = require('winston')
 const request = require('requestretry')
 const wrapper = require('./wrapper')
-
-// Local Dependencies
-const customCertificate = require('../../../utils/custom_certificate')
 
 // Create request.defaults config
 const requestOptions = {
@@ -19,12 +15,6 @@ const requestOptions = {
   retryDelay: 5000,
   // Adding retry on ECONNRESET as a temporary fix for PP-1727
   retryStrategy: retryOnECONNRESET()
-}
-
-if (process.env.DISABLE_INTERNAL_HTTPS !== 'true') {
-  customCertificate.addCertsToAgent(requestOptions.agentOptions)
-} else {
-  logger.warn('DISABLE_INTERNAL_HTTPS is set.')
 }
 
 const client = request.defaults(requestOptions)
