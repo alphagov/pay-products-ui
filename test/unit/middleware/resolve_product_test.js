@@ -75,7 +75,7 @@ describe('resolve product middleware', () => {
 
     it(`should render the error view`, () => {
       expect(res.render.lastCall.args[0]).to.equal('error')
-      expect(res.render.lastCall.args[1]).to.have.property('message').to.equal('Sorry, we are unable to process your request')
+      expect(res.render.lastCall.args[1]).to.have.property('message').to.equal('error.internal')
     })
 
     it(`it should not call 'next'`, () => {
@@ -110,7 +110,7 @@ describe('resolve product middleware', () => {
 
     it(`should render the error view`, () => {
       expect(res.render.lastCall.args[0]).to.equal('error')
-      expect(res.render.lastCall.args[1]).to.have.property('message').to.equal('Sorry, we are unable to process your request')
+      expect(res.render.lastCall.args[1]).to.have.property('message').to.equal('error.internal')
     })
 
     it(`it should not call 'next'`, () => {

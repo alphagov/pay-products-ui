@@ -69,7 +69,7 @@ describe('friendly url redirect controller', function () {
     })
     it('should render error page', () => {
       expect($('.govuk-heading-l').text()).to.equal('An error occurred:')
-      expect($('#errorMsg').text()).to.equal('We are unable to process your request at this time')
+      expect($('#errorMsg').text()).to.equal('Sorry, we’re unable to process your request. Try again later.')
     })
   })
 })

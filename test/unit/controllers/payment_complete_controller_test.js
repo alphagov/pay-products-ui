@@ -245,7 +245,7 @@ describe('payment complete controller', () => {
     })
     it('should render error page', () => {
       expect($('.govuk-heading-l').text()).to.equal('An error occurred:')
-      expect($('#errorMsg').text()).to.equal('Sorry, we are unable to process your request')
+      expect($('#errorMsg').text()).to.equal('Sorry, we’re unable to process your request. Try again later.')
     })
   })
 })
