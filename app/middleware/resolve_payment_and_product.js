@@ -26,6 +26,6 @@ module.exports = function (req, res, next) {
       next()
     })
     .catch(err => {
-      renderErrorView(req, res, 'Sorry, we are unable to process your request', err.errorCode || 500)
+      renderErrorView(req, res, 'error.internal', err.errorCode || 500)
     })
 }

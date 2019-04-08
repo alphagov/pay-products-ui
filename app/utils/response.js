@@ -2,7 +2,7 @@
 
 const logger = require('winston')
 
-const ERROR_MESSAGE = 'There is a problem with the payments platform'
+const ERROR_MESSAGE = 'error.default' // This is the object notation to string in en.json
 const ERROR_VIEW = 'error'
 
 function response (req, res, template, data) {

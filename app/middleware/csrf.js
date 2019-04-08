@@ -5,11 +5,11 @@ const csrf = require('csrf')
 const logger = require('winston')
 
 // Local Dependencies
-const errorView = require('../utils/response.js').renderErrorView
+const { renderErrorView } = require('../utils/response.js')
 const CORRELATION_HEADER = require('../../config').CORRELATION_HEADER
 
 // Assignments and Variables
-const errorMsg = 'There is a problem with the payments platform'
+const errorMessagePath = 'error.internal' // This is the object notation to string in en.json
 
 // Exports
 module.exports = {
@@ -22,17 +22,17 @@ function validateAndRefreshCsrf (req, res, next) {
   const session = req.session
   if (!session) {
     logger.warn('Session is not defined')
-    return errorView(req, res, errorMsg, 400)
+    return renderErrorView(req, res, errorMessagePath, 400)
   }
 
   if (!session.csrfSecret) {
     logger.warn('CSRF secret is not defined for session')
-    return errorView(req, res, errorMsg, 400)
+    return renderErrorView(req, res, errorMessagePath, 400)
   }
 
   if (req.method !== 'GET' && !isValidCsrf(req)) {
     logger.warn('CSRF secret provided is invalid')
-    return errorView(req, res, errorMsg, 400)
+    return renderErrorView(req, res, errorMessagePath, 400)
   }
 
   res.locals.csrf = csrf().create(session.csrfSecret)
