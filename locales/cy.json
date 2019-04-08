@@ -1,10 +1,10 @@
 {
   "adhoc": {
     "paymentAmount": "Swm y taliad",
-    "inCurrency": "in £",
+    "inCurrency": "mewn £",
     "currencyInput": {
-      "ariaLabel": "Enter amount in pounds",
-      "confirmationLabel": "Amount to pay:"
+      "ariaLabel": "Nodwch y cyfanswm mewn punnoedd",
+      "confirmationLabel": "Cyfanswm i’w dalu:"
     }
   },
   "buttons": {
@@ -12,17 +12,19 @@
     "continue": "Parhau"
   },
   "error": {
-    "title": "Digwyddodd gwall:"
+    "title": "Digwyddodd gwall:",
+    "default": "Mae’n ddrwg gennym, ond ni allwn brosesu eich cais. Rhowch gynnig arall arni wedyn.",
+    "internal": "Mae problem gyda’r cyfleuster taliadau. Rhowch gynnig arall arni wedyn"
   },
   "confirmation": {
     "title": "Roedd eich taliad yn llwyddiannus",
     "referenceNumber": "Rhif cyfeirnod eich taliad yw",
     "next": {
-      "title": "Beth sy'n digwydd nesaf",
+      "title": "Beth sy’n digwydd nesaf",
       "body": "Rydym wedi anfon e-bost atoch yn cadarnhau eich bod wedi gwneud taliad."
     },
     "paymentSummary": {
-      "title": "Crynodeb o'r taliad",
+      "title": "Crynodeb o’r taliad",
       "description": "Taliad am:",
       "amount": "Cyfanswm:"
     }

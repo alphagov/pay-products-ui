@@ -6,12 +6,10 @@ const logger = require('winston')
 // Custom dependencies
 const productsClient = require('../services/clients/products_client')
 const response = require('../utils/response')
-const errorResponse = response.renderErrorView
+const { renderErrorView } = response
 
 // Constants
-const messages = {
-  internalError: 'We are unable to process your request at this time'
-}
+const errorMessagePath = 'error.internal' // This is the object notation to string in en.json
 
 module.exports = (req, res) => {
   const { serviceNamePath, productNamePath } = req.params
@@ -21,6 +19,6 @@ module.exports = (req, res) => {
       return res.redirect(product.links.pay.href)
     })
     .catch(err => {
-      return errorResponse(req, res, messages.internalError, err.errorCode || 500)
+      return renderErrorView(req, res, errorMessagePath, err.errorCode || 500)
     })
 }

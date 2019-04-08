@@ -5,16 +5,14 @@ const logger = require('winston')
 
 // Custom dependencies
 const response = require('../utils/response')
-const errorResponse = response.renderErrorView
+const { renderErrorView } = response
 
 const makePayment = require('./make_payment_controller')
 const adhocPaymentCtrl = require('./adhoc_payment')
 const productReferenceCtrl = require('./product_reference')
 
 // Constants
-const messages = {
-  internalError: 'Sorry, we are unable to process your request'
-}
+const errorMessagePath = 'error.internal' // This is the object notation to string in en.json
 
 module.exports = (req, res) => {
   const product = req.product
@@ -33,6 +31,6 @@ module.exports = (req, res) => {
       }
     default:
       logger.error(`[${correlationId}] error routing product of type ${product.type}`)
-      return errorResponse(req, res, messages.internalError, 500)
+      return renderErrorView(req, res, errorMessagePath, 500)
   }
 }
