@@ -57,25 +57,25 @@ function validateField (form, field) {
   validationTypes.forEach(validationType => {
     switch (validationType) {
       case 'currency' :
-        result = checks.isCurrency(field.value)
+        result = checks.isCurrency(field.value, window.i18n.fieldValidation.currency)
         break
       case 'email' :
-        result = checks.isValidEmail(field.value)
+        result = checks.isValidEmail(field.value, window.i18n.fieldValidation.validEmail)
         break
       case 'phone' :
-        result = checks.isPhoneNumber(field.value)
+        result = checks.isPhoneNumber(field.value, window.i18n.fieldValidation.phoneNumber)
         break
       case 'https' :
-        result = checks.isHttps(field.value)
+        result = checks.isHttps(field.value, window.i18n.fieldValidation.isHttps)
         break
       case 'belowMaxAmount' :
-        result = checks.isAboveMaxAmount(field.value)
+        result = checks.isAboveMaxAmount(field.value, window.i18n.fieldValidation.isAboveMaxAmount)
         break
       case 'isNaxsiSafe':
-        result = checks.isNaxsiSafe(field.value)
+        result = checks.isNaxsiSafe(field.value, window.i18n.fieldValidation.invalidCharacters)
         break
       default :
-        result = checks.isEmpty(field.value)
+        result = checks.isEmpty(field.value, window.i18n.fieldValidation.required)
         break
     }
     if (result) {
