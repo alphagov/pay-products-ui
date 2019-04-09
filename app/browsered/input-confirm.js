@@ -8,7 +8,7 @@ module.exports = () => {
   })
 
   const addFor = (input, confirmation) => {
-    const formGroup = input.closest('.form-group')
+    const formGroup = input.closest('.govuk-form-group')
 
     formGroup.after(confirmation)
   }
@@ -23,7 +23,7 @@ module.exports = () => {
 
     if (!confirmation) {
       const confirmationInner = `
-      <div id="${confirmationId}" class="form-group panel panel-border-wide input-confirm">
+      <div id="${confirmationId}" class="govuk-form-group govuk-inset-text input-confirm">
         <p class="form-hint">
           ${confirmationLabel}<span class="input-confirmation"></span>
         </p>

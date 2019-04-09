@@ -7,68 +7,57 @@ const emailValidator = require('../utils/email_tools.js')
 const NUMBERS_ONLY = new RegExp('^[0-9]+$')
 const MAX_AMOUNT = 100000
 
-const validationErrors = {
-  required: 'This field cannot be blank',
-  currency: 'Choose an amount in pounds and pence using digits and a decimal point. For example “10.50”',
-  phoneNumber: 'Must be a 11 digit phone number',
-  validEmail: 'Please use a valid email address',
-  isHttps: 'URL must begin with https://',
-  isAboveMaxAmount: `Choose an amount under £${MAX_AMOUNT.toLocaleString()}`,
-  isGreaterThanMaxLengthChars: `The text is too long`,
-  invalidCharacters: `You cannot use any of the following characters < > ; : \` ( ) " ' = | , ~ [ ]`
-}
-
-exports.isEmpty = function (value) {
+exports.isEmpty = (value, message) => {
   if (value === '') {
-    return validationErrors.required
+    return message
   } else {
     return false
   }
 }
 
-exports.isCurrency = function (value) {
+exports.isCurrency = (value, message) => {
   if (!/^([0-9]+)(?:\.([0-9]{2}))?$/.test(value)) {
-    return validationErrors.currency
+    return message
   } else {
     return false
   }
 }
 
-exports.isValidEmail = function (value) {
+exports.isValidEmail = (value, message) => {
   if (!emailValidator(value)) {
-    return validationErrors.validEmail
+    return message
   } else {
     return false
   }
 }
 
-exports.isPhoneNumber = function (value) {
+exports.isPhoneNumber = (value, message) => {
   const trimmedTelephoneNumber = value.replace(/\s/g, '')
   if (trimmedTelephoneNumber.length < 11 || !NUMBERS_ONLY.test(trimmedTelephoneNumber)) {
-    return validationErrors.phoneNumber
+    return message
   } else {
     return false
   }
 }
 
-exports.isHttps = function (value) {
+exports.isHttps = (value, message) => {
   if (value.substr(0, 8) !== 'https://') {
-    return validationErrors.isHttps
+    return message
   } else {
     return false
   }
 }
 
-exports.isAboveMaxAmount = value => {
-  if (!exports.isCurrency(value) && parseFloat(value) > MAX_AMOUNT) {
-    return validationErrors.isAboveMaxAmount
+exports.isAboveMaxAmount = (value, message) => {
+  if (!exports.isCurrency(value, message) && parseFloat(value) > MAX_AMOUNT) {
+    return message.replace('%s', MAX_AMOUNT.toLocaleString())
   }
   return false
 }
 
-exports.isNaxsiSafe = function (value) {
+exports.isNaxsiSafe = (value, message) => {
   if (/[<>;:`()"'=|,~[\]]+/g.test(value)) {
-    return validationErrors.invalidCharacters
+    return message
   } else {
     return false
   }
