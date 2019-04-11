@@ -100,6 +100,7 @@ function applyErrorMessaging (form, field, result) {
 function populateErrorSummary (form) {
   let erroringFields = Array.prototype.slice.call(form.querySelectorAll('.govuk-form-group--error label'))
   let configuration = {
+    title: window.i18n.fieldValidation.summary,
     fields: erroringFields.map(field => {
       let label = field.innerHTML.split('<')[0].trim()
       let id = field.getAttribute('for')

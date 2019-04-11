@@ -35,6 +35,7 @@
     "tryAgain": "Go back to try the payment again"
   },
   "fieldValidation": {
+    "summary": "The following fields are missing or contain errors",
     "required": "This field can’t be blank",
     "currency": "Choose an amount in pounds and pence using digits and a decimal point. For example “10.50”",
     "phoneNumber": "Must be a 11 digit phone number",

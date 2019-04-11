@@ -35,6 +35,7 @@
     "tryAgain": "Mynd yn ôl i geisio’r taliad eto"
   },
   "fieldValidation": {
+    "summary": "Mae’r meysydd canlynol yn wag neu yn cynnwys camgymeriadau",
     "required": "Ni all y maes hwn fod yn wag",
     "currency": "Dewiswch swm mewn punnoedd a cheiniogau drwy ddefnyddio digidau a phwynt degol. Er enghraifft “10.50”",
     "phoneNumber": "Must be a 11 digit phone number",
