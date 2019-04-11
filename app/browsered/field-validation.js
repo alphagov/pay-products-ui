@@ -59,15 +59,6 @@ function validateField (form, field) {
       case 'currency' :
         result = checks.isCurrency(field.value, window.i18n.fieldValidation.currency)
         break
-      case 'email' :
-        result = checks.isValidEmail(field.value, window.i18n.fieldValidation.validEmail)
-        break
-      case 'phone' :
-        result = checks.isPhoneNumber(field.value, window.i18n.fieldValidation.phoneNumber)
-        break
-      case 'https' :
-        result = checks.isHttps(field.value, window.i18n.fieldValidation.isHttps)
-        break
       case 'belowMaxAmount' :
         result = checks.isAboveMaxAmount(field.value, window.i18n.fieldValidation.isAboveMaxAmount)
         break
