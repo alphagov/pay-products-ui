@@ -36,6 +36,7 @@
   },
   "fieldValidation": {
     "summary": "Mae’r meysydd canlynol yn wag neu yn cynnwys camgymeriadau",
+    "generic": "Rhowch %s dilys",
     "required": "Ni all y maes hwn fod yn wag",
     "currency": "Dewiswch swm mewn punnoedd a cheiniogau drwy ddefnyddio digidau a phwynt degol. Er enghraifft “10.50”",
     "phoneNumber": "Must be a 11 digit phone number",
@@ -43,6 +44,6 @@
     "isHttps": "URL must begin with https://",
     "isAboveMaxAmount": "Dewiswch swm sy'n llai na £%s",
     "isGreaterThanMaxLengthChars": "Mae'r testun yn rhy hir. Ni all fod yn fwy na 255 o nodau.",
-    "invalidCharacters": "Ni allwch ddefnyddio unrhyw rai o'r nodau canlynol < > ; : ` ( ) \" ' = | \",\" ~ [ ]"
+    "invalidCharacters": "Ni allwch ddefnyddio unrhyw rai o'r nodau canlynol < > ; : ` ( ) \" ' = &#124; \",\" ~ [ ]"
   }
 }
