@@ -39,9 +39,6 @@
     "generic": "Enter a valid %s",
     "required": "This field can’t be blank",
     "currency": "Choose an amount in pounds and pence using digits and a decimal point. For example “10.50”",
-    "phoneNumber": "Must be a 11 digit phone number",
-    "validEmail": "Please use a valid email address",
-    "isHttps": "URL must begin with https://",
     "isAboveMaxAmount": "Choose an amount under £%s",
     "isGreaterThanMaxLengthChars": "Text is too long. It can be no more than 255 characters.",
     "invalidCharacters": "You can’t use any of the following characters < > ; : ` ( ) \" ' = &#124; \",\" ~ [ ]"
