@@ -16,6 +16,7 @@ module.exports = (req, res) => {
     const sessionReferenceNumber = getSessionVariable(req, 'referenceNumber')
     if (sessionReferenceNumber) {
       req.referenceNumber = sessionReferenceNumber
+      setSessionVariable(req, 'referenceNumber', '')
     } else {
       productReferenceCtrl.index(req, res)
     }
@@ -44,6 +45,5 @@ module.exports = (req, res) => {
     paymentAmount = paymentAmount + '.00'
   }
   req.paymentAmount = Number(paymentAmount.replace('.', ''))
-  setSessionVariable(req, 'referenceNumber', '')
   makePayment(req, res)
 }
