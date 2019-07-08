@@ -1,58 +1,62 @@
 {% extends "../layout.njk" %}
-{% from "components/button/macro.njk" import govukButton %}
-{% from "components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 
 {% block pageTitle %}
   {{ serviceName }}
 {% endblock %}
 
 {% block contentBody %}
-  {% if not product.reference_enabled %}
-    <h1 class="govuk-heading-l">
-      {{ productName }}
-    </h1>
-    <p class="govuk-body" id="description">
-      {{ productDescription | striptags(true) | escape | nl2br }}
-    </p>
-  {% endif %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    {% if not product.reference_enabled %}
+      <h1 class="govuk-heading-l">
+        {{ productName }}
+      </h1>
+      <p class="govuk-body" id="description">
+        {{ productDescription | striptags(true) | escape | nl2br }}
+      </p>
+    {% endif %}
 
-  <form action="/pay/{{ productExternalId }}" method="post" name="startPaymentForm" class="push-bottom">
-    <input id="csrf" name="csrfToken" type="hidden" value="{{ csrf }}"/>
-    <div class="currency-input govuk-form-group {% if flash.genericError %}govuk-form-group--error{% endif %}">
-      <label class="govuk-label govuk-!-font-weight-bold govuk-!-width-two-thirds" for="payment-amount">
-        {{ __p('adhoc.paymentAmount') }}
-        <span class="govuk-visually-hidden">{{ __p('adhoc.inCurrency') }}</span>
-        {% if flash.genericError %}
-          <span class="govuk-error-message">{{ flash.genericError | striptags(true) }}</span>
+    <form action="/pay/{{ productExternalId }}" method="post" name="startPaymentForm" class="push-bottom">
+      <input id="csrf" name="csrfToken" type="hidden" value="{{ csrf }}"/>
+      <div class="currency-input govuk-form-group {% if flash.genericError %}govuk-form-group--error{% endif %}">
+        <label class="govuk-label govuk-!-font-weight-bold govuk-!-width-two-thirds" for="payment-amount">
+          {{ __p('adhoc.paymentAmount') }}
+          <span class="govuk-visually-hidden">{{ __p('adhoc.inCurrency') }}</span>
+          {% if flash.genericError %}
+            <span class="govuk-error-message">{{ flash.genericError | striptags(true) }}</span>
+          {% endif %}
+        </label>
+        {% if price %}
+          {{ govukInsetText({
+            text: price,
+            id: "payment-amount",
+            classes: "govuk-!-font-weight-bold"
+          }) }}
+        {% else %}
+          <div class="currency-input__inner">
+            <span class="currency-input__inner__unit">£</span>
+            <input class="govuk-input govuk-!-width-one-quarter {% if flash.genericError %}govuk-input--error{% endif %}"
+                  aria-label="{{ __p('adhoc.currencyInput.ariaLabel') }}"
+                  name="payment-amount"
+                  data-non-numeric=""
+                  type="text"
+                  inputmode="numeric"
+                  id="payment-amount"
+                  value=""
+                  autofocus
+                  data-validate="required currency"
+                  data-confirmation="true"
+                  data-confirmation-label="{{ __p('adhoc.currencyInput.confirmationLabel') }} "
+                  data-confirmation-prepend="£"/>
+          </div>
         {% endif %}
-      </label>
-      {% if price %}
-        {{ govukInsetText({
-          text: price,
-          id: "payment-amount",
-          classes: "govuk-!-font-weight-bold"
-        }) }}
-      {% else %}
-        <div class="currency-input__inner">
-          <span class="currency-input__inner__unit">£</span>
-          <input class="govuk-input govuk-!-width-one-quarter {% if flash.genericError %}govuk-input--error{% endif %}"
-                 aria-label="{{ __p('adhoc.currencyInput.ariaLabel') }}"
-                 name="payment-amount"
-                 data-non-numeric=""
-                 type="text"
-                 inputmode="numeric"
-                 id="payment-amount"
-                 value=""
-                 autofocus
-                 data-validate="required currency"
-                 data-confirmation="true"
-                 data-confirmation-label="{{ __p('adhoc.currencyInput.confirmationLabel') }} "
-                 data-confirmation-prepend="£"/>
-        </div>
-      {% endif %}
-    </div>
-    {{ govukButton({
-      text: __p('buttons.proceed')
-    }) }}
-  </form>
+      </div>
+      {{ govukButton({
+        text: __p('buttons.proceed')
+      }) }}
+    </form>
+  </div>
+</div>
 {% endblock %}
