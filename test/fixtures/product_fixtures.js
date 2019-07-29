@@ -4,11 +4,6 @@ const pactBase = require('./pact_base')
 // Global setup
 const pactProducts = pactBase()
 
-// Create random values if none provided
-const randomExternalId = () => Math.random().toString(36).substring(7)
-const randomGatewayAccountId = () => Math.round(Math.random() * 1000) + 1
-const randomPrice = () => Math.round(Math.random() * 10000) + 1
-
 module.exports = {
   pactifyRandomData: (opts = {}) => {
     pactProducts.pactify(opts)
@@ -16,9 +11,9 @@ module.exports = {
 
   validCreateProductRequest: (opts = {}) => {
     const data = {
-      gateway_account_id: opts.gatewayAccountId || randomGatewayAccountId(),
+      gateway_account_id: opts.gatewayAccountId || 666,
       name: opts.name || 'A Product Name',
-      price: opts.price || randomPrice()
+      price: opts.price || 1000
     }
     if (opts.description) data.description = opts.description
     if (opts.returnUrl) data.return_url = opts.returnUrl
@@ -36,8 +31,8 @@ module.exports = {
 
   validCreatePaymentResponse: (opts = {}) => {
     const data = {
-      external_id: opts.external_id || randomExternalId(),
-      product_external_id: opts.product_external_id || randomExternalId(),
+      external_id: opts.external_id || 'a-payment-external-id',
+      product_external_id: opts.product_external_id || 'a-product-external-id',
       next_url: opts.next_url || `http://service.url/next`,
       status: opts.status || 'CREATED',
       amount: opts.amount || 100,
@@ -69,9 +64,9 @@ module.exports = {
 
   validCreateProductResponse: (opts = {}) => {
     const data = {
-      external_id: opts.external_id || randomExternalId(),
+      external_id: opts.external_id || 'an-external-id',
       type: opts.type || 'DEMO',
-      gateway_account_id: opts.gateway_account_id || randomGatewayAccountId(),
+      gateway_account_id: opts.gateway_account_id || 666,
       name: opts.name || 'A Product Name',
       description: opts.description || '',
       price: opts.price,
@@ -79,7 +74,7 @@ module.exports = {
       _links: opts.links
     }
     if (data.type !== 'ADHOC') {
-      data.price = data.price || randomPrice()
+      data.price = data.price || 1000
     }
     if (opts.reference_enabled) data.reference_enabled = opts.reference_enabled
     if (opts.reference_label) data.reference_label = opts.reference_label
