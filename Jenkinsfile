@@ -61,7 +61,7 @@ pipeline {
         }
       }
       steps {
-        runProductsE2E("products-ui")
+        runAppE2E("products-ui", "products")
       }
     }
     stage('Docker Tag') {
