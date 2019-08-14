@@ -59,7 +59,7 @@ function initialiseGlobalMiddleware (app) {
     app.use(/\/((?!public|favicon.ico).)*/, loggingMiddleware(
       ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" - total time :response-time ms'))
   }
-  app.use(favicon(path.join(__dirname, '/node_modules/govuk-frontend/assets/images', 'favicon.ico')))
+  app.use(favicon(path.join(__dirname, '/node_modules/govuk-frontend/govuk/assets/images', 'favicon.ico')))
   app.use(staticify.middleware)
 
   app.use(function (req, res, next) {
@@ -105,7 +105,7 @@ function initialiseTemplateEngine (app) {
 function initialisePublic (app) {
   app.use('/public', express.static(path.join(__dirname, '/public')))
   app.use('/public', express.static(path.join(__dirname, '/node_modules/@govuk-pay/pay-js-commons/')))
-  app.use('/', express.static(path.join(__dirname, '/node_modules/govuk-frontend/')))
+  app.use('/', express.static(path.join(__dirname, '/node_modules/govuk-frontend/govuk/')))
 }
 
 function initialisei18n (app) {
