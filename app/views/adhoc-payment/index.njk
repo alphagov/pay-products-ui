@@ -3,7 +3,7 @@
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 
 {% block pageTitle %}
-  {{ serviceName }}
+  {{ __p('adhoc.currencyInput.ariaLabel') }} - {{ productName }} - {{ serviceName }}
 {% endblock %}
 
 {% block contentBody %}
