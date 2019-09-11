@@ -93,7 +93,7 @@
     "cheerio": "^1.0.0-rc.3",
     "chokidar-cli": "latest",
     "envfile": "^3.0.0",
-    "eslint": "5.16.x",
+    "eslint": "6.3.x",
     "grunt": "1.0.x",
     "grunt-babel": "^8.0.0",
     "grunt-browserify": "^5.3.0",
