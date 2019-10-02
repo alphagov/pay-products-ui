@@ -104,7 +104,7 @@
     "grunt-contrib-watch": "1.1.x",
     "grunt-sass": "3.1.x",
     "html5shiv": "3.7.x",
-    "husky": "^3.0.5",
+    "husky": "^3.0.8",
     "lint-staged": "^9.4.0",
     "mocha": "6.2.x",
     "nock": "11.3.x",
