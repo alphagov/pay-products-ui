@@ -53,7 +53,7 @@ describe('product reference index controller', function () {
       expect($('form').attr('action')).to.equal(`/pay/reference/${product.external_id}`)
       expect($('.govuk-label').text()).to.include('Test reference label')
       expect($('#payment-reference-hint').text()).to.include('Test reference hint')
-      expect($('button[type=submit]').text()).to.include('Continue')
+      expect($('button').text()).to.include('Continue')
     })
   })
 
@@ -168,7 +168,7 @@ describe('product reference index controller', function () {
     it('should render product reference start page with Welsh text and the Welsh service name', () => {
       expect($('title').text()).to.include(service.service_name.cy)
       expect($('.govuk-header__content').text()).to.include(service.service_name.cy)
-      expect($('button[type=submit]').text()).to.include('Parhau')
+      expect($('button').text()).to.include('Parhau')
     })
   })
 
@@ -205,7 +205,7 @@ describe('product reference index controller', function () {
     it('should render product reference start page with Welsh text and the English service name', () => {
       expect($('title').text()).to.include(service.service_name.en)
       expect($('.govuk-header__content').text()).to.include(service.service_name.en)
-      expect($('button[type=submit]').text()).to.include('Parhau')
+      expect($('button').text()).to.include('Parhau')
     })
   })
 })
