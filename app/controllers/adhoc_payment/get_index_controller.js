@@ -1,10 +1,10 @@
 'use strict'
 
 // Node.js core dependencies
-const logger = require('winston')
 const currencyFormatter = require('currency-formatter')
 
 // Custom dependencies
+const logger = require('../../utils/logger')(__filename)
 const { response } = require('../../utils/response')
 const productReferenceCtrl = require('../product_reference')
 const { getSessionVariable } = require('../../utils/cookie')

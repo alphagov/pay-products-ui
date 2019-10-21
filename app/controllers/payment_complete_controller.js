@@ -1,9 +1,9 @@
 'use strict'
 // NPM dependencies
 const lodash = require('lodash')
-const logger = require('winston')
 
 // Custom dependencies
+const logger = require('../utils/logger')(__filename)
 const response = require('../utils/response')
 const { renderErrorView } = response
 

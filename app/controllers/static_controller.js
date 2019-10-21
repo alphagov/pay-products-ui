@@ -1,6 +1,6 @@
 'use strict'
 
-const logger = require('winston')
+const logger = require('../utils/logger')(__filename)
 
 module.exports.naxsiError = function (req, res) {
   res.status(400)
