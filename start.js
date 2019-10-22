@@ -2,9 +2,9 @@
 
 const path = require('path')
 const fs = require('fs')
-const logger = require('winston')
 const throng = require('throng')
 const server = require('./server')
+const logger = require('./app/utils/logger')(__filename)
 const environment = require('./app/services/environment')
 const pidFile = path.join(__dirname, '/.start.pid')
 const fileOptions = { encoding: 'utf-8' }
@@ -28,7 +28,7 @@ function start () {
 function startMaster () {
   logger.info(`Master started. PID: ${process.pid}`)
   process.on('SIGINT', () => {
-    logger.info(`Master exiting`)
+    logger.info('Master exiting')
     process.exit()
   })
 }

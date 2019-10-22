@@ -1,4 +1,4 @@
-const logger = require('winston')
+const logger = require('./logger')(__filename)
 
 module.exports = {
   logRequestStart: context => {
@@ -10,7 +10,7 @@ module.exports = {
   },
 
   logRequestEnd: context => {
-    let duration = new Date() - context.startTime
+    const duration = new Date() - context.startTime
     logger.info(`[${context.correlationId}] - ${context.method} to ${context.url} ended - elapsed time: ${duration} ms`)
   },
 

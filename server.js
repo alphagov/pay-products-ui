@@ -11,7 +11,7 @@ const express = require('express')
 const nunjucks = require('nunjucks')
 const favicon = require('serve-favicon')
 const bodyParser = require('body-parser')
-const logger = require('winston')
+const logger = require('./app/utils/logger')(__filename)
 const loggingMiddleware = require('morgan')
 const argv = require('minimist')(process.argv.slice(2))
 const flash = require('connect-flash')
@@ -135,7 +135,7 @@ function initialiseCookies (app) {
 function listen () {
   const app = initialise()
   app.listen(PORT)
-  logger.log('Listening on port ' + PORT)
+  logger.info('Listening on port ' + PORT)
 }
 
 /**

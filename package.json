@@ -5,7 +5,7 @@
   "private": true,
   "license": "MIT",
   "engines": {
-    "node": ">8.11.3"
+    "node": ">8.12.0"
   },
   "standard": {
     "globals": [
@@ -59,7 +59,7 @@
     ]
   },
   "dependencies": {
-    "@govuk-pay/pay-js-commons": "^2.13.2",
+    "@govuk-pay/pay-js-commons": "2.14.2",
     "appmetrics": "4.0.x",
     "appmetrics-statsd": "3.0.x",
     "body-parser": "1.19.x",
@@ -83,7 +83,7 @@
     "throng": "4.0.x",
     "tunnel": "0.0.6",
     "url-join": "^4.0.1",
-    "winston": "2.4.x"
+    "winston": "3.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",
@@ -116,7 +116,7 @@
     "proxyquire": "~2.1.3",
     "sass-lint": "^1.13.1",
     "sinon": "7.5.x",
-    "snyk": "1.235.x",
+    "snyk": "1.235.0",
     "standard": "^14.3.1",
     "supertest": "^4.0.2"
   },
