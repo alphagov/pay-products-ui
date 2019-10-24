@@ -29,6 +29,7 @@ const errorHandler = require('./app/middleware/error_handler')
 const middlewareUtils = require('./app/utils/middleware')
 const cookieUtil = require('./app/utils/cookie')
 const i18nConfig = require('./config/i18n')
+const Sentry = require('./app/utils/sentry.js').initialiseSentry()
 
 // Global constants
 const JAVASCRIPT_PATH = staticify.getVersionedPath('/js/application.min.js')
@@ -145,6 +146,7 @@ function listen () {
 function initialise () {
   const app = unconfiguredApp
   app.disable('x-powered-by')
+  app.use(Sentry.Handlers.requestHandler())
   initialiseTLS()
   initialiseCookies(app)
   initialiseGlobalMiddleware(app)
@@ -153,8 +155,9 @@ function initialise () {
   app.use(flash())
   initialiseTemplateEngine(app)
   initialisePublic(app)
-  initialiseErrorHandling(app)
   initialiseRoutes(app) // This contains the 404 override and so should be last
+  app.use(Sentry.Handlers.errorHandler())
+  initialiseErrorHandling(app)
   warnIfAnalyticsNotSet()
 
   return app
