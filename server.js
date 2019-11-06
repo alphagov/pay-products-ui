@@ -11,8 +11,6 @@ const express = require('express')
 const nunjucks = require('nunjucks')
 const favicon = require('serve-favicon')
 const bodyParser = require('body-parser')
-const logger = require('./app/utils/logger')(__filename)
-const loggingMiddleware = require('morgan')
 const argv = require('minimist')(process.argv.slice(2))
 const flash = require('connect-flash')
 const cookieParser = require('cookie-parser')
@@ -29,6 +27,8 @@ const errorHandler = require('./app/middleware/error_handler')
 const middlewareUtils = require('./app/utils/middleware')
 const cookieUtil = require('./app/utils/cookie')
 const i18nConfig = require('./config/i18n')
+const logger = require('./app/utils/logger')(__filename)
+const loggingMiddleware = require('./app/middleware/logging_middleware')
 const Sentry = require('./app/utils/sentry.js').initialiseSentry()
 
 // Global constants
@@ -57,8 +57,7 @@ function initialiseGlobalMiddleware (app) {
     }
   }
   if (process.env.DISABLE_REQUEST_LOGGING !== 'true') {
-    app.use(/\/((?!public|favicon.ico).)*/, loggingMiddleware(
-      ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" - total time :response-time ms'))
+    app.use(/\/((?!public|favicon.ico).)*/, loggingMiddleware())
   }
   app.use(favicon(path.join(__dirname, '/node_modules/govuk-frontend/govuk/assets/images', 'favicon.ico')))
   app.use(staticify.middleware)
