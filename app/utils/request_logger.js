@@ -2,7 +2,7 @@ const logger = require('./logger')(__filename)
 
 module.exports = {
   logRequestStart: context => {
-    logger.debug(`Calling ${context.service}  ${context.description}-`, {
+    logger.debug(`Calling ${context.service}  ${context.description}`, {
       service: context.service,
       method: context.method,
       url: context.url
@@ -15,7 +15,7 @@ module.exports = {
   },
 
   logRequestFailure: (context, response) => {
-    logger.info(`[${context.correlationId}] Calling ${context.service} to ${context.description} failed -`, {
+    logger.info(`[${context.correlationId}] Calling ${context.service} to ${context.description} failed`, {
       service: context.service,
       method: context.method,
       url: context.url,
@@ -24,7 +24,7 @@ module.exports = {
   },
 
   logRequestError: (context, error) => {
-    logger.error(`[${context.correlationId}] Calling ${context.service} to ${context.description} threw exception -`, {
+    logger.error(`[${context.correlationId}] Calling ${context.service} to ${context.description} threw exception`, {
       service: context.service,
       method: context.method,
       url: context.url,
