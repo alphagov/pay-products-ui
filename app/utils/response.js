@@ -1,6 +1,7 @@
 'use strict'
 
 const logger = require('../utils/logger')(__filename)
+const { CORRELATION_ID } = require('@govuk-pay/pay-js-commons').logging.keys
 
 const ERROR_MESSAGE = 'error.default' // This is the object notation to string in en.json
 const ERROR_VIEW = 'error'
@@ -10,7 +11,18 @@ function response (req, res, template, data) {
 }
 
 function errorResponse (req, res, msg = ERROR_MESSAGE, status = 500) {
-  logger.error(`[${req.correlationId}] ${status} An error has occurred. Rendering error view`, { errorMessage: msg })
+  const errorMeta = {
+    status: status,
+    error_message: msg
+  }
+  errorMeta[CORRELATION_ID] = req.correlationId
+
+  if (status === 500) {
+    logger.error('An error has occurred. Rendering error view', errorMeta)
+  } else {
+    logger.info('An error has occurred. Rendering error view', errorMeta)
+  }
+
   res.setHeader('Content-Type', 'text/html')
   res.status(status)
   res.render(ERROR_VIEW, { message: msg })
