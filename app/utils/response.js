@@ -18,7 +18,7 @@ function errorResponse (req, res, msg = ERROR_MESSAGE, status = 500) {
   errorMeta[CORRELATION_ID] = req.correlationId
 
   if (status === 500) {
-    logger.error('An error has occurred. Rendering error view', errorMeta)
+    logger.info('An error has occurred. Rendering error view', errorMeta)
   } else {
     logger.info('An error has occurred. Rendering error view', errorMeta)
   }

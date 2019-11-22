@@ -21,7 +21,7 @@ module.exports = (req, res) => {
         return res.redirect(303, payment.links.next.href)
       })
       .catch(err => {
-        logger.error(`[${correlationId}] error creating charge for product ${product.externalId}. err = ${err}`)
+        logger.info(`[${correlationId}] error creating charge for product ${product.externalId}. err = ${err}`)
         return renderErrorView(req, res, errorMessagePath, err.errorCode || 500)
       })
   } else {
