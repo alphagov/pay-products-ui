@@ -10,6 +10,8 @@ const pidFile = path.join(__dirname, '/.start.pid')
 const fileOptions = { encoding: 'utf-8' }
 let pid
 
+logger.info(`[process.version=${process.version}] [NODE_VERSION=${process.env.NODE_VERSION}]`)
+
 /**
  * throng is a wrapper around node cluster
  * https://github.com/hunterloftis/throng
