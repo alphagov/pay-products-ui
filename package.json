@@ -93,7 +93,7 @@
     "chai": "^4.2.0",
     "cheerio": "^1.0.0-rc.3",
     "chokidar-cli": "latest",
-    "envfile": "^4.4.0",
+    "envfile": "^4.5.0",
     "eslint": "6.7.x",
     "grunt": "1.0.x",
     "grunt-babel": "^8.0.0",
