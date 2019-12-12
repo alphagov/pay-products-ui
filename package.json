@@ -110,7 +110,7 @@
     "mocha": "6.2.x",
     "nock": "11.7.x",
     "node-sass": "4.13.x",
-    "nodemon": "^2.0.1",
+    "nodemon": "^2.0.2",
     "nunjucksify": "^2.2.0",
     "nyc": "^14.1.1",
     "pact": "4.3.2",
