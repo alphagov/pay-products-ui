@@ -87,7 +87,7 @@
     "winston": "3.2.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.7.5",
+    "@babel/core": "^7.7.7",
     "@babel/preset-env": "^7.7.7",
     "@pact-foundation/pact-node": "10.2.4",
     "chai": "^4.2.0",
