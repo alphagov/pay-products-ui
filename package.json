@@ -80,7 +80,7 @@
     "request": "^2.88.0",
     "requestretry": "^4.0.2",
     "serve-favicon": "2.5.0",
-    "staticify": "3.3.x",
+    "staticify": "4.0.x",
     "throng": "4.0.x",
     "tunnel": "0.0.6",
     "url-join": "^4.0.1",
