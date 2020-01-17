@@ -35,7 +35,7 @@ describe('get adhoc controller with reference enabled', () => {
   const service = new Service(serviceFixtures.validServiceResponse().getPlain())
   describe(`when reference set `, () => {
     before(() => {
-      res = {}
+      res = { cookie: () => {} }
       req = {
         correlationId: '123',
         product,
