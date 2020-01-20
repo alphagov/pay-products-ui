@@ -39,9 +39,9 @@ module.exports = (req, res) => {
   }
 
   logger.info('Setting test cookie, strict cookie and lax cookie')
-  res.cookie('Test Cookie', 'cookie-to-test-Chrome-default-behavior', {})
-  res.cookie('Lax Cookie', 'cookie-set-with-SameSite-Lax', { sameSite: 'lax' })
-  res.cookie('Strict Cookie', 'cookie-set-with-SameSite-Strict-', { sameSite: 'strict' })
+  res.cookie('DefaulCookie', 'cookie-to-test-Chrome-default-behavior', {})
+  res.cookie('LaxCookie', 'cookie-set-with-SameSite-Lax', { sameSite: 'lax' })
+  res.cookie('StrictCookie', 'cookie-set-with-SameSite-Strict-', { sameSite: 'strict' })
   logger.info(`[${correlationId}] initiating product payment for ${product.externalId}`)
   response(req, res, 'adhoc-payment/index', data)
 }
