@@ -1,0 +1,27 @@
+---
+applications:
+  - name: products-ui
+    buildpacks:
+      - nodejs_buildpack
+    health-check-type: http
+    health-check-http-endpoint: '/healthcheck'
+    health-check-invocation-timeout: 5
+    memory: ((memory))
+    disk_quota: ((disk_quota))
+    command: npm start
+    env:
+      ADMINUSERS_URL: ((adminusers_url))
+      ANALYTICS_TRACKING_ID: ((analytics_tracking_id))
+      COOKIE_MAX_AGE: '5400000'
+      CORRELATION_HEADER_NAME: x-request-id
+      DISABLE_APPMETRICS: ((disable_appmetrics))
+      DISABLE_INTERNAL_HTTPS: ((disable_internal_https))
+      DISABLE_REQUEST_LOGGING: ((disable_request_logging))
+      METRICS_HOST: ((metrics_host))
+      NODE_ENV: production
+      NODE_WORKER_COUNT: '1'
+      PRODUCTS_URL: ((products_url))
+      SELFSERVICE_TRANSACTIONS_URL: ((selfservice_transactions_url))
+      SESSION_ENCRYPTION_KEY: ((session_encryption_key))
+    routes:
+      - route: ((products_ui_route))
