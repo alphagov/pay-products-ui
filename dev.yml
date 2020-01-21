@@ -1,0 +1,8 @@
+memory: 500M
+disk_quota: 500M
+analytics_tracking_id: testing-123
+disable_appmetrics: true
+disable_internal_https: true
+disable_request_logging: true
+metrics_host: localhost
+session_encryption_key: asdjhbwefbo23r23rbfik2roiwhefwbqw
