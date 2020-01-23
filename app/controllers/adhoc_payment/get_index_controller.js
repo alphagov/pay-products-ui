@@ -40,8 +40,8 @@ module.exports = (req, res) => {
 
   logger.info('Setting test cookie, strict cookie and lax cookie')
   res.cookie('DefaulCookie', 'cookie-to-test-Chrome-default-behavior', {})
-  res.cookie('LaxCookie', 'cookie-set-with-SameSite-Lax', { sameSite: 'lax' })
-  res.cookie('StrictCookie', 'cookie-set-with-SameSite-Strict-', { sameSite: 'strict' })
+  res.cookie('LaxCookie', 'cookie-set-with-SameSite-Lax', { sameSite: 'lax', domain: 'products.pymnt.uk' })
+  res.cookie('StrictCookie', 'cookie-set-with-SameSite-Strict-', { sameSite: 'strict', domain: 'products.pymnt.uk' })
   logger.info(`[${correlationId}] initiating product payment for ${product.externalId}`)
   response(req, res, 'adhoc-payment/index', data)
 }
