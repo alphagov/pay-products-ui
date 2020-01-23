@@ -71,7 +71,7 @@
     "csrf": "3.1.x",
     "currency-formatter": "^1.5.5",
     "express": "4.17.x",
-    "govuk-frontend": "^3.4.0",
+    "govuk-frontend": "^3.5.0",
     "i18n": "^0.8.4",
     "lodash": "4.17.x",
     "minimist": "1.2.x",
