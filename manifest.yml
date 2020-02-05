@@ -2,15 +2,17 @@
 applications:
   - name: products-ui
     buildpacks:
+      - https://github.com/alphagov/env-map-buildpack.git#v1
       - nodejs_buildpack
     health-check-type: http
     health-check-http-endpoint: '/healthcheck'
     health-check-invocation-timeout: 5
     memory: ((memory))
     disk_quota: ((disk_quota))
+    services:
+      - app-catalog
     command: npm start
     env:
-      ADMINUSERS_URL: ((adminusers_url))
       ANALYTICS_TRACKING_ID: ((analytics_tracking_id))
       COOKIE_MAX_AGE: '5400000'
       CORRELATION_HEADER_NAME: x-request-id
@@ -20,8 +22,9 @@ applications:
       METRICS_HOST: ((metrics_host))
       NODE_ENV: production
       NODE_WORKER_COUNT: '1'
-      PRODUCTS_URL: ((products_url))
-      SELFSERVICE_TRANSACTIONS_URL: ((selfservice_transactions_url))
       SESSION_ENCRYPTION_KEY: ((session_encryption_key))
-    routes:
-      - route: ((products_ui_route))
+
+      # These are taken via bound service, see `env-map.yml`
+      ADMINUSERS_URL: ""
+      PRODUCTS_URL: ""
+      SELFSERVICE_TRANSACTIONS_URL: ""
