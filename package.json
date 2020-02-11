@@ -108,7 +108,7 @@
     "husky": "^4.2.1",
     "lint-staged": "^10.0.7",
     "mocha": "7.0.x",
-    "nock": "11.7.x",
+    "nock": "11.8.x",
     "node-sass": "4.13.x",
     "nodemon": "^2.0.2",
     "nunjucksify": "^2.2.0",
