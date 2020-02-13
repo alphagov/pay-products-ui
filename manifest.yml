@@ -11,9 +11,9 @@ applications:
     disk_quota: ((disk_quota))
     services:
       - app-catalog
+      - products-ui-secret-service
     command: npm start
     env:
-      ANALYTICS_TRACKING_ID: ((analytics_tracking_id))
       COOKIE_MAX_AGE: '5400000'
       CORRELATION_HEADER_NAME: x-request-id
       DISABLE_APPMETRICS: ((disable_appmetrics))
@@ -22,9 +22,13 @@ applications:
       METRICS_HOST: ((metrics_host))
       NODE_ENV: production
       NODE_WORKER_COUNT: '1'
-      SESSION_ENCRYPTION_KEY: ((session_encryption_key))
 
       # These are taken via bound service, see `env-map.yml`
       ADMINUSERS_URL: ""
       PRODUCTS_URL: ""
       SELFSERVICE_TRANSACTIONS_URL: ""
+
+      # These are provided by products-ui-secret-service, see `env-map.yml`
+      SESSION_ENCRYPTION_KEY: ""
+      ANALYTICS_TRACKING_ID: ""
+      SENTRY_DSN: ""
