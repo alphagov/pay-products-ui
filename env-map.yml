@@ -1,4 +1,7 @@
 env_vars:
-  ADMINUSERS_URL: '."user-provided"[0].credentials.adminusers_url'
-  PRODUCTS_URL: '."user-provided"[0].credentials.products_url'
-  SELFSERVICE_TRANSACTIONS_URL: '."user-provided"[0].credentials.selfservice_transactions_url'
+  ADMINUSERS_URL:               '.[][] | select(.name == "app-catalog") | .credentials.adminusers_url'
+  PRODUCTS_URL:                 '.[][] | select(.name == "app-catalog") | .credentials.products_url'
+  SELFSERVICE_TRANSACTIONS_URL: '.[][] | select(.name == "app-catalog") | .credentials.selfservice_transactions_url'
+  SENTRY_DSN:                   '.[][] | select(.name == "products-ui-secret-service") | .credentials.sentry_dsn'
+  SESSION_ENCRYPTION_KEY:       '.[][] | select(.name == "products-ui-secret-service") | .credentials.session_encryption_key'
+  ANALYTICS_TRACKING_ID:        '.[][] | select(.name == "products-ui-secret-service") | .credentials.analytics_tracking_id'
