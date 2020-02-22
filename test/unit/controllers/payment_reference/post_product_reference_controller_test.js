@@ -94,7 +94,7 @@ describe('product reference post controller', function () {
     })
   })
 
-  describe('when reference field exceeds max length 255', function () {
+  describe('when reference field exceeds max length', function () {
     before(done => {
       product = productFixtures.validCreateProductResponse({
         type: 'ADHOC',

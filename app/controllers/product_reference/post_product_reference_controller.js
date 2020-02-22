@@ -17,7 +17,7 @@ module.exports = (req, res) => {
     req.errorMessage = `<h2 class="govuk-heading-m govuk-!-margin-bottom-0">${res.locals.__p('fieldValidation.generic').replace('%s', product.reference_label)}</h2>`
     return index(req, res)
   }
-  if (referenceNumber.trim().length > 255) {
+  if (referenceNumber.trim().length > 50) {
     req.errorMessage = `<h2 class="govuk-heading-m govuk-!-margin-bottom-0">${res.locals.__p('fieldValidation.isGreaterThanMaxLengthChars')}</h2>`
     return index(req, res)
   }
