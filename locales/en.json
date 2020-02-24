@@ -41,7 +41,7 @@
     "required": "This field can’t be blank",
     "currency": "Choose an amount in pounds and pence using digits and a decimal point. For example “10.50”",
     "isAboveMaxAmount": "Choose an amount under £%s",
-    "isGreaterThanMaxLengthChars": "Text is too long. It can be no more than 255 characters.",
+    "isGreaterThanMaxLengthChars": "Text is too long. It can be no more than 50 characters.",
     "invalidCharacters": "You can’t use any of the following characters < > ; : ` ( ) \" ' = &#124; \",\" ~ [ ]"
   }
 }

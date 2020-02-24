@@ -90,11 +90,11 @@ describe('product reference post controller', function () {
       expect($('h1').text()).to.include(product.name)
       expect($('p#description').text()).to.include(product.description)
       expect($('form').attr('action')).to.equal(`/pay/reference/${product.external_id}`)
-      expect($('.govuk-heading-m').text()).to.include(`Enter a valid Test reference label`)
+      expect($('.govuk-heading-m').text()).to.include('Enter a valid Test reference label')
     })
   })
 
-  describe('when reference field exceeds max length 255', function () {
+  describe('when reference field exceeds max length', function () {
     before(done => {
       product = productFixtures.validCreateProductResponse({
         type: 'ADHOC',
@@ -105,7 +105,7 @@ describe('product reference post controller', function () {
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
       nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
-      const referenceNumber = 'This_is_a_256_characters_long_String_This_is_a_256_characters_long_String_This_is_a_256_characters_long_String_This_is_a_256_characters_long_String_This_is_a_256_characters_long_String_This_is_a_256_characters_long_String_This_is_a_256_characters_long_Stri'
+      const referenceNumber = 'This_is_a_51_characters_long_String_This_is_a_51_ch'
       supertest(createAppWithSession(getApp()))
         .post(paths.pay.reference.replace(':productExternalId', product.external_id))
         .send({
@@ -166,7 +166,7 @@ describe('product reference post controller', function () {
       expect($('h1').text()).to.include(product.name)
       expect($('p#description').text()).to.include(product.description)
       expect($('form').attr('action')).to.equal(`/pay/reference/${product.external_id}`)
-      expect($('.govuk-heading-m').text()).to.include(`You can’t use any of the following characters`)
+      expect($('.govuk-heading-m').text()).to.include('You can’t use any of the following characters')
     })
   })
 })
