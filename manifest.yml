@@ -19,14 +19,15 @@ applications:
       DISABLE_APPMETRICS: ((disable_appmetrics))
       DISABLE_INTERNAL_HTTPS: ((disable_internal_https))
       DISABLE_REQUEST_LOGGING: ((disable_request_logging))
-      METRICS_HOST: ((metrics_host))
       NODE_ENV: production
       NODE_WORKER_COUNT: '1'
 
-      # These are taken via bound service, see `env-map.yml`
+      # These are provided by app-catalog, see `env-map.yml`
       ADMINUSERS_URL: ""
       PRODUCTS_URL: ""
       SELFSERVICE_TRANSACTIONS_URL: ""
+      METRICS_HOST: ""
+      METRICS_PORT: ""
 
       # These are provided by products-ui-secret-service, see `env-map.yml`
       SESSION_ENCRYPTION_KEY: ""
