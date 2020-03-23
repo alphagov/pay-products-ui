@@ -75,7 +75,7 @@
     "i18n": "^0.8.6",
     "lodash": "4.17.x",
     "minimist": "1.2.x",
-    "morgan": "1.9.x",
+    "morgan": "1.10.x",
     "nunjucks": "^3.2.1",
     "request": "^2.88.2",
     "requestretry": "^4.1.0",
