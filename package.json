@@ -59,7 +59,7 @@
     ]
   },
   "dependencies": {
-    "@govuk-pay/pay-js-commons": "2.29.0",
+    "@govuk-pay/pay-js-commons": "2.30.0",
     "@sentry/node": "5.16.1",
     "appmetrics": "5.1.1",
     "appmetrics-statsd": "3.0.0",
