@@ -76,7 +76,7 @@
     "lodash": "4.17.x",
     "minimist": "1.2.x",
     "morgan": "1.10.x",
-    "nunjucks": "^3.2.1",
+    "nunjucks": "^3.2.2",
     "request": "^2.88.2",
     "requestretry": "^4.1.1",
     "serve-favicon": "2.5.0",
