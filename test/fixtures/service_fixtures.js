@@ -15,7 +15,8 @@ module.exports = {
       service_name: serviceData.service_name || { en: 'Super GOV service' },
       name: serviceData.name || 'Super Duper service',
       gateway_account_ids: serviceData.gateway_account_ids || ['111'],
-      custom_branding: serviceData.custom_branding || defaultCustomBranding
+      custom_branding: serviceData.custom_branding || defaultCustomBranding,
+      test: 'test value to update contract'
     }
 
     return {
