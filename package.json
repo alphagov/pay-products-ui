@@ -106,7 +106,7 @@
     "grunt-sass": "3.1.x",
     "html5shiv": "3.7.x",
     "husky": "^4.3.0",
-    "lint-staged": "^10.4.0",
+    "lint-staged": "^10.4.2",
     "mocha": "7.2.x",
     "nock": "13.0.x",
     "node-sass": "4.14.x",
