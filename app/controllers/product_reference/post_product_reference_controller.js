@@ -13,7 +13,7 @@ module.exports = (req, res) => {
   }
 
   const referenceNumber = req.body['payment-reference']
-  if (!referenceNumber) {
+  if (!referenceNumber || referenceNumber.trim() === "") {
     req.errorMessage = `<h2 class="govuk-heading-m govuk-!-margin-bottom-0">${res.locals.__p('fieldValidation.generic').replace('%s', product.reference_label)}</h2>`
     return index(req, res)
   }
