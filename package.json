@@ -109,7 +109,7 @@
     "lint-staged": "^10.4.2",
     "mocha": "7.2.x",
     "nock": "13.0.x",
-    "node-sass": "4.14.x",
+    "node-sass": "5.0.x",
     "nodemon": "^2.0.6",
     "nunjucksify": "^2.2.0",
     "nyc": "^15.1.0",
