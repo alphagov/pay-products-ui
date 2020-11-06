@@ -119,7 +119,7 @@
     "sinon": "9.2.x",
     "snyk": "1.417.0",
     "standard": "^14.3.4",
-    "supertest": "^6.0.0"
+    "supertest": "^6.0.1"
   },
   "snyk": true
 }
