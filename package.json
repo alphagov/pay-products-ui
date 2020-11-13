@@ -78,7 +78,7 @@
     "morgan": "1.10.x",
     "nunjucks": "^3.2.2",
     "request": "^2.88.2",
-    "requestretry": "^4.1.1",
+    "requestretry": "^4.1.2",
     "serve-favicon": "2.5.0",
     "staticify": "5.0.x",
     "throng": "5.0.x",
