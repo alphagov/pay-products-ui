@@ -60,7 +60,7 @@ module.exports.bind = function (app) {
   app.get(demoPayment.failure, failedCtrl)
   app.get(demoPayment.success, successCtrl)
 
-  // ADHOC SPECIFIC SCREENS
+  // ADHOC AND AGENT_INITIATED_MOTO SPECIFIC SCREENS
   app.post(pay.product, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, adhocPaymentCtrl.postIndex)
 
   // route to gov.uk 404 page

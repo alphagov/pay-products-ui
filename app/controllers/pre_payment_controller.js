@@ -21,6 +21,7 @@ module.exports = (req, res) => {
     case ('PROTOTYPE'):
       return makePayment(req, res)
     case ('ADHOC'):
+    case ('AGENT_INITIATED_MOTO'):
       if (product.reference_enabled) {
         return productReferenceCtrl.index(req, res)
       } else {

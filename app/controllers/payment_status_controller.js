@@ -6,6 +6,7 @@ const currencyFormatter = require('currency-formatter')
 // Custom dependencies
 const response = require('../utils/response').response
 const { pay } = require('../paths')
+const { SELFSERVICE_DASHBOARD_URL } = require('../../config/index')
 
 function asGBP (amountInPence) {
   return currencyFormatter.format((amountInPence / 100).toFixed(2), { code: 'GBP' })
@@ -25,6 +26,10 @@ module.exports = (req, res) => {
     data.payment = {
       reference: reference,
       amount: asGBP(payment.amount)
+    }
+    if (product.type === 'AGENT_INITIATED_MOTO') {
+      data.payment.agentInitiatedMoto = true;
+      data.payment.dashboardLink = SELFSERVICE_DASHBOARD_URL;
     }
     return response(req, res, 'pay/confirmation', data)
   } else {

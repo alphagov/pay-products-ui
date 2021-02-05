@@ -17,9 +17,9 @@ describe('pre payment controller', function () {
     nock.cleanAll()
   })
 
-  const productTypes = ['DEMO', 'PROTOTYPE']
+  const demoPrototype =  ['DEMO', 'PROTOTYPE']
 
-  productTypes.forEach((type) => {
+  demoPrototype.forEach((type) => {
     describe(`when the payment type is ${type}`, () => {
       describe('and payment creation is successful', () => {
         before(done => {
@@ -91,55 +91,59 @@ describe('pre payment controller', function () {
     })
   })
 
-  describe(`when the payment type is ADHOC and reference is disabled`, () => {
-    before(done => {
-      product = productFixtures.validCreateProductResponse({ type: 'ADHOC', name: 'A Product Name' }).getPlain()
-      service = serviceFixtures.validServiceResponse().getPlain()
-      nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
-      nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
+  const adHocAgentInitiatedMoto = ['ADHOC', 'AGENT_INITIATED_MOTO']
 
-      supertest(createAppWithSession(getApp()))
-        .get(paths.pay.product.replace(':productExternalId', product.external_id))
-        .end((err, res) => {
-          response = res
-          $ = cheerio.load(res.text || '')
-          done(err)
-        })
-    })
-    it('should respond with code: 200 \'OK\'', () => {
-      expect(response.statusCode).to.equal(200)
+  adHocAgentInitiatedMoto.forEach((type) => {
+    describe(`when the payment type is ${type} and reference is disabled`, () => {
+      before(done => {
+        product = productFixtures.validCreateProductResponse({ type: type, name: 'A Product Name' }).getPlain()
+        service = serviceFixtures.validServiceResponse().getPlain()
+        nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+        nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
+
+        supertest(createAppWithSession(getApp()))
+          .get(paths.pay.product.replace(':productExternalId', product.external_id))
+          .end((err, res) => {
+            response = res
+            $ = cheerio.load(res.text || '')
+            done(err)
+          })
+      })
+      it('should respond with code: 200 \'OK\'', () => {
+        expect(response.statusCode).to.equal(200)
+      })
+
+      it('should render the payment amount page', () => {
+        expect($('.govuk-heading-l').text()).to.include('A Product Name')
+      })
     })
 
-    it('should render the payment amount page', () => {
-      expect($('.govuk-heading-l').text()).to.include('A Product Name')
-    })
-  })
+    describe(`when the payment type is ${type} and reference is enabled`, () => {
+      before(done => {
+        const opts = {
+          type: type,
+          name: 'Featured Product',
+          reference_enabled: 'true'
+        }
+        product = productFixtures.validCreateProductResponse(opts).getPlain()
+        service = serviceFixtures.validServiceResponse().getPlain()
+        nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+        nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
-  describe(`when the payment type is ADHOC and reference is enabled`, () => {
-    before(done => {
-      const opts = {
-        type: 'ADHOC',
-        name: 'Featured Product',
-        reference_enabled: 'true'
-      }
-      product = productFixtures.validCreateProductResponse(opts).getPlain()
-      service = serviceFixtures.validServiceResponse().getPlain()
-      nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
-      nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
-
-      supertest(createAppWithSession(getApp()))
-        .get(paths.pay.reference.replace(':productExternalId', product.external_id))
-        .end((err, res) => {
-          response = res
-          $ = cheerio.load(res.text || '')
-          done(err)
-        })
-    })
-    it('should respond with code: 200 \'OK\'', () => {
-      expect(response.statusCode).to.equal(200)
-    })
-    it('should render the payment reference page', () => {
-      expect($('.govuk-heading-l').text()).to.include('Featured Product')
+        supertest(createAppWithSession(getApp()))
+          .get(paths.pay.reference.replace(':productExternalId', product.external_id))
+          .end((err, res) => {
+            response = res
+            $ = cheerio.load(res.text || '')
+            done(err)
+          })
+      })
+      it('should respond with code: 200 \'OK\'', () => {
+        expect(response.statusCode).to.equal(200)
+      })
+      it('should render the payment reference page', () => {
+        expect($('.govuk-heading-l').text()).to.include('Featured Product')
+      })
     })
   })
 

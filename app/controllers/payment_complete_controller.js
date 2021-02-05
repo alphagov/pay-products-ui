@@ -27,6 +27,7 @@ module.exports = (req, res) => {
       res.redirect(product.returnUrl)
       break
     case ('ADHOC'):
+    case ('AGENT_INITIATED_MOTO'):
       lodash.get(payment, 'govukStatus', '').toLowerCase() === 'success' ? paymentStatus(req, res) : res.redirect(pay.product.replace(':productExternalId', product.externalId))
       break
     default:
