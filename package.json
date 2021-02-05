@@ -90,7 +90,7 @@
     "@babel/core": "^7.12.13",
     "@babel/preset-env": "^7.12.13",
     "@pact-foundation/pact-node": "10.11.7",
-    "chai": "^4.2.0",
+    "chai": "^4.3.0",
     "cheerio": "^1.0.0-rc.5",
     "chokidar-cli": "latest",
     "envfile": "^5.2.0",
