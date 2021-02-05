@@ -19,16 +19,20 @@
   },
   "confirmation": {
     "title": "Your payment was successful",
+    "titleMoto": "The payment was successful",
     "referenceNumber": "Your payment reference number is",
+    "referenceNumberMoto": "The payment reference number is",
     "next": {
       "title": "What happens next",
-      "body": "We have sent you a confirmation email."
+      "body": "We have sent you a confirmation email.",
+      "bodyMoto": "We have sent the user a confirmation email."
     },
     "paymentSummary": {
       "title": "Payment summary",
       "description": "Payment for:",
       "amount": "Total amount:"
-    }
+    },
+    "goToDashboard": "Go to the dashboard"
   },
   "failed": {
     "title": "Your payment has been declined",

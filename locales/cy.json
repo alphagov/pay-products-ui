@@ -19,16 +19,20 @@
   },
   "confirmation": {
     "title": "Roedd eich taliad yn llwyddiannus",
+    "titleMoto": "Roedd y taliad yn llwyddiannus",
     "referenceNumber": "Rhif cyfeirnod eich taliad yw",
+    "referenceNumberMoto": "Rhif cyfeirnod y taliad yw",
     "next": {
       "title": "Beth sy’n digwydd nesaf",
-      "body": "Rydym wedi anfon e-bost atoch yn cadarnhau eich bod wedi gwneud taliad."
+      "body": "Rydym wedi anfon e-bost atoch yn cadarnhau eich bod wedi gwneud taliad.",
+      "bodyMoto": "Rydym wedi anfon e-bost at y defnyddiwr yn cadarnhau eich bod wedi gwneud taliad."
     },
     "paymentSummary": {
       "title": "Crynodeb o’r taliad",
       "description": "Taliad am:",
       "amount": "Cyfanswm:"
-    }
+    },
+    "goToDashboard": "Ewch i’r dangosfwrdd"
   },
   "failed": {
     "title": "Mae eich taliad wedi cael ei wrthod",

@@ -19,6 +19,7 @@ User interface app for product payments (Prototype/Demo/Ad-hoc ..etc) integrated
 | `NODE_WORKER_COUNT`            | Default `1`
 | `PORT`                         | Default `3000`
 | `PRODUCTS_URL`                 | 
+| `SELFSERVICE_DASHBOARD_URL`    | 
 | `SELFSERVICE_TRANSACTIONS_URL` | 
 | `SESSION_ENCRYPTION_KEY`       | 
 

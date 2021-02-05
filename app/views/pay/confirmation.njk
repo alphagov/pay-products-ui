@@ -1,7 +1,12 @@
 {% extends "../layout.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% block pageTitle %}
+{% if payment.agentInitiatedMoto %}
+{{ __p('confirmation.titleMoto') }} - {{serviceName}} - GOV.UK Pay
+{% else %}
 {{ __p('confirmation.title') }} - {{serviceName}} - GOV.UK Pay
+{% endif %}
 {% endblock %}
 
 {% block contentBody %}
@@ -9,17 +14,30 @@
   <div class="govuk-grid-column-two-thirds">
     <div class="govuk-panel govuk-panel--confirmation">
       <h2 class="govuk-panel__title">
+        {% if payment.agentInitiatedMoto %}
+        {{ __p('confirmation.titleMoto') }}
+        {% else %}
         {{ __p('confirmation.title') }}
+        {% endif %}
       </h2>
       <div class="govuk-panel__body">
-         {{ __p('confirmation.referenceNumber') }} <br>
+        {% if payment.agentInitiatedMoto %}
+        {{ __p('confirmation.referenceNumberMoto') }}
+        {% else %}
+        {{ __p('confirmation.referenceNumber') }}
+        {% endif %}
+        <br>
         <strong class="bold" id="payment-reference">{{ payment.reference }}</strong>
       </div>
     </div>
 
     <h2 class="govuk-heading-m govuk-!-margin-top-6">{{ __p('confirmation.next.title') }}</h2>
     <p class="govuk-body">
+      {% if payment.agentInitiatedMoto %}
+      {{ __p('confirmation.next.bodyMoto') }}
+      {% else %}
       {{ __p('confirmation.next.body') }}
+      {% endif %}
     </p>
 
     <h2 class="govuk-heading-m">{{ __p('confirmation.paymentSummary.title') }}</h2>
@@ -38,4 +56,11 @@
     </table>
   </div>
 </div>
+{% if payment.agentInitiatedMoto %}
+  {{ govukButton({
+      text: __p('confirmation.goToDashboard'),
+      href: payment.dashboardLink,
+      classes: "dashboard-link"
+    }) }}
+{% endif %}
 {% endblock %}

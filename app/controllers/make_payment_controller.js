@@ -11,8 +11,8 @@ const errorMessagePath = 'error.internal' // This is the object notation to stri
 module.exports = (req, res) => {
   const product = req.product
   const correlationId = req.correlationId
-  const paymentAmount = req.paymentAmount // should be undefined for non adhoc payments
-  const referenceNumber = req.referenceNumber // undefined for non ADHOC or ADHOC with reference disabled
+  const paymentAmount = req.paymentAmount // may be undefined
+  const referenceNumber = req.referenceNumber // may be undefined
   if (product) {
     logger.info(`[${correlationId}] creating charge for product ${product.name}`)
     return productsClient.payment.create(product.externalId, paymentAmount, referenceNumber)

@@ -7,7 +7,7 @@ const nock = require('nock')
 const supertest = require('supertest')
 
 // Local dependencies
-const { PRODUCTS_URL, ADMINUSERS_URL } = require('../../../config/index')
+const { PRODUCTS_URL, ADMINUSERS_URL, SELFSERVICE_DASHBOARD_URL } = require('../../../config/index')
 const { getApp } = require('../../../server')
 const productFixtures = require('../../fixtures/product_fixtures')
 const serviceFixtures = require('../../fixtures/service_fixtures')
@@ -144,6 +144,7 @@ describe('payment complete controller', () => {
         expect($('.govuk-header__content').text()).to.include(service.service_name.en)
         expect($('#payment-reference').text()).to.include(`ABC D123 4EF`)
         expect($('#payment-amount').text()).to.include(`£20.00`)
+        expect($('a.dashboard-link').length).to.equal(0)
       })
     })
 
@@ -187,6 +188,7 @@ describe('payment complete controller', () => {
         expect($('.govuk-header__content').text()).to.include(service.service_name.cy)
         expect($('#payment-reference').text()).to.include(`ABC D123 4EF`)
         expect($('#payment-amount').text()).to.include(`£20.00`)
+        expect($('a.dashboard-link').length).to.equal(0)
       })
     })
 
@@ -194,6 +196,82 @@ describe('payment complete controller', () => {
       before(done => {
         product = productFixtures.validCreateProductResponse({
           type: 'ADHOC'
+        }).getPlain()
+        payment = productFixtures.validCreatePaymentResponse({
+          product_external_id: product.external_id,
+          amount: 2000,
+          reference_number: 'ABCD1234EF',
+          govuk_status: 'failure'
+        }).getPlain()
+        service = serviceFixtures.validServiceResponse().getPlain()
+        nock(PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+        nock(PRODUCTS_URL).get(`/v1/api/payments/${payment.external_id}`).reply(200, payment)
+        nock(ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
+
+        supertest(getApp())
+          .get(paths.pay.complete.replace(':paymentExternalId', payment.external_id))
+          .end((err, res) => {
+            response = res
+            $ = cheerio.load(res.text || '')
+            done(err)
+          })
+      })
+
+      it('should redirect with status code 302', () => {
+        expect(response.statusCode).to.equal(302)
+      })
+
+      it('should redirect to the payment start page', () => {
+        expect(response.header).property('location').to.include(`/pay/${product.external_id}`)
+      })
+    })
+  })
+
+  describe('when a AGENT_INITIATED_MOTO payment is returned', () => {
+    let product, payment, service, response, $
+    describe('when the payment was a success', () => {
+      before(done => {
+        product = productFixtures.validCreateProductResponse({
+          type: 'AGENT_INITIATED_MOTO'
+        }).getPlain()
+        payment = productFixtures.validCreatePaymentResponse({
+          product_external_id: product.external_id,
+          amount: 2000,
+          reference_number: 'ABCD1234EF',
+          govuk_status: 'success'
+        }).getPlain()
+        service = serviceFixtures.validServiceResponse().getPlain()
+        nock(PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+        nock(PRODUCTS_URL).get(`/v1/api/payments/${payment.external_id}`).reply(200, payment)
+        nock(ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
+
+        supertest(getApp())
+          .get(paths.pay.complete.replace(':paymentExternalId', payment.external_id))
+          .end((err, res) => {
+            response = res
+            $ = cheerio.load(res.text || '')
+            done(err)
+          })
+      })
+
+      it('should respond with status code 200', () => {
+        expect(response.statusCode).to.equal(200)
+      })
+
+      it('should redirect to the payment success page', () => {
+        expect($('title').text()).to.include(`The payment was successful - ${service.service_name.en}`)
+        expect($('.govuk-header__content').text()).to.include(service.service_name.en)
+        expect($('#payment-reference').text()).to.include(`ABC D123 4EF`)
+        expect($('#payment-amount').text()).to.include(`£20.00`)
+        expect($('a.dashboard-link').text()).to.include(`Go to the dashboard`)
+        expect($('a.dashboard-link').attr('href')).to.equal(SELFSERVICE_DASHBOARD_URL)
+      })
+    })
+
+    describe('when the payment has failed', () => {
+      before(done => {
+        product = productFixtures.validCreateProductResponse({
+          type: 'AGENT_INITIATED_MOTO'
         }).getPlain()
         payment = productFixtures.validCreatePaymentResponse({
           product_external_id: product.external_id,
