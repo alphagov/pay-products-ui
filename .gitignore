@@ -14,6 +14,7 @@ node_modules_local
 pacts/
 coverage
 *.log
+.pre-commit-config.yaml
 
 # IntelliJ gubbins
 *.iml
