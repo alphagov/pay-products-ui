@@ -69,7 +69,7 @@
     "cookie-parser": "1.4.x",
     "correlation-id": "^4.0.0",
     "csrf": "3.1.x",
-    "currency-formatter": "^1.5.6",
+    "currency-formatter": "^1.5.7",
     "express": "4.17.x",
     "govuk-frontend": "^3.11.0",
     "i18n": "^0.13.2",
