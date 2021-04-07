@@ -7,8 +7,8 @@ const cheerio = require('cheerio')
 const supertest = require('supertest')
 const { getApp } = require('../../../../server')
 const { getMockSession, createAppWithSession } = require('../../../test-helpers/mock-session')
-const productFixtures = require('../../../fixtures/product-fixtures')
-const serviceFixtures = require('../../../fixtures/service-fixtures')
+const productFixtures = require('../../../fixtures/product.fixtures')
+const serviceFixtures = require('../../../fixtures/service.fixtures')
 const paths = require('../../../../app/paths')
 const expect = chai.expect
 let product, service, payment, response, session, $

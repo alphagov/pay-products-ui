@@ -9,7 +9,7 @@ const proxyquire = require('proxyquire')
 // Custom dependencies
 const Payment = require('../../../../../app/models/Payment.class')
 const PactInteractionBuilder = require('../../../../fixtures/pact-interaction-builder').PactInteractionBuilder
-const productFixtures = require('../../../../fixtures/product-fixtures')
+const productFixtures = require('../../../../fixtures/product.fixtures')
 
 // Constants
 const PRODUCT_RESOURCE = '/v1/api/products'

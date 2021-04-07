@@ -4,8 +4,8 @@ const proxyquire = require('proxyquire')
 const sinon = require('sinon')
 const { expect } = require('chai')
 
-const productFixtures = require('../../../fixtures/product-fixtures')
-const serviceFixtures = require('../../../fixtures/service-fixtures')
+const productFixtures = require('../../../fixtures/product.fixtures')
+const serviceFixtures = require('../../../fixtures/service.fixtures')
 const Service = require('../../../../app/models/Service.class')
 const responseSpy = sinon.spy()
 const mockResponses = {

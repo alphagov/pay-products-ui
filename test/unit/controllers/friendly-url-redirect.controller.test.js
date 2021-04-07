@@ -7,7 +7,7 @@ const nock = require('nock')
 const supertest = require('supertest')
 const { getApp } = require('../../../server')
 const { createAppWithSession } = require('../../test-helpers/mock-session')
-const productFixtures = require('../../fixtures/product-fixtures')
+const productFixtures = require('../../fixtures/product.fixtures')
 const paths = require('../../../app/paths')
 const expect = chai.expect
 let product, response, $

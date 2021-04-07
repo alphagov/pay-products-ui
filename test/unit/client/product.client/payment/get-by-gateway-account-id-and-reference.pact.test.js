@@ -8,17 +8,14 @@ const proxyquire = require('proxyquire')
 
 // Custom dependencies
 const PactInteractionBuilder = require('../../../../fixtures/pact-interaction-builder').PactInteractionBuilder
-const productFixtures = require('../../../../fixtures/product-fixtures')
+const productFixtures = require('../../../../fixtures/product.fixtures')
 
 // Constants
-const PAYMENT_RESOURCE = '/v1/api/payments'
 const port = Math.floor(Math.random() * 48127) + 1024
 
-let response
-let result
-let paymentExternalId
+let response, result, gatewayAccountId, referenceNumber
 
-function getProductsClient (baseUrl = `http://localhost:${port}`, productsApiKey = 'ABC1234567890DEF') {
+function getProductsClient (baseUrl = `http://localhost:${port}`) {
   return proxyquire('../../../../../app/services/clients/products.client', {
     '../../../config': {
       PRODUCTS_URL: baseUrl
@@ -26,7 +23,7 @@ function getProductsClient (baseUrl = `http://localhost:${port}`, productsApiKey
   })
 }
 
-describe('products client - find a payment by it\'s own external id', function () {
+describe('products client - find a payment by gateway account id and payment reference number', function () {
   const provider = Pact({
     consumer: 'products-ui-to-be',
     provider: 'products',
@@ -40,19 +37,20 @@ describe('products client - find a payment by it\'s own external id', function (
   before(() => provider.setup())
   after(() => provider.finalize())
 
-  describe('when a product is successfully found', () => {
-    before(done => {
+  describe('when a payment is successfully found', () => {
+    before((done) => {
       const productsClient = getProductsClient()
-      paymentExternalId = 'existing-id'
-      response = productFixtures.validCreatePaymentResponse({ external_id: paymentExternalId })
-      const interaction = new PactInteractionBuilder(`${PAYMENT_RESOURCE}/${paymentExternalId}`)
-        .withUponReceiving('a valid get payment by external id request')
+      gatewayAccountId = 'existing-id'
+      referenceNumber = 'REFERENCE1'
+      response = productFixtures.validCreatePaymentResponse({ reference_number: referenceNumber })
+      const interaction = new PactInteractionBuilder(`/v1/api/payments/${gatewayAccountId}/${referenceNumber}`)
+        .withUponReceiving('a valid get payment by gateway account id and reference request')
         .withMethod('GET')
         .withStatusCode(200)
         .withResponseBody(response.getPactified())
         .build()
       provider.addInteraction(interaction)
-        .then(() => productsClient.payment.getByPaymentExternalId(paymentExternalId))
+        .then(() => productsClient.payment.getByGatewayAccountIdAndReference(gatewayAccountId, referenceNumber))
         .then(res => {
           result = res
           done()
@@ -63,8 +61,8 @@ describe('products client - find a payment by it\'s own external id', function (
     it('should find an existing payment', () => {
       const plainResponse = response.getPlain()
       expect(result.productExternalId).to.equal(plainResponse.product_external_id)
-      expect(result.externalId).to.equal(plainResponse.external_id).and.to.equal(paymentExternalId)
       expect(result.status).to.equal(plainResponse.status)
+      expect(result.reference_number).to.equal(plainResponse.referenceNumber)
       expect(result.nextUrl).to.equal(plainResponse.next_url)
       expect(result).to.have.property('links')
       expect(Object.keys(result.links).length).to.equal(2)
@@ -77,20 +75,21 @@ describe('products client - find a payment by it\'s own external id', function (
     })
   })
 
-  describe('when a product is not found', () => {
+  describe('when a payment is not found', () => {
     before(done => {
       const productsClient = getProductsClient()
-      paymentExternalId = 'non-existing-id'
-      provider.addInteraction(
-        new PactInteractionBuilder(`${PAYMENT_RESOURCE}/${paymentExternalId}`)
-          .withUponReceiving('a valid get payment by external id request with non existing id')
-          .withMethod('GET')
-          .withStatusCode(404)
-          .build()
-      )
-        .then(() => productsClient.payment.getByPaymentExternalId(paymentExternalId), done)
-        .then(() => done(new Error('Promise unexpectedly resolved')))
+      gatewayAccountId = 'existing-id'
+      referenceNumber = 'NON_EXISTING_REFERENCE'
+      const interaction = new PactInteractionBuilder(`/v1/api/payments/${gatewayAccountId}/${referenceNumber}`)
+        .withUponReceiving('a valid find payment request with non existing reference')
+        .withMethod('GET')
+        .withStatusCode(404)
+        .build()
+
+      provider.addInteraction(interaction)
+        .then(() => productsClient.payment.getByGatewayAccountIdAndReference(gatewayAccountId, referenceNumber), done)
         .catch((err) => {
+          // getByGatewayAccountIdAndReference is throwing an error on 404 ..
           result = err
           done()
         })
