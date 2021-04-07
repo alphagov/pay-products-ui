@@ -2,9 +2,9 @@
 
 const { isCurrency, isAboveMaxAmount } = require('../../browsered/field-validation-checks')
 
-const makePayment = require('../make_payment_controller')
-const index = require('./get_index_controller')
-const productReferenceCtrl = require('../product_reference')
+const makePayment = require('../make-payment.controller')
+const index = require('./get-index.controller')
+const productReferenceCtrl = require('../product-reference')
 const { getSessionVariable, setSessionVariable } = require('../../utils/cookie')
 
 const AMOUNT_FORMAT = /^([0-9]+)(?:\.([0-9]{2}))?$/

@@ -20,11 +20,11 @@ exports.enableFieldValidation = function () {
 }
 
 function initValidation (e) {
-  let form = e.target
+  const form = e.target
   e.preventDefault()
   clearPreviousErrors()
 
-  let validatedFields = findFields(form)
+  const validatedFields = findFields(form)
     .map(field => validateField(form, field))
 
   if (every(validatedFields)) {
@@ -35,8 +35,8 @@ function initValidation (e) {
 }
 
 function clearPreviousErrors () {
-  let previousErrorsMessages = Array.prototype.slice.call(document.querySelectorAll('.govuk-error-message, .govuk-error-summary'))
-  let previousErrorsFields = Array.prototype.slice.call(document.querySelectorAll('.govuk-form-group.govuk-form-group--error'))
+  const previousErrorsMessages = Array.prototype.slice.call(document.querySelectorAll('.govuk-error-message, .govuk-error-summary'))
+  const previousErrorsFields = Array.prototype.slice.call(document.querySelectorAll('.govuk-form-group.govuk-form-group--error'))
 
   previousErrorsMessages.map(error => error.remove())
   previousErrorsFields.map(errorField => errorField.classList.remove('govuk-form-group--error'))
@@ -52,7 +52,7 @@ function findFields (form) {
 
 function validateField (form, field) {
   let result
-  let validationTypes = field.getAttribute('data-validate').split(' ')
+  const validationTypes = field.getAttribute('data-validate').split(' ')
 
   validationTypes.forEach(validationType => {
     switch (validationType) {
@@ -80,7 +80,7 @@ function validateField (form, field) {
 }
 
 function applyErrorMessaging (form, field, result) {
-  let formGroup = field.closest('.govuk-form-group')
+  const formGroup = field.closest('.govuk-form-group')
   if (!formGroup.classList.contains('govuk-form-group--error')) {
     formGroup.classList.add('govuk-form-group--error')
     document.querySelector('label[for="' + field.name + '"]').insertAdjacentHTML('beforeend',
@@ -89,12 +89,12 @@ function applyErrorMessaging (form, field, result) {
 }
 
 function populateErrorSummary (form) {
-  let erroringFields = Array.prototype.slice.call(form.querySelectorAll('.govuk-form-group--error label'))
-  let configuration = {
+  const erroringFields = Array.prototype.slice.call(form.querySelectorAll('.govuk-form-group--error label'))
+  const configuration = {
     title: window.i18n.fieldValidation.summary,
     fields: erroringFields.map(field => {
-      let label = field.innerHTML.split('<')[0].trim()
-      let id = field.getAttribute('for')
+      const label = field.innerHTML.split('<')[0].trim()
+      const id = field.getAttribute('for')
       return { label, id }
     })
   }

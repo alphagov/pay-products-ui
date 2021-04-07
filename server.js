@@ -22,13 +22,13 @@ exports.staticify = staticify
 
 // Custom dependencies
 const router = require('./app/routes')
-const noCache = require('./app/utils/no_cache')
-const errorHandler = require('./app/middleware/error_handler')
+const noCache = require('./app/utils/no-cache')
+const errorHandler = require('./app/middleware/error-handler')
 const middlewareUtils = require('./app/utils/middleware')
 const cookieUtil = require('./app/utils/cookie')
 const i18nConfig = require('./config/i18n')
 const logger = require('./app/utils/logger')(__filename)
-const loggingMiddleware = require('./app/middleware/logging_middleware')
+const loggingMiddleware = require('./app/middleware/logging-middleware')
 const Sentry = require('./app/utils/sentry.js').initialiseSentry()
 
 // Global constants

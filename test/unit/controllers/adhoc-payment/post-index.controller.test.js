@@ -6,9 +6,9 @@ const csrf = require('csrf')
 const cheerio = require('cheerio')
 const supertest = require('supertest')
 const { getApp } = require('../../../../server')
-const { getMockSession, createAppWithSession } = require('../../../test_helpers/mock_session')
-const productFixtures = require('../../../fixtures/product_fixtures')
-const serviceFixtures = require('../../../fixtures/service_fixtures')
+const { getMockSession, createAppWithSession } = require('../../../test-helpers/mock-session')
+const productFixtures = require('../../../fixtures/product-fixtures')
+const serviceFixtures = require('../../../fixtures/service-fixtures')
 const paths = require('../../../../app/paths')
 const expect = chai.expect
 let product, service, payment, response, session, $
@@ -89,7 +89,7 @@ describe('adhoc payment submit-amount controller', function () {
       })
 
       it('should add a relevant error message to the session \'flash\'', () => {
-        expect($('.govuk-heading-m').text()).to.include(`Choose an amount in pounds and pence using digits and a decimal point. For example “10.50”`)
+        expect($('.govuk-heading-m').text()).to.include('Choose an amount in pounds and pence using digits and a decimal point. For example “10.50”')
       })
     })
 
@@ -119,7 +119,7 @@ describe('adhoc payment submit-amount controller', function () {
       })
 
       it('should add a relevant error message to the session \'flash\'', () => {
-        expect($('.govuk-heading-m').text()).to.include(`Choose an amount in pounds and pence using digits and a decimal point. For example “10.50”`)
+        expect($('.govuk-heading-m').text()).to.include('Choose an amount in pounds and pence using digits and a decimal point. For example “10.50”')
       })
     })
 
@@ -149,7 +149,7 @@ describe('adhoc payment submit-amount controller', function () {
       })
 
       it('should add a relevant error message to the session \'flash\'', () => {
-        expect($('.govuk-heading-m').text()).to.include(`Choose an amount under £100,000`)
+        expect($('.govuk-heading-m').text()).to.include('Choose an amount under £100,000')
       })
     })
   })

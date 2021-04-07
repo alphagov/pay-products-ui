@@ -2,8 +2,8 @@
 
 // Custom dependencies
 const { renderErrorView } = require('../utils/response')
-const productsClient = require('../services/clients/products_client')
-const adminusersClient = require('../services/clients/adminusers_client')
+const productsClient = require('../services/clients/products.client')
+const adminusersClient = require('../services/clients/adminusers.client')
 
 module.exports = function (req, res, next) {
   const { paymentExternalId } = req.params

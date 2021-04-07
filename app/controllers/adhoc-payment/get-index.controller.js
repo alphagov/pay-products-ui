@@ -6,7 +6,7 @@ const currencyFormatter = require('currency-formatter')
 // Custom dependencies
 const logger = require('../../utils/logger')(__filename)
 const { response } = require('../../utils/response')
-const productReferenceCtrl = require('../product_reference')
+const productReferenceCtrl = require('../product-reference')
 const { getSessionVariable } = require('../../utils/cookie')
 
 function asGBP (amountInPence) {

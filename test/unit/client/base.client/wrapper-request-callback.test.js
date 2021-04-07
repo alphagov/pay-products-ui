@@ -8,8 +8,8 @@ const sinon = require('sinon')
 const proxyquire = require('proxyquire')
 
 const requestLogger = {}
-const wrapper = proxyquire('../../../../app/services/clients/base_client/wrapper', {
-  '../../../utils/request_logger': requestLogger
+const wrapper = proxyquire('../../../../app/services/clients/base.client/wrapper', {
+  '../../../utils/request-logger': requestLogger
 })
 
 describe('wrapper: request scenarios', () => {

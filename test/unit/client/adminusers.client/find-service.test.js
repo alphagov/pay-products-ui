@@ -7,14 +7,14 @@ const { expect } = require('chai')
 const proxyquire = require('proxyquire')
 
 // Custom dependencies
-const PactInteractionBuilder = require('../../../fixtures/pact_interaction_builder').PactInteractionBuilder
-const serviceFixtures = require('../../../fixtures/service_fixtures')
+const PactInteractionBuilder = require('../../../fixtures/pact-interaction-builder').PactInteractionBuilder
+const serviceFixtures = require('../../../fixtures/service-fixtures')
 
 const ADMINUSERS_RESOURCE = '/v1/api/services'
 const port = Math.floor(Math.random() * 48127) + 1024
 
 function getAdminusersClient (baseUrl = `http://localhost:${port}`) {
-  return proxyquire('../../../../app/services/clients/adminusers_client', {
+  return proxyquire('../../../../app/services/clients/adminusers.client', {
     '../../../config': {
       ADMINUSERS_URL: baseUrl
     }

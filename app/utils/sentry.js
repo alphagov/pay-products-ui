@@ -16,7 +16,7 @@ function initialiseSentry () {
 
 const addSentryToErrorLevel = originalLogger => {
   const sentryLogger = Object.create(originalLogger)
-  sentryLogger.error = function() {
+  sentryLogger.error = function () {
     try {
       Sentry.captureException(new Error(JSON.stringify(arguments)))
     } finally {

@@ -9,7 +9,7 @@ const { renderErrorView } = response
 
 // Local dependencies
 const { demoPayment, pay } = require('../paths')
-const paymentStatus = require('./payment_status_controller')
+const paymentStatus = require('./payment-status.controller')
 
 // Constants
 const errorMessagePath = 'error.internal' // This is the object notation to string in en.json

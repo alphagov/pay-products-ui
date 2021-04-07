@@ -6,7 +6,7 @@ const { expect } = require('chai')
 
 // Local Dependencies
 const { CORRELATION_HEADER } = require('../../../config')
-const correlationMiddleware = require('../../../app/middleware/correlation_id')
+const correlationMiddleware = require('../../../app/middleware/correlation-id')
 let req
 
 describe('correlation ID middleware', () => {

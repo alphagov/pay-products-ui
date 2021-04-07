@@ -1,5 +1,5 @@
 'use strict'
-const pactBase = require('./pact_base')
+const pactBase = require('./pact-base')
 
 // Global setup
 const pactProducts = pactBase()
@@ -33,7 +33,7 @@ module.exports = {
     const data = {
       external_id: opts.external_id || 'a-payment-external-id',
       product_external_id: opts.product_external_id || 'a-product-external-id',
-      next_url: opts.next_url || `http://service.url/next`,
+      next_url: opts.next_url || 'http://service.url/next',
       status: opts.status || 'CREATED',
       amount: opts.amount || 100,
       reference_number: opts.reference_number || 'CF3HFN8I9H',

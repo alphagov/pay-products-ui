@@ -1,4 +1,3 @@
-const path = require('path')
 var sinon = require('sinon')
 var assert = require('assert')
 var proxyquire = require('proxyquire')
@@ -13,13 +12,14 @@ describe('CSRF', function () {
       .withArgs("it's a secret")
       .returns('newly-created token')
 
-    var csrf = proxyquire(path.join(__dirname, '/../../../app/middleware/csrf.js'),
-      { 'csrf': () => {
-        return {
-          verify: verify,
-          create: create
+    var csrf = proxyquire('../../../app/middleware/csrf.js',
+      {
+        csrf: () => {
+          return {
+            verify: verify,
+            create: create
+          }
         }
-      }
       }).validateAndRefreshCsrf
 
     var req = {
@@ -40,7 +40,7 @@ describe('CSRF', function () {
 
   it('should error if session not present', function () {
     var renderErrorView = sinon.spy()
-    var csrf = proxyquire(path.join(__dirname, '/../../../app/middleware/csrf.js'), {
+    var csrf = proxyquire('../../../app/middleware/csrf.js', {
       '../utils/response.js': {
         renderErrorView: renderErrorView
       }
@@ -62,7 +62,7 @@ describe('CSRF', function () {
 
   it('should error if session has no CSRF secret', function () {
     var renderErrorView = sinon.spy()
-    var csrf = proxyquire(path.join(__dirname, '/../../../app/middleware/csrf.js'), {
+    var csrf = proxyquire('../../../app/middleware/csrf.js', {
       '../utils/response.js': {
         renderErrorView: renderErrorView
       }
@@ -88,11 +88,11 @@ describe('CSRF', function () {
     var verify = sinon.stub()
       .withArgs("it's a secret", 'forged token - call the police')
       .returns(false)
-    var csrf = proxyquire(path.join(__dirname, '/../../../app/middleware/csrf.js'), {
+    var csrf = proxyquire('../../../app/middleware/csrf.js', {
       '../utils/response.js': {
         renderErrorView: renderErrorView
       },
-      'csrf': () => {
+      csrf: () => {
         return {
           verify: verify
         }
@@ -123,13 +123,14 @@ describe('CSRF', function () {
       .withArgs("it's a secret")
       .returns('newly-created token')
 
-    var csrf = proxyquire(path.join(__dirname, '/../../../app/middleware/csrf.js'),
-      { 'csrf': () => {
-        return {
-          verify: verify,
-          create: create
+    var csrf = proxyquire('../../../app/middleware/csrf.js',
+      {
+        csrf: () => {
+          return {
+            verify: verify,
+            create: create
+          }
         }
-      }
       }).validateAndRefreshCsrf
 
     var req = {

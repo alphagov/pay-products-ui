@@ -1,7 +1,7 @@
 'use strict'
 
 // Local dependencies
-const pactBase = require('./pact_base')
+const pactBase = require('./pact-base')
 
 // Global setup
 const pactServices = pactBase({ array: ['service_ids'] })

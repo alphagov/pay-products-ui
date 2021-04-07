@@ -5,7 +5,7 @@ const urlJoin = require('url-join')
 const staticify = require('../../../server').staticify
 const { SELFSERVICE_TRANSACTIONS_URL, DOCS_URL } = require('../../../config/index')
 
-const CONFIRM_SUCCESS_VIEW = 'confirm_demo_payment/success'
+const CONFIRM_SUCCESS_VIEW = 'confirm-demo-payment/success'
 
 const data = {
   scenarioDocsLink: urlJoin(DOCS_URL, '/#confirmation-page'),

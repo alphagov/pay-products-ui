@@ -18,7 +18,7 @@ describe('cookie configuration', function () {
 
       const expectedConfig = {
         cookieName: 'session',
-        secret: 'naskjwefvwei72rjkwfmjwfi72rfkjwefmjwefiuwefjkbwfiu24fmjbwfk',
+        secret: 'naskjwefvwei72rjkwfmjwfi72rfkjwefmjwefiuwefjkbwfiu24fmjbwfk', // pragma: allowlist secret
         duration: 10800000,
         proxy: true,
         cookie: {
@@ -33,7 +33,7 @@ describe('cookie configuration', function () {
       expect(clientSessionsStub.calledWith(expectedConfig)).to.equal(true)
     })
   })
-  describe(`when missing SESSION_ENCRYPTION_KEY`, () => {
+  describe('when missing SESSION_ENCRYPTION_KEY', () => {
     it('should throw an error if no session key is set', function () {
       process.env.SESSION_ENCRYPTION_KEY = ''
 
@@ -43,7 +43,7 @@ describe('cookie configuration', function () {
       expect(() => cookies.sessionCookie()).to.throw(/cookie encryption key is not set/)
     })
   })
-  describe(`when missing COOKIE_MAX_AGE`, () => {
+  describe('when missing COOKIE_MAX_AGE', () => {
     it('should throw an error if no max age is set', function () {
       process.env.SESSION_ENCRYPTION_KEY = 'naskjwefvwei72rjkwfmjwfi72rfkjwefmjwefiuwefjkbwfiu24fmjbwfk'
       process.env.COOKIE_MAX_AGE = ''
@@ -55,8 +55,8 @@ describe('cookie configuration', function () {
     })
   })
 
-  describe(`when setting value on cookie 'session'`, function () {
-    it(`should set value on cookie 'session' if SESSION_ENCRYPTION_KEY set`, function () {
+  describe('when setting value on cookie \'session\'', function () {
+    it('should set value on cookie \'session\' if SESSION_ENCRYPTION_KEY set', function () {
       const cookies = getCookiesUtil()
       const req = {
         session: {}
@@ -76,8 +76,8 @@ describe('cookie configuration', function () {
     })
   })
 
-  describe(`when SESSION_ENCRYPTION_KEY is set and cookie exists`, function () {
-    it(`should get value from cookie 'session'`, function () {
+  describe('when SESSION_ENCRYPTION_KEY is set and cookie exists', function () {
+    it('should get value from cookie \'session\'', function () {
       const cookies = getCookiesUtil()
       const req = {
         session: {
@@ -89,8 +89,8 @@ describe('cookie configuration', function () {
     })
   })
 
-  describe(`when session key is NOT set`, function () {
-    it(`should NOT get value from cookie`, function () {
+  describe('when session key is NOT set', function () {
+    it('should NOT get value from cookie', function () {
       const cookies = getCookiesUtil()
       const req = {
         session: {}
@@ -100,7 +100,7 @@ describe('cookie configuration', function () {
     })
   })
 
-  describe(`when cookie does NOT exist`, function () {
+  describe('when cookie does NOT exist', function () {
     it('should NOT get value', function () {
       const cookies = getCookiesUtil()
       const req = {}

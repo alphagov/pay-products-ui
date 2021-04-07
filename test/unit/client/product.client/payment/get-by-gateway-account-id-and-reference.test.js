@@ -7,8 +7,8 @@ const { expect } = require('chai')
 const proxyquire = require('proxyquire')
 
 // Custom dependencies
-const PactInteractionBuilder = require('../../../../fixtures/pact_interaction_builder').PactInteractionBuilder
-const productFixtures = require('../../../../fixtures/product_fixtures')
+const PactInteractionBuilder = require('../../../../fixtures/pact-interaction-builder').PactInteractionBuilder
+const productFixtures = require('../../../../fixtures/product-fixtures')
 
 // Constants
 const port = Math.floor(Math.random() * 48127) + 1024
@@ -16,7 +16,7 @@ const port = Math.floor(Math.random() * 48127) + 1024
 let response, result, gatewayAccountId, referenceNumber
 
 function getProductsClient (baseUrl = `http://localhost:${port}`) {
-  return proxyquire('../../../../../app/services/clients/products_client', {
+  return proxyquire('../../../../../app/services/clients/products.client', {
     '../../../config': {
       PRODUCTS_URL: baseUrl
     }

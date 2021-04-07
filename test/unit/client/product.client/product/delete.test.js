@@ -7,7 +7,7 @@ const { expect } = require('chai')
 const proxyquire = require('proxyquire')
 
 // Custom dependencies
-const PactInteractionBuilder = require('../../../../fixtures/pact_interaction_builder').PactInteractionBuilder
+const PactInteractionBuilder = require('../../../../fixtures/pact-interaction-builder').PactInteractionBuilder
 
 // Constants
 const PRODUCT_RESOURCE = '/v1/api/products'
@@ -17,7 +17,7 @@ let result
 let productExternalId
 
 function getProductsClient (baseUrl = `http://localhost:${port}`, productsApiKey = 'ABC1234567890DEF') {
-  return proxyquire('../../../../../app/services/clients/products_client', {
+  return proxyquire('../../../../../app/services/clients/products.client', {
     '../../../config': {
       PRODUCTS_URL: baseUrl
     }

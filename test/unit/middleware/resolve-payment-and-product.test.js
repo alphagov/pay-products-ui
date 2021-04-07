@@ -9,9 +9,9 @@ const lodash = require('lodash')
 // Local Dependencies
 const config = require('../../../config')
 const Payment = require('../../../app/models/Payment.class')
-const productFixtures = require('../../fixtures/product_fixtures')
-const serviceFixtures = require('../../fixtures/service_fixtures')
-const resolvePayment = require('../../../app/middleware/resolve_payment_and_product')
+const productFixtures = require('../../fixtures/product-fixtures')
+const serviceFixtures = require('../../fixtures/service-fixtures')
+const resolvePayment = require('../../../app/middleware/resolve-payment-and-product')
 
 describe('resolve payment middleware', () => {
   describe('when the payment exists', () => {
@@ -42,11 +42,11 @@ describe('resolve payment middleware', () => {
       nock.cleanAll()
     })
 
-    it(`should set 'req.product' equal to the returned Payment`, () => {
+    it('should set \'req.product\' equal to the returned Payment', () => {
       expect(req).to.have.property('payment').to.deep.equal(new Payment(payment))
     })
 
-    it(`it should call 'next' with no arguments`, () => {
+    it('it should call \'next\' with no arguments', () => {
       expect(next.called).to.equal(true)
       expect(next.lastCall.args.length).to.equal(0)
     })
@@ -73,16 +73,16 @@ describe('resolve payment middleware', () => {
       nock.cleanAll()
     })
 
-    it(`should return error 404 to the user`, () => {
+    it('should return error 404 to the user', () => {
       expect(res.status.lastCall.args[0]).to.equal(404)
     })
 
-    it(`should render the error view`, () => {
+    it('should render the error view', () => {
       expect(res.render.lastCall.args[0]).to.equal('error')
       expect(res.render.lastCall.args[1]).to.have.property('message').to.equal('error.internal')
     })
 
-    it(`it should not call 'next'`, () => {
+    it('it should not call \'next\'', () => {
       expect(next.called).to.equal(false)
     })
   })
@@ -109,16 +109,16 @@ describe('resolve payment middleware', () => {
       nock.cleanAll()
     })
 
-    it(`should return error 500 to the user`, () => {
+    it('should return error 500 to the user', () => {
       expect(res.status.lastCall.args[0]).to.equal(500)
     })
 
-    it(`should render the error view`, () => {
+    it('should render the error view', () => {
       expect(res.render.lastCall.args[0]).to.equal('error')
       expect(res.render.lastCall.args[1]).to.have.property('message').to.equal('error.internal')
     })
 
-    it(`it should not call 'next'`, () => {
+    it('it should not call \'next\'', () => {
       expect(next.called).to.equal(false)
     })
   })
@@ -143,16 +143,16 @@ describe('resolve payment middleware', () => {
       nock.cleanAll()
     })
 
-    it(`should return the http code received to the user`, () => {
+    it('should return the http code received to the user', () => {
       expect(res.status.lastCall.args[0]).to.equal(500)
     })
 
-    it(`should render the error view`, () => {
+    it('should render the error view', () => {
       expect(res.render.lastCall.args[0]).to.equal('error')
       expect(res.render.lastCall.args[1]).to.have.property('message').to.equal('error.internal')
     })
 
-    it(`it should not call 'next'`, () => {
+    it('it should not call \'next\'', () => {
       expect(next.called).to.equal(false)
     })
   })

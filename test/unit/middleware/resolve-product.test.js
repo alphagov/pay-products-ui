@@ -9,9 +9,9 @@ const lodash = require('lodash')
 // Local Dependencies
 const config = require('../../../config')
 const Product = require('../../../app/models/Product.class')
-const productFixtures = require('../../fixtures/product_fixtures')
-const serviceFixtures = require('../../fixtures/service_fixtures')
-const resolveProduct = require('../../../app/middleware/resolve_product')
+const productFixtures = require('../../fixtures/product-fixtures')
+const serviceFixtures = require('../../fixtures/service-fixtures')
+const resolveProduct = require('../../../app/middleware/resolve-product')
 
 describe('resolve product middleware', () => {
   describe('when the product exists', () => {
@@ -38,11 +38,11 @@ describe('resolve product middleware', () => {
       nock.cleanAll()
     })
 
-    it(`should set 'req.product' equal to the returned Product`, () => {
+    it('should set \'req.product\' equal to the returned Product', () => {
       expect(req).to.have.property('product').to.deep.equal(new Product(product))
     })
 
-    it(`it should call 'next' with no arguments`, () => {
+    it('it should call \'next\' with no arguments', () => {
       expect(next.called).to.equal(true)
       expect(next.lastCall.args.length).to.equal(0)
     })
@@ -69,16 +69,16 @@ describe('resolve product middleware', () => {
       nock.cleanAll()
     })
 
-    it(`should return error 404 to the user`, () => {
+    it('should return error 404 to the user', () => {
       expect(res.status.lastCall.args[0]).to.equal(404)
     })
 
-    it(`should render the error view`, () => {
+    it('should render the error view', () => {
       expect(res.render.lastCall.args[0]).to.equal('error')
       expect(res.render.lastCall.args[1]).to.have.property('message').to.equal('error.internal')
     })
 
-    it(`it should not call 'next'`, () => {
+    it('it should not call \'next\'', () => {
       expect(next.called).to.equal(false)
     })
   })
@@ -104,16 +104,16 @@ describe('resolve product middleware', () => {
       nock.cleanAll()
     })
 
-    it(`should return the http code received to the user`, () => {
+    it('should return the http code received to the user', () => {
       expect(res.status.lastCall.args[0]).to.equal(500)
     })
 
-    it(`should render the error view`, () => {
+    it('should render the error view', () => {
       expect(res.render.lastCall.args[0]).to.equal('error')
       expect(res.render.lastCall.args[1]).to.have.property('message').to.equal('error.internal')
     })
 
-    it(`it should not call 'next'`, () => {
+    it('it should not call \'next\'', () => {
       expect(next.called).to.equal(false)
     })
   })

@@ -28,8 +28,8 @@ module.exports = (req, res) => {
       amount: asGBP(payment.amount)
     }
     if (product.type === 'AGENT_INITIATED_MOTO') {
-      data.payment.agentInitiatedMoto = true;
-      data.payment.dashboardLink = SELFSERVICE_DASHBOARD_URL;
+      data.payment.agentInitiatedMoto = true
+      data.payment.dashboardLink = SELFSERVICE_DASHBOARD_URL
     }
     return response(req, res, 'pay/confirmation', data)
   } else {

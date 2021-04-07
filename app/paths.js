@@ -1,6 +1,6 @@
 'use strict'
 
-const generateRoute = require('./utils/generate_route.js')
+const generateRoute = require('./utils/generate-route.js')
 
 module.exports = {
   default: {

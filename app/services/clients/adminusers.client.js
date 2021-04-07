@@ -1,7 +1,7 @@
 'use strict'
 
 // Local dependencies
-const baseClient = require('./base_client/base_client')
+const baseClient = require('./base.client/base.client')
 const Service = require('../../models/Service.class')
 const { ADMINUSERS_URL } = require('../../../config')
 
@@ -13,7 +13,7 @@ function getServiceByGatewayAccountId (gatewayAccountId, correlationId) {
   return baseClient.get({
     baseUrl,
     url: `/services?gatewayAccountId=${gatewayAccountId}`,
-    description: `find a service by it's external id`,
+    description: 'find a service by it\'s external id',
     service: SERVICE_NAME,
     correlationId: correlationId
   }).then(service => new Service(service))

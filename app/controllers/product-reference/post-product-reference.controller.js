@@ -1,7 +1,7 @@
 'use strict'
 
-const index = require('./get_product_reference_controller')
-const adhocPaymentCtrl = require('../adhoc_payment')
+const index = require('./get-product-reference.controller')
+const adhocPaymentCtrl = require('../adhoc-payment')
 const { setSessionVariable } = require('../../utils/cookie')
 const { isNaxsiSafe } = require('../../browsered/field-validation-checks')
 
@@ -13,7 +13,7 @@ module.exports = (req, res) => {
   }
 
   const referenceNumber = req.body['payment-reference']
-  if (!referenceNumber || referenceNumber.trim() === "") {
+  if (!referenceNumber || referenceNumber.trim() === '') {
     req.errorMessage = `<h2 class="govuk-heading-m govuk-!-margin-bottom-0">${res.locals.__p('fieldValidation.generic').replace('%s', product.reference_label)}</h2>`
     return index(req, res)
   }

@@ -5,7 +5,7 @@ const { expect } = require('chai')
 const sinon = require('sinon')
 
 // local dependencies
-const wrapper = require('../../../../app/services/clients/base_client/wrapper')
+const wrapper = require('../../../../app/services/clients/base.client/wrapper')
 
 describe('wrapper: arguments handling', () => {
   describe('wrapper arguments', () => {
@@ -19,7 +19,7 @@ describe('wrapper: arguments handling', () => {
           .then(() => done())
           .catch(() => done())
       })
-      it(`should set 'opts.method' to be the verb argument (in uppercase)`, () => {
+      it('should set \'opts.method\' to be the verb argument (in uppercase)', () => {
         expect(methodSpy.called).to.equal(true)
         expect(methodSpy.callCount).to.equal(1)
         expect(methodSpy.lastCall.args[0]).to.have.property('method').to.equal('GET')
@@ -36,7 +36,7 @@ describe('wrapper: arguments handling', () => {
           .then(() => done())
           .catch(() => done())
       })
-      it(`should set 'opts.method' to be the verb argument (in uppercase)`, () => {
+      it('should set \'opts.method\' to be the verb argument (in uppercase)', () => {
         expect(methodSpy.called).to.equal(true)
         expect(methodSpy.callCount).to.equal(1)
         expect(methodSpy.lastCall.args[0]).not.to.have.property('method')
@@ -58,12 +58,12 @@ describe('wrapper: arguments handling', () => {
             .then(() => done())
             .catch(done)
         })
-        it(`should set 'opts.uri' to be the url argument`, () => {
+        it('should set \'opts.uri\' to be the url argument', () => {
           expect(methodSpy.called).to.equal(true)
           expect(methodSpy.callCount).to.equal(1)
           expect(methodSpy.lastCall.args[0]).to.have.property('uri').to.equal(uri)
         })
-        it(`should pass the results of the request to any provided callback`, () => {
+        it('should pass the results of the request to any provided callback', () => {
           expect(cb.called).to.equal(true)
           expect(cb.lastCall.args[2]).to.equal('success')
         })
@@ -81,11 +81,11 @@ describe('wrapper: arguments handling', () => {
             .then(() => done())
             .catch(done)
         })
-        it(`should create an options object, and set it's uri property to be the passed uri`, () => {
+        it('should create an options object, and set it\'s uri property to be the passed uri', () => {
           expect(methodSpy.called).to.equal(true)
           expect(methodSpy.lastCall.args[0]).to.have.property('uri').to.equal(uri)
         })
-        it(`should pass the results of the request to any provided callback`, () => {
+        it('should pass the results of the request to any provided callback', () => {
           expect(cb.called).to.equal(true)
           expect(cb.lastCall.args[2]).to.equal('success')
         })
@@ -103,11 +103,11 @@ describe('wrapper: arguments handling', () => {
             .then(() => done())
             .catch(done)
         })
-        it(`should pass the options object to the wrapped request method as it's first argument`, () => {
+        it('should pass the options object to the wrapped request method as it\'s first argument', () => {
           expect(methodSpy.called).to.equal(true)
           expect(methodSpy.lastCall.args[0]).to.equal(opts)
         })
-        it(`should pass the results of the request to any provided callback`, () => {
+        it('should pass the results of the request to any provided callback', () => {
           expect(cb.called).to.equal(true)
         })
       })

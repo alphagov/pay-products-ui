@@ -20,11 +20,11 @@ describe('healthcheck controller', () => {
       })
   })
 
-  it(`should return with a 'content-type' header of 'application/json'`, () => {
+  it('should return with a \'content-type\' header of \'application/json\'', () => {
     expect(response.headers).to.have.property('content-type').to.contain('application/json')
   })
 
-  it(`should return an object with a property 'ping', which is itself an object with a property of 'healthy' whose value is 'true'`, () => {
+  it('should return an object with a property \'ping\', which is itself an object with a property of \'healthy\' whose value is \'true\'', () => {
     expect(response.body).to.have.property('ping')
     expect(response.body.ping).to.have.property('healthy').to.equal(true)
   })

@@ -6,8 +6,8 @@ const cheerio = require('cheerio')
 const nock = require('nock')
 const supertest = require('supertest')
 const { getApp } = require('../../../server')
-const { createAppWithSession } = require('../../test_helpers/mock_session')
-const productFixtures = require('../../fixtures/product_fixtures')
+const { createAppWithSession } = require('../../test-helpers/mock-session')
+const productFixtures = require('../../fixtures/product-fixtures')
 const paths = require('../../../app/paths')
 const expect = chai.expect
 let product, response, $
@@ -16,7 +16,7 @@ describe('friendly url redirect controller', function () {
     nock.cleanAll()
   })
 
-  describe(`when the friendly URL can be resolved to a product`, () => {
+  describe('when the friendly URL can be resolved to a product', () => {
     before(done => {
       product = productFixtures.validCreateProductResponse({
         type: 'ADHOC',
@@ -24,8 +24,8 @@ describe('friendly url redirect controller', function () {
         product_name_path: 'product-name-path'
       }).getPlain()
       nock(config.PRODUCTS_URL)
-        .get(`/v1/api/products`)
-        .query({ 'serviceNamePath': product.service_name_path, 'productNamePath': product.product_name_path })
+        .get('/v1/api/products')
+        .query({ serviceNamePath: product.service_name_path, productNamePath: product.product_name_path })
         .reply(200, product)
 
       supertest(createAppWithSession(getApp()))
@@ -45,13 +45,13 @@ describe('friendly url redirect controller', function () {
     })
   })
 
-  describe(`when the friendly URL can not be resolved to a product`, () => {
+  describe('when the friendly URL can not be resolved to a product', () => {
     const serviceNamePath = 'unknown-service-name-path'
     const productNamePath = 'unknown-product-name-path'
     before(done => {
       nock(config.PRODUCTS_URL)
-        .get(`/v1/api/products`)
-        .query({ 'serviceNamePath': serviceNamePath, 'productNamePath': productNamePath })
+        .get('/v1/api/products')
+        .query({ serviceNamePath: serviceNamePath, productNamePath: productNamePath })
         .reply(404)
 
       supertest(createAppWithSession(getApp()))

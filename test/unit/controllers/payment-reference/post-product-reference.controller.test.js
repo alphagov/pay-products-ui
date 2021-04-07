@@ -6,9 +6,9 @@ const nock = require('nock')
 const csrf = require('csrf')
 const supertest = require('supertest')
 const { getApp } = require('../../../../server')
-const { createAppWithSession } = require('../../../test_helpers/mock_session')
-const productFixtures = require('../../../fixtures/product_fixtures')
-const serviceFixtures = require('../../../fixtures/service_fixtures')
+const { createAppWithSession } = require('../../../test-helpers/mock-session')
+const productFixtures = require('../../../fixtures/product-fixtures')
+const serviceFixtures = require('../../../fixtures/service-fixtures')
 const paths = require('../../../../app/paths')
 const expect = chai.expect
 let product, response, service, $
@@ -108,7 +108,7 @@ describe('product reference post controller', function () {
       supertest(createAppWithSession(getApp()))
         .post(paths.pay.reference.replace(':productExternalId', product.external_id))
         .send({
-          'payment-reference': "     ",
+          'payment-reference': '     ',
           csrfToken: csrf().create('123')
         })
         .end((err, res) => {

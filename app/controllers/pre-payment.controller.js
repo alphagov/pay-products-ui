@@ -4,9 +4,9 @@ const logger = require('../utils/logger')(__filename)
 const response = require('../utils/response')
 const { renderErrorView } = response
 
-const makePayment = require('./make_payment_controller')
-const adhocPaymentCtrl = require('./adhoc_payment')
-const productReferenceCtrl = require('./product_reference')
+const makePayment = require('./make-payment.controller')
+const adhocPaymentCtrl = require('./adhoc-payment')
+const productReferenceCtrl = require('./product-reference')
 
 // Constants
 const errorMessagePath = 'error.internal' // This is the object notation to string in en.json

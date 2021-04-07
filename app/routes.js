@@ -2,27 +2,27 @@
 
 // Local Dependencies
 const response = require('./utils/response.js').response
-const generateRoute = require('./utils/generate_route')
+const generateRoute = require('./utils/generate-route')
 const paths = require('./paths.js')
 
 // - Controllers
-const staticCtrl = require('./controllers/static_controller')
-const healthcheckCtrl = require('./controllers/healthcheck_controller')
-const friendlyUrlRedirectCtrl = require('./controllers/friendly_url_redirect_controller')
-const prePaymentCtrl = require('./controllers/pre_payment_controller')
-const completeCtrl = require('./controllers/payment_complete_controller')
-const failedCtrl = require('./controllers/demo_payment/payment_failed_controller')
-const successCtrl = require('./controllers/demo_payment/payment_success_controller')
-const adhocPaymentCtrl = require('./controllers/adhoc_payment')
-const productReferenceCtrl = require('./controllers/product_reference')
+const staticCtrl = require('./controllers/static.controller')
+const healthcheckCtrl = require('./controllers/healthcheck.controller')
+const friendlyUrlRedirectCtrl = require('./controllers/friendly-url-redirect.controller')
+const prePaymentCtrl = require('./controllers/pre-payment.controller')
+const completeCtrl = require('./controllers/payment-complete.controller')
+const failedCtrl = require('./controllers/demo-payment/payment-failed.controller')
+const successCtrl = require('./controllers/demo-payment/payment-success.controller')
+const adhocPaymentCtrl = require('./controllers/adhoc-payment')
+const productReferenceCtrl = require('./controllers/product-reference')
 
 // Middleware
 const { validateAndRefreshCsrf, ensureSessionHasCsrfSecret } = require('./middleware/csrf')
-const resolveProduct = require('./middleware/resolve_product')
-const resolvePaymentAndProduct = require('./middleware/resolve_payment_and_product')
+const resolveProduct = require('./middleware/resolve-product')
+const resolvePaymentAndProduct = require('./middleware/resolve-payment-and-product')
 const resolveLanguage = require('./middleware/resolve-language')
 // - Middleware
-const correlationId = require('./middleware/correlation_id')
+const correlationId = require('./middleware/correlation-id')
 
 // Assignments
 const { healthcheck, staticPaths, friendlyUrl, pay, demoPayment } = paths

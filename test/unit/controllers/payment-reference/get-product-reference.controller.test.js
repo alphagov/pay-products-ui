@@ -5,9 +5,9 @@ const cheerio = require('cheerio')
 const nock = require('nock')
 const supertest = require('supertest')
 const { getApp } = require('../../../../server')
-const { createAppWithSession } = require('../../../test_helpers/mock_session')
-const productFixtures = require('../../../fixtures/product_fixtures')
-const serviceFixtures = require('../../../fixtures/service_fixtures')
+const { createAppWithSession } = require('../../../test-helpers/mock-session')
+const productFixtures = require('../../../fixtures/product-fixtures')
+const serviceFixtures = require('../../../fixtures/service-fixtures')
 const paths = require('../../../../app/paths')
 const expect = chai.expect
 let product, service, response, $

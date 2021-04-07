@@ -6,7 +6,7 @@ const joinURL = require('url-join')
 const correlator = require('correlation-id')
 
 // local dependencies
-const requestLogger = require('../../../utils/request_logger')
+const requestLogger = require('../../../utils/request-logger')
 
 // constants
 const CORRELATION_HEADER = require('../../../../config').CORRELATION_HEADER

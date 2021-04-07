@@ -3,7 +3,7 @@
 const logger = require('../utils/logger')(__filename)
 const response = require('../utils/response')
 const { renderErrorView } = response
-const productsClient = require('../services/clients/products_client')
+const productsClient = require('../services/clients/products.client')
 
 // Constants
 const errorMessagePath = 'error.internal' // This is the object notation to string in en.json

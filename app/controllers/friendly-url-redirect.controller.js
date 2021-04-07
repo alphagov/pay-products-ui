@@ -1,7 +1,7 @@
 'use strict'
 
 const logger = require('../utils/logger')(__filename)
-const productsClient = require('../services/clients/products_client')
+const productsClient = require('../services/clients/products.client')
 const response = require('../utils/response')
 const { renderErrorView } = response
 

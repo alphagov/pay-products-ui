@@ -6,9 +6,9 @@ const cheerio = require('cheerio')
 const nock = require('nock')
 const supertest = require('supertest')
 const { getApp } = require('../../../server')
-const { createAppWithSession } = require('../../test_helpers/mock_session')
-const productFixtures = require('../../fixtures/product_fixtures')
-const serviceFixtures = require('../../fixtures/service_fixtures')
+const { createAppWithSession } = require('../../test-helpers/mock-session')
+const productFixtures = require('../../fixtures/product-fixtures')
+const serviceFixtures = require('../../fixtures/service-fixtures')
 const paths = require('../../../app/paths')
 const expect = chai.expect
 let product, payment, service, response, $
@@ -17,7 +17,7 @@ describe('pre payment controller', function () {
     nock.cleanAll()
   })
 
-  const demoPrototype =  ['DEMO', 'PROTOTYPE']
+  const demoPrototype = ['DEMO', 'PROTOTYPE']
 
   demoPrototype.forEach((type) => {
     describe(`when the payment type is ${type}`, () => {
@@ -147,7 +147,7 @@ describe('pre payment controller', function () {
     })
   })
 
-  describe(`when the payment type is UNKNOWN`, () => {
+  describe('when the payment type is UNKNOWN', () => {
     before(done => {
       product = productFixtures.validCreateProductResponse({ type: 'UNKNOWN' }).getPlain()
       service = serviceFixtures.validServiceResponse().getPlain()
