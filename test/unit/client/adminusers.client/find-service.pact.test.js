@@ -8,7 +8,7 @@ const proxyquire = require('proxyquire')
 
 // Custom dependencies
 const PactInteractionBuilder = require('../../../fixtures/pact-interaction-builder').PactInteractionBuilder
-const serviceFixtures = require('../../../fixtures/service-fixtures')
+const serviceFixtures = require('../../../fixtures/service.fixtures')
 
 const ADMINUSERS_RESOURCE = '/v1/api/services'
 const port = Math.floor(Math.random() * 48127) + 1024

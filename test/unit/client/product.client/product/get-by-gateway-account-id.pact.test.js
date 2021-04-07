@@ -8,7 +8,7 @@ const proxyquire = require('proxyquire')
 
 // Custom dependencies
 const PactInteractionBuilder = require('../../../../fixtures/pact-interaction-builder').PactInteractionBuilder
-const productFixtures = require('../../../../fixtures/product-fixtures')
+const productFixtures = require('../../../../fixtures/product.fixtures')
 
 // Constants
 const API_RESOURCE = '/v1/api'

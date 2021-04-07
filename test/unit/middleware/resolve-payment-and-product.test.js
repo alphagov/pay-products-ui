@@ -9,8 +9,8 @@ const lodash = require('lodash')
 // Local Dependencies
 const config = require('../../../config')
 const Payment = require('../../../app/models/Payment.class')
-const productFixtures = require('../../fixtures/product-fixtures')
-const serviceFixtures = require('../../fixtures/service-fixtures')
+const productFixtures = require('../../fixtures/product.fixtures')
+const serviceFixtures = require('../../fixtures/service.fixtures')
 const resolvePayment = require('../../../app/middleware/resolve-payment-and-product')
 
 describe('resolve payment middleware', () => {

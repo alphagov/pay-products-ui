@@ -9,8 +9,8 @@ const supertest = require('supertest')
 // Local dependencies
 const { PRODUCTS_URL, ADMINUSERS_URL, SELFSERVICE_DASHBOARD_URL } = require('../../../config/index')
 const { getApp } = require('../../../server')
-const productFixtures = require('../../fixtures/product-fixtures')
-const serviceFixtures = require('../../fixtures/service-fixtures')
+const productFixtures = require('../../fixtures/product.fixtures')
+const serviceFixtures = require('../../fixtures/service.fixtures')
 const paths = require('../../../app/paths')
 
 describe('payment complete controller', () => {
