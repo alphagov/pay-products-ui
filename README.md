@@ -31,7 +31,6 @@ Visit the site on http://localhost:3000.
 
 ### Debug using Visual Studio Code
 
-* You need to make sure the app runs locally first using the steps in the [Running](#running) section.
 * In VSCode, go to the `Debug` view (on MacOS, use shortcut `CMD + shift + D`).
 * From the **Run** toolbar, select tne launch config `Products UI`.
 * Add breakpoints to any file you want to debug - click in the left hand column and a red dot will appear.
@@ -67,16 +66,6 @@ npm run compile && npm test
 * Add breakpoints to any file you want to debug - click in the left hand column and a red dot will appear.
 * Press The `green play` button or `F5`.
 
-### To run cypress tests
-
-Run in two separate terminals:
-1. `npm run cypress:server`
-
-    _This runs both the Cypress server and Mountebank which is the virtualisation server used for stubbing out external API calls._
-
-2. Either:
-- `npm run cypress:test` to run headless 
-- `npm run cypress:test-headed` to run headed
 ## Key runtime environment variables
 
 | Variable                       | Description                               |
