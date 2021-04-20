@@ -9,6 +9,7 @@ updates:
   labels:
   - dependencies
   - govuk-pay
+  - javascript
   ignore:
   - dependency-name: mocha
     versions:
