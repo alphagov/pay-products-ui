@@ -1,0 +1,21 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "03:00"
+  open-pull-requests-limit: 10
+  labels:
+  - dependencies
+  - govuk-pay
+  - javascript
+  ignore:
+  - dependency-name: mocha
+    versions:
+    - ">= 8.a"
+    - "< 9"
+  - dependency-name: standard
+    versions:
+    - ">= 16.a"
+    - "< 17"
