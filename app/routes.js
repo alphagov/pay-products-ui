@@ -63,6 +63,11 @@ module.exports.bind = function (app) {
   // ADHOC AND AGENT_INITIATED_MOTO SPECIFIC SCREENS
   app.post(pay.product, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, adhocPaymentCtrl.postIndex)
 
+  // security.txt — https://gds-way.cloudapps.digital/standards/vulnerability-disclosure.html
+  const securitytxt = 'https://vdp.cabinetoffice.gov.uk/.well-known/security.txt'
+  app.get('/.well-known/security.txt', (req, res) => res.redirect(securitytxt))
+  app.get('/security.txt', (req, res) => res.redirect(securitytxt))
+
   // route to gov.uk 404 page
   // this has to be the last route registered otherwise it will redirect other routes
   app.all('*', (req, res) => res.redirect('https://www.gov.uk/404'))
