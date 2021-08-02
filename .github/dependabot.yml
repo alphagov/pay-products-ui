@@ -19,3 +19,8 @@ updates:
     versions:
     - ">= 16.a"
     - "< 17"
+- package-ecosystem: "github-actions"
+  directory: "/"
+  schedule:
+    interval: "daily"
+    time: "03:00"
