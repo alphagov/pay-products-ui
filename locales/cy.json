@@ -10,7 +10,9 @@
   },
   "buttons": {
     "proceed": "Mynd ati i dalu",
-    "continue": "Parhau"
+    "continue": "Parhau",
+    "confirmAndContinue": "Cadarnhau a parhau",
+    "edit": "golygu"
   },
   "error": {
     "title": "Digwyddodd gwall:",
@@ -46,6 +48,8 @@
     "currency": "Dewiswch swm mewn punnoedd a cheiniogau drwy ddefnyddio digidau a phwynt degol. Er enghraifft “10.50”",
     "isAboveMaxAmount": "Dewiswch swm sy'n llai na £%s",
     "isGreaterThanMaxLengthChars": "Mae'r testun yn rhy hir. Ni all fod yn fwy na 50 o nodau.",
-    "invalidCharacters": "Ni allwch ddefnyddio unrhyw rai o'r nodau canlynol < > ; : ` ( ) \" ' = &#124; \",\" ~ [ ]"
+    "invalidCharacters": "Ni allwch ddefnyddio unrhyw rai o'r nodau canlynol < > ; : ` ( ) \" ' = &#124; \",\" ~ [ ]",
+    "potentialPANInReferenceTitle": "Ydych chi’n siŵr mae rhif cyfeirnod yw hwn? ",
+    "potentialPANInReference": "Gwiriwch eich bod wedi nodi’r rhif yn gywir cyn gwneud y taliad. Peidiwch â nodi’ch rhif cerdyn debyd neu gredyd."
   }
 }

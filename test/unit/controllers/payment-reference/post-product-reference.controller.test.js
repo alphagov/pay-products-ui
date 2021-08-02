@@ -206,4 +206,84 @@ describe('product reference post controller', function () {
       expect($('.govuk-heading-m').text()).to.include('You can’t use any of the following characters')
     })
   })
+
+  describe('when reference entered is a potential PAN', function () {
+    before(done => {
+      product = productFixtures.validCreateProductResponse({
+        type: 'ADHOC',
+        reference_enabled: true,
+        reference_label: 'Test reference label'
+      }).getPlain()
+      service = serviceFixtures.validServiceResponse().getPlain()
+      const newReference = '4242424242424242'
+      nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+      nock(config.PRODUCTS_URL).get(`/v1/api/payments/${product.gateway_account_id}/${newReference}`).reply(404)
+      nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
+
+      supertest(createAppWithSession(getApp()))
+          .post(paths.pay.reference.replace(':productExternalId', product.external_id))
+          .send({
+            'payment-reference': newReference,
+            csrfToken: csrf().create('123')
+          })
+          .end((err, res) => {
+            response = res
+            $ = cheerio.load(res.text || '')
+            done(err)
+          })
+    })
+
+    it('should respond with code: 200 OK', () => {
+      expect(response.statusCode).to.equal(200)
+    })
+
+    it('should navigate to confirm reference page after form submission', () => {
+      expect($('form').attr('action')).to.equal(`/pay/reference/${product.external_id}`)
+    })
+
+    it('should show the confirmation text', () => {
+      expect($('h2.govuk-heading-m').text()).to.equal('Are you sure this is a reference number?')
+      expect($('p#potential-pan-as-reference').text()).to.equal('Check that you’ve entered the number correctly before making the payment. Do not enter your debit or credit card number.')
+
+      expect($('form > a').text()).to.include('Edit')
+      expect($('button').text()).to.include('Confirm and continue')
+    })
+  })
+
+  describe('confirm and continue with potential PAN in the reference', function () {
+    before(done => {
+      product = productFixtures.validCreateProductResponse({
+        type: 'ADHOC',
+        reference_enabled: true,
+        reference_label: 'Test reference label'
+      }).getPlain()
+      service = serviceFixtures.validServiceResponse().getPlain()
+      const newReference = '4242424242424242'
+      nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+      nock(config.PRODUCTS_URL).get(`/v1/api/payments/${product.gateway_account_id}/${newReference}`).reply(404)
+      nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
+
+      supertest(createAppWithSession(getApp()))
+          .post(paths.pay.reference.replace(':productExternalId', product.external_id))
+          .send({
+            'payment-reference': newReference,
+            'payment-reference-confirmed': true,
+            csrfToken: csrf().create('123')
+          })
+          .end((err, res) => {
+            response = res
+            $ = cheerio.load(res.text || '')
+            done(err)
+          })
+    })
+
+    it('should respond with code: 200 OK', () => {
+      expect(response.statusCode).to.equal(200)
+    })
+
+    it('should navigate to adhoc payment start page after form submission', () => {
+      expect($('form').attr('action')).to.equal(`/pay/${product.external_id}`)
+    })
+  })
+
 })
