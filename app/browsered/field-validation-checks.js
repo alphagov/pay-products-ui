@@ -1,5 +1,7 @@
 'use strict'
 
+const Luhn = require('luhn-js')
+
 // Constants
 const MAX_AMOUNT = 100000
 
@@ -32,4 +34,16 @@ exports.isNaxsiSafe = (value, message) => {
   } else {
     return false
   }
+}
+
+exports.isAPotentialPAN = (value) => {
+  const referenceWithoutSpaceAndHyphen = value.replace(/[\s-]/g, '')
+
+  const NUMBERS_ONLY = /^\d+$/
+  if (NUMBERS_ONLY.test(referenceWithoutSpaceAndHyphen) &&
+      referenceWithoutSpaceAndHyphen.length >= 12 && referenceWithoutSpaceAndHyphen.length <= 19) {
+    return Luhn.isValid(referenceWithoutSpaceAndHyphen)
+  }
+
+  return false
 }

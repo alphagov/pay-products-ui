@@ -1,6 +1,7 @@
 {% extends "../layout.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
 {% block pageTitle %}
   {{ __p('adhoc.title') }} {{ serviceName }}
@@ -19,26 +20,58 @@
     <form action="/pay/reference/{{ productExternalId }}" method="post" name="referencePaymentForm" class="push-bottom" data-validate>
       <input id="csrf" name="csrfToken" type="hidden" value="{{ csrf }}"/>
 
-      {{ govukInput({
-        label: {
-          text: paymentReferenceLabel,
-          classes: "govuk-!-font-weight-bold"
-        },
-        hint: {
-          text: paymentReferenceHint
-        },
-        id: "payment-reference",
-        name: "payment-reference",
-        classes: "govuk-!-width-one-third",
-        value: referenceNumber,
-        attributes: {
-          autofocus: "",
-          "data-validate": "isNaxsiSafe"
-        }
-      }) }}
-      {{ govukButton({
-        text: __p('buttons.continue')
-      }) }}
+      {% if confirmReferenceNumber %}
+        <input id="payment-reference" name="payment-reference" type="hidden" value="{{ referenceNumber }}"/>
+        <input id="payment-reference-confirmed" name="payment-reference-confirmed" type="hidden" value="true"/>
+        <div class="govuk-form-group">
+            <label class="govuk-label govuk-!-font-weight-bold" for="payment-reference"> {{paymentReferenceLabel}} </label>
+            <div id="event-name-hint" class="govuk-hint">
+                {{paymentReferenceHint}}
+            </div>
+            <div class="govuk-inset-text">
+                <p class="govuk-body">
+                    <b> {{referenceNumber}} </b>
+                </p>
+            </div>
+        </div>
+
+        <h2 class="govuk-heading-m">{{ __p('fieldValidation.potentialPANInReferenceTitle') }}</h2>
+        <p class="govuk-body" id="potential-pan-as-reference">{{ __p('fieldValidation.potentialPANInReference') }}</p>
+
+        {{ govukButton({
+          text: __p('buttons.edit'),
+          id: "reference__edit",
+          href: backToStartPage,
+          classes: "govuk-button--secondary"
+        }) }}
+        {{ govukButton({
+          text: __p('buttons.confirmAndContinue'),
+          id: "reference__confirm-and-continue"
+        }) }}
+
+      {% else %}
+          {{ govukInput({
+            label: {
+              text: paymentReferenceLabel,
+              classes: "govuk-!-font-weight-bold"
+            },
+            hint: {
+              text: paymentReferenceHint
+            },
+            id: "payment-reference",
+            name: "payment-reference",
+            classes: "govuk-!-width-one-third",
+            value: referenceNumber,
+            attributes: {
+              autofocus: "",
+              "data-validate": "isNaxsiSafe"
+            }
+          }) }}
+          {{ govukButton({
+            text: __p('buttons.continue')
+          }) }}
+
+      {% endif %}
     </form>
   </div>
 </div>
