@@ -6,10 +6,13 @@ const makePayment = require('../make-payment.controller')
 const index = require('./get-index.controller')
 const productReferenceCtrl = require('../product-reference')
 const { getSessionVariable, setSessionVariable } = require('../../utils/cookie')
+const captcha = require('../../utils/capthca')
+const logger = require('../../utils/logger')(__filename)
 
+const GOOGLE_RECAPTCHA_FORM_NAME = 'g-recaptcha-response'
 const AMOUNT_FORMAT = /^([0-9]+)(?:\.([0-9]{2}))?$/
 
-module.exports = (req, res) => {
+module.exports = async (req, res) => {
   const product = req.product
 
   if (product.reference_enabled) {
@@ -19,6 +22,24 @@ module.exports = (req, res) => {
       setSessionVariable(req, 'referenceNumber', '')
     } else {
       productReferenceCtrl.index(req, res)
+    }
+  }
+
+  if (product.requireCaptcha) {
+    const token = req.body[GOOGLE_RECAPTCHA_FORM_NAME]
+    try {
+      const challengeIsValid = await captcha.verifyCAPTCHAToken(token)
+      if (challengeIsValid) {
+        logger.info('User passed CAPTCHA challenge')
+      } else {
+        logger.warn('User failed CAPTCHA challenge')
+        req.captchaChallengeFailed = true
+        return index(req, res)
+      }
+    } catch (error) {
+      logger.error('CAPTCHA challenge failed to respond correctly', error)
+      req.captchaChallengeFailed = true
+      return index(req, res)
     }
   }
 
