@@ -8,6 +8,10 @@ const HTTP_SUCCESS_CODE = 200
 
 function verifyCAPTCHAToken(token) {
   return new Promise((resolve, reject) => {
+    if (!GOOGLE_RECAPTCHA_SECRET_KEY) {
+      reject(new Error('reCAPTCHA secret key not set in environment'))
+      return
+    }
     request.post({
       url: GOOGLE_RECAPTCHA_VERIFY_URL,
       proxy: process.env.http_proxy,
@@ -30,7 +34,7 @@ function verifyCAPTCHAToken(token) {
         resolve(body.success)
         return
       }
-      reject(new Error('Unknown reCAPTCHA response'))
+      reject(new Error(`Unknown reCAPTCHA response ${response.statusCode}`))
     })
   })
 }

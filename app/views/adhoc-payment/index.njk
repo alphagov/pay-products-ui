@@ -5,7 +5,7 @@
 {% block bodyEnd %}
   {{ super() }}
   {% if product.requireCaptcha %}
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <script src="https://www.recaptcha.net/recaptcha/api.js" async defer></script>
   {% endif %}
 {% endblock %}
 

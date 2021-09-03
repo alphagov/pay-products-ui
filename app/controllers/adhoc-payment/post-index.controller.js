@@ -6,7 +6,7 @@ const makePayment = require('../make-payment.controller')
 const index = require('./get-index.controller')
 const productReferenceCtrl = require('../product-reference')
 const { getSessionVariable, setSessionVariable } = require('../../utils/cookie')
-const captcha = require('../../utils/capthca')
+const captcha = require('../../utils/captcha')
 const logger = require('../../utils/logger')(__filename)
 
 const GOOGLE_RECAPTCHA_FORM_NAME = 'g-recaptcha-response'
