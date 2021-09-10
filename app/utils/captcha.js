@@ -1,9 +1,7 @@
 const request = require('request')
 const logger = require('./logger')(__filename)
 
-const GOOGLE_RECAPTCHA_VERIFY_URL = 'https://www.recaptcha.net/recaptcha/api/siteverify'
-
-const { GOOGLE_RECAPTCHA_SECRET_KEY } = process.env
+const { GOOGLE_RECAPTCHA_SECRET_KEY, GOOGLE_RECAPTCHA_VERIFY_URL } = process.env
 const HTTP_SUCCESS_CODE = 200
 
 function verifyCAPTCHAToken(token) {
