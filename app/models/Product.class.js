@@ -60,6 +60,7 @@ class Product {
     this.reference_label = opts.reference_label
     this.reference_hint = opts.reference_hint
     this.language = opts.language
+    this.requireCaptcha = opts.require_captcha
     opts._links.forEach(link => lodash.set(this, `links.${link.rel}`, { method: link.method, href: link.href }))
   }
 }

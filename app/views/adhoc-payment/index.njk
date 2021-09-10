@@ -2,6 +2,13 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 
+{% block bodyEnd %}
+  {{ super() }}
+  {% if product.requireCaptcha %}
+  <script src="https://www.recaptcha.net/recaptcha/api.js" async defer></script>
+  {% endif %}
+{% endblock %}
+
 {% block pageTitle %}
   {{ __p('adhoc.title') }} {{ serviceName }}
 {% endblock %}
@@ -53,6 +60,9 @@
           </div>
         {% endif %}
       </div>
+      {% if product.requireCaptcha %}
+        <div class="g-recaptcha govuk-!-margin-bottom-5" data-sitekey="{{ GOOGLE_RECAPTCHA_SITE_KEY }}"></div>
+      {% endif %}
       {{ govukButton({
         text: __p('buttons.proceed')
       }) }}

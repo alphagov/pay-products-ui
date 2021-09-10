@@ -123,6 +123,66 @@ describe('adhoc payment submit-amount controller', function () {
       })
     })
 
+    describe('when a product requires CAPTCHA and the challenge is rejected', function () {
+      before(done => {
+        const browserCAPTCHAresult = 'some-captcha-managed-response'
+        product = productFixtures.validCreateProductResponse({ type: 'ADHOC', require_captcha: true }).getPlain()
+        service = serviceFixtures.validServiceResponse().getPlain()
+        nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+        nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
+        nock('https://www.recaptcha.net').post('/recaptcha/api/siteverify', body => body.includes(browserCAPTCHAresult)).reply(200, { success: false })
+        session = getMockSession()
+        supertest(createAppWithSession(getApp(), session))
+          .post(paths.pay.product.replace(':productExternalId', product.external_id))
+          .send({
+            'payment-amount': '9.95',
+            'g-recaptcha-response': browserCAPTCHAresult,
+            csrfToken: csrf().create('123')
+          })
+          .end((err, res) => {
+            response = res
+            $ = cheerio.load(res.text || '')
+            done(err)
+          })
+      })
+
+      it('should add a relevant error message back to the user', () => {
+        expect(response.statusCode).to.equal(200)
+        expect($('.govuk-error-summary__list').text()).to.include('You must select "I am not a robot" before proceeding to payment')
+      })
+    })
+
+    describe('when a product requires CAPTCHA and the challenge is successful', function () {
+      before(done => {
+        const browserCAPTCHAresult = 'some-captcha-managed-response'
+        product = productFixtures.validCreateProductResponse({ type: 'ADHOC', require_captcha: true }).getPlain()
+        service = serviceFixtures.validServiceResponse().getPlain()
+        payment = productFixtures.validCreatePaymentResponse({ govuk_status: 'SUCCESS', product_external_id: product.external_id, amount: 995 }).getPlain()
+        nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+        nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
+        nock(config.PRODUCTS_URL).post(`/v1/api/products/${product.external_id}/payments`, { price: 995 }).reply(200, payment)
+        nock('https://www.recaptcha.net').post('/recaptcha/api/siteverify', body => body.includes(browserCAPTCHAresult)).reply(200, { success: true })
+        session = getMockSession()
+        supertest(createAppWithSession(getApp(), session))
+          .post(paths.pay.product.replace(':productExternalId', product.external_id))
+          .send({
+            'payment-amount': '9.95',
+            'g-recaptcha-response': browserCAPTCHAresult,
+            csrfToken: csrf().create('123')
+          })
+          .end((err, res) => {
+            response = res
+            $ = cheerio.load(res.text || '')
+            done(err)
+          })
+      })
+
+      it('should redirect the session to card details page', () => {
+        expect(response.statusCode).to.equal(303)
+        expect(response.headers).to.have.property('location').to.equal(`http://frontend.url/charges/${payment.external_id}`)
+      })
+    })
+
     describe('when the amount is bigger than the max amount supported by Pay', function () {
       before(done => {
         product = productFixtures.validCreateProductResponse({ type: 'ADHOC' }).getPlain()

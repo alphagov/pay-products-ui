@@ -12,7 +12,8 @@ module.exports = (req, res) => {
     productExternalId: product.externalId,
     productName: product.name,
     productDescription: product.description,
-    paymentReferenceLabel: product.reference_label
+    paymentReferenceLabel: product.reference_label,
+    captchaChallengeFailed: req.captchaChallengeFailed
   }
   const sessionReferenceNumber = getSessionVariable(req, 'referenceNumber')
   if (sessionReferenceNumber) {
