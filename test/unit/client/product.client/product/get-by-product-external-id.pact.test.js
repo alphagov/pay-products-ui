@@ -2,7 +2,7 @@
 
 // NPM dependencies
 const path = require('path')
-const Pact = require('pact')
+const { Pact } = require('@pact-foundation/pact')
 const { expect } = require('chai')
 const proxyquire = require('proxyquire')
 
@@ -27,7 +27,7 @@ function getProductsClient (baseUrl = `http://localhost:${port}`, productsApiKey
 }
 
 describe('products client - find a product by it\'s external id', function () {
-  const provider = Pact({
+  const provider = new Pact({
     consumer: 'products-ui',
     provider: 'products',
     port: port,
