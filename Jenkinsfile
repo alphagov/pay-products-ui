@@ -78,13 +78,12 @@ pipeline {
         }
       }
     }
-    stage('Deploy') {
+    stage('Check Pact Compatibility') {
       when {
         branch 'master'
       }
       steps {
         checkPactCompatibility("products-ui", gitCommit(), "test")
-        deployEcs("products-ui")
       }
     }
     stage('Smoke Tests') {
