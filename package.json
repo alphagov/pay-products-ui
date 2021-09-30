@@ -95,7 +95,7 @@
     "@pact-foundation/pact-node": "10.13.7",
     "chai": "^4.3.4",
     "cheerio": "^1.0.0-rc.10",
-    "chokidar": "^3.5.1",
+    "chokidar": "^3.5.2",
     "chokidar-cli": "latest",
     "dotenv": "^10.0.0",
     "envfile": "^5.2.0",
