@@ -5,7 +5,8 @@
 {% block bodyEnd %}
   {{ super() }}
   {% if product.requireCaptcha %}
-  <script src="{{ GOOGLE_RECAPTCHA_SITE_WIDGET_URL }}" async defer></script>
+  {% set googleRECAPTCHASiteWidgetUrl = "https://www.recaptcha.net/recaptcha/enterprise.js" if GOOGLE_RECAPTCHA_USE_ENTERPRISE_VERSION else "https://www.recaptcha.net/recaptcha/api.js" %}
+  <script src="{{ googleRECAPTCHASiteWidgetUrl }}" async defer></script>
   {% endif %}
 {% endblock %}
 

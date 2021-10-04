@@ -66,8 +66,8 @@ function initialiseGlobalMiddleware (app) {
     res.locals.asset_path = '/public/'
     res.locals.routes = router.paths
     res.locals.analyticsTrackingId = ANALYTICS_TRACKING_ID
+    res.locals.GOOGLE_RECAPTCHA_USE_ENTERPRISE_VERSION = process.env.GOOGLE_RECAPTCHA_USE_ENTERPRISE_VERSION === 'true'
     res.locals.GOOGLE_RECAPTCHA_SITE_KEY = process.env.GOOGLE_RECAPTCHA_SITE_KEY
-    res.locals.GOOGLE_RECAPTCHA_SITE_WIDGET_URL = process.env.GOOGLE_RECAPTCHA_SITE_WIDGET_URL
     noCache(res)
     next()
   })
