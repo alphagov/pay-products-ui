@@ -37,4 +37,8 @@ describe('CAPTCHA verification utility', () => {
     const valid = await captcha.verifyCAPTCHAToken('a-token')
     expect(valid).to.equal(false)
   })
+
+  it('returns the captcha enterprise URL given a valid project ID', () => {
+    expect(captcha.formatEnterpriseUrl('102030')).to.equal('https://recaptchaenterprise.googleapis.com/v1beta1/projects/102030/assessments')
+  })
 })
