@@ -6,10 +6,10 @@ const {
   GOOGLE_RECAPTCHA_SECRET_KEY,
   GOOGLE_RECAPTCHA_SITE_KEY,
   GOOGLE_RECAPTCHA_USE_ENTERPRISE_VERSION,
-  GOOGLE_RECAPTHCA_ENTERPRISE_PROJECT_ID
+  GOOGLE_RECAPTCHA_ENTERPRISE_PROJECT_ID
 } = process.env
 const HTTP_SUCCESS_CODE = 200
-const captchaEnterpriseUrl = formatEnterpriseUrl(GOOGLE_RECAPTHCA_ENTERPRISE_PROJECT_ID)
+const captchaEnterpriseUrl = formatEnterpriseUrl(GOOGLE_RECAPTCHA_ENTERPRISE_PROJECT_ID)
 const captchaBasicUrl = 'https://www.recaptcha.net/recaptcha/api/siteverify'
 
 function formatEnterpriseUrl(projectId) {
