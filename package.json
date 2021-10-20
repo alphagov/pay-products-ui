@@ -115,7 +115,7 @@
     "mocha": "7.2.x",
     "nock": "13.1.x",
     "node-sass": "6.0.x",
-    "nodemon": "^2.0.13",
+    "nodemon": "^2.0.14",
     "nunjucksify": "^2.2.0",
     "nyc": "^15.1.0",
     "proxyquire": "~2.1.3",
