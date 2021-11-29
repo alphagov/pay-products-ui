@@ -15,7 +15,7 @@ EXPOSE 9000
 
 ADD package.json /tmp/package.json
 ADD package-lock.json /tmp/package-lock.json
-RUN cd /tmp && npm install --production
+RUN cd /tmp && npm ci --production
 
 WORKDIR /app
 ADD . /app
