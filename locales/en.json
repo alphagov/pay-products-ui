@@ -51,5 +51,10 @@
     "invalidCharacters": "You can’t use any of the following characters < > ; : ` ( ) \" ' = &#124; \",\" ~ [ ]",
     "potentialPANInReferenceTitle": "Are you sure this is a reference number?",
     "potentialPANInReference": "Check that you’ve entered the number correctly before making the payment. Do not enter your debit or credit card number."
+  },
+  "paymentLinksV2": {
+    "amount": {
+      "enterAmountToPay": "Enter amount to pay"  
+    }
   }
 }

@@ -14,6 +14,7 @@ const completeCtrl = require('./controllers/payment-complete.controller')
 const failedCtrl = require('./controllers/demo-payment/payment-failed.controller')
 const successCtrl = require('./controllers/demo-payment/payment-success.controller')
 const adhocPaymentCtrl = require('./controllers/adhoc-payment')
+const amountCtrl = require('./payment-link-v2/amount')
 const productReferenceCtrl = require('./controllers/product-reference')
 
 // Middleware
@@ -25,7 +26,7 @@ const resolveLanguage = require('./middleware/resolve-language')
 const correlationId = require('./middleware/correlation-id')
 
 // Assignments
-const { healthcheck, staticPaths, friendlyUrl, pay, demoPayment } = paths
+const { healthcheck, staticPaths, friendlyUrl, pay, demoPayment, paymentLinksV2 } = paths
 
 // Exports
 module.exports.generateRoute = generateRoute
@@ -62,6 +63,10 @@ module.exports.bind = function (app) {
 
   // ADHOC AND AGENT_INITIATED_MOTO SPECIFIC SCREENS
   app.post(pay.product, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, adhocPaymentCtrl.postIndex)
+
+  // payment links amount
+  app.get(paymentLinksV2.amount, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, amountCtrl.index)
+  app.post(paymentLinksV2.amount, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, amountCtrl.postIndex)
 
   // security.txt — https://gds-way.cloudapps.digital/standards/vulnerability-disclosure.html
   const securitytxt = 'https://vdp.cabinetoffice.gov.uk/.well-known/security.txt'

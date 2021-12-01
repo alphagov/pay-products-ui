@@ -65,6 +65,7 @@ module.exports = {
   validCreateProductResponse: (opts = {}) => {
     const data = {
       external_id: opts.external_id || 'an-external-id',
+      externalId: opts.external_id || 'an-external-id',
       type: opts.type || 'DEMO',
       gateway_account_id: opts.gateway_account_id || 666,
       name: opts.name || 'A Product Name',

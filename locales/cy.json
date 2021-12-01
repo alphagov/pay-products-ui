@@ -51,5 +51,10 @@
     "invalidCharacters": "Ni allwch ddefnyddio unrhyw rai o'r nodau canlynol < > ; : ` ( ) \" ' = &#124; \",\" ~ [ ]",
     "potentialPANInReferenceTitle": "Ydych chi’n siŵr mae rhif cyfeirnod yw hwn? ",
     "potentialPANInReference": "Gwiriwch eich bod wedi nodi’r rhif yn gywir cyn gwneud y taliad. Peidiwch â nodi’ch rhif cerdyn debyd neu gredyd."
+  },
+  "paymentLinksV2": {
+    "amount": {
+      "enterAmountToPay": "TODO - Enter amount to pay"  
+    }
   }
 }

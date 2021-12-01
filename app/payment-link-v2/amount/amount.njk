@@ -1,0 +1,52 @@
+{% extends "../../views/layout.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+
+{% block pageTitle %}
+  {{ __p('paymentLinksV2.amount.enterAmountToPay') }} - {{ serviceName }}
+{% endblock %}
+
+{% block contentBody %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    {{ govukBackLink({
+      text: "Back",
+      href: backLinkHref
+    }) }}
+
+    <form action="/pay/{{ productExternalId }}/amount" method="post" name="startPaymentForm" class="push-bottom">
+      <input id="csrf" name="csrfToken" type="hidden" value="{{ csrf }}"/>
+      <div class="currency-input govuk-form-group {% if flash.genericError %}govuk-form-group--error{% endif %}">
+        <label class="govuk-label govuk-!-font-weight-bold govuk-!-width-two-thirds" for="payment-amount">
+          {% if flash.genericError %}
+            <span class="govuk-error-message">{{ flash.genericError | striptags(true) }}</span>
+          {% endif %}
+        </label>
+        
+          <div class="currency-input__inner">
+              {{ govukInput({
+                  id: "payment-amount",
+                  name: "payment-amount",
+                  label: {
+                    text: __p('paymentLinksV2.amount.enterAmountToPay'),
+                    classes: "govuk-label--l",
+                    isPageHeading: true
+                  },
+                  prefix: {
+                    text: "£"
+                  },
+                  classes: "govuk-input--width-5",
+                  spellcheck: false
+                }) }}
+          </div>
+      </div>
+      
+      {{ govukButton({
+        text: __p('buttons.continue')
+      }) }}
+    </form>
+  </div>
+</div>
+{% endblock %}

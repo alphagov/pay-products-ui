@@ -14,6 +14,12 @@ module.exports = {
     complete: '/payment-complete/:paymentExternalId',
     reference: '/pay/reference/:productExternalId'
   },
+  paymentLinksV2: {
+    product: '/pay/:productExternalId',
+    amount: '/pay/:productExternalId/amount',
+    reference: '/pay/:productExternalId/reference',
+    confirm: '/pay/:productExternalId/confirm'
+  },
   demoPayment: {
     success: '/successful',
     failure: '/failed'
