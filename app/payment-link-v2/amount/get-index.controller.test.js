@@ -9,6 +9,7 @@ const serviceFixtures = require('../../../test/fixtures/service.fixtures')
 const Service = require('../../models/Service.class')
 const responseSpy = sinon.spy()
 const { NotFoundError } = require('../../errors')
+const Product = require('../../models/Product.class')
 
 const mockResponses = {
   response: responseSpy
@@ -16,7 +17,7 @@ const mockResponses = {
 
 let req, res
 
-describe('Amount controller', () => {
+describe('Amount Page - GET controller', () => {
   const mockCookie = {
     getSessionVariable: sinon.stub()
   }
@@ -34,11 +35,11 @@ describe('Amount controller', () => {
   })
 
   describe('when product.reference_enabled=true', () => {
-    const product = productFixtures.validCreateProductResponse({
+    const product = new Product(productFixtures.validCreateProductResponse({
       type: 'ADHOC',
       reference_enabled: true,
       price: null
-    }).getPlain()
+    }).getPlain())
 
     it('when the amount is NOT in the session, then it should display the amount page', () => {
       mockCookie.getSessionVariable.withArgs(req, 'amount').returns(null)
@@ -84,11 +85,11 @@ describe('Amount controller', () => {
   })
 
   describe('when product.reference_enabled=false', () => {
-    const product = productFixtures.validCreateProductResponse({
+    const product = new Product(productFixtures.validCreateProductResponse({
       type: 'ADHOC',
       reference_enabled: false,
       price: null
-    }).getPlain()
+    }).getPlain())
 
     it('when the amount is NOT in the session, then it should display the amount page', () => {
       mockCookie.getSessionVariable.withArgs(req, 'amount').onFirstCall().returns(null)
@@ -134,11 +135,11 @@ describe('Amount controller', () => {
   })
 
   describe('when there is already an amount in the product', () => {
-    const product = productFixtures.validCreateProductResponse({
+    const product = new Product(productFixtures.validCreateProductResponse({
       type: 'ADHOC',
       reference_enabled: false,
       price: 1000
-    }).getPlain()
+    }).getPlain())
 
     it('then it should display an 404 page', () => {
       req = {

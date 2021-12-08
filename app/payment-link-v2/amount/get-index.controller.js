@@ -2,14 +2,14 @@
 
 const { response } = require('../../utils/response')
 const { getSessionVariable } = require('../../utils/cookie')
-const paths = require('../../paths')
-const replaceParamsInPath = require('../../utils/replace-params-in-path')
 const { NotFoundError } = require('../../errors')
+const getBackLinkUrl = require('./get-back-link-url')
 
 module.exports = (req, res, next) => {
   const product = req.product
+
   const data = {
-    productExternalId: product.external_id,
+    productExternalId: product.externalId,
     productName: product.name
   }
 
@@ -19,13 +19,11 @@ module.exports = (req, res, next) => {
 
   const sessionAmount = getSessionVariable(req, 'amount')
 
+  data.backLinkHref = getBackLinkUrl(sessionAmount, product)
+
   if (sessionAmount) {
-    data.backLinkHref = replaceParamsInPath(paths.paymentLinksV2.confirm, product.external_id)
     data.productAmount = (sessionAmount / 100).toFixed(2)
-  } else if (product.reference_enabled) {
-    data.backLinkHref = replaceParamsInPath(paths.paymentLinksV2.reference, product.external_id)
-  } else {
-    data.backLinkHref = replaceParamsInPath(paths.paymentLinksV2.product, product.external_id)
   }
+
   return response(req, res, 'amount/amount', data)
 }

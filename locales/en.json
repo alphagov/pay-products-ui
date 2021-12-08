@@ -54,7 +54,12 @@
   },
   "paymentLinksV2": {
     "amount": {
-      "enterAmountToPay": "Enter amount to pay"  
+      "enterAmountToPay": "Enter amount to pay" 
+    },
+    "fieldValidation": {
+      "enterAnAmountInPounds": "Enter an amount in pounds",
+      "enterAnAmountInTheCorrectFormat": "Enter an amount in pounds and pence using digits and a decimal point. For example “10.50”",
+      "enterAnAmountUnderMaxAmount": "Enter an amount that is £100,000 or under"
     }
   }
 }
