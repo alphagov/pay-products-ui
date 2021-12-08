@@ -114,7 +114,7 @@
     "lint-staged": "^12.1.2",
     "mocha": "7.2.x",
     "nock": "13.2.x",
-    "node-sass": "6.0.x",
+    "node-sass": "7.0.x",
     "nodemon": "^2.0.15",
     "nunjucksify": "^2.2.0",
     "nyc": "^15.1.0",
