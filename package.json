@@ -73,7 +73,7 @@
     "currency-formatter": "^1.5.9",
     "express": "4.17.x",
     "govuk-frontend": "^3.14.0",
-    "i18n": "^0.13.3",
+    "i18n": "^0.13.4",
     "lodash": "4.17.x",
     "luhn-js": "^1.1.2",
     "minimist": "1.2.x",
