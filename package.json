@@ -91,7 +91,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.16.10",
-    "@babel/preset-env": "^7.16.8",
+    "@babel/preset-env": "^7.16.10",
     "@pact-foundation/pact": "^9.17.2",
     "@pact-foundation/pact-node": "10.17.1",
     "chai": "^4.3.4",
