@@ -54,7 +54,12 @@
   },
   "paymentLinksV2": {
     "amount": {
-      "enterAmountToPay": "TODO - Enter amount to pay"  
+      "enterAmountToPay": "TODO convert to Welsh - Enter amount to pay" 
+    },
+    "fieldValidation": {
+      "enterAnAmountInPounds": "TODO convert to Welsh - Enter an amount in pounds",
+      "enterAnAmountInTheCorrectFormat": "TODO convert to Welsh - Enter an amount in pounds and pence using digits and a decimal point. For example “10.50”",
+      "enterAnAmountUnderMaxAmount": "TODO convert to Welsh - Enter an amount that is £100,000 or under"
     }
-  }
+  } 
 }
