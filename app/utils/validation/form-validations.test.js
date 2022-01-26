@@ -31,4 +31,31 @@ describe('Server side form validations', () => {
       })
     })
   })
+
+  describe('reference validation', () => {
+    it('when valid reference is entered, should return valid=true', () => {
+      expect(validations.validateReference('test reference').valid).to.be.true // eslint-disable-line
+    })
+
+    it('when no amount entered, should return valid=false and the correct error message key', () => {
+      expect(validations.validateReference('')).to.deep.equal({
+        valid: false,
+        messageKey: 'paymentLinksV2.fieldValidation.enterAReference'
+      })
+    })
+
+    it('when a reference is too long, should return valid=false and correct error message key', () => {
+      expect(validations.validateReference('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1')).to.deep.equal({
+        valid: false,
+        messageKey: 'paymentLinksV2.fieldValidation.referenceMustBeLessThanOrEqual50Chars'
+      })
+    })
+
+    it('when a reference is entered that is not Naxsi safe, should return valid=false and correct error message key', () => {
+      expect(validations.validateAmount('>')).to.deep.equal({
+        valid: false,
+        messageKey: 'paymentLinksV2.fieldValidation.enterAnAmountInTheCorrectFormat'
+      })
+    })
+  })
 })

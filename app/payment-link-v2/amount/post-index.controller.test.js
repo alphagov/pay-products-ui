@@ -53,12 +53,10 @@ describe('Amount Page - POST controller', () => {
 
     controller(req, res)
 
-    expect(mockCookie.setSessionVariable.called).to.equal(true)
-    expect(mockCookie.setSessionVariable.args[0]).to.include(req)
-    expect(mockCookie.setSessionVariable.args[0]).to.include('paymentAmount')
-    expect(mockCookie.setSessionVariable.args[0]).to.include('1000')
+    sinon.assert.called(mockCookie.setSessionVariable)
+    sinon.assert.calledWith(mockCookie.setSessionVariable, req, 'paymentAmount', '1000')
 
-    expect(res.redirect.called).to.equal(true)
+    sinon.assert.called(res.redirect)
     expect(res.redirect.args[0][0]).to.equal('/pay/an-external-id/confirm')
   })
 
@@ -80,16 +78,14 @@ describe('Amount Page - POST controller', () => {
 
     controller(req, res)
 
-    expect(responseSpy.called).to.equal(true)
-    expect(mockResponses.response.args[0]).to.include(req)
-    expect(mockResponses.response.args[0]).to.include(res)
-    expect(mockResponses.response.args[0]).to.include('amount/amount')
+    sinon.assert.called(responseSpy)
+    sinon.assert.calledWith(responseSpy, req, res, 'amount/amount')
 
     const pageData = mockResponses.response.args[0][3]
     expect(pageData.backLinkHref).to.equal('/pay/an-external-id/reference')
 
-    expect(res.locals.__p.called).to.equal(true)
-    expect(res.locals.__p.args[0]).to.include('paymentLinksV2.fieldValidation.enterAnAmountInPounds')
+    sinon.assert.called(res.locals.__p)
+    sinon.assert.calledWith(res.locals.__p, 'paymentLinksV2.fieldValidation.enterAnAmountInPounds')
   })
 
   it('when an invalid amount is entered and an amount is already saved to the session, it should display an error' +
@@ -113,15 +109,13 @@ describe('Amount Page - POST controller', () => {
 
     controller(req, res)
 
-    expect(responseSpy.called).to.equal(true)
-    expect(mockResponses.response.args[0]).to.include(req)
-    expect(mockResponses.response.args[0]).to.include(res)
-    expect(mockResponses.response.args[0]).to.include('amount/amount')
+    sinon.assert.called(responseSpy)
+    sinon.assert.calledWith(responseSpy, req, res, 'amount/amount')
 
     const pageData = mockResponses.response.args[0][3]
     expect(pageData.backLinkHref).to.equal('/pay/an-external-id/confirm')
 
-    expect(res.locals.__p.called).to.equal(true)
-    expect(res.locals.__p.args[0]).to.include('paymentLinksV2.fieldValidation.enterAnAmountInTheCorrectFormat')
+    sinon.assert.called(res.locals.__p)
+    sinon.assert.calledWith(res.locals.__p, 'paymentLinksV2.fieldValidation.enterAnAmountInTheCorrectFormat')
   })
 })

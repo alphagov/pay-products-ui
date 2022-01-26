@@ -1,11 +1,11 @@
-{% extends "../../views/layout-payment-links-v2.njk" %}
+{% extends "../../views/layout.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "../../views/macros/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
-  {{ __p('paymentLinksV2.amount.enterAmountToPay') }} - {{ productName }}
+  {{ __p('paymentLinksV2.reference.pleaseEnterYour') }} {{product.reference_label}}  - {{ productName }}
 {% endblock %}
 
 {% block contentBody %}
@@ -19,7 +19,7 @@
     {{ errorSummary ({
       errors: errors,
       hrefs: {
-        'payment-amount': '#payment-amount'
+        'payment-reference': '#payment-reference'
       }
     }) }}
 
@@ -27,19 +27,19 @@
       <input id="csrf" name="csrfToken" type="hidden" value="{{ csrf }}"/>
 
       {{ govukInput({
-        id: "payment-amount",
-        name: "payment-amount",
-        errorMessage: { text: errors['payment-amount']} if errors['payment-amount'] else false,
+        id: "payment-reference",
+        name: "payment-reference",
+        errorMessage: { text: errors['payment-reference']} if errors['payment-reference'] else false,
         label: {
-          text: __p('paymentLinksV2.amount.enterAmountToPay'),
+          text: __p('paymentLinksV2.reference.pleaseEnterYour') + ' ' + product.reference_label,
           classes: "govuk-label--l",
           isPageHeading: true
         },
-        value: amount,
-        prefix: {
-          text: "£"
+        hint: {
+          text: product.reference_hint
         },
-        classes: "govuk-input--width-5",
+        value: reference,
+        classes: "govuk-input--width-20",
         spellcheck: false
       }) }}
       

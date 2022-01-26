@@ -22,7 +22,7 @@ function validateAmountFormValue (amount, res) {
   return errors
 }
 
-module.exports = async function (req, res, next) {
+module.exports = function postAmountPage (req, res, next) {
   const paymentAmount = lodash.get(req.body, PAYMENT_AMOUNT, '')
   const errors = validateAmountFormValue(paymentAmount, res)
 
