@@ -41,7 +41,9 @@
         </div>
         <div class="govuk-header__content">
           <span class="govuk-header__link--service-name">
-            {{serviceName}}
+            {% block headerContent %}
+              {{ serviceName }}
+            {% endblock %}
           </span>
         </div>
       </div>
