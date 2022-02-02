@@ -52,7 +52,6 @@ describe('Amount Page - GET controller', () => {
       res = {}
       controller(req, res)
 
-      sinon.assert.called(responseSpy)
       sinon.assert.calledWith(responseSpy, req, res, 'amount/amount')
 
       const pageData = mockResponses.response.args[0][3]
@@ -71,7 +70,6 @@ describe('Amount Page - GET controller', () => {
       res = {}
       controller(req, res)
 
-      sinon.assert.called(responseSpy)
       sinon.assert.calledWith(responseSpy, req, res, 'amount/amount')
 
       const pageData = mockResponses.response.args[0][3]
@@ -98,7 +96,6 @@ describe('Amount Page - GET controller', () => {
       res = {}
       controller(req, res)
 
-      sinon.assert.called(responseSpy)
       sinon.assert.calledWith(responseSpy, req, res, 'amount/amount')
 
       const pageData = mockResponses.response.args[0][3]
@@ -117,7 +114,6 @@ describe('Amount Page - GET controller', () => {
       res = {}
       controller(req, res)
 
-      sinon.assert.called(responseSpy)
       sinon.assert.calledWith(responseSpy, req, res, 'amount/amount')
 
       const pageData = mockResponses.response.args[0][3]
@@ -143,7 +139,6 @@ describe('Amount Page - GET controller', () => {
       const next = sinon.spy()
       controller(req, res, next)
 
-      sinon.assert.called(next)
       const expectedError = sinon.match.instanceOf(NotFoundError)
         .and(sinon.match.has('message', 'Attempted to access amount page with a product that already has a price.'))
       sinon.assert.calledWith(next, expectedError)

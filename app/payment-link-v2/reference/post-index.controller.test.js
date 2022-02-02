@@ -54,10 +54,7 @@ describe('Reference Page - POST controller', () => {
 
       controller(req, res)
 
-      sinon.assert.called(mockCookie.setSessionVariable)
       sinon.assert.calledWith(mockCookie.setSessionVariable, req, 'referenceNumber', 'valid reference')
-
-      sinon.assert.called(res.redirect)
       sinon.assert.calledWith(res.redirect, '/pay/an-external-id/amount')
     })
 
@@ -79,10 +76,7 @@ describe('Reference Page - POST controller', () => {
 
       controller(req, res)
 
-      sinon.assert.called(mockCookie.setSessionVariable)
       sinon.assert.calledWith(mockCookie.setSessionVariable, req, 'referenceNumber', 'valid reference')
-
-      sinon.assert.called(res.redirect)
       sinon.assert.calledWith(res.redirect, '/pay/an-external-id/confirm')
     })
 
@@ -102,10 +96,7 @@ describe('Reference Page - POST controller', () => {
 
       controller(req, res)
 
-      sinon.assert.called(mockCookie.setSessionVariable)
       sinon.assert.calledWith(mockCookie.setSessionVariable, req, 'referenceNumber', '4242424242424242')
-
-      sinon.assert.called(res.redirect)
       sinon.assert.calledWith(res.redirect, '/pay/an-external-id/reference/confirm')
     })
 
@@ -127,10 +118,7 @@ describe('Reference Page - POST controller', () => {
 
       controller(req, res)
 
-      sinon.assert.called(mockCookie.setSessionVariable)
       sinon.assert.calledWith(mockCookie.setSessionVariable, req, 'referenceNumber', '4242424242424242')
-
-      sinon.assert.called(res.redirect)
       sinon.assert.calledWith(res.redirect, '/pay/an-external-id/reference/confirm')
     })
 
@@ -152,13 +140,11 @@ describe('Reference Page - POST controller', () => {
 
       controller(req, res)
 
-      sinon.assert.called(responseSpy)
       sinon.assert.calledWith(responseSpy, req, res, 'reference/reference')
 
       const pageData = mockResponses.response.args[0][3]
       expect(pageData.backLinkHref).to.equal('/pay/an-external-id')
 
-      sinon.assert.called(res.locals.__p)
       sinon.assert.calledWith(res.locals.__p, 'paymentLinksV2.fieldValidation.enterAReference')
     })
 
@@ -183,13 +169,11 @@ describe('Reference Page - POST controller', () => {
 
       controller(req, res)
 
-      sinon.assert.called(responseSpy)
       sinon.assert.calledWith(responseSpy, req, res, 'reference/reference')
 
       const pageData = mockResponses.response.args[0][3]
       expect(pageData.backLinkHref).to.equal('/pay/an-external-id/confirm')
 
-      sinon.assert.called(res.locals.__p)
       sinon.assert.calledWith(res.locals.__p, 'paymentLinksV2.fieldValidation.referenceCantUseInvalidChars')
     })
   })
@@ -223,10 +207,7 @@ describe('Reference Page - POST controller', () => {
 
       controller(req, res)
 
-      sinon.assert.called(mockCookie.setSessionVariable)
       sinon.assert.calledWith(mockCookie.setSessionVariable, req, 'referenceNumber', 'valid reference')
-
-      sinon.assert.called(res.redirect)
       sinon.assert.calledWith(res.redirect, '/pay/an-external-id/confirm')
     })
   })
