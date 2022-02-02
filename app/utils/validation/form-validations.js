@@ -6,7 +6,10 @@ const MAX_AMOUNT = 100000
 const validationMessageKeys = {
   enterAnAmountInPounds: 'paymentLinksV2.fieldValidation.enterAnAmountInPounds',
   enterAnAmountInTheCorrectFormat: 'paymentLinksV2.fieldValidation.enterAnAmountInTheCorrectFormat',
-  enterAnAmountUnderMaxAmount: 'paymentLinksV2.fieldValidation.enterAnAmountUnderMaxAmount'
+  enterAnAmountUnderMaxAmount: 'paymentLinksV2.fieldValidation.enterAnAmountUnderMaxAmount',
+  enterAReference: 'paymentLinksV2.fieldValidation.enterAReference',
+  referenceMustBeLessThanOrEqual50Chars: 'paymentLinksV2.fieldValidation.referenceMustBeLessThanOrEqual50Chars',
+  referenceCantUseInvalidChars: 'paymentLinksV2.fieldValidation.referenceCantUseInvalidChars'
 }
 
 exports.validationErrors = validationMessageKeys
@@ -23,7 +26,7 @@ function notValidReturnObject (messageKey) {
   }
 }
 
-function isEmpty (value) {
+function isEmptyAmount (value) {
   if (value === '') {
     return validationMessageKeys.enterAnAmountInPounds
   } else {
@@ -46,10 +49,34 @@ function isAboveMaxAmount (value) {
   return false
 }
 
+function isEmptyReference (value) {
+  if (value === '') {
+    return validationMessageKeys.enterAReference
+  } else {
+    return false
+  }
+}
+
+function isReferenceTooLong (value) {
+  if (value.trim().length > 50) {
+    return validationMessageKeys.referenceMustBeLessThanOrEqual50Chars
+  } else {
+    return false
+  }
+}
+
+function isReferenceNaxsiSafe (value) {
+  if (/[<>;:`()"'=|,~[\]]+/g.test(value)) {
+    return validationMessageKeys.referenceCantUseInvalidChars
+  } else {
+    return false
+  }
+}
+
 function validateAmount (amount) {
-  const isEmptyErrorMessageKey = isEmpty(amount)
-  if (isEmptyErrorMessageKey) {
-    return notValidReturnObject(isEmptyErrorMessageKey)
+  const isEmptyAmountErrorMessageKey = isEmptyAmount(amount)
+  if (isEmptyAmountErrorMessageKey) {
+    return notValidReturnObject(isEmptyAmountErrorMessageKey)
   }
 
   const isNotCurrencyErrorMessageKey = isNotCurrency(amount)
@@ -65,6 +92,26 @@ function validateAmount (amount) {
   return validReturnObject
 }
 
+function validateReference (reference) {
+  const isEmptyReferenceErrorMessageKey = isEmptyReference(reference)
+  if (isEmptyReferenceErrorMessageKey) {
+    return notValidReturnObject(isEmptyReferenceErrorMessageKey)
+  }
+
+  const isReferenceTooLongErrorMessageKey = isReferenceTooLong(reference)
+  if (isReferenceTooLongErrorMessageKey) {
+    return notValidReturnObject(isReferenceTooLongErrorMessageKey)
+  }
+
+  const isReferenceNaxsiSafeErrorMessageKey = isReferenceNaxsiSafe(reference)
+  if (isReferenceNaxsiSafeErrorMessageKey) {
+    return notValidReturnObject(isReferenceNaxsiSafeErrorMessageKey)
+  }
+
+  return validReturnObject
+}
+
 module.exports = {
-  validateAmount
+  validateAmount,
+  validateReference
 }

@@ -5,7 +5,7 @@ const { getSessionVariable } = require('../../utils/cookie')
 const { NotFoundError } = require('../../errors')
 const getBackLinkUrl = require('./get-back-link-url')
 
-module.exports = (req, res, next) => {
+module.exports = function getAmountPage (req, res, next) {
   const product = req.product
 
   const data = {

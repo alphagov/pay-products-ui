@@ -17,7 +17,7 @@ const mockResponses = {
 
 let req, res
 
-describe('Amount Page - GET controller', () => {
+describe('Reference Page - GET controller', () => {
   const mockCookie = {
     getSessionVariable: sinon.stub()
   }
@@ -41,8 +41,9 @@ describe('Amount Page - GET controller', () => {
       price: null
     }).getPlain())
 
-    it('when the amount is NOT in the session, then it should display the amount page', () => {
-      mockCookie.getSessionVariable.withArgs(req, 'amount').returns(null)
+    it('when the reference is NOT in the session, then it should display the reference page ' +
+      'and set the back link to the PRODUCT page', () => {
+      mockCookie.getSessionVariable.withArgs(req, 'referenceNumber').returns(null)
 
       req = {
         correlationId: '123',
@@ -53,61 +54,15 @@ describe('Amount Page - GET controller', () => {
       controller(req, res)
 
       sinon.assert.called(responseSpy)
-      sinon.assert.calledWith(responseSpy, req, res, 'amount/amount')
-
-      const pageData = mockResponses.response.args[0][3]
-      expect(pageData.backLinkHref).to.equal('/pay/an-external-id/reference')
-    })
-
-    it('when the amount is in the session, then it should display that amount to 2 decimal points' +
-      'and set the back link to the CONFIRM page', () => {
-      mockCookie.getSessionVariable.returns(1000)
-
-      req = {
-        correlationId: '123',
-        product,
-        service
-      }
-      res = {}
-      controller(req, res)
-
-      sinon.assert.called(responseSpy)
-      sinon.assert.calledWith(responseSpy, req, res, 'amount/amount')
-
-      const pageData = mockResponses.response.args[0][3]
-      expect(pageData.backLinkHref).to.equal('/pay/an-external-id/confirm')
-      expect(pageData.productAmount).to.equal('10.00')
-    })
-  })
-
-  describe('when product.reference_enabled=false', () => {
-    const product = new Product(productFixtures.validCreateProductResponse({
-      type: 'ADHOC',
-      reference_enabled: false,
-      price: null
-    }).getPlain())
-
-    it('when the amount is NOT in the session, then it should display the amount page', () => {
-      mockCookie.getSessionVariable.withArgs(req, 'amount').onFirstCall().returns(null)
-
-      req = {
-        correlationId: '123',
-        product,
-        service
-      }
-      res = {}
-      controller(req, res)
-
-      sinon.assert.called(responseSpy)
-      sinon.assert.calledWith(responseSpy, req, res, 'amount/amount')
+      sinon.assert.calledWith(responseSpy, req, res, 'reference/reference')
 
       const pageData = mockResponses.response.args[0][3]
       expect(pageData.backLinkHref).to.equal('/pay/an-external-id')
     })
 
-    it('when the amount is in the session, then it should display that amount to 2 decimal points' +
+    it('when the reference is in the session, then it should display the reference page ' +
       'and set the back link to the CONFIRM page', () => {
-      mockCookie.getSessionVariable.returns(1000)
+      mockCookie.getSessionVariable.returns('refrence test value')
 
       req = {
         correlationId: '123',
@@ -118,15 +73,15 @@ describe('Amount Page - GET controller', () => {
       controller(req, res)
 
       sinon.assert.called(responseSpy)
-      sinon.assert.calledWith(responseSpy, req, res, 'amount/amount')
+      sinon.assert.calledWith(responseSpy, req, res, 'reference/reference')
 
       const pageData = mockResponses.response.args[0][3]
       expect(pageData.backLinkHref).to.equal('/pay/an-external-id/confirm')
-      expect(pageData.productAmount).to.equal('10.00')
+      expect(pageData.referenceNumber).to.equal('refrence test value')
     })
   })
 
-  describe('when there is already an amount in the product', () => {
+  describe('when there is already an reference in the product', () => {
     const product = new Product(productFixtures.validCreateProductResponse({
       type: 'ADHOC',
       reference_enabled: false,
@@ -143,9 +98,9 @@ describe('Amount Page - GET controller', () => {
       const next = sinon.spy()
       controller(req, res, next)
 
-      sinon.assert.called(next)
       const expectedError = sinon.match.instanceOf(NotFoundError)
-        .and(sinon.match.has('message', 'Attempted to access amount page with a product that already has a price.'))
+        .and(sinon.match.has('message', 'Attempted to access reference page with a product that auto-generates references.'))
+
       sinon.assert.calledWith(next, expectedError)
     })
   })
