@@ -53,7 +53,6 @@ describe('Reference Page - GET controller', () => {
       res = {}
       controller(req, res)
 
-      sinon.assert.called(responseSpy)
       sinon.assert.calledWith(responseSpy, req, res, 'reference/reference')
 
       const pageData = mockResponses.response.args[0][3]
@@ -72,7 +71,6 @@ describe('Reference Page - GET controller', () => {
       res = {}
       controller(req, res)
 
-      sinon.assert.called(responseSpy)
       sinon.assert.calledWith(responseSpy, req, res, 'reference/reference')
 
       const pageData = mockResponses.response.args[0][3]

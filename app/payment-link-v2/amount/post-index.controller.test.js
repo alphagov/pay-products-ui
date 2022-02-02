@@ -53,11 +53,8 @@ describe('Amount Page - POST controller', () => {
 
     controller(req, res)
 
-    sinon.assert.called(mockCookie.setSessionVariable)
     sinon.assert.calledWith(mockCookie.setSessionVariable, req, 'paymentAmount', '1000')
-
-    sinon.assert.called(res.redirect)
-    expect(res.redirect.args[0][0]).to.equal('/pay/an-external-id/confirm')
+    sinon.assert.calledWith(res.redirect, '/pay/an-external-id/confirm')
   })
 
   it('when an empty amount is entered, it should display an error message and the back link correctly', () => {
@@ -78,13 +75,11 @@ describe('Amount Page - POST controller', () => {
 
     controller(req, res)
 
-    sinon.assert.called(responseSpy)
     sinon.assert.calledWith(responseSpy, req, res, 'amount/amount')
 
     const pageData = mockResponses.response.args[0][3]
     expect(pageData.backLinkHref).to.equal('/pay/an-external-id/reference')
 
-    sinon.assert.called(res.locals.__p)
     sinon.assert.calledWith(res.locals.__p, 'paymentLinksV2.fieldValidation.enterAnAmountInPounds')
   })
 
@@ -109,13 +104,11 @@ describe('Amount Page - POST controller', () => {
 
     controller(req, res)
 
-    sinon.assert.called(responseSpy)
     sinon.assert.calledWith(responseSpy, req, res, 'amount/amount')
 
     const pageData = mockResponses.response.args[0][3]
     expect(pageData.backLinkHref).to.equal('/pay/an-external-id/confirm')
 
-    sinon.assert.called(res.locals.__p)
     sinon.assert.calledWith(res.locals.__p, 'paymentLinksV2.fieldValidation.enterAnAmountInTheCorrectFormat')
   })
 })
