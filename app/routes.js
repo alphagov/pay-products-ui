@@ -14,9 +14,9 @@ const completeCtrl = require('./controllers/payment-complete.controller')
 const failedCtrl = require('./controllers/demo-payment/payment-failed.controller')
 const successCtrl = require('./controllers/demo-payment/payment-success.controller')
 const adhocPaymentCtrl = require('./controllers/adhoc-payment')
-const amountCtrl = require('./payment-link-v2/amount')
-const referenceCtrl = require('./payment-link-v2/reference')
+const amountCtrl = require('./payment-link-v2/amount/amount.controller')
 const productReferenceCtrl = require('./controllers/product-reference')
+const referenceCtrl = require('./payment-link-v2/reference/reference.controller')
 
 // Middleware
 const { validateAndRefreshCsrf, ensureSessionHasCsrfSecret } = require('./middleware/csrf')
@@ -66,12 +66,12 @@ module.exports.bind = function (app) {
   app.post(pay.product, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, adhocPaymentCtrl.postIndex)
 
   // payment links amount
-  app.get(paymentLinksV2.amount, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, amountCtrl.index)
-  app.post(paymentLinksV2.amount, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, amountCtrl.postIndex)
+  app.get(paymentLinksV2.amount, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, amountCtrl.getPage)
+  app.post(paymentLinksV2.amount, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, amountCtrl.postPage)
 
   // payment links reference
-  app.get(paymentLinksV2.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceCtrl.index)
-  app.post(paymentLinksV2.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceCtrl.postIndex)
+  app.get(paymentLinksV2.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceCtrl.getPage)
+  app.post(paymentLinksV2.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceCtrl.postPage)
 
   // security.txt — https://gds-way.cloudapps.digital/standards/vulnerability-disclosure.html
   const securitytxt = 'https://vdp.cabinetoffice.gov.uk/.well-known/security.txt'
