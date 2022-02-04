@@ -2,13 +2,14 @@
 
 const lodash = require('lodash')
 
+const paths = require('../../paths')
 const { response } = require('../../utils/response')
 const { getSessionVariable } = require('../../utils/cookie')
-const paths = require('../../paths')
+const { NotFoundError } = require('../../errors')
+const getBackLinkUrl = require('./get-back-link-url')
 const { validateReference } = require('../../utils/validation/form-validations')
 const replaceParamsInPath = require('../../utils/replace-params-in-path')
 const { setSessionVariable } = require('../../utils/cookie')
-const getBackLinkUrl = require('./get-back-link-url')
 const isAPotentialPan = require('./is-a-potential-pan')
 
 const PAYMENT_REFERENCE = 'payment-reference'
@@ -33,7 +34,32 @@ function getNextPageUrl (productPrice, sessionAmount, reference) {
   }
 }
 
-module.exports = function postReferencePage (req, res, next) {
+function getPage (req, res, next) {
+  const product = req.product
+
+  const data = {
+    productExternalId: product.externalId,
+    productName: product.name,
+    paymentReferenceLabel: product.reference_label,
+    paymentReferenceHint: product.reference_hint
+  }
+
+  if (!product.reference_enabled) {
+    return next(new NotFoundError('Attempted to access reference page with a product that auto-generates references.'))
+  }
+
+  const sessionReferenceNumber = getSessionVariable(req, 'referenceNumber')
+
+  data.backLinkHref = getBackLinkUrl(sessionReferenceNumber, product)
+
+  if (sessionReferenceNumber) {
+    data.referenceNumber = sessionReferenceNumber
+  }
+
+  return response(req, res, 'reference/reference', data)
+}
+
+function postPage (req, res, next) {
   const paymentReference = lodash.get(req.body, PAYMENT_REFERENCE, '')
   const errors = validateReferenceFormValue(paymentReference, res)
 
@@ -60,4 +86,9 @@ module.exports = function postReferencePage (req, res, next) {
   setSessionVariable(req, 'referenceNumber', paymentReference)
 
   return res.redirect(replaceParamsInPath(getNextPageUrl(product.price, sessionAmount, paymentReference), product.externalId))
+}
+
+module.exports = {
+  getPage,
+  postPage
 }
