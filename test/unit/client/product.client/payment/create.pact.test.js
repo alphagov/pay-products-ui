@@ -1,14 +1,13 @@
 'use strict'
 
-// NPM dependencies
 const path = require('path')
 const { Pact } = require('@pact-foundation/pact')
 const { expect } = require('chai')
 const proxyquire = require('proxyquire')
 
-// Custom dependencies
-const PactInteractionBuilder = require('../../../../fixtures/pact-interaction-builder').PactInteractionBuilder
+const { PactInteractionBuilder } = require('../../../../test-helpers/pact/pact-interaction-builder')
 const productFixtures = require('../../../../fixtures/product.fixtures')
+const { pactify } = require('../../../../test-helpers/pact/pact-base')()
 
 // Constants
 const PRODUCTS_RESOURCE = '/v1/api/products'
@@ -50,7 +49,7 @@ describe('products client - creating a new payment', () => {
           .withUponReceiving('a valid create charge create request')
           .withMethod('POST')
           .withStatusCode(201)
-          .withResponseBody(response.getPactified())
+          .withResponseBody(pactify(response))
           .build()
       )
         .then(() => productsClient.payment.create(productExternalId))
@@ -62,7 +61,7 @@ describe('products client - creating a new payment', () => {
     })
 
     it('should create a new product', () => {
-      const plainResponse = response.getPlain()
+      const plainResponse = response
       expect(result.productExternalId).to.equal(plainResponse.product_external_id).and.to.equal(productExternalId)
       expect(result.externalId).to.equal(plainResponse.external_id)
       expect(result.status).to.equal(plainResponse.status)
@@ -93,7 +92,7 @@ describe('products client - creating a new payment', () => {
           .withMethod('POST')
           .withStatusCode(201)
           .withRequestBody({ price: priceOverride })
-          .withResponseBody(response.getPactified())
+          .withResponseBody(pactify(response))
           .build()
       )
         .then(() => productsClient.payment.create(productExternalId, priceOverride))
@@ -105,7 +104,7 @@ describe('products client - creating a new payment', () => {
     })
 
     it('should create a new product with the overridden price', () => {
-      const plainResponse = response.getPlain()
+      const plainResponse = response
       expect(result.productExternalId).to.equal(plainResponse.product_external_id).and.to.equal(productExternalId)
       expect(result.externalId).to.equal(plainResponse.external_id)
       expect(result.status).to.equal(plainResponse.status)
@@ -133,7 +132,7 @@ describe('products client - creating a new payment', () => {
           .withUponReceiving('a valid create charge create request with reference')
           .withMethod('POST')
           .withStatusCode(201)
-          .withResponseBody(response.getPactified())
+          .withResponseBody(pactify(response))
           .build()
       )
         .then(() => productsClient.payment.create(productExternalId, testReferenceNumber))
@@ -145,7 +144,7 @@ describe('products client - creating a new payment', () => {
     })
 
     it('should create a new product', () => {
-      const plainResponse = response.getPlain()
+      const plainResponse = response
       expect(result.productExternalId).to.equal(plainResponse.product_external_id).and.to.equal(productExternalId)
       expect(result.externalId).to.equal(plainResponse.external_id)
       expect(result.status).to.equal(plainResponse.status)

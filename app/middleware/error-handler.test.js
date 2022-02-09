@@ -42,7 +42,7 @@ describe('Error handler middleware', () => {
     sinon.assert.calledOnce(responseSpy)
     sinon.assert.calledWith(responseSpy, req, res, '404')
 
-    const expectedMessage = `[1234] NotFoundError handled: 404 test error. Rendering 404 page`
+    const expectedMessage = '[1234] NotFoundError handled: 404 test error. Rendering 404 page'
     sinon.assert.calledWith(infoLoggerSpy, expectedMessage)
   })
 })

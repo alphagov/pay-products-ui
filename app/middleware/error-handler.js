@@ -7,7 +7,6 @@ const logger = require('../utils/logger')(__filename)
 
 module.exports = function (err, req, res, next) {
   if (err instanceof NotFoundError) {
-
     logger.info(`[${req.correlationId}] NotFoundError handled: ${err.message}. Rendering 404 page`)
     res.status(404)
     return response(req, res, '404')

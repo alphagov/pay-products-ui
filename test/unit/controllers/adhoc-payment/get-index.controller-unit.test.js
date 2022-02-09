@@ -31,8 +31,8 @@ describe('get adhoc controller with reference enabled', () => {
   const product = productFixtures.validCreateProductResponse({
     type: 'ADHOC',
     reference_enabled: true
-  }).getPlain()
-  const service = new Service(serviceFixtures.validServiceResponse().getPlain())
+  })
+  const service = new Service(serviceFixtures.validServiceResponse())
   describe('when reference set ', () => {
     before(() => {
       res = {}

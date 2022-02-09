@@ -1,7 +1,7 @@
 const { expect } = require('chai')
 const nock = require('nock')
 
-const captcha =  require('../../../app/utils/captcha')
+const captcha = require('../../../app/utils/captcha')
 
 describe('CAPTCHA verification utility', () => {
   it('rejects non-success HTTP responses', async () => {
@@ -19,7 +19,7 @@ describe('CAPTCHA verification utility', () => {
     nock('https://www.recaptcha.net')
       .post('/recaptcha/api/siteverify', (body) => {
         // Google verify endpoint expects POST body with multipart/form-data content type
-        return [ 'secret', '8Pf-i72rjkwfmjwfi72rfkjwefmjwef', 'response', token ].every((expectedValue) => body.includes(expectedValue))
+        return ['secret', '8Pf-i72rjkwfmjwfi72rfkjwefmjwef', 'response', token].every((expectedValue) => body.includes(expectedValue))
       })
       .reply(200, { success: true })
     const validResponseWithExpectedBody = await captcha.verifyCAPTCHAToken(token)

@@ -7,7 +7,7 @@ const { expect } = require('chai')
 const proxyquire = require('proxyquire')
 
 // Custom dependencies
-const PactInteractionBuilder = require('../../../../fixtures/pact-interaction-builder').PactInteractionBuilder
+const PactInteractionBuilder = require('../../../../test-helpers/pact/pact-interaction-builder').PactInteractionBuilder
 
 // Constants
 const PRODUCT_RESOURCE = '/v1/api/products'

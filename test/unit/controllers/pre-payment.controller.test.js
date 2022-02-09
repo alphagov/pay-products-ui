@@ -23,9 +23,9 @@ describe('pre payment controller', function () {
     describe(`when the payment type is ${type}`, () => {
       describe('and payment creation is successful', () => {
         before(done => {
-          product = productFixtures.validCreateProductResponse({ type: type }).getPlain()
-          payment = productFixtures.validCreatePaymentResponse().getPlain()
-          service = serviceFixtures.validServiceResponse().getPlain()
+          product = productFixtures.validCreateProductResponse({ type: type })
+          payment = productFixtures.validCreatePaymentResponse()
+          service = serviceFixtures.validServiceResponse()
           nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
           nock(config.PRODUCTS_URL).post(`/v1/api/products/${product.external_id}/payments`).reply(200, payment)
           nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
@@ -46,8 +46,8 @@ describe('pre payment controller', function () {
       })
       describe('and payment creation fails', () => {
         before(done => {
-          product = productFixtures.validCreateProductResponse({ type: type }).getPlain()
-          service = serviceFixtures.validServiceResponse().getPlain()
+          product = productFixtures.validCreateProductResponse({ type: type })
+          service = serviceFixtures.validServiceResponse()
           nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
           nock(config.PRODUCTS_URL).post(`/v1/api/products/${product.external_id}/payments`).reply(400)
           nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
@@ -70,7 +70,7 @@ describe('pre payment controller', function () {
       })
       describe('and the product is not resolved', () => {
         before(done => {
-          product = productFixtures.validCreateProductResponse({ type: type }).getPlain()
+          product = productFixtures.validCreateProductResponse({ type: type })
           nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(404)
           supertest(createAppWithSession(getApp()))
             .get(paths.pay.product.replace(':productExternalId', product.external_id))
@@ -96,8 +96,8 @@ describe('pre payment controller', function () {
   adHocAgentInitiatedMoto.forEach((type) => {
     describe(`when the payment type is ${type} and reference is disabled`, () => {
       before(done => {
-        product = productFixtures.validCreateProductResponse({ type: type, name: 'A Product Name' }).getPlain()
-        service = serviceFixtures.validServiceResponse().getPlain()
+        product = productFixtures.validCreateProductResponse({ type: type, name: 'A Product Name' })
+        service = serviceFixtures.validServiceResponse()
         nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
@@ -125,8 +125,8 @@ describe('pre payment controller', function () {
           name: 'Featured Product',
           reference_enabled: 'true'
         }
-        product = productFixtures.validCreateProductResponse(opts).getPlain()
-        service = serviceFixtures.validServiceResponse().getPlain()
+        product = productFixtures.validCreateProductResponse(opts)
+        service = serviceFixtures.validServiceResponse()
         nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
@@ -149,8 +149,8 @@ describe('pre payment controller', function () {
 
   describe('when the payment type is UNKNOWN', () => {
     before(done => {
-      product = productFixtures.validCreateProductResponse({ type: 'UNKNOWN' }).getPlain()
-      service = serviceFixtures.validServiceResponse().getPlain()
+      product = productFixtures.validCreateProductResponse({ type: 'UNKNOWN' })
+      service = serviceFixtures.validServiceResponse()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
       nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 

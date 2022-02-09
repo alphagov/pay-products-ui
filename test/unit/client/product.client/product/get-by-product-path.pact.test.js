@@ -1,14 +1,13 @@
 'use strict'
 
-// NPM dependencies
 const path = require('path')
 const { Pact } = require('@pact-foundation/pact')
 const { expect } = require('chai')
 const proxyquire = require('proxyquire')
 
-// Custom dependencies
-const PactInteractionBuilder = require('../../../../fixtures/pact-interaction-builder').PactInteractionBuilder
+const { PactInteractionBuilder } = require('../../../../test-helpers/pact/pact-interaction-builder')
 const productFixtures = require('../../../../fixtures/product.fixtures')
+const { pactify } = require('../../../../test-helpers/pact/pact-base')()
 
 // Constants
 const PRODUCT_RESOURCE = '/v1/api/products'
@@ -66,7 +65,7 @@ describe('products client - find a product by it\'s product path', function () {
           .withState('a product with path service-name-path/product-name-path exists')
           .withMethod('GET')
           .withStatusCode(200)
-          .withResponseBody(response.getPactified())
+          .withResponseBody(pactify(response))
           .build()
       )
         .then(() => productsClient.product.getByProductPath(serviceNamePath, productNamePath))
@@ -78,7 +77,7 @@ describe('products client - find a product by it\'s product path', function () {
     })
 
     it('should find an existing product', () => {
-      const plainResponse = response.getPlain()
+      const plainResponse = response
       expect(result.externalId).to.equal(productExternalId)
       expect(result.name).to.exist.and.equal(plainResponse.name)
       expect(result.description).to.exist.and.equal(plainResponse.description)

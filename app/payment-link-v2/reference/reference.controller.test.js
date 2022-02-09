@@ -28,7 +28,7 @@ describe('Reference Page Controller', () => {
     '../../utils/cookie': mockCookie
   })
 
-  const service = new Service(serviceFixtures.validServiceResponse().getPlain())
+  const service = new Service(serviceFixtures.validServiceResponse())
 
   beforeEach(() => {
     mockCookie.getSessionVariable.reset()
@@ -42,7 +42,7 @@ describe('Reference Page Controller', () => {
         type: 'ADHOC',
         reference_enabled: true,
         price: null
-      }).getPlain())
+      }))
 
       it('when the reference is NOT in the session, then it should display the reference page ' +
         'and set the back link to the PRODUCT page', () => {
@@ -87,7 +87,7 @@ describe('Reference Page Controller', () => {
         type: 'ADHOC',
         reference_enabled: false,
         price: 1000
-      }).getPlain())
+      }))
 
       it('then it should display an 404 page', () => {
         req = {
@@ -113,7 +113,7 @@ describe('Reference Page Controller', () => {
         type: 'ADHOC',
         reference_enabled: true,
         price: null
-      }).getPlain())
+      }))
 
       it('when a valid reference is entered, it should save the reference to the session and ' +
         'redirect to the amount page', () => {
@@ -134,11 +134,11 @@ describe('Reference Page Controller', () => {
         sinon.assert.calledWith(mockCookie.setSessionVariable, req, 'referenceNumber', 'valid reference')
         sinon.assert.calledWith(res.redirect, '/pay/an-external-id/amount')
       })
-  
+
       it('when an valid reference is entered and an AMOUNT is already saved to the session, it should  ' +
       'redirect to the CONFIRM page', () => {
         mockCookie.getSessionVariable.withArgs(req, 'amount').returns(1000)
-  
+
         req = {
           correlationId: '123',
           product,
@@ -146,17 +146,17 @@ describe('Reference Page Controller', () => {
             'payment-reference': 'valid reference'
           }
         }
-  
+
         res = {
           redirect: sinon.spy()
         }
-  
+
         controller.postPage(req, res)
-  
+
         sinon.assert.calledWith(mockCookie.setSessionVariable, req, 'referenceNumber', 'valid reference')
         sinon.assert.calledWith(res.redirect, '/pay/an-external-id/confirm')
       })
-  
+
       it('when reference is a potential card number, it should  ' +
       'redirect to the REFERENCE CONFIRM page', () => {
         req = {
@@ -166,21 +166,21 @@ describe('Reference Page Controller', () => {
             'payment-reference': '4242424242424242'
           }
         }
-  
+
         res = {
           redirect: sinon.spy()
         }
-  
+
         controller.postPage(req, res)
-  
+
         sinon.assert.calledWith(mockCookie.setSessionVariable, req, 'referenceNumber', '4242424242424242')
         sinon.assert.calledWith(res.redirect, '/pay/an-external-id/reference/confirm')
       })
-  
+
       it('when reference is a potential card number and there is an amount in the session, it should  ' +
       'redirect to the REFERENCE CONFIRM page', () => {
         mockCookie.getSessionVariable.withArgs(req, 'amount').returns(1000)
-  
+
         req = {
           correlationId: '123',
           product,
@@ -188,17 +188,17 @@ describe('Reference Page Controller', () => {
             'payment-reference': '4242424242424242'
           }
         }
-  
+
         res = {
           redirect: sinon.spy()
         }
-  
+
         controller.postPage(req, res)
-  
+
         sinon.assert.calledWith(mockCookie.setSessionVariable, req, 'referenceNumber', '4242424242424242')
         sinon.assert.calledWith(res.redirect, '/pay/an-external-id/reference/confirm')
       })
-  
+
       it('when an empty reference is entered, it should display an error message and the back link correctly', () => {
         req = {
           correlationId: '123',
@@ -207,28 +207,28 @@ describe('Reference Page Controller', () => {
             'payment-reference': ''
           }
         }
-  
+
         res = {
           redirect: sinon.spy(),
           locals: {
             __p: sinon.spy()
           }
         }
-  
+
         controller.postPage(req, res)
-  
+
         sinon.assert.calledWith(responseSpy, req, res, 'reference/reference')
-  
+
         const pageData = mockResponses.response.args[0][3]
         expect(pageData.backLinkHref).to.equal('/pay/an-external-id')
-  
+
         sinon.assert.calledWith(res.locals.__p, 'paymentLinksV2.fieldValidation.enterAReference')
       })
-  
+
       it('when an invalid reference is entered and a reference is already saved to the session, it should display an error ' +
       'message and set the back link to the CONFIRM page', () => {
         mockCookie.getSessionVariable.returns('a valid refererence')
-  
+
         req = {
           correlationId: '123',
           product,
@@ -236,14 +236,14 @@ describe('Reference Page Controller', () => {
             'payment-reference': 'reference with invalid characters <>'
           }
         }
-  
+
         res = {
           redirect: sinon.spy(),
           locals: {
             __p: sinon.spy()
           }
         }
-  
+
         controller.postPage(req, res)
 
         sinon.assert.calledWith(responseSpy, req, res, 'reference/reference')
@@ -260,7 +260,7 @@ describe('Reference Page Controller', () => {
         type: 'ADHOC',
         reference_enabled: true,
         price: 1000
-      }).getPlain())
+      }))
 
       it('when a valid reference is entered, it should save the reference to the session and ' +
         'redirect to the confirm page', () => {

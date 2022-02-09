@@ -1,14 +1,13 @@
 'use strict'
 
-// NPM dependencies
 const path = require('path')
 const { Pact } = require('@pact-foundation/pact')
 const { expect } = require('chai')
 const proxyquire = require('proxyquire')
 
-// Custom dependencies
-const PactInteractionBuilder = require('../../../../fixtures/pact-interaction-builder').PactInteractionBuilder
+const { PactInteractionBuilder } = require('../../../../test-helpers/pact/pact-interaction-builder')
 const productFixtures = require('../../../../fixtures/product.fixtures')
+const { pactify } = require('../../../../test-helpers/pact/pact-base')()
 
 // Constants
 const API_RESOURCE = '/v1/api'
@@ -54,7 +53,7 @@ describe('products client - find products associated with a particular gateway a
         .withState('three products with gateway account id 42 exist')
         .withMethod('GET')
         .withStatusCode(200)
-        .withResponseBody(response.map(item => item.getPactified()))
+        .withResponseBody(response.map(item => pactify(item)))
         .build()
       provider.addInteraction(interaction)
         .then(() => productsClient.product.getByGatewayAccountId(gatewayAccountId))
@@ -66,7 +65,7 @@ describe('products client - find products associated with a particular gateway a
     })
 
     it('should find an existing products', () => {
-      const plainResponse = response.map(item => item.getPlain())
+      const plainResponse = response.map(item => item)
       expect(result.length).to.equal(3)
       result.forEach((product, index) => {
         expect(product.gatewayAccountId).to.equal(gatewayAccountId)
