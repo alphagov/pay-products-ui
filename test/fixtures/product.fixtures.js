@@ -1,13 +1,6 @@
 'use strict'
-const pactBase = require('./pact-base')
-
-// Global setup
-const pactProducts = pactBase()
 
 module.exports = {
-  pactifyRandomData: (opts = {}) => {
-    pactProducts.pactify(opts)
-  },
 
   validCreateProductRequest: (opts = {}) => {
     const data = {
@@ -15,18 +8,20 @@ module.exports = {
       name: opts.name || 'A Product Name',
       price: opts.price || 1000
     }
-    if (opts.description) data.description = opts.description
-    if (opts.returnUrl) data.return_url = opts.returnUrl
-    if (opts.service_name_path) data.service_name_path = opts.service_name_path
-    if (opts.product_name_path) data.product_name_path = opts.product_name_path
-    return {
-      getPactified: () => {
-        return pactProducts.pactify(data)
-      },
-      getPlain: () => {
-        return data
-      }
+    if (opts.description) {
+      data.description = opts.description
     }
+    if (opts.returnUrl) {
+      data.return_url = opts.returnUrl
+    }
+    if (opts.service_name_path) {
+      data.service_name_path = opts.service_name_pat
+    }
+    if (opts.product_name_path) {
+      data.product_name_path = opts.product_name_path
+    }
+
+    return data
   },
 
   validCreatePaymentResponse: (opts = {}) => {
@@ -52,14 +47,7 @@ module.exports = {
       }]
     }
 
-    return {
-      getPactified: () => {
-        return pactProducts.pactify(data)
-      },
-      getPlain: () => {
-        return data
-      }
-    }
+    return data
   },
 
   validCreateProductResponse: (opts = {}) => {
@@ -112,13 +100,6 @@ module.exports = {
       })
     }
 
-    return {
-      getPactified: () => {
-        return pactProducts.pactify(data)
-      },
-      getPlain: () => {
-        return data
-      }
-    }
+    return data
   }
 }

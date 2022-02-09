@@ -1,14 +1,13 @@
 'use strict'
 
-// NPM dependencies
 const path = require('path')
 const { Pact } = require('@pact-foundation/pact')
 const { expect } = require('chai')
 const proxyquire = require('proxyquire')
 
-// Custom dependencies
-const PactInteractionBuilder = require('../../../fixtures/pact-interaction-builder').PactInteractionBuilder
+const { PactInteractionBuilder } = require('../../../test-helpers/pact/pact-interaction-builder')
 const serviceFixtures = require('../../../fixtures/service.fixtures')
+const { pactify } = require('../../../test-helpers/pact/pact-base')()
 
 const ADMINUSERS_RESOURCE = '/v1/api/services'
 const port = Math.floor(Math.random() * 48127) + 1024
@@ -58,7 +57,7 @@ describe('adminusers client - find a service associated with a particular gatewa
         .withState('a service exists with custom branding and a gateway account with id 111')
         .withMethod('GET')
         .withStatusCode(200)
-        .withResponseBody(response.getPactified())
+        .withResponseBody(pactify(response))
         .build()
       provider.addInteraction(interaction)
         .then(() => adminusersClient.getServiceByGatewayAccountId(gatewayAccountId, 'correlation_id'), done)
@@ -70,7 +69,7 @@ describe('adminusers client - find a service associated with a particular gatewa
     })
 
     it('should find a service', () => {
-      const plainResponse = response.getPlain()
+      const plainResponse = response
       expect(result.serviceName.en).to.equal(plainResponse.service_name.en)
       expect(result.name).to.equal(plainResponse.name)
       expect(result.externalId).to.equal(plainResponse.external_id)

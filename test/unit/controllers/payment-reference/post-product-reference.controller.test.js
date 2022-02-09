@@ -24,8 +24,8 @@ describe('product reference post controller', function () {
         type: 'ADHOC',
         reference_enabled: true,
         reference_label: 'Test reference label'
-      }).getPlain()
-      service = serviceFixtures.validServiceResponse().getPlain()
+      })
+      service = serviceFixtures.validServiceResponse()
       const newReference = 'I_AM_NEW'
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
       nock(config.PRODUCTS_URL).get(`/v1/api/payments/${product.gateway_account_id}/${newReference}`).reply(404)
@@ -64,8 +64,8 @@ describe('product reference post controller', function () {
         type: 'ADHOC',
         reference_enabled: true,
         reference_label: 'Test reference label'
-      }).getPlain()
-      service = serviceFixtures.validServiceResponse().getPlain()
+      })
+      service = serviceFixtures.validServiceResponse()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
       nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
@@ -100,8 +100,8 @@ describe('product reference post controller', function () {
         type: 'ADHOC',
         reference_enabled: true,
         reference_label: 'Test reference label'
-      }).getPlain()
-      service = serviceFixtures.validServiceResponse().getPlain()
+      })
+      service = serviceFixtures.validServiceResponse()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
       nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
@@ -137,8 +137,8 @@ describe('product reference post controller', function () {
         type: 'ADHOC',
         reference_enabled: true,
         reference_label: 'Test reference label'
-      }).getPlain()
-      service = serviceFixtures.validServiceResponse().getPlain()
+      })
+      service = serviceFixtures.validServiceResponse()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
       nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
@@ -175,8 +175,8 @@ describe('product reference post controller', function () {
         type: 'ADHOC',
         reference_enabled: true,
         reference_label: 'Test reference label'
-      }).getPlain()
-      service = serviceFixtures.validServiceResponse().getPlain()
+      })
+      service = serviceFixtures.validServiceResponse()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
       nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
@@ -213,24 +213,24 @@ describe('product reference post controller', function () {
         type: 'ADHOC',
         reference_enabled: true,
         reference_label: 'Test reference label'
-      }).getPlain()
-      service = serviceFixtures.validServiceResponse().getPlain()
+      })
+      service = serviceFixtures.validServiceResponse()
       const newReference = '4242424242424242'
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
       nock(config.PRODUCTS_URL).get(`/v1/api/payments/${product.gateway_account_id}/${newReference}`).reply(404)
       nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
       supertest(createAppWithSession(getApp()))
-          .post(paths.pay.reference.replace(':productExternalId', product.external_id))
-          .send({
-            'payment-reference': newReference,
-            csrfToken: csrf().create('123')
-          })
-          .end((err, res) => {
-            response = res
-            $ = cheerio.load(res.text || '')
-            done(err)
-          })
+        .post(paths.pay.reference.replace(':productExternalId', product.external_id))
+        .send({
+          'payment-reference': newReference,
+          csrfToken: csrf().create('123')
+        })
+        .end((err, res) => {
+          response = res
+          $ = cheerio.load(res.text || '')
+          done(err)
+        })
     })
 
     it('should respond with code: 200 OK', () => {
@@ -256,25 +256,25 @@ describe('product reference post controller', function () {
         type: 'ADHOC',
         reference_enabled: true,
         reference_label: 'Test reference label'
-      }).getPlain()
-      service = serviceFixtures.validServiceResponse().getPlain()
+      })
+      service = serviceFixtures.validServiceResponse()
       const newReference = '4242424242424242'
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
       nock(config.PRODUCTS_URL).get(`/v1/api/payments/${product.gateway_account_id}/${newReference}`).reply(404)
       nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
       supertest(createAppWithSession(getApp()))
-          .post(paths.pay.reference.replace(':productExternalId', product.external_id))
-          .send({
-            'payment-reference': newReference,
-            'payment-reference-confirmed': true,
-            csrfToken: csrf().create('123')
-          })
-          .end((err, res) => {
-            response = res
-            $ = cheerio.load(res.text || '')
-            done(err)
-          })
+        .post(paths.pay.reference.replace(':productExternalId', product.external_id))
+        .send({
+          'payment-reference': newReference,
+          'payment-reference-confirmed': true,
+          csrfToken: csrf().create('123')
+        })
+        .end((err, res) => {
+          response = res
+          $ = cheerio.load(res.text || '')
+          done(err)
+        })
     })
 
     it('should respond with code: 200 OK', () => {
@@ -285,5 +285,4 @@ describe('product reference post controller', function () {
       expect($('form').attr('action')).to.equal(`/pay/${product.external_id}`)
     })
   })
-
 })

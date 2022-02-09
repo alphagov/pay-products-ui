@@ -35,7 +35,7 @@ describe('Amount Page Controller', () => {
   })
 
   describe('getPage', () => {
-    const service = new Service(serviceFixtures.validServiceResponse().getPlain())
+    const service = new Service(serviceFixtures.validServiceResponse())
 
     beforeEach(() => {
       mockCookie.getSessionVariable.reset()
@@ -47,7 +47,7 @@ describe('Amount Page Controller', () => {
         type: 'ADHOC',
         reference_enabled: true,
         price: null
-      }).getPlain())
+      }))
 
       it('when the amount is NOT in the session, then it should display the amount page', () => {
         mockCookie.getSessionVariable.withArgs(req, 'amount').returns(null)
@@ -91,7 +91,7 @@ describe('Amount Page Controller', () => {
         type: 'ADHOC',
         reference_enabled: false,
         price: null
-      }).getPlain())
+      }))
 
       it('when the amount is NOT in the session, then it should display the amount page', () => {
         mockCookie.getSessionVariable.withArgs(req, 'amount').onFirstCall().returns(null)
@@ -135,7 +135,7 @@ describe('Amount Page Controller', () => {
         type: 'ADHOC',
         reference_enabled: false,
         price: 1000
-      }).getPlain())
+      }))
 
       it('then it should display an 404 page', () => {
         req = {
@@ -159,7 +159,7 @@ describe('Amount Page Controller', () => {
       type: 'ADHOC',
       reference_enabled: true,
       price: null
-    }).getPlain())
+    }))
 
     it('when a valid amount is entered, it should save the amount to the session and ' +
       'redirect to the confirm page', () => {

@@ -28,13 +28,13 @@ describe('adhoc payment index controller', function () {
         type: 'ADHOC',
         product_name: 'Super duper product',
         description: 'Super duper product description'
-      }).getPlain()
+      })
       service = serviceFixtures.validServiceResponse({
         gateway_account_ids: [product.gateway_account_id],
         service_name: {
           en: 'Super GOV service'
         }
-      }).getPlain()
+      })
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
       nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
@@ -69,14 +69,14 @@ describe('adhoc payment index controller', function () {
       product = productFixtures.validCreateProductResponse({
         type: 'ADHOC',
         language: 'cy'
-      }).getPlain()
+      })
       service = serviceFixtures.validServiceResponse({
         gateway_account_ids: [product.gateway_account_id],
         service_name: {
           en: 'English service',
           cy: 'gwasanaeth Cymraeg'
         }
-      }).getPlain()
+      })
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
       nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
@@ -112,14 +112,14 @@ describe('adhoc payment index controller', function () {
         product_name: 'Super duper product',
         service_name: 'Super GOV service',
         description: 'Super duper product description'
-      }).getPlain()
+      })
       service = serviceFixtures.validServiceResponse({
         gateway_account_ids: [product.gateway_account_id],
         service_name: {
           en: 'Super GOV service'
         },
         name: 'Super Duper Service'
-      }).getPlain()
+      })
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
       nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
@@ -157,14 +157,14 @@ describe('adhoc payment index controller', function () {
         service_name: 'Test ADHOC GOV service',
         description: 'Test ADHOC product description',
         reference_enabled: true
-      }).getPlain()
+      })
       service = serviceFixtures.validServiceResponse({
         gateway_account_ids: [product.gateway_account_id],
         service_name: {
           en: 'Super GOV service'
         },
         name: 'Super Duper Service'
-      }).getPlain()
+      })
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
       nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 

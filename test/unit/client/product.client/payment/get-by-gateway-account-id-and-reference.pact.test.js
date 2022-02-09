@@ -1,14 +1,13 @@
 'use strict'
 
-// NPM dependencies
 const path = require('path')
 const { Pact } = require('@pact-foundation/pact')
 const { expect } = require('chai')
 const proxyquire = require('proxyquire')
 
-// Custom dependencies
-const PactInteractionBuilder = require('../../../../fixtures/pact-interaction-builder').PactInteractionBuilder
+const { PactInteractionBuilder } = require('../../../../test-helpers/pact/pact-interaction-builder')
 const productFixtures = require('../../../../fixtures/product.fixtures')
+const { pactify } = require('../../../../test-helpers/pact/pact-base')()
 
 // Constants
 const port = Math.floor(Math.random() * 48127) + 1024
@@ -47,7 +46,7 @@ describe('products client - find a payment by gateway account id and payment ref
         .withUponReceiving('a valid get payment by gateway account id and reference request')
         .withMethod('GET')
         .withStatusCode(200)
-        .withResponseBody(response.getPactified())
+        .withResponseBody(pactify(response))
         .build()
       provider.addInteraction(interaction)
         .then(() => productsClient.payment.getByGatewayAccountIdAndReference(gatewayAccountId, referenceNumber))
@@ -59,7 +58,7 @@ describe('products client - find a payment by gateway account id and payment ref
     })
 
     it('should find an existing payment', () => {
-      const plainResponse = response.getPlain()
+      const plainResponse = response
       expect(result.productExternalId).to.equal(plainResponse.product_external_id)
       expect(result.status).to.equal(plainResponse.status)
       expect(result.reference_number).to.equal(plainResponse.referenceNumber)

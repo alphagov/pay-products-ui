@@ -27,19 +27,19 @@ describe('adhoc payment submit-amount controller', function () {
           product_name: 'Super duper product',
           service_name: 'Super GOV service',
           description: 'Super duper product description'
-        }).getPlain()
+        })
         payment = productFixtures.validCreatePaymentResponse({
           govuk_status: 'SUCCESS',
           product_external_id: product.external_id,
           amount: priceOverride
-        }).getPlain()
+        })
         service = serviceFixtures.validServiceResponse({
           gateway_account_ids: [product.gateway_account_id],
           service_name: {
             en: 'Super GOV service'
           },
           name: 'Super Duper Service'
-        }).getPlain()
+        })
         nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         nock(config.PRODUCTS_URL).post(`/v1/api/products/${product.external_id}/payments`, { price: priceOverride }).reply(200, payment)
         nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
@@ -67,8 +67,8 @@ describe('adhoc payment submit-amount controller', function () {
 
     describe('when an empty amount is submitted', function () {
       before(done => {
-        product = productFixtures.validCreateProductResponse({ type: 'ADHOC' }).getPlain()
-        service = serviceFixtures.validServiceResponse().getPlain()
+        product = productFixtures.validCreateProductResponse({ type: 'ADHOC' })
+        service = serviceFixtures.validServiceResponse()
         nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
         session = getMockSession()
@@ -95,8 +95,8 @@ describe('adhoc payment submit-amount controller', function () {
 
     describe('when an invalid amount is submitted', function () {
       before(done => {
-        product = productFixtures.validCreateProductResponse({ type: 'ADHOC' }).getPlain()
-        service = serviceFixtures.validServiceResponse().getPlain()
+        product = productFixtures.validCreateProductResponse({ type: 'ADHOC' })
+        service = serviceFixtures.validServiceResponse()
         nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
         session = getMockSession()
@@ -126,8 +126,8 @@ describe('adhoc payment submit-amount controller', function () {
     describe('when a product requires CAPTCHA and the challenge is rejected', function () {
       before(done => {
         const browserCAPTCHAresult = 'some-captcha-managed-response'
-        product = productFixtures.validCreateProductResponse({ type: 'ADHOC', require_captcha: true }).getPlain()
-        service = serviceFixtures.validServiceResponse().getPlain()
+        product = productFixtures.validCreateProductResponse({ type: 'ADHOC', require_captcha: true })
+        service = serviceFixtures.validServiceResponse()
         nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
         nock('https://www.recaptcha.net').post('/recaptcha/api/siteverify', body => body.includes(browserCAPTCHAresult)).reply(200, { success: false })
@@ -155,9 +155,9 @@ describe('adhoc payment submit-amount controller', function () {
     describe('when a product requires CAPTCHA and the challenge is successful', function () {
       before(done => {
         const browserCAPTCHAresult = 'some-captcha-managed-response'
-        product = productFixtures.validCreateProductResponse({ type: 'ADHOC', require_captcha: true }).getPlain()
-        service = serviceFixtures.validServiceResponse().getPlain()
-        payment = productFixtures.validCreatePaymentResponse({ govuk_status: 'SUCCESS', product_external_id: product.external_id, amount: 995 }).getPlain()
+        product = productFixtures.validCreateProductResponse({ type: 'ADHOC', require_captcha: true })
+        service = serviceFixtures.validServiceResponse()
+        payment = productFixtures.validCreatePaymentResponse({ govuk_status: 'SUCCESS', product_external_id: product.external_id, amount: 995 })
         nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
         nock(config.PRODUCTS_URL).post(`/v1/api/products/${product.external_id}/payments`, { price: 995 }).reply(200, payment)
@@ -185,8 +185,8 @@ describe('adhoc payment submit-amount controller', function () {
 
     describe('when the amount is bigger than the max amount supported by Pay', function () {
       before(done => {
-        product = productFixtures.validCreateProductResponse({ type: 'ADHOC' }).getPlain()
-        service = serviceFixtures.validServiceResponse().getPlain()
+        product = productFixtures.validCreateProductResponse({ type: 'ADHOC' })
+        service = serviceFixtures.validServiceResponse()
         nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
         session = getMockSession()
@@ -223,13 +223,13 @@ describe('adhoc payment submit-amount controller', function () {
           product_name: 'Super duper product',
           service_name: 'Super GOV service',
           description: 'Super duper product description'
-        }).getPlain()
+        })
         payment = productFixtures.validCreatePaymentResponse({
           govuk_status: 'SUCCESS',
           product_external_id: product.external_id,
           amount: product.price
-        }).getPlain()
-        service = serviceFixtures.validServiceResponse().getPlain()
+        })
+        service = serviceFixtures.validServiceResponse()
         nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         nock(config.PRODUCTS_URL).post(`/v1/api/products/${product.external_id}/payments`).reply(200, payment)
         nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)

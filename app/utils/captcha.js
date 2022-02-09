@@ -12,17 +12,17 @@ const HTTP_SUCCESS_CODE = 200
 const captchaEnterpriseUrl = formatEnterpriseUrl(GOOGLE_RECAPTCHA_ENTERPRISE_PROJECT_ID)
 const captchaBasicUrl = 'https://www.recaptcha.net/recaptcha/api/siteverify'
 
-function formatEnterpriseUrl(projectId) {
+function formatEnterpriseUrl (projectId) {
   return urlJoin('https://recaptchaenterprise.googleapis.com/v1beta1/projects', String(projectId), 'assessments')
 }
 
-function verifyCAPTCHAEnterpriseVersion(token) {
+function verifyCAPTCHAEnterpriseVersion (token) {
   return new Promise((resolve, reject) => {
     if (!GOOGLE_RECAPTCHA_SECRET_KEY) {
       reject(new Error('reCAPTCHA secret key not set in environment'))
       return
     }
-    if(!token) {
+    if (!token) {
       reject(new Error('no reCAPTCHA enterprise widget token response provided'))
       return
     }
@@ -61,13 +61,13 @@ function verifyCAPTCHAEnterpriseVersion(token) {
   })
 }
 
-function verifyCAPTCHATokenBasicVersion(token) {
+function verifyCAPTCHATokenBasicVersion (token) {
   return new Promise((resolve, reject) => {
     if (!GOOGLE_RECAPTCHA_SECRET_KEY) {
       reject(new Error('reCAPTCHA secret key not set in environment'))
       return
     }
-    if(!token) {
+    if (!token) {
       reject(new Error('no reCAPTCHA widget token response provided'))
       return
     }

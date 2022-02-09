@@ -18,12 +18,12 @@ describe('payment complete controller', () => {
     describe('and the payment was successful', () => {
       let product, payment, service, response
       before(done => {
-        product = productFixtures.validCreateProductResponse({ type: 'DEMO' }).getPlain()
+        product = productFixtures.validCreateProductResponse({ type: 'DEMO' })
         payment = productFixtures.validCreatePaymentResponse({
           govuk_status: 'SUCCESS',
           product_external_id: product.external_id
-        }).getPlain()
-        service = serviceFixtures.validServiceResponse().getPlain()
+        })
+        service = serviceFixtures.validServiceResponse()
         nock(PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         nock(PRODUCTS_URL).get(`/v1/api/payments/${payment.external_id}`).reply(200, payment)
         nock(ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
@@ -48,12 +48,12 @@ describe('payment complete controller', () => {
     describe('but the payment failed', () => {
       let product, payment, service, response
       before(done => {
-        product = productFixtures.validCreateProductResponse({ type: 'DEMO' }).getPlain()
+        product = productFixtures.validCreateProductResponse({ type: 'DEMO' })
         payment = productFixtures.validCreatePaymentResponse({
           govuk_status: 'ERROR',
           product_external_id: product.external_id
-        }).getPlain()
-        service = serviceFixtures.validServiceResponse().getPlain()
+        })
+        service = serviceFixtures.validServiceResponse()
         nock(PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         nock(PRODUCTS_URL).get(`/v1/api/payments/${payment.external_id}`).reply(200, payment)
         nock(ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
@@ -82,11 +82,11 @@ describe('payment complete controller', () => {
       product = productFixtures.validCreateProductResponse({
         type: 'PROTOTYPE',
         return_url: 'http://service.com/product-return'
-      }).getPlain()
+      })
       payment = productFixtures.validCreatePaymentResponse({
         product_external_id: product.external_id
-      }).getPlain()
-      service = serviceFixtures.validServiceResponse().getPlain()
+      })
+      service = serviceFixtures.validServiceResponse()
       nock(PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
       nock(PRODUCTS_URL).get(`/v1/api/payments/${payment.external_id}`).reply(200, payment)
       nock(ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
@@ -114,14 +114,14 @@ describe('payment complete controller', () => {
       before(done => {
         product = productFixtures.validCreateProductResponse({
           type: 'ADHOC'
-        }).getPlain()
+        })
         payment = productFixtures.validCreatePaymentResponse({
           product_external_id: product.external_id,
           amount: 2000,
           reference_number: 'ABCD1234EF',
           govuk_status: 'success'
-        }).getPlain()
-        service = serviceFixtures.validServiceResponse().getPlain()
+        })
+        service = serviceFixtures.validServiceResponse()
         nock(PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         nock(PRODUCTS_URL).get(`/v1/api/payments/${payment.external_id}`).reply(200, payment)
         nock(ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
@@ -153,19 +153,19 @@ describe('payment complete controller', () => {
         product = productFixtures.validCreateProductResponse({
           type: 'ADHOC',
           language: 'cy'
-        }).getPlain()
+        })
         payment = productFixtures.validCreatePaymentResponse({
           product_external_id: product.external_id,
           amount: 2000,
           reference_number: 'ABCD1234EF',
           govuk_status: 'success'
-        }).getPlain()
+        })
         service = serviceFixtures.validServiceResponse({
           service_name: {
             en: 'English service',
             cy: 'gwasanaeth Cymraeg'
           }
-        }).getPlain()
+        })
         nock(PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         nock(PRODUCTS_URL).get(`/v1/api/payments/${payment.external_id}`).reply(200, payment)
         nock(ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
@@ -196,14 +196,14 @@ describe('payment complete controller', () => {
       before(done => {
         product = productFixtures.validCreateProductResponse({
           type: 'ADHOC'
-        }).getPlain()
+        })
         payment = productFixtures.validCreatePaymentResponse({
           product_external_id: product.external_id,
           amount: 2000,
           reference_number: 'ABCD1234EF',
           govuk_status: 'failure'
-        }).getPlain()
-        service = serviceFixtures.validServiceResponse().getPlain()
+        })
+        service = serviceFixtures.validServiceResponse()
         nock(PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         nock(PRODUCTS_URL).get(`/v1/api/payments/${payment.external_id}`).reply(200, payment)
         nock(ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
@@ -233,14 +233,14 @@ describe('payment complete controller', () => {
       before(done => {
         product = productFixtures.validCreateProductResponse({
           type: 'AGENT_INITIATED_MOTO'
-        }).getPlain()
+        })
         payment = productFixtures.validCreatePaymentResponse({
           product_external_id: product.external_id,
           amount: 2000,
           reference_number: 'ABCD1234EF',
           govuk_status: 'success'
-        }).getPlain()
-        service = serviceFixtures.validServiceResponse().getPlain()
+        })
+        service = serviceFixtures.validServiceResponse()
         nock(PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         nock(PRODUCTS_URL).get(`/v1/api/payments/${payment.external_id}`).reply(200, payment)
         nock(ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
@@ -272,14 +272,14 @@ describe('payment complete controller', () => {
       before(done => {
         product = productFixtures.validCreateProductResponse({
           type: 'AGENT_INITIATED_MOTO'
-        }).getPlain()
+        })
         payment = productFixtures.validCreatePaymentResponse({
           product_external_id: product.external_id,
           amount: 2000,
           reference_number: 'ABCD1234EF',
           govuk_status: 'failure'
-        }).getPlain()
-        service = serviceFixtures.validServiceResponse().getPlain()
+        })
+        service = serviceFixtures.validServiceResponse()
         nock(PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         nock(PRODUCTS_URL).get(`/v1/api/payments/${payment.external_id}`).reply(200, payment)
         nock(ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
@@ -306,7 +306,7 @@ describe('payment complete controller', () => {
   describe('when a payment lookup fails', () => {
     let payment, response, $
     before(done => {
-      payment = productFixtures.validCreatePaymentResponse().getPlain()
+      payment = productFixtures.validCreatePaymentResponse()
       nock(PRODUCTS_URL).get(`/v1/api/payments/${payment.external_id}`).reply(404)
 
       supertest(getApp())

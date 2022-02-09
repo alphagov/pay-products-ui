@@ -18,8 +18,8 @@ describe('resolve product middleware', () => {
     let req, res, next, product, service
 
     before(done => {
-      product = productFixtures.validCreateProductResponse().getPlain()
-      service = serviceFixtures.validServiceResponse().getPlain()
+      product = productFixtures.validCreateProductResponse()
+      service = serviceFixtures.validServiceResponse()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
       nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
       req = {}
@@ -52,7 +52,7 @@ describe('resolve product middleware', () => {
     let req, res, next, product
 
     before(done => {
-      product = productFixtures.validCreateProductResponse().getPlain()
+      product = productFixtures.validCreateProductResponse()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(404)
       req = {}
       res = {
@@ -87,7 +87,7 @@ describe('resolve product middleware', () => {
     let req, res, next, product
 
     before(done => {
-      product = productFixtures.validCreateProductResponse().getPlain()
+      product = productFixtures.validCreateProductResponse()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).replyWithError(new Error('Some bad stuff happened'))
       req = {}
       res = {

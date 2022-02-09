@@ -1,15 +1,14 @@
 'use strict'
 
-// NPM dependencies
 const path = require('path')
 const { Pact } = require('@pact-foundation/pact')
 const { expect } = require('chai')
 const proxyquire = require('proxyquire')
 
-// Custom dependencies
 const Payment = require('../../../../../app/models/Payment.class')
-const PactInteractionBuilder = require('../../../../fixtures/pact-interaction-builder').PactInteractionBuilder
+const { PactInteractionBuilder } = require('../../../../test-helpers/pact/pact-interaction-builder')
 const productFixtures = require('../../../../fixtures/product.fixtures')
+const { pactify } = require('../../../../test-helpers/pact/pact-base')()
 
 // Constants
 const PRODUCT_RESOURCE = '/v1/api/products'
@@ -54,7 +53,7 @@ describe('products client - find a payment by it\'s associated product external 
         .withUponReceiving('a valid get payments by product external id request')
         .withMethod('GET')
         .withStatusCode(200)
-        .withResponseBody(response.map(item => item.getPactified()))
+        .withResponseBody(response.map(item => pactify(item)))
         .build()
       provider.addInteraction(interaction)
         .then(() => productsClient.payment.getByProductExternalId(productExternalId))
@@ -69,7 +68,7 @@ describe('products client - find a payment by it\'s associated product external 
       expect(result.length).to.equal(3)
       expect(result.map(item => item.constructor)).to.deep.equal([Payment, Payment, Payment])
       result.forEach((payment, index) => {
-        const plainResponse = response[index].getPlain()
+        const plainResponse = response[index]
         expect(payment.productExternalId).to.equal(plainResponse.product_external_id).and.to.equal(productExternalId)
         expect(payment.externalId).to.equal(plainResponse.external_id)
         expect(payment.status).to.equal(plainResponse.status)

@@ -27,8 +27,8 @@ describe('product reference index controller', function () {
         reference_enabled: true,
         reference_label: 'Test reference label',
         reference_hint: 'Test reference hint'
-      }).getPlain()
-      service = serviceFixtures.validServiceResponse().getPlain()
+      })
+      service = serviceFixtures.validServiceResponse()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
       nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
@@ -66,8 +66,8 @@ describe('product reference index controller', function () {
         description: 'Super duper product description',
         reference_enabled: true,
         reference_label: 'Test reference label'
-      }).getPlain()
-      service = serviceFixtures.validServiceResponse().getPlain()
+      })
+      service = serviceFixtures.validServiceResponse()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
       nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
@@ -104,8 +104,8 @@ describe('product reference index controller', function () {
         description: 'Super duper product description',
         reference_enabled: true,
         reference_label: 'Test reference label'
-      }).getPlain()
-      service = serviceFixtures.validServiceResponse().getPlain()
+      })
+      service = serviceFixtures.validServiceResponse()
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
       nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
@@ -142,13 +142,13 @@ describe('product reference index controller', function () {
         reference_label: 'Test reference label',
         reference_hint: 'Test reference hint',
         language: 'cy'
-      }).getPlain()
+      })
       service = serviceFixtures.validServiceResponse({
         service_name: {
           en: 'English service',
           cy: 'gwasanaeth Cymraeg'
         }
-      }).getPlain()
+      })
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
       nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
@@ -180,12 +180,12 @@ describe('product reference index controller', function () {
         reference_label: 'Test reference label',
         reference_hint: 'Test reference hint',
         language: 'cy'
-      }).getPlain()
+      })
       service = serviceFixtures.validServiceResponse({
         service_name: {
           en: 'English service'
         }
-      }).getPlain()
+      })
       nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
       nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 

@@ -22,7 +22,7 @@ describe('friendly url redirect controller', function () {
         type: 'ADHOC',
         service_name_path: 'service-name-path',
         product_name_path: 'product-name-path'
-      }).getPlain()
+      })
       nock(config.PRODUCTS_URL)
         .get('/v1/api/products')
         .query({ serviceNamePath: product.service_name_path, productNamePath: product.product_name_path })
