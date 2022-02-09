@@ -19,7 +19,7 @@ describe('product reference index controller', function () {
 
   describe('with reference enabled and label and hint', function () {
     before(done => {
-      product = productFixtures.validCreateProductResponse({
+      product = productFixtures.validProductResponse({
         type: 'ADHOC',
         product_name: 'Super duper product',
         service_name: 'Super GOV service',
@@ -59,7 +59,7 @@ describe('product reference index controller', function () {
 
   describe('with reference enabled and label and NO hint', function () {
     before(done => {
-      product = productFixtures.validCreateProductResponse({
+      product = productFixtures.validProductResponse({
         type: 'ADHOC',
         product_name: 'Super duper product',
         service_name: 'Super GOV service',
@@ -97,7 +97,7 @@ describe('product reference index controller', function () {
 
   describe('with reference enabled and reference set in session', function () {
     before(done => {
-      product = productFixtures.validCreateProductResponse({
+      product = productFixtures.validProductResponse({
         type: 'ADHOC',
         product_name: 'Super duper product',
         service_name: 'Super GOV service',
@@ -136,7 +136,7 @@ describe('product reference index controller', function () {
 
   describe('with Welsh language when there is a Welsh service name', function () {
     before(done => {
-      product = productFixtures.validCreateProductResponse({
+      product = productFixtures.validProductResponse({
         type: 'ADHOC',
         reference_enabled: true,
         reference_label: 'Test reference label',
@@ -174,7 +174,7 @@ describe('product reference index controller', function () {
 
   describe('with Welsh language when there is not a Welsh service name', function () {
     before(done => {
-      product = productFixtures.validCreateProductResponse({
+      product = productFixtures.validProductResponse({
         type: 'ADHOC',
         reference_enabled: true,
         reference_label: 'Test reference label',

@@ -1,29 +1,6 @@
 'use strict'
 
 module.exports = {
-
-  validCreateProductRequest: (opts = {}) => {
-    const data = {
-      gateway_account_id: opts.gatewayAccountId || 666,
-      name: opts.name || 'A Product Name',
-      price: opts.price || 1000
-    }
-    if (opts.description) {
-      data.description = opts.description
-    }
-    if (opts.returnUrl) {
-      data.return_url = opts.returnUrl
-    }
-    if (opts.service_name_path) {
-      data.service_name_path = opts.service_name_pat
-    }
-    if (opts.product_name_path) {
-      data.product_name_path = opts.product_name_path
-    }
-
-    return data
-  },
-
   validCreatePaymentResponse: (opts = {}) => {
     const data = {
       external_id: opts.external_id || 'a-payment-external-id',
@@ -50,7 +27,7 @@ module.exports = {
     return data
   },
 
-  validCreateProductResponse: (opts = {}) => {
+  validProductResponse: (opts = {}) => {
     const data = {
       external_id: opts.external_id || 'an-external-id',
       type: opts.type || 'DEMO',

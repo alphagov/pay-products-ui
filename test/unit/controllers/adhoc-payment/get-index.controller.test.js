@@ -24,7 +24,7 @@ describe('adhoc payment index controller', function () {
 
   describe('variable amount ADHOC payment with reference disabled', function () {
     before(done => {
-      product = productFixtures.validCreateProductResponse({
+      product = productFixtures.validProductResponse({
         type: 'ADHOC',
         product_name: 'Super duper product',
         description: 'Super duper product description'
@@ -66,7 +66,7 @@ describe('adhoc payment index controller', function () {
 
   describe('enter amount page for a Welsh product', function () {
     before(done => {
-      product = productFixtures.validCreateProductResponse({
+      product = productFixtures.validProductResponse({
         type: 'ADHOC',
         language: 'cy'
       })
@@ -106,7 +106,7 @@ describe('adhoc payment index controller', function () {
 
   describe('fixed amount ADHOC payment with reference disabled', function () {
     before(done => {
-      product = productFixtures.validCreateProductResponse({
+      product = productFixtures.validProductResponse({
         type: 'ADHOC',
         price: 600,
         product_name: 'Super duper product',
@@ -151,7 +151,7 @@ describe('adhoc payment index controller', function () {
 
   describe('ADHOC payment with reference enabled and no reference number set', function () {
     before(done => {
-      product = productFixtures.validCreateProductResponse({
+      product = productFixtures.validProductResponse({
         type: 'ADHOC',
         product_name: 'Test ADHOC Product Name',
         service_name: 'Test ADHOC GOV service',

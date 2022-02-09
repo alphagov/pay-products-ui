@@ -43,7 +43,7 @@ describe('products client - find a product by it\'s external id', function () {
     before(done => {
       const productsClient = getProductsClient()
       productExternalId = 'existing-id'
-      response = productFixtures.validCreateProductResponse({
+      response = productFixtures.validProductResponse({
         external_id: productExternalId,
         price: 1000,
         name: 'A Product Name',

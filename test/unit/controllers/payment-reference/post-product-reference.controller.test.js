@@ -20,7 +20,7 @@ describe('product reference post controller', function () {
 
   describe('when reference is unique and can be used', function () {
     before(done => {
-      product = productFixtures.validCreateProductResponse({
+      product = productFixtures.validProductResponse({
         type: 'ADHOC',
         reference_enabled: true,
         reference_label: 'Test reference label'
@@ -60,7 +60,7 @@ describe('product reference post controller', function () {
 
   describe('when missing reference field', function () {
     before(done => {
-      product = productFixtures.validCreateProductResponse({
+      product = productFixtures.validProductResponse({
         type: 'ADHOC',
         reference_enabled: true,
         reference_label: 'Test reference label'
@@ -96,7 +96,7 @@ describe('product reference post controller', function () {
 
   describe('when reference field is only white space', function () {
     before(done => {
-      product = productFixtures.validCreateProductResponse({
+      product = productFixtures.validProductResponse({
         type: 'ADHOC',
         reference_enabled: true,
         reference_label: 'Test reference label'
@@ -133,7 +133,7 @@ describe('product reference post controller', function () {
 
   describe('when reference field exceeds max length', function () {
     before(done => {
-      product = productFixtures.validCreateProductResponse({
+      product = productFixtures.validProductResponse({
         type: 'ADHOC',
         reference_enabled: true,
         reference_label: 'Test reference label'
@@ -171,7 +171,7 @@ describe('product reference post controller', function () {
 
   describe('when reference field contains disallowed characters', function () {
     before(done => {
-      product = productFixtures.validCreateProductResponse({
+      product = productFixtures.validProductResponse({
         type: 'ADHOC',
         reference_enabled: true,
         reference_label: 'Test reference label'
@@ -209,7 +209,7 @@ describe('product reference post controller', function () {
 
   describe('when reference entered is a potential PAN', function () {
     before(done => {
-      product = productFixtures.validCreateProductResponse({
+      product = productFixtures.validProductResponse({
         type: 'ADHOC',
         reference_enabled: true,
         reference_label: 'Test reference label'
@@ -252,7 +252,7 @@ describe('product reference post controller', function () {
 
   describe('confirm and continue with potential PAN in the reference', function () {
     before(done => {
-      product = productFixtures.validCreateProductResponse({
+      product = productFixtures.validProductResponse({
         type: 'ADHOC',
         reference_enabled: true,
         reference_label: 'Test reference label'

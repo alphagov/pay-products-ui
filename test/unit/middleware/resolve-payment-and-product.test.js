@@ -18,7 +18,7 @@ describe('resolve payment middleware', () => {
     let req, res, next, product, payment, service
 
     before(done => {
-      product = productFixtures.validCreateProductResponse({})
+      product = productFixtures.validProductResponse({})
       payment = productFixtures.validCreatePaymentResponse({
         product_external_id: product.external_id
       })
@@ -56,7 +56,7 @@ describe('resolve payment middleware', () => {
     let req, res, next, payment
 
     before(done => {
-      payment = productFixtures.validCreateProductResponse()
+      payment = productFixtures.validProductResponse()
       nock(config.PRODUCTS_URL).get(`/v1/api/payments/${payment.external_id}`).reply(404)
       req = {}
       res = {
@@ -126,7 +126,7 @@ describe('resolve payment middleware', () => {
     let req, res, next, payment
 
     before(done => {
-      payment = productFixtures.validCreateProductResponse()
+      payment = productFixtures.validProductResponse()
       nock(config.PRODUCTS_URL).get(`/v1/api/payments/${payment.external_id}`).replyWithError(new Error('Some bad stuff happened'))
       req = {}
       res = {

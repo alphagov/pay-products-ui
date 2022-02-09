@@ -18,7 +18,7 @@ describe('friendly url redirect controller', function () {
 
   describe('when the friendly URL can be resolved to a product', () => {
     before(done => {
-      product = productFixtures.validCreateProductResponse({
+      product = productFixtures.validProductResponse({
         type: 'ADHOC',
         service_name_path: 'service-name-path',
         product_name_path: 'product-name-path'

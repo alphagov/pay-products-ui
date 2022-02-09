@@ -43,7 +43,7 @@ describe('Amount Page Controller', () => {
     })
 
     describe('when product.reference_enabled=true', () => {
-      const product = new Product(productFixtures.validCreateProductResponse({
+      const product = new Product(productFixtures.validProductResponse({
         type: 'ADHOC',
         reference_enabled: true,
         price: null
@@ -87,7 +87,7 @@ describe('Amount Page Controller', () => {
     })
 
     describe('when product.reference_enabled=false', () => {
-      const product = new Product(productFixtures.validCreateProductResponse({
+      const product = new Product(productFixtures.validProductResponse({
         type: 'ADHOC',
         reference_enabled: false,
         price: null
@@ -131,7 +131,7 @@ describe('Amount Page Controller', () => {
     })
 
     describe('when there is already an amount in the product', () => {
-      const product = new Product(productFixtures.validCreateProductResponse({
+      const product = new Product(productFixtures.validProductResponse({
         type: 'ADHOC',
         reference_enabled: false,
         price: 1000
@@ -155,7 +155,7 @@ describe('Amount Page Controller', () => {
   })
 
   describe('postPage', () => {
-    const product = new Product(productFixtures.validCreateProductResponse({
+    const product = new Product(productFixtures.validProductResponse({
       type: 'ADHOC',
       reference_enabled: true,
       price: null
