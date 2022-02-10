@@ -16,7 +16,6 @@ applications:
     env:
       COOKIE_MAX_AGE: '5400000'
       CORRELATION_HEADER_NAME: x-request-id
-      DISABLE_APPMETRICS: ((disable_appmetrics))
       DISABLE_INTERNAL_HTTPS: ((disable_internal_https))
       DISABLE_REQUEST_LOGGING: ((disable_request_logging))
       NODE_ENV: production
