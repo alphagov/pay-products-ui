@@ -44,9 +44,9 @@ describe('products client - find products associated with a particular gateway a
       const productsClient = getProductsClient()
       gatewayAccountId = 42
       response = [
-        productFixtures.validCreateProductResponse({ gateway_account_id: gatewayAccountId }),
-        productFixtures.validCreateProductResponse({ gateway_account_id: gatewayAccountId }),
-        productFixtures.validCreateProductResponse({ gateway_account_id: gatewayAccountId })
+        productFixtures.validProductResponse({ gateway_account_id: gatewayAccountId }),
+        productFixtures.validProductResponse({ gateway_account_id: gatewayAccountId }),
+        productFixtures.validProductResponse({ gateway_account_id: gatewayAccountId })
       ]
       const interaction = new PactInteractionBuilder(`${API_RESOURCE}/gateway-account/${gatewayAccountId}/products`)
         .withUponReceiving('a valid get product by gateway account id request')

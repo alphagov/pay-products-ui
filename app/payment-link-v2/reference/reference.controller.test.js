@@ -38,7 +38,7 @@ describe('Reference Page Controller', () => {
 
   describe('getPage', () => {
     describe('when product.reference_enabled=true', () => {
-      const product = new Product(productFixtures.validCreateProductResponse({
+      const product = new Product(productFixtures.validProductResponse({
         type: 'ADHOC',
         reference_enabled: true,
         price: null
@@ -83,7 +83,7 @@ describe('Reference Page Controller', () => {
     })
 
     describe('when there is already an reference in the product', () => {
-      const product = new Product(productFixtures.validCreateProductResponse({
+      const product = new Product(productFixtures.validProductResponse({
         type: 'ADHOC',
         reference_enabled: false,
         price: 1000
@@ -109,7 +109,7 @@ describe('Reference Page Controller', () => {
 
   describe('postPage', () => {
     describe('when the product has no price', () => {
-      const product = new Product(productFixtures.validCreateProductResponse({
+      const product = new Product(productFixtures.validProductResponse({
         type: 'ADHOC',
         reference_enabled: true,
         price: null
@@ -256,7 +256,7 @@ describe('Reference Page Controller', () => {
     })
 
     describe('when the product has a price', () => {
-      const product = new Product(productFixtures.validCreateProductResponse({
+      const product = new Product(productFixtures.validProductResponse({
         type: 'ADHOC',
         reference_enabled: true,
         price: 1000

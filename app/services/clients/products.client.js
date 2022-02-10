@@ -15,9 +15,6 @@ const baseUrl = `${PRODUCTS_URL}/v1/api`
 // Exports
 module.exports = {
   product: {
-    create: createProduct,
-    disable: disableProduct,
-    delete: deleteProduct,
     getByProductExternalId: getProductByExternalId,
     getByProductPath: getProductByPath,
     getByGatewayAccountId: getProductsByGatewayAccountId
@@ -28,34 +25,6 @@ module.exports = {
     getByProductExternalId: getPaymentsByProductExternalId,
     getByGatewayAccountIdAndReference: getPaymentByGatewayExternalIdAndReference
   }
-}
-
-// PRODUCT
-/**
- * @param {Object} options
- * @param {string} options.gatewayAccountId - The id of the gateway account you wish to use to pay for the product
- * @param {string} options.payApiToken - The API token to use to access GOV.UK Pay in order to initiate payments for the product
- * @param {string} options.name - The name of the product
- * @param {number} options.price - The price of product in pence
- * @param {string=} options.description - The description of the product
- * @param {string=} options.returnUrl - Where to redirect to upon completion of a charge for this product
- * @returns {Promise<Product>}
- */
-function createProduct (options) {
-  return baseClient.post({
-    baseUrl,
-    url: '/products',
-    json: true,
-    body: {
-      gateway_account_id: options.gatewayAccountId,
-      name: options.name,
-      price: options.price,
-      description: options.description,
-      return_url: options.returnUrl
-    },
-    description: 'create a product for a service',
-    service: SERVICE_NAME
-  }).then(product => new Product(product))
 }
 
 /**
@@ -96,32 +65,6 @@ function getProductsByGatewayAccountId (gatewayAccountId) {
     description: 'find a list products associated with a gateway account',
     service: SERVICE_NAME
   }).then(products => products.map(product => new Product(product)))
-}
-
-/**
- * @param {String} productExternalId: the external id of the product you wish to disable
- * @returns {undefined}
- */
-function disableProduct (productExternalId) {
-  return baseClient.patch({
-    baseUrl,
-    url: `/products/${productExternalId}/disable`,
-    description: 'disable a product',
-    service: SERVICE_NAME
-  })
-}
-
-/**
- * @param {String} productExternalId: the external id of the product you wish to delete
- * @returns {undefined}
- */
-function deleteProduct (productExternalId) {
-  return baseClient.delete({
-    baseUrl,
-    url: `/products/${productExternalId}`,
-    description: 'delete a product',
-    service: SERVICE_NAME
-  })
 }
 
 // PAYMENT

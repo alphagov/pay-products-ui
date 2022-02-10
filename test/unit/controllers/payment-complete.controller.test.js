@@ -18,7 +18,7 @@ describe('payment complete controller', () => {
     describe('and the payment was successful', () => {
       let product, payment, service, response
       before(done => {
-        product = productFixtures.validCreateProductResponse({ type: 'DEMO' })
+        product = productFixtures.validProductResponse({ type: 'DEMO' })
         payment = productFixtures.validCreatePaymentResponse({
           govuk_status: 'SUCCESS',
           product_external_id: product.external_id
@@ -48,7 +48,7 @@ describe('payment complete controller', () => {
     describe('but the payment failed', () => {
       let product, payment, service, response
       before(done => {
-        product = productFixtures.validCreateProductResponse({ type: 'DEMO' })
+        product = productFixtures.validProductResponse({ type: 'DEMO' })
         payment = productFixtures.validCreatePaymentResponse({
           govuk_status: 'ERROR',
           product_external_id: product.external_id
@@ -79,7 +79,7 @@ describe('payment complete controller', () => {
   describe('when a PROTOTYPE payment is returned', () => {
     let product, payment, service, response
     before(done => {
-      product = productFixtures.validCreateProductResponse({
+      product = productFixtures.validProductResponse({
         type: 'PROTOTYPE',
         return_url: 'http://service.com/product-return'
       })
@@ -112,7 +112,7 @@ describe('payment complete controller', () => {
     let product, payment, service, response, $
     describe('when the payment was a success', () => {
       before(done => {
-        product = productFixtures.validCreateProductResponse({
+        product = productFixtures.validProductResponse({
           type: 'ADHOC'
         })
         payment = productFixtures.validCreatePaymentResponse({
@@ -150,7 +150,7 @@ describe('payment complete controller', () => {
 
     describe('when the payment was a success for a Welsh product', () => {
       before(done => {
-        product = productFixtures.validCreateProductResponse({
+        product = productFixtures.validProductResponse({
           type: 'ADHOC',
           language: 'cy'
         })
@@ -194,7 +194,7 @@ describe('payment complete controller', () => {
 
     describe('when the payment has failed', () => {
       before(done => {
-        product = productFixtures.validCreateProductResponse({
+        product = productFixtures.validProductResponse({
           type: 'ADHOC'
         })
         payment = productFixtures.validCreatePaymentResponse({
@@ -231,7 +231,7 @@ describe('payment complete controller', () => {
     let product, payment, service, response, $
     describe('when the payment was a success', () => {
       before(done => {
-        product = productFixtures.validCreateProductResponse({
+        product = productFixtures.validProductResponse({
           type: 'AGENT_INITIATED_MOTO'
         })
         payment = productFixtures.validCreatePaymentResponse({
@@ -270,7 +270,7 @@ describe('payment complete controller', () => {
 
     describe('when the payment has failed', () => {
       before(done => {
-        product = productFixtures.validCreateProductResponse({
+        product = productFixtures.validProductResponse({
           type: 'AGENT_INITIATED_MOTO'
         })
         payment = productFixtures.validCreatePaymentResponse({

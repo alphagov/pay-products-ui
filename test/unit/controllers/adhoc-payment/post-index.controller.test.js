@@ -22,7 +22,7 @@ describe('adhoc payment submit-amount controller', function () {
     describe('when a valid amount is submitted', function () {
       const priceOverride = 995
       before(done => {
-        product = productFixtures.validCreateProductResponse({
+        product = productFixtures.validProductResponse({
           type: 'ADHOC',
           product_name: 'Super duper product',
           service_name: 'Super GOV service',
@@ -67,7 +67,7 @@ describe('adhoc payment submit-amount controller', function () {
 
     describe('when an empty amount is submitted', function () {
       before(done => {
-        product = productFixtures.validCreateProductResponse({ type: 'ADHOC' })
+        product = productFixtures.validProductResponse({ type: 'ADHOC' })
         service = serviceFixtures.validServiceResponse()
         nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
@@ -95,7 +95,7 @@ describe('adhoc payment submit-amount controller', function () {
 
     describe('when an invalid amount is submitted', function () {
       before(done => {
-        product = productFixtures.validCreateProductResponse({ type: 'ADHOC' })
+        product = productFixtures.validProductResponse({ type: 'ADHOC' })
         service = serviceFixtures.validServiceResponse()
         nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
@@ -126,7 +126,7 @@ describe('adhoc payment submit-amount controller', function () {
     describe('when a product requires CAPTCHA and the challenge is rejected', function () {
       before(done => {
         const browserCAPTCHAresult = 'some-captcha-managed-response'
-        product = productFixtures.validCreateProductResponse({ type: 'ADHOC', require_captcha: true })
+        product = productFixtures.validProductResponse({ type: 'ADHOC', require_captcha: true })
         service = serviceFixtures.validServiceResponse()
         nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
@@ -155,7 +155,7 @@ describe('adhoc payment submit-amount controller', function () {
     describe('when a product requires CAPTCHA and the challenge is successful', function () {
       before(done => {
         const browserCAPTCHAresult = 'some-captcha-managed-response'
-        product = productFixtures.validCreateProductResponse({ type: 'ADHOC', require_captcha: true })
+        product = productFixtures.validProductResponse({ type: 'ADHOC', require_captcha: true })
         service = serviceFixtures.validServiceResponse()
         payment = productFixtures.validCreatePaymentResponse({ govuk_status: 'SUCCESS', product_external_id: product.external_id, amount: 995 })
         nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
@@ -185,7 +185,7 @@ describe('adhoc payment submit-amount controller', function () {
 
     describe('when the amount is bigger than the max amount supported by Pay', function () {
       before(done => {
-        product = productFixtures.validCreateProductResponse({ type: 'ADHOC' })
+        product = productFixtures.validProductResponse({ type: 'ADHOC' })
         service = serviceFixtures.validServiceResponse()
         nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
         nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
@@ -217,7 +217,7 @@ describe('adhoc payment submit-amount controller', function () {
   describe('Fixed amount ADHOC payment', function () {
     describe('when the amount page is submitted', function () {
       before(done => {
-        product = productFixtures.validCreateProductResponse({
+        product = productFixtures.validProductResponse({
           type: 'ADHOC',
           price: 2000,
           product_name: 'Super duper product',

@@ -28,7 +28,7 @@ describe('get adhoc controller with reference enabled', () => {
     '../../utils/cookie': mockCookie
   })
 
-  const product = productFixtures.validCreateProductResponse({
+  const product = productFixtures.validProductResponse({
     type: 'ADHOC',
     reference_enabled: true
   })
