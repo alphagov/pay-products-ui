@@ -63,9 +63,9 @@
       "enterAnAmountInPounds": "TODO convert to Welsh - Enter an amount in pounds",
       "enterAnAmountInTheCorrectFormat": "TODO convert to Welsh - Enter an amount in pounds and pence using digits and a decimal point. For example “10.50”",
       "enterAnAmountUnderMaxAmount": "TODO convert to Welsh - Enter an amount that is £100,000 or under",
-      "enterAReference": "TODO convert to Welsh - Enter a reference",
-      "referenceMustBeLessThanOrEqual50Chars": "TODO convert to Welsh - reference must be less than or equal to 50 characters",
-      "referenceCantUseInvalidChars": "TODO convert to Welsh - Reference can’t use any of the following characters < > ; : ` ( ) \" ' = &#124; \",\" ~ [ ]"
+      "enterAReference": "TODO convert to Welsh - Enter a %s",
+      "referenceMustBeLessThanOrEqual50Chars": "TODO convert to Welsh - %s must be less than or equal to 50 characters",
+      "referenceCantUseInvalidChars": "TODO convert to Welsh - %s can’t contain any of the following characters < > ; : ` ( ) \" ' = &#124; \",\" ~ [ ]"
     }
   } 
 }

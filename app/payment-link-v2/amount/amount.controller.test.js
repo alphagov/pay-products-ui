@@ -66,9 +66,9 @@ describe('Amount Page Controller', () => {
         expect(pageData.backLinkHref).to.equal('/pay/an-external-id/reference')
       })
 
-      it('when the amount is in the session, then it should display that amount to 2 decimal points' +
+      it('when the amount is in the session, then it should display that amount to 2 decimal places ' +
         'and set the back link to the CONFIRM page', () => {
-        mockCookie.getSessionVariable.returns(1000)
+        mockCookie.getSessionVariable.returns(10.50)
 
         req = {
           correlationId: '123',
@@ -82,7 +82,7 @@ describe('Amount Page Controller', () => {
 
         const pageData = mockResponses.response.args[0][3]
         expect(pageData.backLinkHref).to.equal('/pay/an-external-id/confirm')
-        expect(pageData.productAmount).to.equal('10.00')
+        expect(pageData.amount).to.equal('10.50')
       })
     })
 
@@ -110,9 +110,9 @@ describe('Amount Page Controller', () => {
         expect(pageData.backLinkHref).to.equal('/pay/an-external-id')
       })
 
-      it('when the amount is in the session, then it should display that amount to 2 decimal points' +
+      it('when the amount is in the session, then it should display that amount to 2 decimal points ' +
         'and set the back link to the CONFIRM page', () => {
-        mockCookie.getSessionVariable.returns(1000)
+        mockCookie.getSessionVariable.returns(10.00)
 
         req = {
           correlationId: '123',
@@ -126,7 +126,7 @@ describe('Amount Page Controller', () => {
 
         const pageData = mockResponses.response.args[0][3]
         expect(pageData.backLinkHref).to.equal('/pay/an-external-id/confirm')
-        expect(pageData.productAmount).to.equal('10.00')
+        expect(pageData.amount).to.equal('10.00')
       })
     })
 
@@ -167,7 +167,7 @@ describe('Amount Page Controller', () => {
         correlationId: '123',
         product,
         body: {
-          'payment-amount': '1000'
+          'payment-amount': '10'
         }
       }
 
@@ -177,7 +177,7 @@ describe('Amount Page Controller', () => {
 
       controller.postPage(req, res)
 
-      sinon.assert.calledWith(mockCookie.setSessionVariable, req, 'paymentAmount', '1000')
+      sinon.assert.calledWith(mockCookie.setSessionVariable, req, 'amount', '10')
       sinon.assert.calledWith(res.redirect, '/pay/an-external-id/confirm')
     })
 

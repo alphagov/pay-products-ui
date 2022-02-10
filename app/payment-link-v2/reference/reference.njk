@@ -1,4 +1,4 @@
-{% extends "../../views/layout.njk" %}
+{% extends "../../views/layout-payment-links-v2.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
@@ -39,7 +39,7 @@
           text: product.reference_hint
         },
         value: reference,
-        classes: "govuk-input--width-20",
+        classes: "govuk-input--width-21",
         spellcheck: false
       }) }}
       
