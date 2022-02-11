@@ -74,7 +74,6 @@ npm run compile && npm test
 | `ANALYTICS_TRACKING_ID`        | 
 | `COOKIE_MAX_AGE`               | 
 | `CORRELATION_HEADER_NAME`      | Default `x-request-id`
-| `DISABLE_APPMETRICS`           | 
 | `DISABLE_INTERNAL_HTTPS`       | 
 | `DISABLE_REQUEST_LOGGING`      | 
 | `MAX_SOCKETS`                  | 
