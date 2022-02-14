@@ -40,7 +40,7 @@ function getPage (req, res, next) {
   data.backLinkHref = getBackLinkUrl(sessionAmount, product)
 
   if (sessionAmount) {
-    data.productAmount = (sessionAmount / 100).toFixed(2)
+    data.amount = sessionAmount.toFixed(2)
   }
 
   return response(req, res, 'amount/amount', data)
@@ -68,7 +68,7 @@ function postPage (req, res, next) {
     return response(req, res, 'amount/amount', data)
   }
 
-  setSessionVariable(req, 'paymentAmount', paymentAmount)
+  setSessionVariable(req, 'amount', paymentAmount)
 
   return res.redirect(replaceParamsInPath(paths.paymentLinksV2.confirm, product.externalId))
 }

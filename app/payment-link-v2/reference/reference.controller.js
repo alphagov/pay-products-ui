@@ -14,11 +14,16 @@ const isAPotentialPan = require('./is-a-potential-pan')
 
 const PAYMENT_REFERENCE = 'payment-reference'
 
-function validateReferenceFormValue (reference, res) {
+function capitaliseFirstLetter (errorMessage) {
+  return errorMessage.charAt(0).toUpperCase() + errorMessage.slice(1)
+}
+
+function validateReferenceFormValue (reference, referenceLabel, res) {
   const errors = {}
   const referenceValidationResult = validateReference(reference)
   if (!referenceValidationResult.valid) {
-    errors[PAYMENT_REFERENCE] = res.locals.__p(referenceValidationResult.messageKey)
+    const errorMessage = res.locals.__p(referenceValidationResult.messageKey).replace('%s', referenceLabel)
+    errors[PAYMENT_REFERENCE] = capitaliseFirstLetter(errorMessage)
   }
 
   return errors
@@ -53,7 +58,7 @@ function getPage (req, res, next) {
   data.backLinkHref = getBackLinkUrl(sessionReferenceNumber, product)
 
   if (sessionReferenceNumber) {
-    data.referenceNumber = sessionReferenceNumber
+    data.reference = sessionReferenceNumber
   }
 
   return response(req, res, 'reference/reference', data)
@@ -61,9 +66,9 @@ function getPage (req, res, next) {
 
 function postPage (req, res, next) {
   const paymentReference = lodash.get(req.body, PAYMENT_REFERENCE, '')
-  const errors = validateReferenceFormValue(paymentReference, res)
-
   const product = req.product
+
+  const errors = validateReferenceFormValue(paymentReference, product.reference_label, res)
 
   const sessionRefererence = getSessionVariable(req, 'referenceNumber')
   const sessionAmount = getSessionVariable(req, 'amount')

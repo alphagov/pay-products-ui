@@ -63,9 +63,9 @@
       "enterAnAmountInPounds": "Enter an amount in pounds",
       "enterAnAmountInTheCorrectFormat": "Enter an amount in pounds and pence using digits and a decimal point. For example “10.50”",
       "enterAnAmountUnderMaxAmount": "Enter an amount that is £100,000 or under",
-      "enterAReference": "Enter a reference",
-      "referenceMustBeLessThanOrEqual50Chars": "reference must be less than or equal to 50 characters",
-      "referenceCantUseInvalidChars": "Reference can’t use any of the following characters < > ; : ` ( ) \" ' = &#124; \",\" ~ [ ]"
+      "enterAReference": "Enter a %s",
+      "referenceMustBeLessThanOrEqual50Chars": "%s must be less than or equal to 50 characters",
+      "referenceCantUseInvalidChars": "%s can’t contain any of the following characters < > ; : ` ( ) \" ' = &#124; \",\" ~ [ ]"
     }
   }
 }

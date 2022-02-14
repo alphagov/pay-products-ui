@@ -78,7 +78,7 @@ describe('Reference Page Controller', () => {
 
         const pageData = mockResponses.response.args[0][3]
         expect(pageData.backLinkHref).to.equal('/pay/an-external-id/confirm')
-        expect(pageData.referenceNumber).to.equal('refrence test value')
+        expect(pageData.reference).to.equal('refrence test value')
       })
     })
 
@@ -112,6 +112,7 @@ describe('Reference Page Controller', () => {
       const product = new Product(productFixtures.validProductResponse({
         type: 'ADHOC',
         reference_enabled: true,
+        reference_label: 'invoice number',
         price: null
       }))
 
@@ -199,7 +200,7 @@ describe('Reference Page Controller', () => {
         sinon.assert.calledWith(res.redirect, '/pay/an-external-id/reference/confirm')
       })
 
-      it('when an empty reference is entered, it should display an error message and the back link correctly', () => {
+      it('when an empty reference is entered, it should display an error message with the `reference_label` and the back link correctly', () => {
         req = {
           correlationId: '123',
           product,
@@ -211,9 +212,11 @@ describe('Reference Page Controller', () => {
         res = {
           redirect: sinon.spy(),
           locals: {
-            __p: sinon.spy()
+            __p: sinon.stub()
           }
         }
+
+        res.locals.__p.withArgs('paymentLinksV2.fieldValidation.enterAReference').returns('Enter your %s')
 
         controller.postPage(req, res)
 
@@ -222,7 +225,35 @@ describe('Reference Page Controller', () => {
         const pageData = mockResponses.response.args[0][3]
         expect(pageData.backLinkHref).to.equal('/pay/an-external-id')
 
-        sinon.assert.calledWith(res.locals.__p, 'paymentLinksV2.fieldValidation.enterAReference')
+        expect(pageData.errors['payment-reference']).to.equal('Enter your invoice number')
+      })
+
+      it('when a reference > 50 is entered, it should display an error message with the `reference_label` and the back link correctly', () => {
+        req = {
+          correlationId: '123',
+          product,
+          body: {
+            'payment-reference': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1'
+          }
+        }
+
+        res = {
+          redirect: sinon.spy(),
+          locals: {
+            __p: sinon.stub()
+          }
+        }
+
+        res.locals.__p.withArgs('paymentLinksV2.fieldValidation.referenceMustBeLessThanOrEqual50Chars').returns('%s must be less than or equal to 50 characters')
+
+        controller.postPage(req, res)
+
+        sinon.assert.calledWith(responseSpy, req, res, 'reference/reference')
+
+        const pageData = mockResponses.response.args[0][3]
+        expect(pageData.backLinkHref).to.equal('/pay/an-external-id')
+
+        expect(pageData.errors['payment-reference']).to.equal('Invoice number must be less than or equal to 50 characters')
       })
 
       it('when an invalid reference is entered and a reference is already saved to the session, it should display an error ' +
@@ -240,9 +271,11 @@ describe('Reference Page Controller', () => {
         res = {
           redirect: sinon.spy(),
           locals: {
-            __p: sinon.spy()
+            __p: sinon.stub()
           }
         }
+
+        res.locals.__p.withArgs('paymentLinksV2.fieldValidation.referenceCantUseInvalidChars').returns('%s can’t contain any of the following characters < > ; : ` ( ) " \' = &#124; "," ~ [ ]')
 
         controller.postPage(req, res)
 
@@ -251,7 +284,7 @@ describe('Reference Page Controller', () => {
         const pageData = mockResponses.response.args[0][3]
         expect(pageData.backLinkHref).to.equal('/pay/an-external-id/confirm')
 
-        sinon.assert.calledWith(res.locals.__p, 'paymentLinksV2.fieldValidation.referenceCantUseInvalidChars')
+        expect(pageData.errors['payment-reference']).to.equal('Invoice number can’t contain any of the following characters < > ; : ` ( ) " \' = &#124; "," ~ [ ]')
       })
     })
 
