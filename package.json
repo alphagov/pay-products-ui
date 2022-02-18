@@ -16,7 +16,9 @@
       "after",
       "afterEach",
       "it",
-      "expect"
+      "expect",
+      "cy",
+      "Cypress"
     ],
     "ignore": [
       "app/assets/**/*.js",
@@ -36,7 +38,11 @@
     "test": "rm -rf ./pacts && ./node_modules/mocha/bin/mocha '!(node_modules)/**/*.test'.js",
     "snyk-protect": "snyk protect",
     "prepublish": "npm run snyk-protect",
-    "publish-pacts": "./bin/publish-pacts.js"
+    "publish-pacts": "./bin/publish-pacts.js",
+    "cypress:server": "mb --debug | node --inspect -r dotenv/config start.js dotenv_config_path=test/cypress/test.env",
+    "cypress:test": "cypress run",
+    "cypress:test-headed": "cypress open",
+    "cypress:test-no-watch": "cypress open --config watchForFileChanges=false"
   },
   "husky": {
     "hooks": {
@@ -95,6 +101,7 @@
     "chai": "^4.3.6",
     "cheerio": "^1.0.0-rc.10",
     "chokidar-cli": "latest",
+    "cypress": "^9.4.1",
     "dotenv": "^16.0.0",
     "envfile": "^5.2.0",
     "eslint": "6.8.x",
@@ -111,12 +118,14 @@
     "husky": "^7.0.4",
     "lint-staged": "^12.3.4",
     "mocha": "7.2.x",
+    "mountebank": "^2.5.0",
     "nock": "13.2.x",
     "node-sass": "7.0.x",
     "nodemon": "^2.0.15",
     "nunjucksify": "^2.2.0",
     "nyc": "^15.1.0",
     "proxyquire": "~2.1.3",
+    "request-promise-native": "^1.0.9",
     "sass-lint": "^1.13.1",
     "sinon": "13.0.x",
     "snyk": "1.855.0",
