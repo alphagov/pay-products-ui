@@ -35,7 +35,7 @@
     "lint": "./node_modules/.bin/standard --fix",
     "lint-sass": "./node_modules/.bin/sass-lint -v",
     "test-with-coverage": "node ./node_modules/nyc/bin/nyc npm test",
-    "test": "rm -rf ./pacts && ./node_modules/mocha/bin/mocha '!(node_modules)/**/*.test'.js",
+    "test": "rm -rf ./pacts && ./node_modules/mocha/bin/mocha --exclude **/*.cy.test.js '!(node_modules)/**/*.test'.js",
     "snyk-protect": "snyk protect",
     "prepublish": "npm run snyk-protect",
     "publish-pacts": "./bin/publish-pacts.js",

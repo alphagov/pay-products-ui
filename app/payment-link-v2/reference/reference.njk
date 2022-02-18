@@ -13,7 +13,10 @@
   <div class="govuk-grid-column-two-thirds">
     {{ govukBackLink({
       text: "Back",
-      href: backLinkHref
+      href: backLinkHref,
+      attributes: {
+        'data-cy': 'back-link'
+      }
     }) }}
 
     {{ errorSummary ({
@@ -29,22 +32,36 @@
       {{ govukInput({
         id: "payment-reference",
         name: "payment-reference",
-        errorMessage: { text: errors['payment-reference']} if errors['payment-reference'] else false,
+        errorMessage: { 
+          text: errors['payment-reference'], 
+          attributes: {
+            'data-cy': 'error-message'
+          }
+        } if errors['payment-reference'] else false,
         label: {
           text: __p('paymentLinksV2.reference.pleaseEnterYour') + ' ' + product.reference_label,
           classes: "govuk-label--l",
-          isPageHeading: true
+          isPageHeading: true,
+          attributes: {
+            'data-cy': 'label'
+          }
         },
         hint: {
           text: product.reference_hint
         },
         value: reference,
         classes: "govuk-input--width-21",
-        spellcheck: false
+        spellcheck: false,
+        attributes: {
+          'data-cy': 'input'
+        }
       }) }}
       
       {{ govukButton({
-        text: __p('buttons.continue')
+        text: __p('buttons.continue'),
+        attributes: {
+          'data-cy': 'button'
+        }
       }) }}
     </form>
   </div>
