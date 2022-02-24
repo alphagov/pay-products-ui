@@ -65,7 +65,7 @@
       "enterAnAmountUnderMaxAmount": "Enter an amount that is £100,000 or under",
       "enterAReference": "Enter a valid %s",
       "referenceMustBeLessThanOrEqual50Chars": "%s must be less than or equal to 50 characters",
-      "referenceCantUseInvalidChars": "%s can’t contain any of the following characters < > ; : ` ( ) \" ' = &#124; \",\" ~ [ ]"
+      "referenceCantUseInvalidChars": "%s can’t contain any of the following characters < > ; : ` ( ) \" ' = | \",\" ~ [ ]"
     }
   }
 }
