@@ -5,6 +5,7 @@ pipeline {
 
   parameters {
     booleanParam(defaultValue: false, description: '', name: 'runEndToEndTestsOnPR')
+    string(name: 'CYPRESS_VERSION', defaultValue: '9.5.0', description: 'Cypress version number')
   }
 
   options {
@@ -18,6 +19,7 @@ pipeline {
   environment {
     RUN_END_TO_END_ON_PR = "${params.runEndToEndTestsOnPR}"
     JAVA_HOME="/usr/lib/jvm/java-1.11.0-openjdk-amd64"
+    CYPRESS_VERSION = "${params.CYPRESS_VERSION}"
   }
 
   stages {
@@ -32,6 +34,18 @@ pipeline {
       post {
         failure {
           postMetric("products-ui.docker-build.failure", 1)
+        }
+      }
+    }
+    stage('Browser Tests') {
+      steps {
+        cypress('products-ui')
+      }
+      post { 
+        always { 
+          script {
+            cypress.cleanUp()
+          }
         }
       }
     }
