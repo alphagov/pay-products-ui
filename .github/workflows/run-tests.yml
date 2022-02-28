@@ -35,3 +35,8 @@ jobs:
         run: npm run lint
       - name: Run unit tests
         run: npm test -- --forbid-only --forbid-pending
+      - name: Run cypress tests
+        run: |
+          npm run cypress:server > /dev/null 2>&1 &
+          sleep 3
+          npm run cypress:test

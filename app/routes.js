@@ -17,6 +17,7 @@ const adhocPaymentCtrl = require('./controllers/adhoc-payment')
 const amountCtrl = require('./payment-link-v2/amount/amount.controller')
 const productReferenceCtrl = require('./controllers/product-reference')
 const referenceCtrl = require('./payment-link-v2/reference/reference.controller')
+const confirmCtrl = require('./payment-link-v2/confirm/confirm.controller')
 
 // Middleware
 const { validateAndRefreshCsrf, ensureSessionHasCsrfSecret } = require('./middleware/csrf')
@@ -72,6 +73,9 @@ module.exports.bind = function (app) {
   // payment links reference
   app.get(paymentLinksV2.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceCtrl.getPage)
   app.post(paymentLinksV2.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceCtrl.postPage)
+
+  // payment links confirm page
+  app.get(paymentLinksV2.confirm, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, confirmCtrl.getPage)
 
   // security.txt — https://gds-way.cloudapps.digital/standards/vulnerability-disclosure.html
   const securitytxt = 'https://vdp.cabinetoffice.gov.uk/.well-known/security.txt'
