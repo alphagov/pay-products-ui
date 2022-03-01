@@ -59,6 +59,9 @@
     "reference": { 
       "pleaseEnterYour": "TODO convert to Welsh - Please enter your"
     },
+    "referenceConfirm": { 
+      "areYouSureThisIsAValid": "TODO convert to Welsh - Are you sure this is a valid"
+    },
     "fieldValidation": {
       "enterAnAmountInPounds": "TODO convert to Welsh - Enter an amount in pounds",
       "enterAnAmountInTheCorrectFormat": "TODO convert to Welsh - Enter an amount in pounds and pence using digits and a decimal point. For example “10.50”",

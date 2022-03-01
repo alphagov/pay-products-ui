@@ -17,6 +17,7 @@ const adhocPaymentCtrl = require('./controllers/adhoc-payment')
 const amountCtrl = require('./payment-link-v2/amount/amount.controller')
 const productReferenceCtrl = require('./controllers/product-reference')
 const referenceCtrl = require('./payment-link-v2/reference/reference.controller')
+const referenceConfirmCtrl = require('./payment-link-v2/reference-confirm/reference-confirm.controller')
 const confirmCtrl = require('./payment-link-v2/confirm/confirm.controller')
 
 // Middleware
@@ -66,15 +67,14 @@ module.exports.bind = function (app) {
   // ADHOC AND AGENT_INITIATED_MOTO SPECIFIC SCREENS
   app.post(pay.product, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, adhocPaymentCtrl.postIndex)
 
-  // payment links amount
-  app.get(paymentLinksV2.amount, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, amountCtrl.getPage)
-  app.post(paymentLinksV2.amount, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, amountCtrl.postPage)
-
-  // payment links reference
   app.get(paymentLinksV2.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceCtrl.getPage)
   app.post(paymentLinksV2.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceCtrl.postPage)
 
-  // payment links confirm page
+  app.get(paymentLinksV2.referenceConfirm, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceConfirmCtrl.getPage)
+
+  app.get(paymentLinksV2.amount, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, amountCtrl.getPage)
+  app.post(paymentLinksV2.amount, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, amountCtrl.postPage)
+
   app.get(paymentLinksV2.confirm, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, confirmCtrl.getPage)
 
   // security.txt — https://gds-way.cloudapps.digital/standards/vulnerability-disclosure.html
