@@ -59,6 +59,9 @@
     "reference": { 
       "pleaseEnterYour": "Please enter your"
     },
+    "referenceConfirm": { 
+      "areYouSureThisIsAValid": "Are you sure this is a valid"
+    },
     "fieldValidation": {
       "enterAnAmountInPounds": "Enter an amount in pounds",
       "enterAnAmountInTheCorrectFormat": "Enter an amount in pounds and pence using digits and a decimal point. For example “10.50”",
