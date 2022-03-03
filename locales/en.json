@@ -54,14 +54,17 @@
   },
   "paymentLinksV2": {
     "amount": {
-      "enterAmountToPay": "Enter amount to pay"
-    },
-    "reference": { 
-      "pleaseEnterYour": "Please enter your"
-    },
-    "referenceConfirm": { 
-      "areYouSureThisIsAValid": "Are you sure this is a valid"
-    },
+			"enterAmountToPay": "Enter amount to pay"
+		},
+		"reference": {
+			"pleaseEnterYour": "Please enter your"
+		},
+		"referenceConfirm": {
+			"areYouSureThisIsAReferenceNumber": "Are you sure this is a reference number?",
+			"checkYouveEnteredTheNumberCorrectly": "Check that you've entered the number correctly before making the payment. Do not enter your debit or credit card number.",
+			"confirmAndContinue": "Confirm and continue",
+			"edit": "Edit"
+		},
     "fieldValidation": {
       "enterAnAmountInPounds": "Enter an amount in pounds",
       "enterAnAmountInTheCorrectFormat": "Enter an amount in pounds and pence using digits and a decimal point. For example “10.50”",

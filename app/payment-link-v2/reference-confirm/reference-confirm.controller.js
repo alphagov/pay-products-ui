@@ -9,20 +9,22 @@ const replaceParamsInPath = require('../../utils/replace-params-in-path')
 function getPage (req, res, next) {
   const product = req.product
 
-  const data = {
-    productExternalId: product.externalId,
-    productName: product.name,
-    paymentReferenceLabel: product.reference_label,
-    paymentReferenceHint: product.reference_hint
-  }
-
   if (!product.reference_enabled) {
     return next(new NotFoundError('Attempted to access reference confirm page with a product that auto-generates references.'))
   }
 
-  const sessionReferenceNumber = getSessionVariable(req, 'referenceNumber')
+  const data = {
+    productExternalId: product.externalId,
+    productName: product.name,
+    productDescription: product.description,
+    paymentReferenceLabel: product.reference_label,
+    paymentReferenceHint: product.reference_hint
+  }
 
-  data.backLinkHref = replaceParamsInPath(paymentLinksV2.reference, product.externalId)
+  data.referencePageUrl = replaceParamsInPath(paymentLinksV2.reference, product.externalId)
+  data.confirmPageUrl = replaceParamsInPath(paymentLinksV2.confirm, product.externalId)
+
+  const sessionReferenceNumber = getSessionVariable(req, 'referenceNumber')
 
   if (sessionReferenceNumber) {
     data.reference = sessionReferenceNumber

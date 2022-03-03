@@ -1,13 +1,51 @@
 {% extends "../../views/layout-payment-links-v2.njk" %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
-{% from "../../views/macros/error-summary.njk" import errorSummary %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 
 {% block pageTitle %}
-  {{ __p('paymentLinksV2.referenceConfirm.areYouSureThisIsAValid') }} {{product.reference_label}}  - {{ productName }}
+  {{ __p('paymentLinksV2.referenceConfirm.areYouSureThisIsAReferenceNumber') }}  - {{ productName }}
 {% endblock %}
 
 {% block contentBody %}
-  <p class="govuk-body">Reference Confirm page - placeholder text</p>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-l">{{ productName }}</h1>  
+
+    {% if productDescription %}
+      <p class="govuk-body">{{ productDescription }}</p>
+    {% endif %}
+
+    <h2 class="govuk-heading-m">{{ paymentReferenceLabel }}</h2>
+
+    {% if paymentReferenceHint %}
+      <p class="govuk-hint">{{ paymentReferenceHint }}</p>    
+    {% endif %}
+
+    {{ govukInsetText({
+      text: reference,
+      classes: "govuk-!-font-weight-bold"
+    }) }}
+
+
+    <h2 class="govuk-heading-m">{{ __p('paymentLinksV2.referenceConfirm.areYouSureThisIsAReferenceNumber') }}</h2>
+
+    <p class="govuk-body">{{ __p('paymentLinksV2.referenceConfirm.checkYouveEnteredTheNumberCorrectly') }}</p>
+
+    <div class="govuk-button-group">
+      {{ govukButton({
+        text: __p('paymentLinksV2.referenceConfirm.confirmAndContinue'),
+        href: confirmPageUrl,
+        attributes: { 'data-cy': 'confirm-button' }
+      }) }}
+
+      {{ govukButton({
+        text: __p('paymentLinksV2.referenceConfirm.edit'),
+        classes: "govuk-button--secondary",
+        href: editPageUrl,
+        attributes: { 'data-cy': 'edit-button' }
+      }) }}
+    </div>
+  </div>  
+</div>
 {% endblock %}
