@@ -35,7 +35,7 @@ describe('Reference Confirm Page Controller', () => {
   })
 
   describe('getPage', () => {
-    describe('when product.reference_enabled=true', () => {
+    describe('when product.reference_enabled=true and product.price=null', () => {
       const product = new Product(productFixtures.validProductResponse({
         type: 'ADHOC',
         reference_enabled: true,
@@ -44,7 +44,8 @@ describe('Reference Confirm Page Controller', () => {
       }))
 
       it('when the reference is in the session, then it should display the REFERENCE CONFIRM page ' +
-        'and set the back link to the REFERENCE page', () => {
+        'and set the `back` link to the REFERENCE page ' +
+        'and set the  `confirm and continue` link to the AMOUNT page', () => {
         mockCookie.getSessionVariable.returns('refrence test value')
 
         req = {
@@ -67,7 +68,44 @@ describe('Reference Confirm Page Controller', () => {
         const pageData = mockResponses.response.args[0][3]
         expect(pageData.reference).to.equal('refrence test value')
         expect(pageData.referencePageUrl).to.equal('/pay/an-external-id/reference')
-        expect(pageData.confirmPageUrl).to.equal('/pay/an-external-id/confirm')
+        expect(pageData.confirmAndContinuePageUrl).to.equal('/pay/an-external-id/amount')
+      })
+    })
+
+    describe('when product.reference_enabled=true and product.price=1000 ', () => {
+      const product = new Product(productFixtures.validProductResponse({
+        type: 'ADHOC',
+        reference_enabled: true,
+        reference_label: 'invoice number',
+        price: 1000
+      }))
+
+      it('when the reference is in the session, then it should display the REFERENCE CONFIRM page ' +
+        'and set the `back` link to the REFERENCE page' +
+        'and set the  `confirm and continue` link to the CONFIRM page', () => {
+        mockCookie.getSessionVariable.returns('refrence test value')
+
+        req = {
+          correlationId: '123',
+          product,
+          service
+        }
+
+        res = {
+          redirect: sinon.spy(),
+          locals: {
+            __p: sinon.stub()
+          }
+        }
+
+        controller.getPage(req, res)
+
+        sinon.assert.calledWith(responseSpy, req, res, 'reference-confirm/reference-confirm')
+
+        const pageData = mockResponses.response.args[0][3]
+        expect(pageData.reference).to.equal('refrence test value')
+        expect(pageData.referencePageUrl).to.equal('/pay/an-external-id/reference')
+        expect(pageData.confirmAndContinuePageUrl).to.equal('/pay/an-external-id/confirm')
       })
     })
 
