@@ -10,21 +10,22 @@
 {% block contentBody %}
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <h1 class="govuk-heading-l">{{ productName }}</h1>  
+    <h1 class="govuk-heading-l" data-cy="product-name">{{ productName }}</h1>  
 
     {% if productDescription %}
-      <p class="govuk-body">{{ productDescription }}</p>
+      <p class="govuk-body" data-cy="description">{{ productDescription }}</p>
     {% endif %}
 
-    <h2 class="govuk-heading-m">{{ paymentReferenceLabel }}</h2>
+    <h2 class="govuk-heading-m" data-cy="reference-label">{{ paymentReferenceLabel | capitalize }}</h2>
 
     {% if paymentReferenceHint %}
-      <p class="govuk-hint">{{ paymentReferenceHint }}</p>    
+      <p class="govuk-hint" data-cy="reference-hint">{{ paymentReferenceHint }}</p>    
     {% endif %}
 
     {{ govukInsetText({
       text: reference,
-      classes: "govuk-!-font-weight-bold"
+      classes: "govuk-!-font-weight-bold",
+      attributes: { 'data-cy': 'reference' }
     }) }}
 
 
@@ -35,14 +36,14 @@
     <div class="govuk-button-group">
       {{ govukButton({
         text: __p('paymentLinksV2.referenceConfirm.confirmAndContinue'),
-        href: confirmPageUrl,
+        href: confirmAndContinuePageUrl,
         attributes: { 'data-cy': 'confirm-button' }
       }) }}
 
       {{ govukButton({
         text: __p('paymentLinksV2.referenceConfirm.edit'),
-        classes: "govuk-button--secondary",
-        href: editPageUrl,
+        href: referencePageUrl,
+        classes: 'govuk-button--secondary',
         attributes: { 'data-cy': 'edit-button' }
       }) }}
     </div>

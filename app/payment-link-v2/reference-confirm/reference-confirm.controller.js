@@ -22,7 +22,9 @@ function getPage (req, res, next) {
   }
 
   data.referencePageUrl = replaceParamsInPath(paymentLinksV2.reference, product.externalId)
-  data.confirmPageUrl = replaceParamsInPath(paymentLinksV2.confirm, product.externalId)
+
+  const confirmAndContinueUrlPath = product.price ? paymentLinksV2.confirm : paymentLinksV2.amount
+  data.confirmAndContinuePageUrl = replaceParamsInPath(confirmAndContinueUrlPath, product.externalId)
 
   const sessionReferenceNumber = getSessionVariable(req, 'referenceNumber')
 
