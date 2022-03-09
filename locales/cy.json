@@ -53,9 +53,6 @@
     "potentialPANInReference": "Gwiriwch eich bod wedi nodi’r rhif yn gywir cyn gwneud y taliad. Peidiwch â nodi’ch rhif cerdyn debyd neu gredyd."
   },
   "paymentLinksV2": {
-    "amount": {
-      "enterAmountToPay": "TODO convert to Welsh - Enter amount to pay" 
-    },
     "reference": { 
       "pleaseEnterYour": "TODO convert to Welsh - Please enter your"
     },
@@ -65,6 +62,13 @@
 			"confirmAndContinue": "TODO convert to Welsh - Confirm and continue",
 			"edit": "TODO convert to Welsh - Edit"
 		},
+    "confirm": {
+			"checkYourDetails": "TODO convert to Welsh - Check your details",
+      "totalToPay": "TODO convert to Welsh - Total to pay" 
+		},
+    "amount": {
+      "enterAmountToPay": "TODO convert to Welsh - Enter amount to pay" 
+    },
     "fieldValidation": {
       "enterAnAmountInPounds": "TODO convert to Welsh - Enter an amount in pounds",
       "enterAnAmountInTheCorrectFormat": "TODO convert to Welsh - Enter an amount in pounds and pence using digits and a decimal point. For example “10.50”",

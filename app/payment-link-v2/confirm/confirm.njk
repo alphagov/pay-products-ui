@@ -1,9 +1,60 @@
 {% extends "../../views/layout-payment-links-v2.njk" %}
 
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+i{% from "govuk/components/button/macro.njk" import govukButton %}
+
 {% block pageTitle %}
   Confirm  - {{ productName }}
 {% endblock %}
 
 {% block contentBody %}
-  <p class="govuk-body">Confirm page placeholder text</p>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l" data-cy="product-name">{{ productName }}</h1>
+
+      <h2 class="govuk-heading-m" data-cy="reference-label">{{ __p('paymentLinksV2.confirm.checkYourDetails') }}</h2>
+
+      {% set summaryElementsList = [] %}
+      {% for summaryElement in summaryElements %}
+        {% set summaryElementsList = (summaryElementsList.push({
+            key: {
+              text: summaryElement.summaryLabel
+            },
+            value: {
+              text: summaryElement.summaryValue
+            },
+            actions: {
+              items: [
+                {
+                  href: summaryElement.changeUrl,
+                  text: "Change",
+                  visuallyHiddenText: summaryElement.summaryLabel
+                }
+              ]
+            }
+        }), summaryElementsList) %}
+      {% endfor %}
+
+      {{ govukSummaryList({
+        attributes: { 'data-cy': 'summary-list'},
+        rows: summaryElementsList
+      }) }}
+
+      <form method="post" data-cy="form">
+        <input id="csrf" name="csrfToken" type="hidden" value="{{ csrf }}"/>
+
+        {% for summaryElement in summaryElements %}
+           <input
+            id="{{ summaryElement.hiddenFormFieldId }}" 
+            name="{{ summaryElement.hiddenFormFieldId }}" 
+            type="hidden" value="{{ summaryElement.summaryValue }}" />   
+        {% endfor %}
+
+        {{ govukButton({
+          text: 'Continue to payment',
+          attributes: { 'data-cy': 'continue-to-payment-button' }
+        }) }}
+      </form>
+    </div>
+  </div>
 {% endblock %}
