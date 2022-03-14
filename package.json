@@ -5,7 +5,7 @@
   "private": true,
   "license": "MIT",
   "engines": {
-    "node": "^12.22.10"
+    "node": "^16.14.0"
   },
   "standard": {
     "globals": [
@@ -36,7 +36,7 @@
     "lint-sass": "./node_modules/.bin/sass-lint -v",
     "test-with-coverage": "node ./node_modules/nyc/bin/nyc npm test",
     "test": "rm -rf ./pacts && ./node_modules/mocha/bin/mocha --exclude **/*.cy.test.js '!(node_modules)/**/*.test'.js",
-    "snyk-protect": "snyk protect",
+    "snyk-protect": "snyk-protect",
     "prepublish": "npm run snyk-protect",
     "publish-pacts": "./bin/publish-pacts.js",
     "cypress:server": "mb --debug | node --inspect -r dotenv/config start.js dotenv_config_path=test/cypress/test.env",
@@ -128,7 +128,7 @@
     "request-promise-native": "^1.0.9",
     "sass-lint": "^1.13.1",
     "sinon": "13.0.x",
-    "snyk": "1.869.0",
+    "@snyk/protect": "^1.865.x",
     "standard": "^14.3.4",
     "supertest": "^6.2.2"
   },

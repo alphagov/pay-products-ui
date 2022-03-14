@@ -26,7 +26,7 @@ pipeline {
     stage('Docker Build') {
       steps {
         script {
-          buildAppWithMetrics {
+          buildMultistageAppWithMetrics {
             app = "products-ui"
           }
         }
