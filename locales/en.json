@@ -53,10 +53,7 @@
     "potentialPANInReference": "Check that you’ve entered the number correctly before making the payment. Do not enter your debit or credit card number."
   },
   "paymentLinksV2": {
-    "amount": {
-			"enterAmountToPay": "Enter amount to pay"
-		},
-		"reference": {
+    "reference": {
 			"pleaseEnterYour": "Please enter your"
 		},
 		"referenceConfirm": {
@@ -64,6 +61,13 @@
 			"checkYouveEnteredTheNumberCorrectly": "Check that you've entered the number correctly before making the payment. Do not enter your debit or credit card number.",
 			"confirmAndContinue": "Confirm and continue",
 			"edit": "Edit"
+		},
+    "amount": {
+			"enterAmountToPay": "Enter amount to pay"
+		},
+    "confirm": {
+			"checkYourDetails": "Check your details",
+      "totalToPay": "Total to pay" 
 		},
     "fieldValidation": {
       "enterAnAmountInPounds": "Enter an amount in pounds",
