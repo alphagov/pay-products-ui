@@ -23,9 +23,14 @@ describe('Confirm Page Controller', () => {
     setSessionVariable: sinon.stub()
   }
 
+  const mockCaptcha = {
+    verifyCAPTCHAToken: sinon.stub()
+  }
+
   const controller = proxyquire('./confirm.controller', {
     '../../utils/response': mockResponses,
-    '../../utils/cookie': mockCookie
+    '../../utils/cookie': mockCookie,
+    '../../utils/captcha': mockCaptcha
   })
 
   const service = new Service(serviceFixtures.validServiceResponse())
@@ -34,6 +39,7 @@ describe('Confirm Page Controller', () => {
     mockCookie.getSessionVariable.reset()
     mockCookie.setSessionVariable.reset()
     responseSpy.resetHistory()
+    mockCaptcha.verifyCAPTCHAToken.reset()
   })
 
   describe('getPage', () => {
@@ -187,6 +193,94 @@ describe('Confirm Page Controller', () => {
         expect(pageData.summaryElements.length).to.equal(1)
         expect(pageData.summaryElements[0].summaryLabel).to.equal('Total to pay')
         expect(pageData.summaryElements[0].summaryValue).to.equal('£10.00')
+      })
+    })
+  })
+
+  describe('postPage', () => {
+    describe('when product.requireCaptcha=true and product.price=1000', () => {
+      const product = new Product(productFixtures.validProductResponse({
+        type: 'ADHOC',
+        reference_label: 'Invoice number',
+        reference_enabled: true,
+        price: 1000,
+        require_captcha: true
+      }))
+
+      it('when a failed captcha is entered, it should display an error and ' +
+        'redirect to the confirm page and show the values from the hidden form fields to display ' +
+        'the page so that it prevents session interference', async () => {
+        req = {
+          correlationId: '123',
+          product,
+          body: {
+            'reference-value': 'a-invoice-number',
+            amount: '10.00',
+            'g-recaptcha-response': 'recaptcha-test-token'
+          }
+        }
+
+        res = {
+          locals: {
+            __p: sinon.stub()
+          }
+        }
+
+        mockCaptcha.verifyCAPTCHAToken.resolves(false)
+
+        res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
+        res.locals.__p.withArgs('paymentLinksV2.fieldValidation.youMustSelectIAmNotARobot')
+          .returns('You failed the captcha challenge.  Please try again.')
+
+        await controller.postPage(req, res)
+
+        sinon.assert.calledWith(responseSpy, req, res, 'confirm/confirm')
+
+        const pageData = mockResponses.response.args[0][3]
+        expect(pageData.summaryElements.length).to.equal(2)
+        expect(pageData.summaryElements[0].summaryLabel).to.equal('Invoice number')
+        expect(pageData.summaryElements[0].summaryValue).to.equal('a-invoice-number')
+        expect(pageData.summaryElements[1].summaryLabel).to.equal('Total to pay')
+        expect(pageData.summaryElements[1].summaryValue).to.equal('£10.00')
+
+        expect(pageData.errors).to.contain({
+          recaptcha: 'You failed the captcha challenge.  Please try again.'
+        })
+      })
+
+      it('when the captcha call fails, it should display an error and ' +
+        'redirect to the confirm page', async () => {
+        req = {
+          correlationId: '123',
+          product,
+          body: {
+            'reference-value': 'a-invoice-number',
+            amount: '10.00',
+            'g-recaptcha-response': 'recaptcha-test-token'
+          }
+        }
+
+        res = {
+          locals: {
+            __p: sinon.stub()
+          }
+        }
+
+        mockCaptcha.verifyCAPTCHAToken.rejects()
+
+        res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
+        res.locals.__p.withArgs('paymentLinksV2.fieldValidation.youMustSelectIAmNotARobot')
+          .returns('There was an issue with the recaptcha.  Please try again.')
+
+        await controller.postPage(req, res)
+
+        sinon.assert.calledWith(responseSpy, req, res, 'confirm/confirm')
+
+        const pageData = mockResponses.response.args[0][3]
+
+        expect(pageData.errors).to.contain({
+          recaptcha: 'There was an issue with the recaptcha.  Please try again.'
+        })
       })
     })
   })

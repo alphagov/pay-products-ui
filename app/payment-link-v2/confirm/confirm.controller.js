@@ -5,9 +5,14 @@ const { paymentLinksV2 } = require('../../paths')
 const replaceParamsInPath = require('../../utils/replace-params-in-path')
 const { getSessionVariable } = require('../../utils/cookie')
 const { NotFoundError } = require('../../errors')
+const captcha = require('../../utils/captcha')
+const logger = require('../../utils/logger')(__filename)
+const lodash = require('lodash')
 
 const HIDDEN_FORM_FIELD_ID_REFERENCE_VALUE = 'reference-value'
 const HIDDEN_FORM_FIELD_ID_AMOUNT = 'amount'
+const GOOGLE_RECAPTCHA_FORM_NAME = 'g-recaptcha-response'
+const ERROR_KEY_RECAPTCHA = 'recaptcha'
 
 function generateSummaryElement (summaryLabel, summaryValue, changeUrl, hiddenFormFieldId) {
   return {
@@ -16,6 +21,64 @@ function generateSummaryElement (summaryLabel, summaryValue, changeUrl, hiddenFo
     changeUrl,
     hiddenFormFieldId
   }
+}
+
+async function validateRecaptcha (
+  googleRecaptchaFormValue,
+  translationMethod
+) {
+  const errors = {}
+
+  const token = googleRecaptchaFormValue
+  try {
+    const challengeIsValid = await captcha.verifyCAPTCHAToken(token)
+
+    if (challengeIsValid) {
+      logger.info('User passed CAPTCHA challenge')
+    } else {
+      logger.warn('User failed CAPTCHA challenge')
+      errors[ERROR_KEY_RECAPTCHA] = translationMethod('paymentLinksV2.fieldValidation.youMustSelectIAmNotARobot')
+    }
+  } catch (error) {
+    logger.error('CAPTCHA challenge failed to respond correctly', error)
+    errors[ERROR_KEY_RECAPTCHA] = translationMethod('paymentLinksV2.fieldValidation.youMustSelectIAmNotARobot')
+  }
+
+  return errors
+}
+
+function getSummaryElements (
+  referenceNumber,
+  amount,
+  productReferenceLabel,
+  productExternalId,
+  productPrice,
+  translationMethod
+) {
+  const summaryElements = []
+
+  if (referenceNumber) {
+    summaryElements.push(generateSummaryElement(
+      productReferenceLabel,
+      referenceNumber,
+      replaceParamsInPath(paymentLinksV2.reference, productExternalId),
+      HIDDEN_FORM_FIELD_ID_REFERENCE_VALUE
+    ))
+  }
+
+  const changeAmountUrl = replaceParamsInPath(paymentLinksV2.amount, productExternalId)
+  const totalToPayText = translationMethod('paymentLinksV2.confirm.totalToPay')
+
+  const getAmountToDisplay = getRightAmountToDisplayAsGbp(amount, productPrice)
+
+  summaryElements.push(generateSummaryElement(
+    totalToPayText,
+    getAmountToDisplay,
+    changeAmountUrl,
+    HIDDEN_FORM_FIELD_ID_AMOUNT
+  ))
+
+  return summaryElements
 }
 
 function getRightAmountToDisplayAsGbp (sessionAmount, productAmount) {
@@ -39,28 +102,14 @@ function getPage (req, res, next) {
     productName: product.name
   }
 
-  const summaryElements = []
-
-  if (sessionReferenceNumber) {
-    summaryElements.push(generateSummaryElement(
-      product.reference_label,
-      sessionReferenceNumber,
-      replaceParamsInPath(paymentLinksV2.reference, product.externalId),
-      HIDDEN_FORM_FIELD_ID_REFERENCE_VALUE
-    ))
-  }
-
-  const changeAmountUrl = replaceParamsInPath(paymentLinksV2.amount, product.externalId)
-  const totalToPayText = res.locals.__p('paymentLinksV2.confirm.totalToPay')
-
-  const getAmountToDisplay = getRightAmountToDisplayAsGbp(sessionAmount, product.price)
-
-  summaryElements.push(generateSummaryElement(
-    totalToPayText,
-    getAmountToDisplay,
-    changeAmountUrl,
-    HIDDEN_FORM_FIELD_ID_AMOUNT
-  ))
+  const summaryElements = getSummaryElements(
+    sessionReferenceNumber,
+    sessionAmount,
+    product.reference_label,
+    product.externalId,
+    product.price,
+    res.locals.__p
+  )
 
   data.summaryElements = summaryElements
   data.confirmPageUrl = replaceParamsInPath(paymentLinksV2.confirm, product.externalId)
@@ -68,6 +117,39 @@ function getPage (req, res, next) {
   return response(req, res, 'confirm/confirm', data)
 }
 
+async function postPage (req, res, next) {
+  const product = req.product
+
+  const data = {
+    productExternalId: product.externalId,
+    productName: product.name
+  }
+
+  const summaryElements = getSummaryElements(
+    req.body[HIDDEN_FORM_FIELD_ID_REFERENCE_VALUE],
+    req.body[HIDDEN_FORM_FIELD_ID_AMOUNT],
+    product.reference_label,
+    product.externalId,
+    product.price,
+    res.locals.__p
+  )
+
+  data.summaryElements = summaryElements
+
+  if (product.requireCaptcha) {
+    const errors = await validateRecaptcha(
+      req.body[GOOGLE_RECAPTCHA_FORM_NAME],
+      res.locals.__p
+    )
+
+    if (!lodash.isEmpty(errors)) {
+      data.errors = errors
+      return response(req, res, 'confirm/confirm', data)
+    }
+  }
+}
+
 module.exports = {
-  getPage
+  getPage,
+  postPage
 }

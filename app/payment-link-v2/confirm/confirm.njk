@@ -1,7 +1,8 @@
 {% extends "../../views/layout-payment-links-v2.njk" %}
 
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
-i{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../views/macros/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
   Confirm  - {{ productName }}
@@ -10,6 +11,10 @@ i{% from "govuk/components/button/macro.njk" import govukButton %}
 {% block contentBody %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+      {{ errorSummary ({
+        errors: errors
+      }) }}
+
       <h1 class="govuk-heading-l" data-cy="product-name">{{ productName }}</h1>
 
       <h2 class="govuk-heading-m" data-cy="reference-label">{{ __p('paymentLinksV2.confirm.checkYourDetails') }}</h2>
@@ -49,6 +54,10 @@ i{% from "govuk/components/button/macro.njk" import govukButton %}
             name="{{ summaryElement.hiddenFormFieldId }}" 
             type="hidden" value="{{ summaryElement.summaryValue }}" />   
         {% endfor %}
+
+        {% if product.requireCaptcha %}
+          <div class="g-recaptcha govuk-!-margin-bottom-5" data-sitekey="{{ GOOGLE_RECAPTCHA_SITE_KEY }}"></div>
+        {% endif %}
 
         {{ govukButton({
           text: 'Continue to payment',
