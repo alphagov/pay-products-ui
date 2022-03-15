@@ -104,7 +104,7 @@
     "cypress": "^9.5.2",
     "dotenv": "^16.0.0",
     "envfile": "^5.2.0",
-    "eslint": "6.8.x",
+    "eslint": "8.11.x",
     "grunt": "1.4.x",
     "grunt-babel": "^8.0.0",
     "grunt-browserify": "^6.0.0",
