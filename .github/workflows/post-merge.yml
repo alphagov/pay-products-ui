@@ -6,7 +6,7 @@ on:
       - master
   pull_request:
     paths:
-      - './.github/workflows/post-merge.yml'
+      - .github/workflows/post-merge.yml
 
 permissions:
   contents: read
