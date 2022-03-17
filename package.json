@@ -128,7 +128,7 @@
     "request-promise-native": "^1.0.9",
     "sass-lint": "^1.13.1",
     "sinon": "13.0.x",
-    "@snyk/protect": "^1.865.x",
+    "@snyk/protect": "^1.874.x",
     "standard": "^14.3.4",
     "supertest": "^6.2.2"
   },
