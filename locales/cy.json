@@ -62,20 +62,22 @@
 			"confirmAndContinue": "TODO convert to Welsh - Confirm and continue",
 			"edit": "TODO convert to Welsh - Edit"
 		},
+
+    "amount": {
+      "enterAmountToPay": "TODO convert to Welsh - Enter amount to pay" 
+    },
     "confirm": {
 			"checkYourDetails": "TODO convert to Welsh - Check your details",
       "totalToPay": "TODO convert to Welsh - Total to pay" 
 		},
-    "amount": {
-      "enterAmountToPay": "TODO convert to Welsh - Enter amount to pay" 
-    },
     "fieldValidation": {
       "enterAnAmountInPounds": "TODO convert to Welsh - Enter an amount in pounds",
       "enterAnAmountInTheCorrectFormat": "TODO convert to Welsh - Enter an amount in pounds and pence using digits and a decimal point. For example “10.50”",
       "enterAnAmountUnderMaxAmount": "TODO convert to Welsh - Enter an amount that is £100,000 or under",
       "enterAReference": "TODO convert to Welsh - Enter a valid %s",
       "referenceMustBeLessThanOrEqual50Chars": "TODO convert to Welsh - %s must be less than or equal to 50 characters",
-      "referenceCantUseInvalidChars": "TODO convert to Welsh - %s can’t contain any of the following characters < > ; : ` ( ) \" ' = | \",\" ~ [ ]"
+      "referenceCantUseInvalidChars": "TODO convert to Welsh - %s can’t contain any of the following characters < > ; : ` ( ) \" ' = | \",\" ~ [ ]",
+      "youMustSelectIAmNotARobot": "TODO convert to Welsh - You must select 'I am not a robot' before proceeding to payment."
     }
   } 
 }
