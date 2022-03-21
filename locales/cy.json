@@ -19,6 +19,10 @@
     "default": "Mae’n ddrwg gennym, ond ni allwn brosesu eich cais. Rhowch gynnig arall arni wedyn.",
     "internal": "Mae problem gyda’r cyfleuster taliadau. Rhowch gynnig arall arni wedyn"
   },
+  "404Page": {
+    "title": "TODO convert to Welsh - Page not found",
+    "bodyText": "TODO convert to Welsh - Sorry, we could not find the page you were looking for."
+  },
   "confirmation": {
     "title": "Roedd eich taliad yn llwyddiannus",
     "titleMoto": "Roedd y taliad yn llwyddiannus",
