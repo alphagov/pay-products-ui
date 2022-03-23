@@ -27,10 +27,17 @@ describe('Confirm Page Controller', () => {
     verifyCAPTCHAToken: sinon.stub()
   }
 
+  const mockProductsClient = {
+    payment: {
+      create: sinon.stub()
+    }
+  }
+
   const controller = proxyquire('./confirm.controller', {
     '../../utils/response': mockResponses,
     '../../utils/cookie': mockCookie,
-    '../../utils/captcha': mockCaptcha
+    '../../utils/captcha': mockCaptcha,
+    '../../services/clients/products.client': mockProductsClient
   })
 
   const service = new Service(serviceFixtures.validServiceResponse())
@@ -40,6 +47,7 @@ describe('Confirm Page Controller', () => {
     mockCookie.setSessionVariable.reset()
     responseSpy.resetHistory()
     mockCaptcha.verifyCAPTCHAToken.reset()
+    mockProductsClient.payment.create.reset()
   })
 
   describe('getPage', () => {
@@ -198,6 +206,82 @@ describe('Confirm Page Controller', () => {
   })
 
   describe('postPage', () => {
+    describe('when product.requireCaptcha=false and product.price=1000', () => {
+      const product = new Product(productFixtures.validProductResponse({
+        type: 'ADHOC',
+        reference_label: 'Invoice number',
+        reference_enabled: true,
+        price: 1000
+      }))
+
+      it('when `click and continue` is clicked, should redirect to the ' +
+        'next_url', async () => {
+        req = {
+          correlationId: '123',
+          product,
+          body: {
+            'reference-value': 'a-invoice-number',
+            amount: '10.00'
+          }
+        }
+
+        res = {
+          redirect: sinon.stub()
+        }
+
+        mockProductsClient.payment.create.resolves({
+          links: {
+            next: {
+              href: 'https://test.com'
+            }
+          }
+        })
+
+        await controller.postPage(req, res)
+
+        sinon.assert.calledWith(
+          mockProductsClient.payment.create,
+          'an-external-id',
+          '10.00',
+          'a-invoice-number'
+        )
+        sinon.assert.calledWith(res.redirect, 303, 'https://test.com')
+      })
+
+      it('when an error occurs when creating a payment, should call next() with ' +
+      'an error', async () => {
+        req = {
+          correlationId: '123',
+          product,
+          body: {
+            'reference-value': 'a-invoice-number',
+            amount: '10.00'
+          }
+        }
+
+        res = {
+          redirect: sinon.stub()
+        }
+
+        const next = sinon.stub()
+
+        mockProductsClient.payment.create.rejects(new Error('Failed to create payment.'))
+
+        await controller.postPage(req, res, next)
+
+        sinon.assert.calledWith(
+          mockProductsClient.payment.create,
+          'an-external-id',
+          '10.00',
+          'a-invoice-number'
+        )
+
+        const expectedError = sinon.match.instanceOf(Error)
+          .and(sinon.match.has('message', 'Failed to create payment.'))
+        sinon.assert.calledWith(next, expectedError)
+      })
+    })
+
     describe('when product.requireCaptcha=true and product.price=1000', () => {
       const product = new Product(productFixtures.validProductResponse({
         type: 'ADHOC',
@@ -206,6 +290,48 @@ describe('Confirm Page Controller', () => {
         price: 1000,
         require_captcha: true
       }))
+
+      it('when a successful captcha is entered, should redirect to the ' +
+        'next_url', async () => {
+        req = {
+          correlationId: '123',
+          product,
+          body: {
+            'reference-value': 'a-invoice-number',
+            amount: '10.00',
+            'g-recaptcha-response': 'recaptcha-test-token'
+          }
+        }
+
+        res = {
+          locals: {
+            __p: sinon.stub()
+          },
+          redirect: sinon.stub()
+        }
+
+        mockCaptcha.verifyCAPTCHAToken.withArgs('recaptcha-test-token').resolves(true)
+
+        mockProductsClient.payment.create.resolves({
+          links: {
+            next: {
+              href: 'https://test.com'
+            }
+          }
+        })
+
+        await controller.postPage(req, res)
+
+        sinon.assert.calledWith(mockCaptcha.verifyCAPTCHAToken, 'recaptcha-test-token')
+
+        sinon.assert.calledWith(
+          mockProductsClient.payment.create,
+          'an-external-id',
+          '10.00',
+          'a-invoice-number'
+        )
+        sinon.assert.calledWith(res.redirect, 303, 'https://test.com')
+      })
 
       it('when a failed captcha is entered, it should display an error and ' +
         'redirect to the confirm page and show the values from the hidden form fields to display ' +

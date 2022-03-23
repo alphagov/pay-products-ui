@@ -29,8 +29,6 @@ module.exports = function (err, req, res, next) {
     }
   }
 
-  // log the exception
   logger.error(`[requestId=${req.correlationId}] Internal server error`, errorPayload)
-  // re-throw it
-  next(err)
+  return response(req, res, '500')
 }

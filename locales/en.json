@@ -19,6 +19,10 @@
     "default": "There’s a problem with the payments platform. Please try again later",
     "internal": "Sorry, we’re unable to process your request. Try again later."
   },
+  "404Page": {
+    "title": "Page not found",
+    "bodyText": "Sorry, we could not find the page you were looking for."
+  },
   "confirmation": {
     "title": "Your payment was successful",
     "titleMoto": "The payment was successful",

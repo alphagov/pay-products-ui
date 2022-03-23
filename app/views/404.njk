@@ -1,10 +1,10 @@
 {% extends "./layout-payment-links-v2.njk" %}
 
 {% block pageTitle %}
-  Page not found - GOV.UK Pay
+  {{ __p('404Page.title') }} - GOV.UK Pay
 {% endblock %}
 
 {% block contentBody %}
-    <h1 class="govuk-heading-l">Page not found</h1>
-    <p class="govuk-body">Sorry, we could not find the page you were looking for.</p>
+    <h1 class="govuk-heading-l">{{ __p('404Page.title') }}</h1>
+    <p class="govuk-body">{{ __p('404Page.bodyText') }}</p>
 {% endblock %}

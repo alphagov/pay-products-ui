@@ -1,4 +1,5 @@
 'use strict'
+const lodash = require('lodash')
 
 const { response } = require('../../utils/response')
 const { paymentLinksV2 } = require('../../paths')
@@ -7,7 +8,7 @@ const { getSessionVariable } = require('../../utils/cookie')
 const { NotFoundError } = require('../../errors')
 const captcha = require('../../utils/captcha')
 const logger = require('../../utils/logger')(__filename)
-const lodash = require('lodash')
+const productsClient = require('../../services/clients/products.client')
 
 const HIDDEN_FORM_FIELD_ID_REFERENCE_VALUE = 'reference-value'
 const HIDDEN_FORM_FIELD_ID_AMOUNT = 'amount'
@@ -125,17 +126,6 @@ async function postPage (req, res, next) {
     productName: product.name
   }
 
-  const summaryElements = getSummaryElements(
-    req.body[HIDDEN_FORM_FIELD_ID_REFERENCE_VALUE],
-    req.body[HIDDEN_FORM_FIELD_ID_AMOUNT],
-    product.reference_label,
-    product.externalId,
-    product.price,
-    res.locals.__p
-  )
-
-  data.summaryElements = summaryElements
-
   if (product.requireCaptcha) {
     const errors = await validateRecaptcha(
       req.body[GOOGLE_RECAPTCHA_FORM_NAME],
@@ -144,8 +134,33 @@ async function postPage (req, res, next) {
 
     if (!lodash.isEmpty(errors)) {
       data.errors = errors
+
+      const summaryElements = getSummaryElements(
+        req.body[HIDDEN_FORM_FIELD_ID_REFERENCE_VALUE],
+        req.body[HIDDEN_FORM_FIELD_ID_AMOUNT],
+        product.reference_label,
+        product.externalId,
+        product.price,
+        res.locals.__p
+      )
+
+      data.summaryElements = summaryElements
+
       return response(req, res, 'confirm/confirm', data)
     }
+  }
+
+  try {
+    logger.info(`[${req.correlationId}] creating charge for product ${product.externalId}`)
+    const payment = await productsClient.payment.create(
+      product.externalId,
+      req.body[HIDDEN_FORM_FIELD_ID_AMOUNT],
+      req.body[HIDDEN_FORM_FIELD_ID_REFERENCE_VALUE]
+    )
+
+    res.redirect(303, payment.links.next.href)
+  } catch (error) {
+    return next(error)
   }
 }
 
