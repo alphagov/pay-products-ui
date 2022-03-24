@@ -15,12 +15,13 @@ const HIDDEN_FORM_FIELD_ID_AMOUNT = 'amount'
 const GOOGLE_RECAPTCHA_FORM_NAME = 'g-recaptcha-response'
 const ERROR_KEY_RECAPTCHA = 'recaptcha'
 
-function generateSummaryElement (summaryLabel, summaryValue, changeUrl, hiddenFormFieldId) {
+function generateSummaryElement (summaryLabel, summaryValue, changeUrl, hiddenFormFieldId, hiddenFormFieldValue) {
   return {
     summaryLabel,
     summaryValue,
     changeUrl,
-    hiddenFormFieldId
+    hiddenFormFieldId,
+    hiddenFormFieldValue
   }
 }
 
@@ -63,27 +64,29 @@ function getSummaryElements (
       productReferenceLabel,
       referenceNumber,
       replaceParamsInPath(paymentLinksV2.reference, productExternalId),
-      HIDDEN_FORM_FIELD_ID_REFERENCE_VALUE
+      HIDDEN_FORM_FIELD_ID_REFERENCE_VALUE,
+      referenceNumber
     ))
   }
 
   const changeAmountUrl = replaceParamsInPath(paymentLinksV2.amount, productExternalId)
   const totalToPayText = translationMethod('paymentLinksV2.confirm.totalToPay')
 
-  const getAmountToDisplay = getRightAmountToDisplayAsGbp(amount, productPrice)
+  const amountAsGbp = getRightAmountToDisplayAsGbp(amount, productPrice)
 
   summaryElements.push(generateSummaryElement(
     totalToPayText,
-    getAmountToDisplay,
+    amountAsGbp,
     changeAmountUrl,
-    HIDDEN_FORM_FIELD_ID_AMOUNT
+    HIDDEN_FORM_FIELD_ID_AMOUNT,
+    amount || productPrice
   ))
 
   return summaryElements
 }
 
 function getRightAmountToDisplayAsGbp (sessionAmount, productAmount) {
-  const amountToDisplay = sessionAmount || (productAmount / 100).toFixed(2)
+  const amountToDisplay = (parseFloat(sessionAmount || productAmount) / 100).toFixed(2)
 
   return new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(amountToDisplay)
 }
