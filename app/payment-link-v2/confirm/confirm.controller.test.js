@@ -73,7 +73,7 @@ describe('Confirm Page Controller', () => {
         }
 
         mockCookie.getSessionVariable.withArgs(req, 'referenceNumber').returns('test invoice number')
-        mockCookie.getSessionVariable.withArgs(req, 'amount').returns('10.50')
+        mockCookie.getSessionVariable.withArgs(req, 'amount').returns('1050')
 
         res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
 
@@ -86,9 +86,15 @@ describe('Confirm Page Controller', () => {
 
         expect(pageData.summaryElements[0].summaryLabel).to.equal('invoice number')
         expect(pageData.summaryElements[0].summaryValue).to.equal('test invoice number')
+        expect(pageData.summaryElements[0].changeUrl).to.equal('/pay/an-external-id/reference')
+        expect(pageData.summaryElements[0].hiddenFormFieldId).to.equal('reference-value')
+        expect(pageData.summaryElements[0].hiddenFormFieldValue).to.equal('test invoice number')
 
         expect(pageData.summaryElements[1].summaryLabel).to.equal('Total to pay')
         expect(pageData.summaryElements[1].summaryValue).to.equal('£10.50')
+        expect(pageData.summaryElements[1].changeUrl).to.equal('/pay/an-external-id/amount')
+        expect(pageData.summaryElements[1].hiddenFormFieldId).to.equal('amount')
+        expect(pageData.summaryElements[1].hiddenFormFieldValue).to.equal('1050')
       })
 
       it('when the amount is in the session, then it should display the confirm page ' +
@@ -104,7 +110,7 @@ describe('Confirm Page Controller', () => {
           }
         }
 
-        mockCookie.getSessionVariable.withArgs(req, 'amount').returns('10.50')
+        mockCookie.getSessionVariable.withArgs(req, 'amount').returns('1050')
 
         res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
 
@@ -116,6 +122,9 @@ describe('Confirm Page Controller', () => {
         expect(pageData.summaryElements.length).to.equal(1)
         expect(pageData.summaryElements[0].summaryLabel).to.equal('Total to pay')
         expect(pageData.summaryElements[0].summaryValue).to.equal('£10.50')
+        expect(pageData.summaryElements[0].changeUrl).to.equal('/pay/an-external-id/amount')
+        expect(pageData.summaryElements[0].hiddenFormFieldId).to.equal('amount')
+        expect(pageData.summaryElements[0].hiddenFormFieldValue).to.equal('1050')
       })
 
       it('when there is no amount in the session, then it should display a 404 page', () => {
@@ -162,7 +171,7 @@ describe('Confirm Page Controller', () => {
           }
         }
 
-        mockCookie.getSessionVariable.withArgs(req, 'amount').returns('10.50')
+        mockCookie.getSessionVariable.withArgs(req, 'amount').returns('1050')
 
         res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
 
@@ -174,6 +183,9 @@ describe('Confirm Page Controller', () => {
         expect(pageData.summaryElements.length).to.equal(1)
         expect(pageData.summaryElements[0].summaryLabel).to.equal('Total to pay')
         expect(pageData.summaryElements[0].summaryValue).to.equal('£10.50')
+        expect(pageData.summaryElements[0].changeUrl).to.equal('/pay/an-external-id/amount')
+        expect(pageData.summaryElements[0].hiddenFormFieldId).to.equal('amount')
+        expect(pageData.summaryElements[0].hiddenFormFieldValue).to.equal('1050')
       })
 
       it('when there is NO amount is in the session, then it should display the confirm page ' +
@@ -201,6 +213,9 @@ describe('Confirm Page Controller', () => {
         expect(pageData.summaryElements.length).to.equal(1)
         expect(pageData.summaryElements[0].summaryLabel).to.equal('Total to pay')
         expect(pageData.summaryElements[0].summaryValue).to.equal('£10.00')
+        expect(pageData.summaryElements[0].changeUrl).to.equal('/pay/an-external-id/amount')
+        expect(pageData.summaryElements[0].hiddenFormFieldId).to.equal('amount')
+        expect(pageData.summaryElements[0].hiddenFormFieldValue).to.equal(1000)
       })
     })
   })
@@ -221,7 +236,7 @@ describe('Confirm Page Controller', () => {
           product,
           body: {
             'reference-value': 'a-invoice-number',
-            amount: '10.00'
+            amount: '1000'
           }
         }
 
@@ -242,7 +257,7 @@ describe('Confirm Page Controller', () => {
         sinon.assert.calledWith(
           mockProductsClient.payment.create,
           'an-external-id',
-          '10.00',
+          '1000',
           'a-invoice-number'
         )
         sinon.assert.calledWith(res.redirect, 303, 'https://test.com')
@@ -255,7 +270,7 @@ describe('Confirm Page Controller', () => {
           product,
           body: {
             'reference-value': 'a-invoice-number',
-            amount: '10.00'
+            amount: '1000'
           }
         }
 
@@ -272,7 +287,7 @@ describe('Confirm Page Controller', () => {
         sinon.assert.calledWith(
           mockProductsClient.payment.create,
           'an-external-id',
-          '10.00',
+          '1000',
           'a-invoice-number'
         )
 
@@ -298,7 +313,7 @@ describe('Confirm Page Controller', () => {
           product,
           body: {
             'reference-value': 'a-invoice-number',
-            amount: '10.00',
+            amount: '1000',
             'g-recaptcha-response': 'recaptcha-test-token'
           }
         }
@@ -327,7 +342,7 @@ describe('Confirm Page Controller', () => {
         sinon.assert.calledWith(
           mockProductsClient.payment.create,
           'an-external-id',
-          '10.00',
+          '1000',
           'a-invoice-number'
         )
         sinon.assert.calledWith(res.redirect, 303, 'https://test.com')
@@ -341,7 +356,7 @@ describe('Confirm Page Controller', () => {
           product,
           body: {
             'reference-value': 'a-invoice-number',
-            amount: '10.00',
+            amount: '1000',
             'g-recaptcha-response': 'recaptcha-test-token'
           }
         }
@@ -366,8 +381,14 @@ describe('Confirm Page Controller', () => {
         expect(pageData.summaryElements.length).to.equal(2)
         expect(pageData.summaryElements[0].summaryLabel).to.equal('Invoice number')
         expect(pageData.summaryElements[0].summaryValue).to.equal('a-invoice-number')
+        expect(pageData.summaryElements[0].hiddenFormFieldId).to.equal('reference-value')
+        expect(pageData.summaryElements[0].hiddenFormFieldValue).to.equal('a-invoice-number')
+
         expect(pageData.summaryElements[1].summaryLabel).to.equal('Total to pay')
         expect(pageData.summaryElements[1].summaryValue).to.equal('£10.00')
+        expect(pageData.summaryElements[1].changeUrl).to.equal('/pay/an-external-id/amount')
+        expect(pageData.summaryElements[1].hiddenFormFieldId).to.equal('amount')
+        expect(pageData.summaryElements[1].hiddenFormFieldValue).to.equal('1000')
 
         expect(pageData.errors).to.contain({
           recaptcha: 'You failed the captcha challenge.  Please try again.'
@@ -381,7 +402,7 @@ describe('Confirm Page Controller', () => {
           product,
           body: {
             'reference-value': 'a-invoice-number',
-            amount: '10.00',
+            amount: '1000',
             'g-recaptcha-response': 'recaptcha-test-token'
           }
         }

@@ -68,7 +68,7 @@ describe('Amount Page Controller', () => {
 
       it('when the amount is in the session, then it should display that amount to 2 decimal places ' +
         'and set the back link to the CONFIRM page', () => {
-        mockCookie.getSessionVariable.returns(10.50)
+        mockCookie.getSessionVariable.returns(1050)
 
         req = {
           correlationId: '123',
@@ -112,7 +112,7 @@ describe('Amount Page Controller', () => {
 
       it('when the amount is in the session, then it should display that amount to 2 decimal points ' +
         'and set the back link to the CONFIRM page', () => {
-        mockCookie.getSessionVariable.returns(10.00)
+        mockCookie.getSessionVariable.returns(1000)
 
         req = {
           correlationId: '123',
@@ -177,7 +177,7 @@ describe('Amount Page Controller', () => {
 
       controller.postPage(req, res)
 
-      sinon.assert.calledWith(mockCookie.setSessionVariable, req, 'amount', '10')
+      sinon.assert.calledWith(mockCookie.setSessionVariable, req, 'amount', 1000)
       sinon.assert.calledWith(res.redirect, '/pay/an-external-id/confirm')
     })
 
