@@ -16,6 +16,7 @@ function asGBP (amountInPence) {
 module.exports = (req, res) => {
   const product = req.product
   const correlationId = req.correlationId
+
   const data = {
     productExternalId: product.externalId,
     productName: product.name,

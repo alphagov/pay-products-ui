@@ -57,6 +57,10 @@
     "potentialPANInReference": "Gwiriwch eich bod wedi nodi’r rhif yn gywir cyn gwneud y taliad. Peidiwch â nodi’ch rhif cerdyn debyd neu gredyd."
   },
   "paymentLinksV2": {
+    "start": {
+      "title": "TODO convert to Welsh - Make a payment",
+      "defaultDescription": "TODO convert to Welsh - Click continue to make a payment."
+    },
     "reference": { 
       "pleaseEnterYour": "TODO convert to Welsh - Please enter your"
     },

@@ -14,6 +14,7 @@ class Service {
     this.name = serviceData.name
     this.serviceName = serviceData.service_name
     this.gatewayAccountIds = serviceData.gateway_account_ids
+    this.organisationName = serviceData.merchant_details && serviceData.merchant_details.name
     this.customBranding =
       serviceData.custom_branding ? {
         cssUrl: serviceData.custom_branding.css_url,

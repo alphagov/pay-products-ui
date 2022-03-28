@@ -23,11 +23,10 @@ describe('Amount page', () => {
           }
         })
       ])
-
-      Cypress.Cookies.preserveOnce('session')
     })
 
     it('should redirect to the `Amount` page', () => {
+      Cypress.Cookies.preserveOnce('session')
       cy.visit('/pay/a-product-id/amount')
 
       cy.get('[data-cy=back-link]').should('have.attr', 'href', '/pay/a-product-id/reference')
@@ -36,6 +35,7 @@ describe('Amount page', () => {
     })
 
     it('when the amount is in the wrong format, should display an error', () => {
+      Cypress.Cookies.preserveOnce('session')
       cy.get('[data-cy=input]').type('invalid amount', { delay: 0 })
       cy.get('[data-cy=button]').click()
 
