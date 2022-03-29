@@ -1,10 +1,10 @@
 'use strict'
 
 const { response } = require('../../utils/response')
-const { getSessionVariable } = require('../../utils/cookie')
 const { NotFoundError } = require('../../errors')
 const { paymentLinksV2 } = require('../../paths')
 const replaceParamsInPath = require('../../utils/replace-params-in-path')
+const paymentLinkSession = require('../utils/payment-link-session')
 
 function getPage (req, res, next) {
   const product = req.product
@@ -26,7 +26,7 @@ function getPage (req, res, next) {
   const confirmAndContinueUrlPath = product.price ? paymentLinksV2.confirm : paymentLinksV2.amount
   data.confirmAndContinuePageUrl = replaceParamsInPath(confirmAndContinueUrlPath, product.externalId)
 
-  const sessionReferenceNumber = getSessionVariable(req, 'referenceNumber')
+  const sessionReferenceNumber = paymentLinkSession.getReference(req, product.externalId)
 
   if (sessionReferenceNumber) {
     data.reference = sessionReferenceNumber

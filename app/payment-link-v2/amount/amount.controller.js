@@ -3,13 +3,12 @@
 const lodash = require('lodash')
 
 const { response } = require('../../utils/response')
-const { getSessionVariable } = require('../../utils/cookie')
 const { NotFoundError } = require('../../errors')
 const getBackLinkUrl = require('./get-back-link-url')
 const paths = require('../../paths')
 const { validateAmount } = require('../../utils/validation/form-validations')
 const replaceParamsInPath = require('../../utils/replace-params-in-path')
-const { setSessionVariable } = require('../../utils/cookie')
+const paymentLinkSession = require('../utils/payment-link-session')
 
 const PAYMENT_AMOUNT = 'payment-amount'
 
@@ -35,7 +34,7 @@ function getPage (req, res, next) {
     return next(new NotFoundError('Attempted to access amount page with a product that already has a price.'))
   }
 
-  const sessionAmount = getSessionVariable(req, 'amount')
+  const sessionAmount = paymentLinkSession.getAmount(req, product.externalId)
 
   data.backLinkHref = getBackLinkUrl(sessionAmount, product)
 
@@ -52,7 +51,7 @@ function postPage (req, res, next) {
 
   const product = req.product
 
-  const sessionAmount = getSessionVariable(req, 'amount')
+  const sessionAmount = paymentLinkSession.getAmount(req, product.externalId)
   const backLinkHref = getBackLinkUrl(sessionAmount, product)
 
   const data = {
@@ -70,7 +69,7 @@ function postPage (req, res, next) {
 
   const paymentAmountInPence = parseFloat(paymentAmount) * 100
 
-  setSessionVariable(req, 'amount', paymentAmountInPence)
+  paymentLinkSession.setAmount(req, product.externalId, paymentAmountInPence)
 
   return res.redirect(replaceParamsInPath(paths.paymentLinksV2.confirm, product.externalId))
 }

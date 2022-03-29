@@ -4,11 +4,11 @@ const lodash = require('lodash')
 const { response } = require('../../utils/response')
 const { paymentLinksV2 } = require('../../paths')
 const replaceParamsInPath = require('../../utils/replace-params-in-path')
-const { getSessionVariable } = require('../../utils/cookie')
 const { NotFoundError } = require('../../errors')
 const captcha = require('../../utils/captcha')
 const logger = require('../../utils/logger')(__filename)
 const productsClient = require('../../services/clients/products.client')
+const paymentLinkSession = require('../utils/payment-link-session')
 
 const HIDDEN_FORM_FIELD_ID_REFERENCE_VALUE = 'reference-value'
 const HIDDEN_FORM_FIELD_ID_AMOUNT = 'amount'
@@ -94,8 +94,8 @@ function getRightAmountToDisplayAsGbp (sessionAmount, productAmount) {
 function getPage (req, res, next) {
   const product = req.product
 
-  const sessionReferenceNumber = getSessionVariable(req, 'referenceNumber')
-  const sessionAmount = getSessionVariable(req, 'amount')
+  const sessionReferenceNumber = paymentLinkSession.getReference(req, product.externalId)
+  const sessionAmount = paymentLinkSession.getAmount(req, product.externalId)
 
   if (!sessionAmount && !product.price) {
     return next(new NotFoundError('Attempted to access confirm page without a price in the session or product.'))

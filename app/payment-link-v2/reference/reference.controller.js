@@ -4,13 +4,12 @@ const lodash = require('lodash')
 
 const paths = require('../../paths')
 const { response } = require('../../utils/response')
-const { getSessionVariable } = require('../../utils/cookie')
 const { NotFoundError } = require('../../errors')
 const getBackLinkUrl = require('./get-back-link-url')
 const { validateReference } = require('../../utils/validation/form-validations')
 const replaceParamsInPath = require('../../utils/replace-params-in-path')
-const { setSessionVariable } = require('../../utils/cookie')
 const isAPotentialPan = require('./is-a-potential-pan')
+const paymentLinkSession = require('../utils/payment-link-session')
 
 const PAYMENT_REFERENCE = 'payment-reference'
 
@@ -53,7 +52,7 @@ function getPage (req, res, next) {
     return next(new NotFoundError('Attempted to access reference page with a product that auto-generates references.'))
   }
 
-  const sessionReferenceNumber = getSessionVariable(req, 'referenceNumber')
+  const sessionReferenceNumber = paymentLinkSession.getReference(req, product.externalId)
 
   data.backLinkHref = getBackLinkUrl(sessionReferenceNumber, product)
 
@@ -70,8 +69,8 @@ function postPage (req, res, next) {
 
   const errors = validateReferenceFormValue(paymentReference, product.reference_label, res)
 
-  const sessionRefererence = getSessionVariable(req, 'referenceNumber')
-  const sessionAmount = getSessionVariable(req, 'amount')
+  const sessionRefererence = paymentLinkSession.getReference(req, product.externalId)
+  const sessionAmount = paymentLinkSession.getAmount(req, product.externalId)
 
   const backLinkHref = getBackLinkUrl(sessionRefererence, product)
 
@@ -88,7 +87,7 @@ function postPage (req, res, next) {
     return response(req, res, 'reference/reference', data)
   }
 
-  setSessionVariable(req, 'referenceNumber', paymentReference)
+  paymentLinkSession.setReference(req, product.externalId, paymentReference)
 
   return res.redirect(replaceParamsInPath(getNextPageUrl(product.price, sessionAmount, paymentReference), product.externalId))
 }
