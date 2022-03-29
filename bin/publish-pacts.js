@@ -4,7 +4,7 @@ const path = require('path')
 const pact = require('@pact-foundation/pact-node')
 const pactDirPath = `${__dirname}/../pacts/`
 const opts = {
-  pactFilesOrDirs: [ pactDirPath ],
+  pactFilesOrDirs: [pactDirPath],
   pactBroker: process.env.PACT_BROKER_URL,
   consumerVersion: process.env.PACT_CONSUMER_VERSION,
   pactBrokerUsername: process.env.PACT_BROKER_USERNAME,
@@ -17,7 +17,7 @@ readdir(pactDirPath)
     files
       .filter((file) => file.includes('to-be'))
       .map((file) => unlink(path.join(pactDirPath, file)))
-    )
+  )
   )
   .then(() => pact.publishPacts(opts))
   .then(() => console.log('>> Pact files have been published'))

@@ -24,7 +24,6 @@ const controller = proxyquire('./pre-payment.controller', {
 const productExternalId = 'product-external-id'
 
 describe('Pre payment controller', () => {
-
   beforeEach(() => {
     mockResponse.response.resetHistory()
   })
