@@ -84,7 +84,7 @@ describe('The payment link start page', () => {
           description: null
         }),
         serviceStubs.getServiceSuccess({
-          gatewayAccountId: gatewayAccountId,
+          gatewayAccountId: gatewayAccountId
         })
       ])
 

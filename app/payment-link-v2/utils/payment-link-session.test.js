@@ -1,0 +1,123 @@
+const { expect } = require('chai')
+
+const paymentLinkSession = require('./payment-link-session')
+
+const productExternalId = 'a-product-external-id'
+const reference = 'REF123'
+const amount = 1234
+
+describe('Payment link session utilities', () => {
+  describe('Get reference', () => {
+    it('should return undefined when there is no session', () => {
+      const req = {}
+      const sessionRef = paymentLinkSession.getReference(req, productExternalId)
+      expect(sessionRef).to.equal(undefined)
+    })
+
+    it('should return reference from session', () => {
+      const req = {
+        session: {
+          'a-product-external-id': {
+            reference
+          }
+        }
+      }
+      const sessionRef = paymentLinkSession.getReference(req, productExternalId)
+      expect(sessionRef).to.equal(reference)
+    })
+  })
+
+  describe('Set reference', () => {
+    it('should set the reference when there is no payment link session', () => {
+      const req = {}
+      paymentLinkSession.setReference(req, productExternalId, reference)
+
+      const sessionRef = paymentLinkSession.getReference(req, productExternalId)
+      expect(sessionRef).to.equal(reference)
+    })
+
+    it('should override existing reference', () => {
+      const req = {
+        session: {
+          'a-product-external-id': {
+            reference: 'OLDREF'
+          }
+        }
+      }
+      paymentLinkSession.setReference(req, productExternalId, reference)
+
+      const sessionRef = paymentLinkSession.getReference(req, productExternalId)
+      expect(sessionRef).to.equal(reference)
+    })
+  })
+
+  describe('Get amount', () => {
+    it('should return undefined when there is no session', () => {
+      const req = {}
+      const sessionAmount = paymentLinkSession.getAmount(req, productExternalId)
+      expect(sessionAmount).to.equal(undefined)
+    })
+
+    it('should return amount from session', () => {
+      const req = {
+        session: {
+          'a-product-external-id': {
+            amount
+          }
+        }
+      }
+      const sessionRef = paymentLinkSession.getAmount(req, productExternalId)
+      expect(sessionRef).to.equal(amount)
+    })
+  })
+
+  describe('Set amount', () => {
+    it('should set the amount when there is no payment link session', () => {
+      const req = {}
+      paymentLinkSession.setAmount(req, productExternalId, amount)
+
+      const sessionAmount = paymentLinkSession.getAmount(req, productExternalId)
+      expect(sessionAmount).to.equal(amount)
+    })
+
+    it('should override existing amount', () => {
+      const req = {
+        session: {
+          'a-product-external-id': {
+            amount: 2
+          }
+        }
+      }
+      paymentLinkSession.setAmount(req, productExternalId, amount)
+
+      const sessionAmount = paymentLinkSession.getAmount(req, productExternalId)
+      expect(sessionAmount).to.equal(amount)
+    })
+  })
+
+  describe('Delete session', () => {
+    it('should delete session for product external id', () => {
+      const req = {
+        session: {
+          'a-product-external-id-1': {
+            reference: 'REF1',
+            amount: 1
+          },
+          'a-product-external-id-2': {
+            reference: 'REF2',
+            amount: 2
+          }
+        }
+      }
+      paymentLinkSession.deletePaymentLinkSession(req, 'a-product-external-id-1')
+      expect(req).to.deep.equal({
+        session: {
+          'a-product-external-id-2': {
+            reference: 'REF2',
+            amount: 2
+          }
+        }
+      })
+    })
+  })
+})

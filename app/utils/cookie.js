@@ -93,7 +93,8 @@ function setValueOnCookie (req, key, value, cookieName) {
 }
 
 module.exports = {
-  sessionCookie: sessionCookie,
-  setSessionVariable: setSessionVariable,
-  getSessionVariable: getSessionVariable
+  sessionCookie,
+  setSessionVariable,
+  getSessionVariable,
+  getSessionCookieName
 }

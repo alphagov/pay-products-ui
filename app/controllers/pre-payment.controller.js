@@ -11,7 +11,7 @@ const { paymentLinksV2 } = require('../paths')
 // Constants
 const errorMessagePath = 'error.internal' // This is the object notation to string in en.json
 
-function getContinueUrlForNewPaymentLinkJourney(product) {
+function getContinueUrlForNewPaymentLinkJourney (product) {
   if (product.reference_enabled) {
     return replaceParamsInPath(paymentLinksV2.reference, product.externalId)
   }
@@ -20,7 +20,6 @@ function getContinueUrlForNewPaymentLinkJourney(product) {
   }
   return replaceParamsInPath(paymentLinksV2.confirm, product.externalId)
 }
-
 
 module.exports = (req, res) => {
   const product = req.product
@@ -38,8 +37,7 @@ module.exports = (req, res) => {
         return response(req, res, 'start/start', {
           continueUrl
         })
-      }
-      else if (product.reference_enabled) {
+      } else if (product.reference_enabled) {
         return productReferenceCtrl.index(req, res)
       } else {
         return adhocPaymentCtrl.index(req, res)
