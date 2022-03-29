@@ -20,7 +20,8 @@ let req, res
 describe('Confirm Page Controller', () => {
   const mockPaymentLinkSession = {
     getAmount: sinon.stub(),
-    getReference: sinon.stub()
+    getReference: sinon.stub(),
+    deletePaymentLinkSession: sinon.stub()
   }
 
   const mockCaptcha = {
@@ -260,6 +261,7 @@ describe('Confirm Page Controller', () => {
           '1000',
           'a-invoice-number'
         )
+        sinon.assert.calledWith(mockPaymentLinkSession.deletePaymentLinkSession, req, product.externalId)
         sinon.assert.calledWith(res.redirect, 303, 'https://test.com')
       })
 
