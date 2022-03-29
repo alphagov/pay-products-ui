@@ -25,12 +25,11 @@ describe('Reference and reference confirm page', () => {
           }
         })
       ])
-
-      Cypress.Cookies.preserveOnce('session')
     })
 
     describe('Reference page', () => {
       it('should redirect to the Reference page', () => {
+        Cypress.Cookies.preserveOnce('session')
         cy.visit('/pay/a-product-id/reference')
 
         cy.get('[data-cy=back-link]').should('have.attr', 'href', '/pay/a-product-id')
@@ -39,6 +38,7 @@ describe('Reference and reference confirm page', () => {
       })
 
       it('when an reference is entered that is too long, should display an error', () => {
+        Cypress.Cookies.preserveOnce('session')
         cy.get('[data-cy=input]').type('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1', { delay: 0 })
         cy.get('[data-cy=button]').click()
 
@@ -61,6 +61,7 @@ describe('Reference and reference confirm page', () => {
 
     describe('Reference confirm page', () => {
       it('should display the `reference confirm` page correctly', () => {
+        Cypress.Cookies.preserveOnce('session')
         cy.get('[data-cy=product-name]').should('contain', 'A Product Name')
         cy.get('[data-cy=description]').should('contain', 'Product description')
         cy.get('[data-cy=reference-label]').should('contain', 'Invoice number')

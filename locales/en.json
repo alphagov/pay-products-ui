@@ -57,6 +57,10 @@
     "potentialPANInReference": "Check that you’ve entered the number correctly before making the payment. Do not enter your debit or credit card number."
   },
   "paymentLinksV2": {
+    "start": {
+      "title": "Make a payment",
+      "defaultDescription": "Click continue to make a payment."
+    },
     "reference": {
 			"pleaseEnterYour": "Please enter your"
 		},

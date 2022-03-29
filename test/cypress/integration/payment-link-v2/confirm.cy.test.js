@@ -22,8 +22,6 @@ describe('Confirm page', () => {
           }
         })
       ])
-
-      Cypress.Cookies.preserveOnce('session')
     })
 
     it('should redirect to the `Confirm` page', () => {
