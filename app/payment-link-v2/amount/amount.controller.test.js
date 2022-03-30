@@ -18,29 +18,26 @@ const mockResponses = {
 let req, res
 
 describe('Amount Page Controller', () => {
-  const mockCookie = {
-    getSessionVariable: sinon.stub(),
-    setSessionVariable: sinon.stub()
+  const mockPaymentLinkSession = {
+    getAmount: sinon.stub(),
+    getReference: sinon.stub(),
+    setAmount: sinon.stub()
   }
 
   beforeEach(() => {
-    mockCookie.getSessionVariable.reset()
-    mockCookie.setSessionVariable.reset()
+    mockPaymentLinkSession.getAmount.reset()
+    mockPaymentLinkSession.getReference.reset()
+    mockPaymentLinkSession.setAmount.reset()
     responseSpy.resetHistory()
   })
 
   const controller = proxyquire('./amount.controller', {
     '../../utils/response': mockResponses,
-    '../../utils/cookie': mockCookie
+    '../utils/payment-link-session': mockPaymentLinkSession
   })
 
   describe('getPage', () => {
     const service = new Service(serviceFixtures.validServiceResponse())
-
-    beforeEach(() => {
-      mockCookie.getSessionVariable.reset()
-      responseSpy.resetHistory()
-    })
 
     describe('when product.reference_enabled=true', () => {
       const product = new Product(productFixtures.validProductResponse({
@@ -50,8 +47,7 @@ describe('Amount Page Controller', () => {
       }))
 
       it('when the amount is NOT in the session, then it should display the amount page', () => {
-        mockCookie.getSessionVariable.withArgs(req, 'amount').returns(null)
-
+        mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns(undefined)
         req = {
           correlationId: '123',
           product,
@@ -68,8 +64,7 @@ describe('Amount Page Controller', () => {
 
       it('when the amount is in the session, then it should display that amount to 2 decimal places ' +
         'and set the back link to the CONFIRM page', () => {
-        mockCookie.getSessionVariable.returns(1050)
-
+        mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns(1050)
         req = {
           correlationId: '123',
           product,
@@ -94,8 +89,7 @@ describe('Amount Page Controller', () => {
       }))
 
       it('when the amount is NOT in the session, then it should display the amount page', () => {
-        mockCookie.getSessionVariable.withArgs(req, 'amount').onFirstCall().returns(null)
-
+        mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns(undefined)
         req = {
           correlationId: '123',
           product,
@@ -112,7 +106,7 @@ describe('Amount Page Controller', () => {
 
       it('when the amount is in the session, then it should display that amount to 2 decimal points ' +
         'and set the back link to the CONFIRM page', () => {
-        mockCookie.getSessionVariable.returns(1000)
+        mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns(1000)
 
         req = {
           correlationId: '123',
@@ -177,7 +171,7 @@ describe('Amount Page Controller', () => {
 
       controller.postPage(req, res)
 
-      sinon.assert.calledWith(mockCookie.setSessionVariable, req, 'amount', 1000)
+      sinon.assert.calledWith(mockPaymentLinkSession.setAmount, req, product.externalId, 1000)
       sinon.assert.calledWith(res.redirect, '/pay/an-external-id/confirm')
     })
 
@@ -209,8 +203,6 @@ describe('Amount Page Controller', () => {
 
     it('when an invalid amount is entered and an amount is already saved to the session, it should display an error' +
     'message and set the back link to the CONFIRM page', () => {
-      mockCookie.getSessionVariable.returns(1000)
-
       req = {
         correlationId: '123',
         product,
@@ -225,7 +217,7 @@ describe('Amount Page Controller', () => {
           __p: sinon.spy()
         }
       }
-
+      mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns(1000)
       controller.postPage(req, res)
 
       sinon.assert.calledWith(responseSpy, req, res, 'amount/amount')

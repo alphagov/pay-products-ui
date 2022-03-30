@@ -3,29 +3,31 @@
 const lodash = require('lodash')
 const { getSessionCookieName } = require('../../utils/cookie')
 
+const REFERENCE_KEY = 'reference'
+const AMOUNT_KEY = 'amount'
+
+function cookieIndex (key, productExternalId) {
+  return `${getSessionCookieName()}.${productExternalId}.${key}`
+}
+
 function getReference (req, productExternalId) {
-  const sessionName = getSessionCookieName()
-  return lodash.get(req, `${sessionName}.${productExternalId}.reference`)
+  return lodash.get(req, cookieIndex(REFERENCE_KEY, productExternalId))
 }
 
 function setReference (req, productExternalId, reference) {
-  const sessionName = getSessionCookieName()
-  lodash.set(req, `${sessionName}.${productExternalId}.reference`, reference)
+  lodash.set(req, cookieIndex(REFERENCE_KEY, productExternalId), reference)
 }
 
 function getAmount (req, productExternalId) {
-  const sessionName = getSessionCookieName()
-  return lodash.get(req, `${sessionName}.${productExternalId}.amount`)
+  return lodash.get(req, cookieIndex(AMOUNT_KEY, productExternalId))
 }
 
 function setAmount (req, productExternalId, amount) {
-  const sessionName = getSessionCookieName()
-  lodash.set(req, `${sessionName}.${productExternalId}.amount`, amount)
+  lodash.set(req, cookieIndex(AMOUNT_KEY, productExternalId), amount)
 }
 
 function deletePaymentLinkSession (req, productExternalId) {
-  const sessionName = getSessionCookieName()
-  lodash.unset(req, `${sessionName}.${productExternalId}`)
+  lodash.unset(req, `${getSessionCookieName()}.${productExternalId}`)
 }
 
 module.exports = {

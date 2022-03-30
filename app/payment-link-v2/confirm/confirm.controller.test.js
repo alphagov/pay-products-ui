@@ -18,9 +18,9 @@ const mockResponses = {
 let req, res
 
 describe('Confirm Page Controller', () => {
-  const mockCookie = {
-    getSessionVariable: sinon.stub(),
-    setSessionVariable: sinon.stub()
+  const mockPaymentLinkSession = {
+    getAmount: sinon.stub(),
+    getReference: sinon.stub()
   }
 
   const mockCaptcha = {
@@ -35,7 +35,7 @@ describe('Confirm Page Controller', () => {
 
   const controller = proxyquire('./confirm.controller', {
     '../../utils/response': mockResponses,
-    '../../utils/cookie': mockCookie,
+    '../utils/payment-link-session': mockPaymentLinkSession,
     '../../utils/captcha': mockCaptcha,
     '../../services/clients/products.client': mockProductsClient
   })
@@ -43,8 +43,8 @@ describe('Confirm Page Controller', () => {
   const service = new Service(serviceFixtures.validServiceResponse())
 
   beforeEach(() => {
-    mockCookie.getSessionVariable.reset()
-    mockCookie.setSessionVariable.reset()
+    mockPaymentLinkSession.getAmount.reset()
+    mockPaymentLinkSession.getReference.reset()
     responseSpy.resetHistory()
     mockCaptcha.verifyCAPTCHAToken.reset()
     mockProductsClient.payment.create.reset()
@@ -72,8 +72,8 @@ describe('Confirm Page Controller', () => {
           }
         }
 
-        mockCookie.getSessionVariable.withArgs(req, 'referenceNumber').returns('test invoice number')
-        mockCookie.getSessionVariable.withArgs(req, 'amount').returns('1050')
+        mockPaymentLinkSession.getReference.withArgs(req, product.externalId).returns('test invoice number')
+        mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns('1050')
 
         res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
 
@@ -110,7 +110,7 @@ describe('Confirm Page Controller', () => {
           }
         }
 
-        mockCookie.getSessionVariable.withArgs(req, 'amount').returns('1050')
+        mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns('1050')
 
         res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
 
@@ -139,7 +139,7 @@ describe('Confirm Page Controller', () => {
           }
         }
 
-        mockCookie.getSessionVariable.withArgs(req, 'amount').returns(null)
+        mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns(null)
 
         const next = sinon.spy()
         controller.getPage(req, res, next)
@@ -171,7 +171,7 @@ describe('Confirm Page Controller', () => {
           }
         }
 
-        mockCookie.getSessionVariable.withArgs(req, 'amount').returns('1050')
+        mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns('1050')
 
         res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
 
@@ -201,7 +201,7 @@ describe('Confirm Page Controller', () => {
           }
         }
 
-        mockCookie.getSessionVariable.withArgs(req, 'amount').returns(null)
+        mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns(null)
 
         res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
 

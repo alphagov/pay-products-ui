@@ -18,19 +18,19 @@ const mockResponses = {
 let req, res
 
 describe('Reference Confirm Page Controller', () => {
-  const mockCookie = {
-    getSessionVariable: sinon.stub()
+  const mockPaymentLinkSession = {
+    getReference: sinon.stub()
   }
 
   const controller = proxyquire('./reference-confirm.controller', {
     '../../utils/response': mockResponses,
-    '../../utils/cookie': mockCookie
+    '../utils/payment-link-session': mockPaymentLinkSession
   })
 
   const service = new Service(serviceFixtures.validServiceResponse())
 
   beforeEach(() => {
-    mockCookie.getSessionVariable.reset()
+    mockPaymentLinkSession.getReference.reset()
     responseSpy.resetHistory()
   })
 
@@ -46,8 +46,6 @@ describe('Reference Confirm Page Controller', () => {
       it('when the reference is in the session, then it should display the REFERENCE CONFIRM page ' +
         'and set the `back` link to the REFERENCE page ' +
         'and set the  `confirm and continue` link to the AMOUNT page', () => {
-        mockCookie.getSessionVariable.returns('refrence test value')
-
         req = {
           correlationId: '123',
           product,
@@ -60,13 +58,13 @@ describe('Reference Confirm Page Controller', () => {
             __p: sinon.stub()
           }
         }
-
+        mockPaymentLinkSession.getReference.withArgs(req, product.externalId).returns('reference test value')
         controller.getPage(req, res)
 
         sinon.assert.calledWith(responseSpy, req, res, 'reference-confirm/reference-confirm')
 
         const pageData = mockResponses.response.args[0][3]
-        expect(pageData.reference).to.equal('refrence test value')
+        expect(pageData.reference).to.equal('reference test value')
         expect(pageData.referencePageUrl).to.equal('/pay/an-external-id/reference')
         expect(pageData.confirmAndContinuePageUrl).to.equal('/pay/an-external-id/amount')
       })
@@ -83,8 +81,6 @@ describe('Reference Confirm Page Controller', () => {
       it('when the reference is in the session, then it should display the REFERENCE CONFIRM page ' +
         'and set the `back` link to the REFERENCE page' +
         'and set the  `confirm and continue` link to the CONFIRM page', () => {
-        mockCookie.getSessionVariable.returns('refrence test value')
-
         req = {
           correlationId: '123',
           product,
@@ -97,13 +93,13 @@ describe('Reference Confirm Page Controller', () => {
             __p: sinon.stub()
           }
         }
-
+        mockPaymentLinkSession.getReference.withArgs(req, product.externalId).returns('reference test value')
         controller.getPage(req, res)
 
         sinon.assert.calledWith(responseSpy, req, res, 'reference-confirm/reference-confirm')
 
         const pageData = mockResponses.response.args[0][3]
-        expect(pageData.reference).to.equal('refrence test value')
+        expect(pageData.reference).to.equal('reference test value')
         expect(pageData.referencePageUrl).to.equal('/pay/an-external-id/reference')
         expect(pageData.confirmAndContinuePageUrl).to.equal('/pay/an-external-id/confirm')
       })
