@@ -75,7 +75,8 @@
 		},
     "confirm": {
 			"checkYourDetails": "Check your details",
-      "totalToPay": "Total to pay" 
+      "totalToPay": "Total to pay",
+      "change": "Change"
 		},
     "fieldValidation": {
       "enterAnAmountInPounds": "Enter an amount in pounds",
