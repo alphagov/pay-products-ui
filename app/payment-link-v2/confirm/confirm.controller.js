@@ -161,6 +161,7 @@ async function postPage (req, res, next) {
       req.body[HIDDEN_FORM_FIELD_ID_REFERENCE_VALUE]
     )
 
+    paymentLinkSession.deletePaymentLinkSession(req, product.externalId)
     res.redirect(303, payment.links.next.href)
   } catch (error) {
     return next(error)
