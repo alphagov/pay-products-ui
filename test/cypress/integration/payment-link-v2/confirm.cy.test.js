@@ -31,10 +31,13 @@ describe('Confirm page', () => {
 
       cy.get('[data-cy=summary-list]').get('dt').eq(0).should('contain', 'Total to pay')
       cy.get('[data-cy=summary-list]').get('dd').eq(0).should('contain', '£10.00')
+      cy.get('[data-cy=summary-list]').get('dd').eq(1).should('not.exist')
 
       cy.get('[data-cy=form]').get('#amount').eq(0).should('value', '1000')
+    })
 
-      cy.get('[data-cy=continue-to-payment-button]').should('exist')
+    it('should not display the `Change` amount link', () => {
+      cy.get('[data-cy=summary-list]').get('dd').eq(1).should('not.exist')
     })
   })
 })

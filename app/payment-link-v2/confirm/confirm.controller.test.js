@@ -159,38 +159,7 @@ describe('Confirm Page Controller', () => {
         price: 1000
       }))
 
-      it('when the amount is in the session, then it should display the confirm page ' +
-        'and update the page data with the amount value', () => {
-        req = {
-          correlationId: '123',
-          product,
-          service
-        }
-        res = {
-          locals: {
-            __p: sinon.stub()
-          }
-        }
-
-        mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns('1050')
-
-        res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
-
-        controller.getPage(req, res)
-
-        sinon.assert.calledWith(responseSpy, req, res, 'confirm/confirm')
-
-        const pageData = mockResponses.response.args[0][3]
-        expect(pageData.summaryElements.length).to.equal(1)
-        expect(pageData.summaryElements[0].summaryLabel).to.equal('Total to pay')
-        expect(pageData.summaryElements[0].summaryValue).to.equal('£10.50')
-        expect(pageData.summaryElements[0].changeUrl).to.equal('/pay/an-external-id/amount')
-        expect(pageData.summaryElements[0].hiddenFormFieldId).to.equal('amount')
-        expect(pageData.summaryElements[0].hiddenFormFieldValue).to.equal('1050')
-      })
-
-      it('when there is NO amount is in the session, then it should display the confirm page ' +
-        'and update the page data with the product.price', () => {
+      it('then it should display the confirm page with the `product.price` value', () => {
         req = {
           correlationId: '123',
           product,
@@ -214,7 +183,37 @@ describe('Confirm Page Controller', () => {
         expect(pageData.summaryElements.length).to.equal(1)
         expect(pageData.summaryElements[0].summaryLabel).to.equal('Total to pay')
         expect(pageData.summaryElements[0].summaryValue).to.equal('£10.00')
-        expect(pageData.summaryElements[0].changeUrl).to.equal('/pay/an-external-id/amount')
+        expect(pageData.summaryElements[0].changeUrl).to.equal(null)
+        expect(pageData.summaryElements[0].hiddenFormFieldId).to.equal('amount')
+        expect(pageData.summaryElements[0].hiddenFormFieldValue).to.equal(1000)
+      })
+
+      it('when the amount is in the session, then it should ignore the amount in the session and ' +
+        'display the confirm page with the `product.price` value', () => {
+        req = {
+          correlationId: '123',
+          product,
+          service
+        }
+        res = {
+          locals: {
+            __p: sinon.stub()
+          }
+        }
+
+        mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns('1050')
+
+        res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
+
+        controller.getPage(req, res)
+
+        sinon.assert.calledWith(responseSpy, req, res, 'confirm/confirm')
+
+        const pageData = mockResponses.response.args[0][3]
+        expect(pageData.summaryElements.length).to.equal(1)
+        expect(pageData.summaryElements[0].summaryLabel).to.equal('Total to pay')
+        expect(pageData.summaryElements[0].summaryValue).to.equal('£10.00')
+        expect(pageData.summaryElements[0].changeUrl).to.equal(null)
         expect(pageData.summaryElements[0].hiddenFormFieldId).to.equal('amount')
         expect(pageData.summaryElements[0].hiddenFormFieldValue).to.equal(1000)
       })
@@ -222,22 +221,23 @@ describe('Confirm Page Controller', () => {
   })
 
   describe('postPage', () => {
-    describe('when product.requireCaptcha=false and product.price=1000', () => {
+    describe('when product.requireCaptcha=false, reference_enabled=false, product.price=null, ', () => {
       const product = new Product(productFixtures.validProductResponse({
         type: 'ADHOC',
-        reference_label: 'Invoice number',
-        reference_enabled: true,
-        price: 1000
+        reference_enabled: false,
+        price: null
       }))
 
-      it('when `click and continue` is clicked, should redirect to the ' +
-        'next_url', async () => {
+      it('when `click and continue` is clicked, should create a payment with no reference and ' +
+        'ignore the hidden reference form field and ' +
+        'use the amount from the hidden amount form field and ' +
+        'redirect to the next_url ', async () => {
         req = {
           correlationId: '123',
           product,
           body: {
             'reference-value': 'a-invoice-number',
-            amount: '1000'
+            amount: '2000'
           }
         }
 
@@ -258,15 +258,14 @@ describe('Confirm Page Controller', () => {
         sinon.assert.calledWith(
           mockProductsClient.payment.create,
           'an-external-id',
-          '1000',
-          'a-invoice-number'
+          2000,
+          null
         )
         sinon.assert.calledWith(mockPaymentLinkSession.deletePaymentLinkSession, req, product.externalId)
         sinon.assert.calledWith(res.redirect, 303, 'https://test.com')
       })
 
-      it('when an error occurs when creating a payment, should call next() with ' +
-      'an error', async () => {
+      it('when creating a payment and an error occurs, should call next() with an error', async () => {
         req = {
           correlationId: '123',
           product,
@@ -289,8 +288,7 @@ describe('Confirm Page Controller', () => {
         sinon.assert.calledWith(
           mockProductsClient.payment.create,
           'an-external-id',
-          '1000',
-          'a-invoice-number'
+          1000
         )
 
         const expectedError = sinon.match.instanceOf(Error)
@@ -299,7 +297,140 @@ describe('Confirm Page Controller', () => {
       })
     })
 
-    describe('when product.requireCaptcha=true and product.price=1000', () => {
+    describe('when product.requireCaptcha=false, reference_enabled=true, product.price=null, ', () => {
+      const product = new Product(productFixtures.validProductResponse({
+        type: 'ADHOC',
+        reference_enabled: true,
+        price: null
+      }))
+
+      it('when `click and continue` is clicked, should create a payment with a reference ' +
+        'using the `hidden reference form field` and ' +
+        'use the amount from the `hidden amount form field` and ' +
+        'redirect to the next_url ', async () => {
+        req = {
+          correlationId: '123',
+          product,
+          body: {
+            'reference-value': 'a-invoice-number',
+            amount: '2000'
+          }
+        }
+
+        res = {
+          redirect: sinon.stub()
+        }
+
+        mockProductsClient.payment.create.resolves({
+          links: {
+            next: {
+              href: 'https://test.com'
+            }
+          }
+        })
+
+        await controller.postPage(req, res)
+
+        sinon.assert.calledWith(
+          mockProductsClient.payment.create,
+          'an-external-id',
+          2000,
+          'a-invoice-number'
+        )
+        sinon.assert.calledWith(res.redirect, 303, 'https://test.com')
+      })
+    })
+
+    describe('when product.requireCaptcha=false, reference_enabled=false, product.price=1000, ', () => {
+      const product = new Product(productFixtures.validProductResponse({
+        type: 'ADHOC',
+        reference_enabled: false,
+        price: 1000
+      }))
+
+      it('when `click and continue` is clicked, should create a payment with NO reference and ' +
+        'ignore the `hidden reference form field` and ' +
+        'use the product.price and ' +
+        'ignore `hidden amount form field` and ' +
+        'redirect to the next_url ', async () => {
+        req = {
+          correlationId: '123',
+          product,
+          body: {
+            'reference-value': 'a-invoice-number',
+            amount: '2000'
+          }
+        }
+
+        res = {
+          redirect: sinon.stub()
+        }
+
+        mockProductsClient.payment.create.resolves({
+          links: {
+            next: {
+              href: 'https://test.com'
+            }
+          }
+        })
+
+        await controller.postPage(req, res)
+
+        sinon.assert.calledWith(
+          mockProductsClient.payment.create,
+          'an-external-id',
+          1000
+        )
+        sinon.assert.calledWith(res.redirect, 303, 'https://test.com')
+      })
+    })
+
+    describe('when product.requireCaptcha=false, reference_enabled=true, product.price=1000, ', () => {
+      const product = new Product(productFixtures.validProductResponse({
+        type: 'ADHOC',
+        reference_enabled: true,
+        price: 1000
+      }))
+
+      it('when `click and continue` is clicked, should create a payment with a reference and ' +
+        'use the `hidden reference form field` and ' +
+        'use the product.price and ' +
+        'ignore `hidden amount form field` and ' +
+        'redirect to the next_url', async () => {
+        req = {
+          correlationId: '123',
+          product,
+          body: {
+            'reference-value': 'a-invoice-number',
+            amount: '2000'
+          }
+        }
+
+        res = {
+          redirect: sinon.stub()
+        }
+
+        mockProductsClient.payment.create.resolves({
+          links: {
+            next: {
+              href: 'https://test.com'
+            }
+          }
+        })
+
+        await controller.postPage(req, res)
+
+        sinon.assert.calledWith(
+          mockProductsClient.payment.create,
+          'an-external-id',
+          1000,
+          'a-invoice-number'
+        )
+        sinon.assert.calledWith(res.redirect, 303, 'https://test.com')
+      })
+    })
+
+    describe('when product.requireCaptcha=true, reference_enabled=true, product.price=1000', () => {
       const product = new Product(productFixtures.validProductResponse({
         type: 'ADHOC',
         reference_label: 'Invoice number',
@@ -344,7 +475,7 @@ describe('Confirm Page Controller', () => {
         sinon.assert.calledWith(
           mockProductsClient.payment.create,
           'an-external-id',
-          '1000',
+          1000,
           'a-invoice-number'
         )
         sinon.assert.calledWith(res.redirect, 303, 'https://test.com')
@@ -358,7 +489,7 @@ describe('Confirm Page Controller', () => {
           product,
           body: {
             'reference-value': 'a-invoice-number',
-            amount: '1000',
+            amount: '2000',
             'g-recaptcha-response': 'recaptcha-test-token'
           }
         }
@@ -388,9 +519,9 @@ describe('Confirm Page Controller', () => {
 
         expect(pageData.summaryElements[1].summaryLabel).to.equal('Total to pay')
         expect(pageData.summaryElements[1].summaryValue).to.equal('£10.00')
-        expect(pageData.summaryElements[1].changeUrl).to.equal('/pay/an-external-id/amount')
+        expect(pageData.summaryElements[1].changeUrl).to.equal(null)
         expect(pageData.summaryElements[1].hiddenFormFieldId).to.equal('amount')
-        expect(pageData.summaryElements[1].hiddenFormFieldValue).to.equal('1000')
+        expect(pageData.summaryElements[1].hiddenFormFieldValue).to.equal(1000)
 
         expect(pageData.errors).to.contain({
           recaptcha: 'You failed the captcha challenge.  Please try again.'

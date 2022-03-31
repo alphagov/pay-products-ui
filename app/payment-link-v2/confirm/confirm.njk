@@ -21,23 +21,30 @@
 
       {% set summaryElementsList = [] %}
       {% for summaryElement in summaryElements %}
-        {% set summaryElementsList = (summaryElementsList.push({
+        
+        {% if summaryElement.changeUrl %}
+          {% set actionSettings = {
+              items: [{
+                href: summaryElement.changeUrl,
+                text: __p('paymentLinksV2.confirm.change'),
+                visuallyHiddenText: summaryElement.summaryLabel
+              }]  
+            }
+          %}
+        {% endif %}
+        
+        {% set summaryElementJson = {
             key: {
               text: summaryElement.summaryLabel
             },
             value: {
               text: summaryElement.summaryValue
             },
-            actions: {
-              items: [
-                {
-                  href: summaryElement.changeUrl,
-                  text: "Change",
-                  visuallyHiddenText: summaryElement.summaryLabel
-                }
-              ]
-            }
-        }), summaryElementsList) %}
+            actions: actionSettings
+          }
+        %}
+
+        {% set summaryElementsList = (summaryElementsList.push(summaryElementJson), summaryElementsList) %}
       {% endfor %}
 
       {{ govukSummaryList({

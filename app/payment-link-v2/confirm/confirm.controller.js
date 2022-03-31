@@ -51,7 +51,7 @@ async function validateRecaptcha (
 
 function getSummaryElements (
   referenceNumber,
-  amount,
+  sessionAmount,
   productReferenceLabel,
   productExternalId,
   productPrice,
@@ -72,21 +72,22 @@ function getSummaryElements (
   const changeAmountUrl = replaceParamsInPath(paymentLinksV2.amount, productExternalId)
   const totalToPayText = translationMethod('paymentLinksV2.confirm.totalToPay')
 
-  const amountAsGbp = getRightAmountToDisplayAsGbp(amount, productPrice)
+  const amountToUse = productPrice || sessionAmount
+  const amountAsGbp = getRightAmountToDisplayAsGbp(amountToUse)
 
   summaryElements.push(generateSummaryElement(
     totalToPayText,
     amountAsGbp,
-    changeAmountUrl,
+    productPrice ? null : changeAmountUrl,
     HIDDEN_FORM_FIELD_ID_AMOUNT,
-    amount || productPrice
+    amountToUse
   ))
 
   return summaryElements
 }
 
-function getRightAmountToDisplayAsGbp (sessionAmount, productAmount) {
-  const amountToDisplay = (parseFloat(sessionAmount || productAmount) / 100).toFixed(2)
+function getRightAmountToDisplayAsGbp (amount) {
+  const amountToDisplay = (parseFloat(amount) / 100).toFixed(2)
 
   return new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(amountToDisplay)
 }
@@ -129,6 +130,9 @@ async function postPage (req, res, next) {
     productName: product.name
   }
 
+  const amountToUse = parseInt(product.price || req.body[HIDDEN_FORM_FIELD_ID_AMOUNT])
+  const referenceValueToUse = product.reference_enabled ? req.body[HIDDEN_FORM_FIELD_ID_REFERENCE_VALUE] : null
+
   if (product.requireCaptcha) {
     const errors = await validateRecaptcha(
       req.body[GOOGLE_RECAPTCHA_FORM_NAME],
@@ -139,7 +143,7 @@ async function postPage (req, res, next) {
       data.errors = errors
 
       const summaryElements = getSummaryElements(
-        req.body[HIDDEN_FORM_FIELD_ID_REFERENCE_VALUE],
+        referenceValueToUse,
         req.body[HIDDEN_FORM_FIELD_ID_AMOUNT],
         product.reference_label,
         product.externalId,
@@ -155,10 +159,11 @@ async function postPage (req, res, next) {
 
   try {
     logger.info(`[${req.correlationId}] creating charge for product ${product.externalId}`)
+
     const payment = await productsClient.payment.create(
       product.externalId,
-      req.body[HIDDEN_FORM_FIELD_ID_AMOUNT],
-      req.body[HIDDEN_FORM_FIELD_ID_REFERENCE_VALUE]
+      amountToUse,
+      referenceValueToUse
     )
 
     paymentLinkSession.deletePaymentLinkSession(req, product.externalId)
