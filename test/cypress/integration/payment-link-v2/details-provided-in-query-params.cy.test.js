@@ -4,20 +4,27 @@ const serviceStubs = require('../../stubs/service-stubs')
 const gatewayAccountId = 42
 const productExternalId = 'a-product-id'
 const productName = 'Pay for a green waste bin'
+const serviceNamePath = 'a-service-name'
+const productNamePath = 'a-product-name'
+
+const productOpts = {
+  gateway_account_id: gatewayAccountId,
+  external_id: productExternalId,
+  service_name_path: serviceNamePath,
+  product_name_path: productNamePath,
+  reference_enabled: true,
+  reference_label: 'Council tax number',
+  price: null,
+  type: 'ADHOC',
+  name: productName,
+  new_payment_link_journey_enabled: true
+}
 
 describe('Payment link visited with amount and reference provided as query params', () => {
   beforeEach(() => {
     cy.task('setupStubs', [
-      productStubs.getProductByExternalIdStub({
-        gateway_account_id: gatewayAccountId,
-        external_id: productExternalId,
-        reference_enabled: true,
-        reference_label: 'Council tax number',
-        price: null,
-        type: 'ADHOC',
-        name: productName,
-        new_payment_link_journey_enabled: true
-      }),
+      productStubs.getProductByPathStub(productOpts),
+      productStubs.getProductByExternalIdStub(productOpts),
       serviceStubs.getServiceSuccess({
         gatewayAccountId: gatewayAccountId
       })
@@ -25,7 +32,7 @@ describe('Payment link visited with amount and reference provided as query param
   })
 
   it('should show confirm page with details provided in the query params when "Continue" is clicked', () => {
-    cy.visit(`/pay/${productExternalId}?amount=5689&reference=REF123`)
+    cy.visit(`/redirect/${serviceNamePath}/${productNamePath}?amount=5689&reference=REF123`)
     cy.get('h1').should('have.text', productName)
 
     cy.get('[data-cy=button]').click()

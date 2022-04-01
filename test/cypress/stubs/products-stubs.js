@@ -10,6 +10,18 @@ function getProductByExternalIdStub (opts) {
   })
 }
 
+function getProductByPathStub (opts) {
+  const path = '/v1/api/products'
+  return stubBuilder('GET', path, 200, {
+    query: {
+      serviceNamePath: opts.service_name_path,
+      productNamePath: opts.product_name_path
+    },
+    response: productFixtures.validProductResponse(opts)
+  })
+}
+
 module.exports = {
-  getProductByExternalIdStub
+  getProductByExternalIdStub,
+  getProductByPathStub
 }
