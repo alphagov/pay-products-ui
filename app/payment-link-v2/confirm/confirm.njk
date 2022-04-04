@@ -1,6 +1,5 @@
 {% extends "../../views/layout-payment-links-v2.njk" %}
 
-{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../views/macros/error-summary.njk" import errorSummary %}
 
@@ -19,55 +18,23 @@
 
       <h2 class="govuk-heading-m" data-cy="reference-label">{{ __p('paymentLinksV2.confirm.checkYourDetails') }}</h2>
 
-      {% set summaryElementsList = [] %}
-      {% for summaryElement in summaryElements %}
-        
-        {% if summaryElement.changeUrl %}
-          {% set actionSettings = {
-              items: [{
-                href: summaryElement.changeUrl,
-                text: __p('paymentLinksV2.confirm.change'),
-                visuallyHiddenText: summaryElement.summaryLabel
-              }]  
-            }
-          %}
-        {% endif %}
-        
-        {% set summaryElementJson = {
-            key: {
-              text: summaryElement.summaryLabel
-            },
-            value: {
-              text: summaryElement.summaryValue
-            },
-            actions: actionSettings
-          }
-        %}
-
-        {% set summaryElementsList = (summaryElementsList.push(summaryElementJson), summaryElementsList) %}
-      {% endfor %}
-
-      {{ govukSummaryList({
-        attributes: { 'data-cy': 'summary-list'},
-        rows: summaryElementsList
-      }) }}
+      {% include "./_summary-list.njk" %}
 
       <form method="post" data-cy="form">
         <input id="csrf" name="csrfToken" type="hidden" value="{{ csrf }}"/>
 
-        {% for summaryElement in summaryElements %}
-           <input
-            id="{{ summaryElement.hiddenFormFieldId }}" 
-            name="{{ summaryElement.hiddenFormFieldId }}" 
-            type="hidden" value="{{ summaryElement.hiddenFormFieldValue }}" />   
-        {% endfor %}
+        {% if productReferenceLabel %}
+           <input id="reference-value" name="reference-value" type="hidden" value="{{ sessionReferenceNumber }}" />
+        {% endif %}
+
+        <input id="amount" name="reference-value" type="hidden" value="{{ amountAsPence }}" />
 
         {% if product.requireCaptcha %}
           <div class="g-recaptcha govuk-!-margin-bottom-5" data-sitekey="{{ GOOGLE_RECAPTCHA_SITE_KEY }}"></div>
         {% endif %}
 
         {{ govukButton({
-          text: 'Continue to payment',
+          text:  __p('paymentLinksV2.confirm.continueToPayment'),
           attributes: { 'data-cy': 'continue-to-payment-button' }
         }) }}
       </form>

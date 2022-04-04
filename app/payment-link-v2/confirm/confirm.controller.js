@@ -2,9 +2,8 @@
 const lodash = require('lodash')
 
 const { response } = require('../../utils/response')
-const { paymentLinksV2 } = require('../../paths')
+const paths = require('../../paths')
 const replaceParamsInPath = require('../../utils/replace-params-in-path')
-const { NotFoundError } = require('../../errors')
 const captcha = require('../../utils/captcha')
 const logger = require('../../utils/logger')(__filename)
 const productsClient = require('../../services/clients/products.client')
@@ -14,16 +13,6 @@ const HIDDEN_FORM_FIELD_ID_REFERENCE_VALUE = 'reference-value'
 const HIDDEN_FORM_FIELD_ID_AMOUNT = 'amount'
 const GOOGLE_RECAPTCHA_FORM_NAME = 'g-recaptcha-response'
 const ERROR_KEY_RECAPTCHA = 'recaptcha'
-
-function generateSummaryElement (summaryLabel, summaryValue, changeUrl, hiddenFormFieldId, hiddenFormFieldValue) {
-  return {
-    summaryLabel,
-    summaryValue,
-    changeUrl,
-    hiddenFormFieldId,
-    hiddenFormFieldValue
-  }
-}
 
 async function validateRecaptcha (
   googleRecaptchaFormValue,
@@ -49,47 +38,22 @@ async function validateRecaptcha (
   return errors
 }
 
-function getSummaryElements (
-  referenceNumber,
-  sessionAmount,
-  productReferenceLabel,
-  productExternalId,
-  productPrice,
-  translationMethod
-) {
-  const summaryElements = []
+function setupPageData (product, sessionReferenceNumber, sessionAmount) {
+  const amountAsPence = product.price || sessionAmount
+  const amountTo2DecimalPoint = (parseFloat(amountAsPence) / 100).toFixed(2)
+  const amountAsGbp = Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(amountTo2DecimalPoint)
 
-  if (referenceNumber) {
-    summaryElements.push(generateSummaryElement(
-      productReferenceLabel,
-      referenceNumber,
-      replaceParamsInPath(paymentLinksV2.reference, productExternalId),
-      HIDDEN_FORM_FIELD_ID_REFERENCE_VALUE,
-      referenceNumber
-    ))
-  }
-
-  const changeAmountUrl = replaceParamsInPath(paymentLinksV2.amount, productExternalId)
-  const totalToPayText = translationMethod('paymentLinksV2.confirm.totalToPay')
-
-  const amountToUse = productPrice || sessionAmount
-  const amountAsGbp = getRightAmountToDisplayAsGbp(amountToUse)
-
-  summaryElements.push(generateSummaryElement(
-    totalToPayText,
+  return {
+    productExternalId: product.externalId,
+    productName: product.name,
+    productReferenceLabel: product.reference_label,
+    sessionAmount,
+    amountAsPence,
     amountAsGbp,
-    productPrice ? null : changeAmountUrl,
-    HIDDEN_FORM_FIELD_ID_AMOUNT,
-    amountToUse
-  ))
-
-  return summaryElements
-}
-
-function getRightAmountToDisplayAsGbp (amount) {
-  const amountToDisplay = (parseFloat(amount) / 100).toFixed(2)
-
-  return new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(amountToDisplay)
+    sessionReferenceNumber,
+    referenceChangeUrl: replaceParamsInPath(paths.paymentLinksV2.reference, product.externalId),
+    amountChangeUrl: replaceParamsInPath(paths.paymentLinksV2.amount, product.externalId)
+  }
 }
 
 function getPage (req, res, next) {
@@ -99,25 +63,16 @@ function getPage (req, res, next) {
   const sessionAmount = paymentLinkSession.getAmount(req, product.externalId)
 
   if (!sessionAmount && !product.price) {
-    return next(new NotFoundError('Attempted to access confirm page without a price in the session or product.'))
+    logger.info(`[${req.correlationId}] attempted to access confirm page for ${product.externalId} without a price in the session or product. ` +
+    'Redirecting to start page')
+    return res.redirect(replaceParamsInPath(paths.pay.product, product.externalId))
+  } else if (product.reference_enabled && !sessionReferenceNumber) {
+    logger.info(`[${req.correlationId}] attempted to access confirm page for ${product.externalId} without a reference in the session ` +
+    'for a product that requires a reference.  Redirecting to start page')
+    return res.redirect(replaceParamsInPath(paths.pay.product, product.externalId))
   }
 
-  const data = {
-    productExternalId: product.externalId,
-    productName: product.name
-  }
-
-  const summaryElements = getSummaryElements(
-    sessionReferenceNumber,
-    sessionAmount,
-    product.reference_label,
-    product.externalId,
-    product.price,
-    res.locals.__p
-  )
-
-  data.summaryElements = summaryElements
-  data.confirmPageUrl = replaceParamsInPath(paymentLinksV2.confirm, product.externalId)
+  const data = setupPageData(product, sessionReferenceNumber, sessionAmount)
 
   return response(req, res, 'confirm/confirm', data)
 }
@@ -125,13 +80,8 @@ function getPage (req, res, next) {
 async function postPage (req, res, next) {
   const product = req.product
 
-  const data = {
-    productExternalId: product.externalId,
-    productName: product.name
-  }
-
-  const amountToUse = parseInt(product.price || req.body[HIDDEN_FORM_FIELD_ID_AMOUNT])
-  const referenceValueToUse = product.reference_enabled ? req.body[HIDDEN_FORM_FIELD_ID_REFERENCE_VALUE] : null
+  const sessionReferenceNumber = paymentLinkSession.getReference(req, product.externalId)
+  const sessionAmount = paymentLinkSession.getAmount(req, product.externalId)
 
   if (product.requireCaptcha) {
     const errors = await validateRecaptcha(
@@ -140,18 +90,9 @@ async function postPage (req, res, next) {
     )
 
     if (!lodash.isEmpty(errors)) {
+      const data = setupPageData(product, sessionReferenceNumber, sessionAmount)
+
       data.errors = errors
-
-      const summaryElements = getSummaryElements(
-        referenceValueToUse,
-        req.body[HIDDEN_FORM_FIELD_ID_AMOUNT],
-        product.reference_label,
-        product.externalId,
-        product.price,
-        res.locals.__p
-      )
-
-      data.summaryElements = summaryElements
 
       return response(req, res, 'confirm/confirm', data)
     }
@@ -160,10 +101,13 @@ async function postPage (req, res, next) {
   try {
     logger.info(`[${req.correlationId}] creating charge for product ${product.externalId}`)
 
+    const amountToUseForPayment = parseInt(product.price || req.body[HIDDEN_FORM_FIELD_ID_AMOUNT])
+    const referenceToUseForPayment = product.reference_enabled ? req.body[HIDDEN_FORM_FIELD_ID_REFERENCE_VALUE] : null
+
     const payment = await productsClient.payment.create(
       product.externalId,
-      amountToUse,
-      referenceValueToUse
+      amountToUseForPayment,
+      referenceToUseForPayment
     )
 
     paymentLinkSession.deletePaymentLinkSession(req, product.externalId)

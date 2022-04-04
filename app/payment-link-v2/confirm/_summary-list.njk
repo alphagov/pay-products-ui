@@ -1,0 +1,52 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% set summaryElementsList = [] %}
+
+{% if productReferenceLabel %}
+  {% set referenceSummaryElement = {
+    key: {
+      text: productReferenceLabel 
+    },
+    value: {
+      text: sessionReferenceNumber
+    },
+    actions: {
+        items: [{
+          href: referenceChangeUrl,
+          text: __p('paymentLinksV2.confirm.change'),
+          visuallyHiddenText: productReferenceLabel
+        }]  
+      } 
+  } %}
+
+  {% set summaryElementsList = (summaryElementsList.push(referenceSummaryElement), summaryElementsList) %}
+{% endif %}
+
+{% if sessionAmount %}
+  {% set amountActionText = {
+      items: [{
+        href: amountChangeUrl,
+        text: __p('paymentLinksV2.confirm.change'),
+        visuallyHiddenText: summaryElement.summaryLabel
+      }]  
+    }
+  %}
+{% endif %}
+
+{% set amountSummaryElement = {
+    key: {
+      text: __p('paymentLinksV2.confirm.totalToPay')
+    },
+    value: {
+      text: amountAsGbp
+    },
+    actions: amountActionText 
+  } 
+%}
+
+{% set summaryElementsList = (summaryElementsList.push(amountSummaryElement), summaryElementsList) %}
+
+{{ govukSummaryList({
+  attributes: { 'data-cy': 'summary-list'},
+  rows: summaryElementsList
+}) }}

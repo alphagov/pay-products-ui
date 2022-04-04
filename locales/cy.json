@@ -75,7 +75,8 @@
     "confirm": {
 			"checkYourDetails": "TODO convert to Welsh - Check your details",
       "totalToPay": "TODO convert to Welsh - Total to pay",
-      "Change": "TODO convert to Welsh - Change"
+      "change": "TODO convert to Welsh - Change",
+      "continueToPayment": "TODO convert to Welsh - Continue to payment"
 		},
     "fieldValidation": {
       "enterAnAmountInPounds": "TODO convert to Welsh - Enter an amount in pounds",
