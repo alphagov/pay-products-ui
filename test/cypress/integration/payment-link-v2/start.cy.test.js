@@ -7,21 +7,28 @@ const organisationName = 'Royston Vasey Parish Council'
 const productName = 'Pay for a parking permit'
 const serviceName = 'Parking'
 const referenceLabel = 'Vehicle registration number'
+const serviceNamePath = 'a-service-name'
+const productNamePath = 'a-product-name'
 
 describe('The payment link start page', () => {
   describe('Product with organisation name and description', () => {
+    const productOpts = {
+      gateway_account_id: gatewayAccountId,
+      service_name_path: serviceNamePath,
+      product_name_path: productNamePath,
+      name: productName,
+      external_id: productExternalId,
+      reference_enabled: true,
+      reference_label: referenceLabel,
+      description: 'Once payment is received your permit will be printed and posted to you. Please note that this can take up to 10 working days from receipt of payment.',
+      type: 'ADHOC',
+      new_payment_link_journey_enabled: true
+    }
+
     beforeEach(() => {
       cy.task('setupStubs', [
-        productStubs.getProductByExternalIdStub({
-          gateway_account_id: gatewayAccountId,
-          name: productName,
-          external_id: productExternalId,
-          reference_enabled: true,
-          reference_label: referenceLabel,
-          description: 'Once payment is received your permit will be printed and posted to you. Please note that this can take up to 10 working days from receipt of payment.',
-          type: 'ADHOC',
-          new_payment_link_journey_enabled: true
-        }),
+        productStubs.getProductByPathStub(productOpts),
+        productStubs.getProductByExternalIdStub(productOpts),
         serviceStubs.getServiceSuccess({
           gatewayAccountId: gatewayAccountId,
           serviceName: {
@@ -33,7 +40,7 @@ describe('The payment link start page', () => {
     })
 
     it('should render the start page', () => {
-      cy.visit(`/pay/${productExternalId}`)
+      cy.visit(`/redirect/${serviceNamePath}/${productNamePath}`)
 
       cy.get('[data-cy=header-service-name]').should('contain', productName)
       cy.title().should('contain', `Make a payment - ${productName}`)
@@ -74,21 +81,25 @@ describe('The payment link start page', () => {
   })
 
   describe('The payment link has no description', () => {
+    const productOpts = {
+      gateway_account_id: gatewayAccountId,
+      external_id: productExternalId,
+      service_name_path: serviceNamePath,
+      product_name_path: productNamePath,
+      type: 'ADHOC',
+      new_payment_link_journey_enabled: true,
+      description: null
+    }
     it('should display the default description', () => {
       cy.task('setupStubs', [
-        productStubs.getProductByExternalIdStub({
-          gateway_account_id: gatewayAccountId,
-          external_id: productExternalId,
-          type: 'ADHOC',
-          new_payment_link_journey_enabled: true,
-          description: null
-        }),
+        productStubs.getProductByPathStub(productOpts),
+        productStubs.getProductByExternalIdStub(productOpts),
         serviceStubs.getServiceSuccess({
           gatewayAccountId: gatewayAccountId
         })
       ])
 
-      cy.visit(`/pay/${productExternalId}`)
+      cy.visit(`/redirect/${serviceNamePath}/${productNamePath}`)
       cy.get('[data-cy=product-description]').should('contain', 'Click continue to make a payment.')
     })
   })
