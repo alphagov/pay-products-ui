@@ -58,8 +58,7 @@
   },
   "paymentLinksV2": {
     "start": {
-      "title": "TODO convert to Welsh - Make a payment",
-      "defaultDescription": "TODO convert to Welsh - Click continue to make a payment."
+      "title": "TODO convert to Welsh - Make a payment"
     },
     "reference": { 
       "pleaseEnterYour": "TODO convert to Welsh - Please enter your"
