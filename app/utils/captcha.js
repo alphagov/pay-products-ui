@@ -23,7 +23,8 @@ function verifyCAPTCHAEnterpriseVersion (token) {
       return
     }
     if (!token) {
-      reject(new Error('no reCAPTCHA enterprise widget token response provided'))
+      logger.warn('no reCAPTCHA enterprise widget token response provided')
+      resolve(false)
       return
     }
     request.post({
@@ -52,6 +53,8 @@ function verifyCAPTCHAEnterpriseVersion (token) {
             score: body.score,
             reasons: body.reasons
           })
+          resolve(false)
+          return
         }
         resolve(true)
         return
