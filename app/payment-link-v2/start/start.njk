@@ -16,8 +16,6 @@
 
     {% if product.description %}
     <p class="govuk-body" data-cy="product-description">{{ product.description | striptags(true) | escape | nl2br }}</p>
-    {% else %}
-    <p class="govuk-body" data-cy="product-description">{{ __p('paymentLinksV2.start.defaultDescription') }}</p>
     {% endif %}
   
     {{ govukButton({

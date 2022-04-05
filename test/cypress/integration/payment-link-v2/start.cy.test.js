@@ -90,7 +90,7 @@ describe('The payment link start page', () => {
       new_payment_link_journey_enabled: true,
       description: null
     }
-    it('should display the default description', () => {
+    it('should display the start page without a description', () => {
       cy.task('setupStubs', [
         productStubs.getProductByPathStub(productOpts),
         productStubs.getProductByExternalIdStub(productOpts),
@@ -100,7 +100,7 @@ describe('The payment link start page', () => {
       ])
 
       cy.visit(`/redirect/${serviceNamePath}/${productNamePath}`)
-      cy.get('[data-cy=product-description]').should('contain', 'Click continue to make a payment.')
+      cy.get('[data-cy=product-description]').should('not.exist')
     })
   })
 })

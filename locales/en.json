@@ -58,8 +58,7 @@
   },
   "paymentLinksV2": {
     "start": {
-      "title": "Make a payment",
-      "defaultDescription": "Click continue to make a payment."
+      "title": "Make a payment"
     },
     "reference": {
 			"pleaseEnterYour": "Please enter your"
