@@ -22,7 +22,11 @@ module.exports = async function redirectToProduct(req, res) {
     logger.info(`Redirecting to ${payUrl}`)
     return res.redirect(payUrl)
   } catch (err) {
-    logger.error(`[${req.correlationId}] Error getting product: ${err.message} errorCode=${err.errorCode}`)
+    if (err.errorCode && err.errorCode >= 500) {
+      logger.error(`[${req.correlationId}] Error getting product: ${err.message} errorCode=${err.errorCode}`)
+    } else {
+      logger.info(`[${req.correlationId}] Error getting product: ${err.message} errorCode=${err.errorCode}`)
+    }
     return renderErrorView(req, res, errorMessagePath, err.errorCode || 500)
   }
 }
