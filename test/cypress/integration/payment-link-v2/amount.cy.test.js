@@ -12,7 +12,7 @@ describe('Amount page', () => {
       cy.task('setupStubs', [
         productStubs.getProductByExternalIdStub({
           external_id: productExternalId,
-          reference_enabled: true,
+          reference_enabled: false,
           reference_label: 'invoice number',
           type: 'ADHOC'
         }),
@@ -29,7 +29,7 @@ describe('Amount page', () => {
       Cypress.Cookies.preserveOnce('session')
       cy.visit('/pay/a-product-id/amount')
 
-      cy.get('[data-cy=back-link]').should('have.attr', 'href', '/pay/a-product-id/reference')
+      cy.get('[data-cy=back-link]').should('have.attr', 'href', '/pay/a-product-id')
       cy.get('[data-cy=label]').should('contain', 'Enter amount to pay')
       cy.get('[data-cy=button]').should('exist')
     })
