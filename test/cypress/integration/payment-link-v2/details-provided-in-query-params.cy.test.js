@@ -45,10 +45,14 @@ describe('Payment link visited with amount and reference provided as query param
       cy.get('.govuk-summary-list__row').eq(0).within(() => {
         cy.get('dt').should('contain', 'Council tax number')
         cy.get('dd').eq(0).should('contain', 'REF123')
+        // should be no change link
+        cy.get('dd').eq(1).should('not.exist')
       })
       cy.get('.govuk-summary-list__row').eq(1).within(() => {
         cy.get('dt').should('contain', 'Total to pay')
         cy.get('dd').eq(0).should('contain', '£56.89')
+        // should be no change link
+        cy.get('dd').eq(1).should('not.exist')
       })
     })
   })

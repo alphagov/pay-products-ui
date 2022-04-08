@@ -38,10 +38,12 @@ async function validateRecaptcha (
   return errors
 }
 
-function setupPageData (product, sessionReferenceNumber, sessionAmount) {
+function setupPageData (product, sessionReferenceNumber, sessionAmount, referenceProvidedByQueryParams, amountProvidedByQueryParams) {
   const amountAsPence = product.price || sessionAmount
   const amountTo2DecimalPoint = (parseFloat(amountAsPence) / 100).toFixed(2)
   const amountAsGbp = Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(amountTo2DecimalPoint)
+  const canChangeAmount = !product.price && !amountProvidedByQueryParams
+  const canChangeReference = !referenceProvidedByQueryParams
 
   return {
     productExternalId: product.externalId,
@@ -51,6 +53,8 @@ function setupPageData (product, sessionReferenceNumber, sessionAmount) {
     amountAsPence,
     amountAsGbp,
     sessionReferenceNumber,
+    canChangeAmount,
+    canChangeReference,
     referenceChangeUrl: replaceParamsInPath(paths.paymentLinksV2.reference, product.externalId),
     amountChangeUrl: replaceParamsInPath(paths.paymentLinksV2.amount, product.externalId)
   }
@@ -61,6 +65,8 @@ function getPage (req, res, next) {
 
   const sessionReferenceNumber = paymentLinkSession.getReference(req, product.externalId)
   const sessionAmount = paymentLinkSession.getAmount(req, product.externalId)
+  const referenceProvidedByQueryParams = paymentLinkSession.getReferenceProvidedByQueryParams(req, product.externalId)
+  const amountProvidedByQueryParams = paymentLinkSession.getAmountProvidedByQueryParams(req, product.externalId)
 
   if (!sessionAmount && !product.price) {
     logger.info(`[${req.correlationId}] attempted to access confirm page for ${product.externalId} without a price in the session or product. ` +
@@ -72,7 +78,7 @@ function getPage (req, res, next) {
     return res.redirect(replaceParamsInPath(paths.pay.product, product.externalId))
   }
 
-  const data = setupPageData(product, sessionReferenceNumber, sessionAmount)
+  const data = setupPageData(product, sessionReferenceNumber, sessionAmount, referenceProvidedByQueryParams, amountProvidedByQueryParams)
 
   return response(req, res, 'confirm/confirm', data)
 }
@@ -82,6 +88,8 @@ async function postPage (req, res, next) {
 
   const sessionReferenceNumber = paymentLinkSession.getReference(req, product.externalId)
   const sessionAmount = paymentLinkSession.getAmount(req, product.externalId)
+  const referenceProvidedByQueryParams = paymentLinkSession.getReferenceProvidedByQueryParams(req, product.externalId)
+  const amountProvidedByQueryParams = paymentLinkSession.getAmountProvidedByQueryParams(req, product.externalId)
 
   if (product.requireCaptcha) {
     const errors = await validateRecaptcha(
@@ -90,7 +98,7 @@ async function postPage (req, res, next) {
     )
 
     if (!lodash.isEmpty(errors)) {
-      const data = setupPageData(product, sessionReferenceNumber, sessionAmount)
+      const data = setupPageData(product, sessionReferenceNumber, sessionAmount, referenceProvidedByQueryParams, amountProvidedByQueryParams)
 
       data.errors = errors
 

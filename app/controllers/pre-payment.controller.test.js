@@ -95,7 +95,9 @@ describe('Pre payment controller', () => {
             expect(req.session).to.have.property(product.externalId)
             expect(req.session[product.externalId]).to.deep.equal({
               reference: queryParamReference,
-              amount: queryParamAmount
+              amount: queryParamAmount,
+              referenceProvidedByQueryParams: true,
+              amountProvidedByQueryParams: true
             })
 
             sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/confirm` })
@@ -118,7 +120,8 @@ describe('Pre payment controller', () => {
               expect(req).to.have.property('session')
               expect(req.session).to.have.property(product.externalId)
               expect(req.session[product.externalId]).to.deep.equal({
-                amount: queryParamAmount
+                amount: queryParamAmount,
+                amountProvidedByQueryParams: true
               })
 
               sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/confirm` })
@@ -142,7 +145,8 @@ describe('Pre payment controller', () => {
               expect(req).to.have.property('session')
               expect(req.session).to.have.property(product.externalId)
               expect(req.session[product.externalId]).to.deep.equal({
-                reference: queryParamReference
+                reference: queryParamReference,
+                referenceProvidedByQueryParams: true
               })
 
               sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/confirm` })
@@ -168,6 +172,7 @@ describe('Pre payment controller', () => {
             expect(req.session).to.have.property(product.externalId)
             expect(req.session[product.externalId]).to.deep.equal({
               reference: queryParamReference,
+              referenceProvidedByQueryParams: true
             })
 
             sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/amount` })
@@ -208,6 +213,7 @@ describe('Pre payment controller', () => {
             expect(req.session).to.have.property(product.externalId)
             expect(req.session[product.externalId]).to.deep.equal({
               amount: queryParamAmount,
+              amountProvidedByQueryParams: true
             })
 
             sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/reference` })

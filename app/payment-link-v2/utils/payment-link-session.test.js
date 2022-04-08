@@ -32,8 +32,16 @@ describe('Payment link session utilities', () => {
       const req = {}
       paymentLinkSession.setReference(req, productExternalId, reference)
 
-      const sessionRef = paymentLinkSession.getReference(req, productExternalId)
-      expect(sessionRef).to.equal(reference)
+      expect(paymentLinkSession.getReference(req, productExternalId)).to.equal(reference)
+      expect(paymentLinkSession.getReferenceProvidedByQueryParams(req, productExternalId)).to.equal(false)
+    })
+
+    it('should set the reference and referenceProvidedByQueryParams', () => {
+      const req = {}
+      paymentLinkSession.setReference(req, productExternalId, reference, true)
+
+      expect(paymentLinkSession.getReference(req, productExternalId)).to.equal(reference)
+      expect(paymentLinkSession.getReferenceProvidedByQueryParams(req, productExternalId)).to.equal(true)
     })
 
     it('should override existing reference', () => {
@@ -76,9 +84,18 @@ describe('Payment link session utilities', () => {
       const req = {}
       paymentLinkSession.setAmount(req, productExternalId, amount)
 
-      const sessionAmount = paymentLinkSession.getAmount(req, productExternalId)
-      expect(sessionAmount).to.equal(amount)
+      expect(paymentLinkSession.getAmount(req, productExternalId)).to.equal(amount)
+      expect(paymentLinkSession.getAmountProvidedByQueryParams(req, productExternalId)).to.equal(false)
     })
+
+    it('should set the amount and amountProvidedByQueryParams', () => {
+      const req = {}
+      paymentLinkSession.setAmount(req, productExternalId, amount, true)
+      
+      expect(paymentLinkSession.getAmount(req, productExternalId)).to.equal(amount)
+      expect(paymentLinkSession.getAmountProvidedByQueryParams(req, productExternalId)).to.equal(true)
+    })
+
 
     it('should override existing amount', () => {
       const req = {
