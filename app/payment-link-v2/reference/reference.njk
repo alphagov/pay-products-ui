@@ -47,7 +47,7 @@
           }
         },
         hint: {
-          text: product.reference_hint
+          html: product.reference_hint | striptags(true) | escape | nl2br if product.reference_hint else false
         },
         value: reference,
         classes: "govuk-input--width-21",

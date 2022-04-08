@@ -14,7 +14,8 @@ describe('Amount page', () => {
           external_id: productExternalId,
           reference_enabled: false,
           reference_label: 'invoice number',
-          type: 'ADHOC'
+          type: 'ADHOC',
+          amount_hint: 'Find it somewhere'
         }),
         serviceStubs.getServiceSuccess({
           gatewayAccountId: gatewayAccountId,
@@ -31,6 +32,7 @@ describe('Amount page', () => {
 
       cy.get('[data-cy=back-link]').should('have.attr', 'href', '/pay/a-product-id')
       cy.get('[data-cy=label]').should('contain', 'Enter amount to pay')
+      cy.get('#payment-amount-hint').should('contain', 'Find it somewhere')
       cy.get('[data-cy=button]').should('exist')
     })
 

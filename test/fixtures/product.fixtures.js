@@ -50,6 +50,7 @@ module.exports = {
     if (opts.service_name_path) data.service_name_path = opts.service_name_path
     if (opts.product_name_path) data.product_name_path = opts.product_name_path
     if (opts.require_captcha !== undefined) data.require_captcha = opts.require_captcha
+    if (opts.amount_hint) data.amount_hint = opts.amount_hint
     if (!data._links) {
       data._links = [{
         href: `http://products.url/v1/api/products/${data.external_id}`,

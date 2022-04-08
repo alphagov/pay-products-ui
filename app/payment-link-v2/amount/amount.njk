@@ -40,6 +40,9 @@
           isPageHeading: true,
           attributes: { 'data-cy': 'label' }
         },
+        hint: {
+          html: product.amountHint | striptags(true) | escape | nl2br if product.amountHint else false
+        },
         value: amount,
         prefix: {
           text: "£"

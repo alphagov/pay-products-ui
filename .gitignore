@@ -15,6 +15,7 @@ pacts/
 coverage
 *.log
 .env
+mb.pid
 
 # IntelliJ gubbins
 *.iml
