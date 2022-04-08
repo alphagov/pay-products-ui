@@ -27,7 +27,7 @@
            <input id="reference-value" name="reference-value" type="hidden" value="{{ sessionReferenceNumber }}" />
         {% endif %}
 
-        <input id="amount" name="reference-value" type="hidden" value="{{ amountAsPence }}" />
+        <input id="amount" name="amount" type="hidden" value="{{ amountAsPence }}" />
 
         {% if product.requireCaptcha %}
           <div class="g-recaptcha govuk-!-margin-bottom-5" data-sitekey="{{ GOOGLE_RECAPTCHA_SITE_KEY }}"></div>
