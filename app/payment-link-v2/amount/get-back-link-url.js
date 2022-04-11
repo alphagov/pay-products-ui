@@ -3,10 +3,10 @@
 const replaceParamsInPath = require('../../utils/replace-params-in-path')
 const { paymentLinksV2 } = require('../../paths')
 
-module.exports = function getBackLinkUrl (amount, product) {
+module.exports = function getBackLinkUrl (amount, product, referenceProvidedByQueryParams) {
   if (amount) {
     return replaceParamsInPath(paymentLinksV2.confirm, product.externalId)
-  } else if (product.reference_enabled) {
+  } else if (product.reference_enabled && !referenceProvidedByQueryParams) {
     return replaceParamsInPath(paymentLinksV2.reference, product.externalId)
   } else {
     return replaceParamsInPath(paymentLinksV2.product, product.externalId)

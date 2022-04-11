@@ -41,11 +41,11 @@ module.exports = (req, res) => {
         }
         let validReferenceProvided, validAmountProvided
         if (product.reference_enabled && reference && validateReference(reference).valid) {
-          paymentLinkSession.setReference(req, product.externalId, reference)
+          paymentLinkSession.setReference(req, product.externalId, reference, true)
           validReferenceProvided = true
         }
         if (!product.price && amount && validateAmount(amount).valid) {
-          paymentLinkSession.setAmount(req, product.externalId, amount)
+          paymentLinkSession.setAmount(req, product.externalId, amount, true)
           validAmountProvided = true
         }
         const continueUrl = getContinueUrlForNewPaymentLinkJourney(product, validReferenceProvided, validAmountProvided)

@@ -2,6 +2,17 @@
 
 {% set summaryElementsList = [] %}
 
+{% if canChangeReference %}
+  {% set referenceAction = {
+      items: [{
+        href: referenceChangeUrl,
+        text: __p('paymentLinksV2.confirm.change'),
+        visuallyHiddenText: productReferenceLabel
+      }]  
+    }
+  %}
+{% endif %}
+
 {% if productReferenceLabel %}
   {% set referenceSummaryElement = {
     key: {
@@ -10,20 +21,14 @@
     value: {
       text: sessionReferenceNumber
     },
-    actions: {
-        items: [{
-          href: referenceChangeUrl,
-          text: __p('paymentLinksV2.confirm.change'),
-          visuallyHiddenText: productReferenceLabel
-        }]  
-      } 
+    actions: referenceAction
   } %}
 
   {% set summaryElementsList = (summaryElementsList.push(referenceSummaryElement), summaryElementsList) %}
 {% endif %}
 
-{% if sessionAmount %}
-  {% set amountActionText = {
+{% if canChangeAmount %}
+  {% set amountAction = {
       items: [{
         href: amountChangeUrl,
         text: __p('paymentLinksV2.confirm.change'),
@@ -40,7 +45,7 @@
     value: {
       text: amountAsGbp
     },
-    actions: amountActionText 
+    actions: amountAction
   } 
 %}
 

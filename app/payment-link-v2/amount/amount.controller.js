@@ -35,8 +35,8 @@ function getPage (req, res, next) {
   }
 
   const sessionAmount = paymentLinkSession.getAmount(req, product.externalId)
-
-  data.backLinkHref = getBackLinkUrl(sessionAmount, product)
+  const referenceProvidedByQueryParams = paymentLinkSession.getReferenceProvidedByQueryParams(req, product.externalId)
+  data.backLinkHref = getBackLinkUrl(sessionAmount, product, referenceProvidedByQueryParams)
 
   if (sessionAmount) {
     data.amount = (parseFloat(sessionAmount) / 100).toFixed(2)
@@ -52,7 +52,8 @@ function postPage (req, res, next) {
   const product = req.product
 
   const sessionAmount = paymentLinkSession.getAmount(req, product.externalId)
-  const backLinkHref = getBackLinkUrl(sessionAmount, product)
+  const referenceProvidedByQueryParams = paymentLinkSession.getReferenceProvidedByQueryParams(req, product.externalId)
+  const backLinkHref = getBackLinkUrl(sessionAmount, product, referenceProvidedByQueryParams)
 
   const data = {
     productExternalId: product.externalId,
