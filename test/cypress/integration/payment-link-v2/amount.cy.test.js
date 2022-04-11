@@ -42,10 +42,10 @@ describe('Amount page', () => {
       cy.get('[data-cy=button]').click()
 
       cy.get('[data-cy=error-summary] a')
-        .should('contain', 'Enter an amount in pounds and pence using digits and a decimal point. For example “10.50”')
+        .should('contain', 'Enter an amount in pounds and pence using digits and a decimal point, like 123.45 or 156.00')
         .should('have.attr', 'href', '#payment-amount')
 
-      cy.get('[data-cy=error-message]').should('contain', 'Enter an amount in pounds and pence using digits and a decimal point. For example “10.50”')
+      cy.get('[data-cy=error-message]').should('contain', 'Enter an amount in pounds and pence using digits and a decimal point, like 123.45 or 156.00')
     })
 
     it('when a valid amount is entered, should then go to the `confirm` page', () => {

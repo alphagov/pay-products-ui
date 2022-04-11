@@ -1,4 +1,4 @@
-{% extends "../../views/layout-payment-links-v2.njk" %}
+{% extends "../../views/layout.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
@@ -50,7 +50,7 @@
           html: product.reference_hint | striptags(true) | escape | nl2br if product.reference_hint else false
         },
         value: reference,
-        classes: "govuk-input--width-21",
+        classes: "govuk-input--width-20",
         spellcheck: false,
         attributes: {
           'data-cy': 'input'

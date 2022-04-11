@@ -1,4 +1,4 @@
-{% extends "./layout-payment-links-v2.njk" %}
+{% extends "./layout.njk" %}
 
 {% block pageTitle %}
   {{ __p('404Page.title') }} - GOV.UK Pay
@@ -6,5 +6,7 @@
 
 {% block contentBody %}
     <h1 class="govuk-heading-l">{{ __p('404Page.title') }}</h1>
-    <p class="govuk-body">{{ __p('404Page.bodyText') }}</p>
+    <p class="govuk-body">{{ __p('404Page.bodyTextParagraph1') }}</p>
+    <p class="govuk-body">{{ __p('404Page.bodyTextParagraph2') }}</p>
+    <p class="govuk-body">{{ __p('404Page.bodyTextParagraph3') }}</p>
 {% endblock %}

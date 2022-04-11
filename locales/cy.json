@@ -21,7 +21,9 @@
   },
   "404Page": {
     "title": "TODO convert to Welsh - Page not found",
-    "bodyText": "TODO convert to Welsh - Sorry, we could not find the page you were looking for."
+    "bodyTextParagraph1": "TODO convert to Welsh - If you typed the web address, check it is correct.",
+    "bodyTextParagraph2": "TODO convert to Welsh - If you pasted the web address, check that you copied the entire address.",
+    "bodyTextParagraph3": "TODO convert to Welsh - If the web address is correct or you selected a link or button, please contact the service you are trying to make a payment to."
   },
   "confirmation": {
     "title": "Roedd eich taliad yn llwyddiannus",
@@ -60,32 +62,38 @@
     "start": {
       "title": "TODO convert to Welsh - Make a payment"
     },
-    "reference": { 
-      "pleaseEnterYour": "TODO convert to Welsh - Please enter your"
+    "reference": {
+      "pleaseEnterYour": "TODO convert to Welsh - Enter your"
     },
     "referenceConfirm": {
       "areYouSureThisIsAReferenceNumber": "TODO convert to Welsh - Are you sure this is a reference number?",
-			"checkYouveEnteredTheNumberCorrectly": "TODO convert to Welsh - Check that you've entered the number correctly before making the payment. Do not enter your debit or credit card number.",
-			"confirmAndContinue": "TODO convert to Welsh - Confirm and continue",
-			"edit": "TODO convert to Welsh - Edit"
-		},
+      "checkYouveEnteredTheNumberCorrectly": "TODO convert to Welsh - Check that you've entered the number correctly before making the payment. Do not enter your debit or credit card number.",
+      "confirmAndContinue": "TODO convert to Welsh - Confirm and continue",
+      "edit": "TODO convert to Welsh - Edit"
+    },
     "amount": {
-      "enterAmountToPay": "TODO convert to Welsh - Enter amount to pay" 
+      "enterAmountToPay": "TODO convert to Welsh - Enter amount to pay"
     },
     "confirm": {
-			"checkYourDetails": "TODO convert to Welsh - Check your details",
+      "checkYourDetails": "TODO convert to Welsh - Check your details",
       "totalToPay": "TODO convert to Welsh - Total to pay",
       "change": "TODO convert to Welsh - Change",
       "continueToPayment": "TODO convert to Welsh - Continue to payment"
-		},
+    },
     "fieldValidation": {
-      "enterAnAmountInPounds": "TODO convert to Welsh - Enter an amount in pounds",
-      "enterAnAmountInTheCorrectFormat": "TODO convert to Welsh - Enter an amount in pounds and pence using digits and a decimal point. For example “10.50”",
-      "enterAnAmountUnderMaxAmount": "TODO convert to Welsh - Enter an amount that is £100,000 or under",
-      "enterAReference": "TODO convert to Welsh - Enter a valid %s",
-      "referenceMustBeLessThanOrEqual50Chars": "TODO convert to Welsh - %s must be less than or equal to 50 characters",
-      "referenceCantUseInvalidChars": "TODO convert to Welsh - %s can’t contain any of the following characters < > ; : ` ( ) \" ' = | \",\" ~ [ ]",
-      "youMustSelectIAmNotARobot": "TODO convert to Welsh - You must select 'I am not a robot' before proceeding to payment."
+      "enterAnAmountInPounds": "TODO convert to Welsh - Enter an amount of money to pay",
+      "enterAnAmountInTheCorrectFormat": "TODO convert to Welsh - Enter an amount in pounds and pence using digits and a decimal point, like 123.45 or 156.00",
+      "enterAnAmountUnderMaxAmount": "TODO convert to Welsh - Enter an amount that is £100,000 or less",
+      "enterAReference": "TODO convert to Welsh - You must enter your %s",
+      "referenceMustBeLessThanOrEqual50Chars": "TODO convert to Welsh - %s must be 50 characters or fewer",
+      "referenceCantUseInvalidChars": "TODO convert to Welsh - %s must not include any of the following characters < > ; : ` ( ) \" ' = | \",\" ~ [ ]",
+      "youMustSelectIAmNotARobot": "TODO convert to Welsh - You must select 'I’m not a robot' before proceeding to payment."
+    },
+    "error": {
+      "internal": {
+        "title": "TODO convert to Welsh - Sorry, there is a problem with the service",
+        "message": "TODO convert to Welsh - Try again later or contact the service you are trying to make a payment to."
+      }
     }
-  } 
+  }
 }

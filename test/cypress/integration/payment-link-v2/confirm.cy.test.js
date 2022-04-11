@@ -77,7 +77,7 @@ describe.skip('Confirm page', () => {
 
         cy.visit('/pay/a-product-id/reference')
 
-        cy.get('[data-cy=label]').should('contain', 'Please enter your invoice number')
+        cy.get('[data-cy=label]').should('contain', 'Enter your invoice number')
 
         cy.get('[data-cy=input]')
           .clear()
@@ -163,7 +163,7 @@ describe.skip('Confirm page', () => {
 
         cy.visit('/pay/a-product-id/reference')
 
-        cy.get('[data-cy=label]').should('contain', 'Please enter your invoice number')
+        cy.get('[data-cy=label]').should('contain', 'Enter your invoice number')
 
         cy.get('[data-cy=input]')
           .clear()

@@ -21,7 +21,9 @@
   },
   "404Page": {
     "title": "Page not found",
-    "bodyText": "Sorry, we could not find the page you were looking for."
+    "bodyTextParagraph1": "If you typed the web address, check it is correct.",
+    "bodyTextParagraph2": "If you pasted the web address, check that you copied the entire address.",
+    "bodyTextParagraph3": "If the web address is correct or you selected a link or button, please contact the service you are trying to make a payment to."
   },
   "confirmation": {
     "title": "Your payment was successful",
@@ -61,7 +63,7 @@
       "title": "Make a payment"
     },
     "reference": {
-			"pleaseEnterYour": "Please enter your"
+			"pleaseEnterYour": "Enter your"
 		},
 		"referenceConfirm": {
 			"areYouSureThisIsAReferenceNumber": "Are you sure this is a reference number?",
@@ -79,13 +81,19 @@
       "continueToPayment": "Continue to payment"
 		},
     "fieldValidation": {
-      "enterAnAmountInPounds": "Enter an amount in pounds",
-      "enterAnAmountInTheCorrectFormat": "Enter an amount in pounds and pence using digits and a decimal point. For example “10.50”",
-      "enterAnAmountUnderMaxAmount": "Enter an amount that is £100,000 or under",
-      "enterAReference": "Enter a valid %s",
-      "referenceMustBeLessThanOrEqual50Chars": "%s must be less than or equal to 50 characters",
-      "referenceCantUseInvalidChars": "%s can’t contain any of the following characters < > ; : ` ( ) \" ' = | \",\" ~ [ ]",
-      "youMustSelectIAmNotARobot": "You must select 'I am not a robot' before proceeding to payment."
+      "enterAnAmountInPounds": "Enter an amount of money to pay",
+      "enterAnAmountInTheCorrectFormat": "Enter an amount in pounds and pence using digits and a decimal point, like 123.45 or 156.00",
+      "enterAnAmountUnderMaxAmount": "Enter an amount that is £100,000 or less",
+      "enterAReference": "You must enter your %s",
+      "referenceMustBeLessThanOrEqual50Chars": "%s must be 50 characters or fewer",
+      "referenceCantUseInvalidChars": "%s must not include any of the following characters < > ; : ` ( ) \" ' = | \",\" ~ [ ]",
+      "youMustSelectIAmNotARobot": "You must select 'I’m not a robot' before proceeding to payment."
+    },
+    "error": {
+      "internal": {
+        "title": "Sorry, there is a problem with the service",
+        "message": "Try again later or contact the service you are trying to make a payment to."
+      }
     }
   }
 }

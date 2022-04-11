@@ -54,7 +54,7 @@ describe('The payment link start page', () => {
       cy.location().should((location) => {
         expect(location.pathname).to.eq(`/pay/${productExternalId}/reference`)
       })
-      cy.get('[data-cy=label]').should('contain', `Please enter your ${referenceLabel}`)
+      cy.get('[data-cy=label]').should('contain', `Enter your ${referenceLabel}`)
     })
   })
 
