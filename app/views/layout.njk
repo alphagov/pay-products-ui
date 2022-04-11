@@ -20,6 +20,8 @@
   {% set serviceName = service.serviceName.en %}
 {% endif %}
 
+{% set headerText = product.name if product and product.type === 'ADHOC' and product.newPaymentLinkJourneyEnabled else serviceName %}
+
 {% block header %}
   {% if service and service.customBranding and service.customBranding.cssUrl %}
     {% include "includes/custom.njk" %}
@@ -42,7 +44,7 @@
         <div class="govuk-header__content">
           <span class="govuk-header__link--service-name" data-cy="header-service-name">
             {% block headerContent %}
-              {{ serviceName }}
+              {{ headerText }}
             {% endblock %}
           </span>
         </div>

@@ -33,7 +33,7 @@ describe('Reference and reference confirm page', () => {
         cy.visit('/pay/a-product-id/reference')
 
         cy.get('[data-cy=back-link]').should('have.attr', 'href', '/pay/a-product-id')
-        cy.get('[data-cy=label]').should('contain', 'Please enter your invoice number')
+        cy.get('[data-cy=label]').should('contain', 'Enter your invoice number')
         cy.get('[data-cy=button]').should('exist')
       })
 
@@ -43,10 +43,10 @@ describe('Reference and reference confirm page', () => {
         cy.get('[data-cy=button]').click()
 
         cy.get('[data-cy=error-summary] a')
-          .should('contain', 'Invoice number must be less than or equal to 50 characters')
+          .should('contain', 'Invoice number must be 50 characters or fewer')
           .should('have.attr', 'href', '#payment-reference')
 
-        cy.get('[data-cy=error-message]').should('contain', 'Invoice number must be less than or equal to 50 characters')
+        cy.get('[data-cy=error-message]').should('contain', 'Invoice number must be 50 characters or fewer')
       })
 
       it('when an reference is entered that looks like a card number, should go to the `reference confirm` page', () => {
