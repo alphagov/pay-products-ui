@@ -52,7 +52,8 @@ function setupPageData (product, sessionReferenceNumber, sessionAmount) {
     amountAsGbp,
     sessionReferenceNumber,
     referenceChangeUrl: replaceParamsInPath(paths.paymentLinksV2.reference, product.externalId),
-    amountChangeUrl: replaceParamsInPath(paths.paymentLinksV2.amount, product.externalId)
+    amountChangeUrl: replaceParamsInPath(paths.paymentLinksV2.amount, product.externalId),
+    requireCaptcha: product.requireCaptcha
   }
 }
 
