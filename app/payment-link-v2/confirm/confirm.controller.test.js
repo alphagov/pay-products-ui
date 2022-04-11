@@ -258,6 +258,58 @@ describe('Confirm Page Controller', () => {
         sinon.assert.calledWith(res.redirect, '/pay/an-external-id')
       })
     })
+
+    describe('when product.recaptcha=true', () => {
+      const product = new Product(productFixtures.validProductResponse({
+        type: 'ADHOC',
+        reference_enabled: false,
+        price: 1000,
+        require_captcha: true
+      }))
+
+      it('then it should update the page data with `recaptcha=true`', () => {
+        req = {
+          correlationId: '123',
+          product,
+          service
+        }
+        res = {}
+
+        controller.getPage(req, res)
+
+        sinon.assert.calledWith(responseSpy, req, res, 'confirm/confirm')
+
+        const pageData = mockResponses.response.args[0][3]
+
+        expect(pageData.requireCaptcha).to.equal(true)
+      })
+    })
+
+    describe('when product.recaptcha=false', () => {
+      const product = new Product(productFixtures.validProductResponse({
+        type: 'ADHOC',
+        reference_enabled: false,
+        price: 1000,
+        require_captcha: false
+      }))
+
+      it('then it should update the page data with `recaptcha=false`', () => {
+        req = {
+          correlationId: '123',
+          product,
+          service
+        }
+        res = {}
+
+        controller.getPage(req, res)
+
+        sinon.assert.calledWith(responseSpy, req, res, 'confirm/confirm')
+
+        const pageData = mockResponses.response.args[0][3]
+
+        expect(pageData.requireCaptcha).to.equal(false)
+      })
+    })
   })
 
   describe('postPage', () => {
@@ -276,7 +328,6 @@ describe('Confirm Page Controller', () => {
           correlationId: '123',
           product,
           body: {
-            'reference-value': 'a-invoice-number',
             amount: '2000'
           }
         }
@@ -305,12 +356,11 @@ describe('Confirm Page Controller', () => {
         sinon.assert.calledWith(res.redirect, 303, 'https://test.com')
       })
 
-      it('when creating a payment and an error occurs, should call next() with an error', async () => {
+      it('when creating a payment causes an error, should call next() with an error', async () => {
         req = {
           correlationId: '123',
           product,
           body: {
-            'reference-value': 'a-invoice-number',
             amount: '1000'
           }
         }
@@ -397,7 +447,6 @@ describe('Confirm Page Controller', () => {
           correlationId: '123',
           product,
           body: {
-            'reference-value': 'a-invoice-number',
             amount: '2000'
           }
         }
@@ -561,6 +610,7 @@ describe('Confirm Page Controller', () => {
         expect(pageData.amountAsGbp).to.equal('£10.00')
         expect(pageData.referenceChangeUrl).to.equal('/pay/an-external-id/reference')
         expect(pageData.amountChangeUrl).to.equal('/pay/an-external-id/amount')
+        expect(pageData.requireCaptcha).to.equal(true)
 
         expect(pageData.errors).to.contain({
           recaptcha: 'You failed the captcha challenge.  Please try again.'
