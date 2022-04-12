@@ -105,7 +105,7 @@
     "dotenv": "^16.0.0",
     "envfile": "^5.2.0",
     "eslint": "8.13.x",
-    "grunt": "1.4.x",
+    "grunt": "1.5.x",
     "grunt-babel": "^8.0.0",
     "grunt-browserify": "^6.0.0",
     "grunt-cli": "1.4.x",
