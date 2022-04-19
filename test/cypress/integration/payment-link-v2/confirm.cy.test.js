@@ -6,25 +6,53 @@ const serviceStubs = require('../../stubs/service-stubs')
 const gatewayAccountId = 666
 const productExternalId = 'a-product-id'
 
-function checkReferenceRow (rowNumber) {
-  const referenceSummaryElement = cy.get('[data-cy=summary-list] .govuk-summary-list__row').eq(rowNumber)
-  referenceSummaryElement.get('dt').eq(0).should('contain', 'invoice number')
-  referenceSummaryElement.get('dd').eq(0).should('contain', 'a-invoice-number')
-  referenceSummaryElement.get('dd').eq(1).get('.govuk-link')
-    .should('have.attr', 'href', '/pay/a-product-id/reference')
-    .should('contain', 'Change')
+const SUMMARY_LIST_ROW_SELECTOR = '[data-cy=summary-list] .govuk-summary-list__row'
+
+function checkNumberOfRows (expectedNumberOfRows) {
+  cy.get(SUMMARY_LIST_ROW_SELECTOR).should('have.length', expectedNumberOfRows)
 }
 
-function checkAmountRow (rowNumber, checkForChangeLink) {
-  const amountSummaryElement = cy.get('.govuk-summary-list__row').eq(rowNumber)
-  amountSummaryElement.should('contain', 'Total to pay')
-  amountSummaryElement.should('contain', '£10.00')
+function checkReferenceRow (rowNumber, shouldExist) {
+  const referenceSummaryElement = cy.get(SUMMARY_LIST_ROW_SELECTOR).eq(rowNumber)
+
+  referenceSummaryElement.within(() => {
+    cy.get('dt').eq(0).should('contain', 'invoice number')
+    cy.get('dd').eq(0).should('contain', 'a-invoice-number')
+    cy.get('dd').eq(1).get('.govuk-link')
+      .should('have.attr', 'href', '/pay/a-product-id/reference')
+      .should('contain', 'Change')
+  })
 }
 
-describe.skip('Confirm page', () => {
+function checkAmountRow (rowNumber, shouldExist) {
+  const amountSummaryElement = cy.get(SUMMARY_LIST_ROW_SELECTOR).eq(rowNumber)
+
+  amountSummaryElement.within(() => {
+    cy.get('dt').eq(0).should('contain', 'Total to pay')
+    cy.get('dd').eq(0).should('contain', '£10.00')
+  })
+}
+
+function checkChangeAmountLink (rowNumber, shouldExist) {
+  const changeAmountLink = cy.get(SUMMARY_LIST_ROW_SELECTOR).eq(rowNumber)
+
+  if (shouldExist) {
+    changeAmountLink.within(() => {
+      cy.get('dd').eq(1).get('.govuk-link')
+        .should('have.attr', 'href', '/pay/a-product-id/amount')
+        .should('contain', 'Change')
+    })
+  } else {
+    changeAmountLink.within(() => {
+      cy.get('dd').eq(1).should('not.exist')
+    })
+  }
+}
+
+describe('Confirm page', () => {
   describe('when the product.price=1000', () => {
     describe('when there is no reference', () => {
-      it('should display the `Confirm` page correctly', () => {
+      it('should display the Confirm page with the amount row and no `Change` amount link', () => {
         cy.task('setupStubs', [
           productStubs.getProductByExternalIdStub({
             external_id: productExternalId,
@@ -44,20 +72,19 @@ describe.skip('Confirm page', () => {
 
         cy.get('[data-cy=product-name]').should('contain', 'A Product Name')
 
-        checkAmountRow(0, false)
-      })
+        checkNumberOfRows(1)
+        checkAmountRow(0)
 
-      it('should hide the `Change` amount link', () => {
-        cy.get('[data-cy=summary-list]').eq(0).get('dd').eq(1).should('not.exist')
-      })
+        checkChangeAmountLink(0, false)
 
-      it('set the hidden form fields correctly', () => {
-        cy.get('[data-cy=form]').get('#amount').eq(0).should('value', '1000')
+        cy.get('[data-cy=form]').get('#reference-value').should('not.exist')
+        cy.get('[data-cy=form]').get('#amount').should('value', '1000')
+        cy.get('[data-cy=continue-to-payment-button]').should('exist')
       })
     })
 
     describe('when there is a reference', () => {
-      it('should display the `Reference` page and allow a user to enter a reference', () => {
+      it('should display the Confirm page with the reference row and the amount row with no `Change` amount link', () => {
         cy.task('setupStubs', [
           productStubs.getProductByExternalIdStub({
             external_id: productExternalId,
@@ -75,6 +102,7 @@ describe.skip('Confirm page', () => {
           })
         ])
 
+        // Visit the reference page - to enter a reference
         cy.visit('/pay/a-product-id/reference')
 
         cy.get('[data-cy=label]').should('contain', 'Enter your invoice number')
@@ -83,29 +111,72 @@ describe.skip('Confirm page', () => {
           .clear()
           .type('a-invoice-number', { delay: 0 })
         cy.get('[data-cy=button]').click()
-      })
 
-      it('should display the `Confirm` page correctly', () => {
+        cy.url().should('include', '/pay/a-product-id/confirm')
+
         cy.get('[data-cy=product-name]').should('contain', 'A Product Name')
 
-        checkReferenceRow(0)
-        checkAmountRow(1, false)
-      })
+        checkNumberOfRows(2)
+        checkReferenceRow(0, true)
+        checkAmountRow(1, true)
 
-      it('should hide the `Change` amount link', () => {
-        cy.get('[data-cy=summary-list]').eq(1).get('dd').eq(1).should('not.exist')
-      })
+        checkChangeAmountLink(1, false)
 
-      it('set the hidden form fields correctly', () => {
         cy.get('[data-cy=form]').get('#reference-value').eq(0).should('value', 'a-invoice-number')
         cy.get('[data-cy=form]').get('#amount').eq(0).should('value', '1000')
+      })
+    })
+
+    describe('when product.require_captcha=true', () => {
+      it('should display the Confirm page with the recaptcha field', () => {
+        cy.task('setupStubs', [
+          productStubs.getProductByExternalIdStub({
+            external_id: productExternalId,
+            type: 'ADHOC',
+            price: 1000,
+            require_captcha: true
+          }),
+          serviceStubs.getServiceSuccess({
+            gatewayAccountId: gatewayAccountId,
+            serviceName: {
+              en: 'Test service name'
+            }
+          })
+        ])
+
+        cy.visit('/pay/a-product-id/confirm')
+
+        cy.get('.g-recaptcha').should('exist')
+      })
+    })
+
+    describe('when there is product.require_captcha=false', () => {
+      it('should display the Confirm page with NO recaptcha field', () => {
+        cy.task('setupStubs', [
+          productStubs.getProductByExternalIdStub({
+            external_id: productExternalId,
+            type: 'ADHOC',
+            price: 1000,
+            require_captcha: false
+          }),
+          serviceStubs.getServiceSuccess({
+            gatewayAccountId: gatewayAccountId,
+            serviceName: {
+              en: 'Test service name'
+            }
+          })
+        ])
+
+        cy.visit('/pay/a-product-id/confirm')
+
+        cy.get('.g-recaptcha').should('not.exist')
       })
     })
   })
 
   describe('when the product.price=null', () => {
     describe('when there is no reference', () => {
-      it('should display the `Amount` page and allow a user to enter a amount', () => {
+      it('should display the Confirm page with no reference row and an amount row with no `Change` amount link', () => {
         cy.task('setupStubs', [
           productStubs.getProductByExternalIdStub({
             external_id: productExternalId,
@@ -121,29 +192,32 @@ describe.skip('Confirm page', () => {
           })
         ])
 
+        // Visit the amount page - to enter an amount
         cy.visit('/pay/a-product-id/amount')
 
         cy.get('[data-cy=label]').should('contain', 'Enter amount to pay')
 
         cy.get('[data-cy=input]')
           .clear()
-          .type('10.50', { delay: 0 })
+          .type('10.00', { delay: 0 })
         cy.get('[data-cy=button]').click()
-      })
 
-      it('should display the `Change` amount link', () => {
-        cy.get('[data-cy=summary-list]').eq(0).get('dd').eq(1).get('.govuk-link')
-          .should('have.attr', 'href', '/pay/a-product-id/amount')
-          .should('contain', 'Change')
-      })
+        cy.url().should('include', '/pay/a-product-id/confirm')
 
-      it('set the hidden form fields correctly', () => {
-        cy.get('[data-cy=form]').get('#amount').eq(0).should('value', '1050')
+        cy.get('[data-cy=product-name]').should('contain', 'A Product Name')
+
+        checkNumberOfRows(1)
+        checkAmountRow(0, true)
+
+        checkChangeAmountLink(0, true)
+
+        cy.get('[data-cy=form]').get('#reference-value').should('not.exist')
+        cy.get('[data-cy=form]').get('#amount').should('value', '1000')
       })
     })
 
     describe('when there is a reference', () => {
-      it('should display the `Amount` page and allow a user to enter a amount', () => {
+      it('should display the Confirm page with a reference row and an amount row with the `Change` amount link', () => {
         cy.task('setupStubs', [
           productStubs.getProductByExternalIdStub({
             external_id: productExternalId,
@@ -161,6 +235,7 @@ describe.skip('Confirm page', () => {
           })
         ])
 
+        // Visit the reference page - to enter a reference
         cy.visit('/pay/a-product-id/reference')
 
         cy.get('[data-cy=label]').should('contain', 'Enter your invoice number')
@@ -169,6 +244,29 @@ describe.skip('Confirm page', () => {
           .clear()
           .type('a-invoice-number', { delay: 0 })
         cy.get('[data-cy=button]').click()
+
+        // Visit the amount page - to enter an amount
+        cy.url().should('include', '/pay/a-product-id/amount')
+
+        cy.get('[data-cy=label]').should('contain', 'Enter amount to pay')
+
+        cy.get('[data-cy=input]')
+          .clear()
+          .type('10.00', { delay: 0 })
+        cy.get('[data-cy=button]').click()
+
+        cy.url().should('include', '/pay/a-product-id/confirm')
+
+        cy.get('[data-cy=product-name]').should('contain', 'A Product Name')
+
+        checkNumberOfRows(2)
+        checkReferenceRow(0, true)
+        checkAmountRow(1, true)
+
+        checkChangeAmountLink(1, true)
+
+        cy.get('[data-cy=form]').get('#reference-value').should('value', 'a-invoice-number')
+        cy.get('[data-cy=form]').get('#amount').should('value', '1000')
       })
     })
   })
