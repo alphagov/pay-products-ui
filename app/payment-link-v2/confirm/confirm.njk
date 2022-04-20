@@ -29,7 +29,7 @@
 
         <input id="amount" name="amount" type="hidden" value="{{ amountAsPence }}" />
 
-        {% if product.requireCaptcha %}
+        {% if requireCaptcha %}
           <div class="g-recaptcha govuk-!-margin-bottom-5" data-sitekey="{{ GOOGLE_RECAPTCHA_SITE_KEY }}"></div>
         {% endif %}
 
