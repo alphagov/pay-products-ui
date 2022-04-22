@@ -5,7 +5,7 @@
 {% if canChangeReference %}
   {% set referenceAction = {
       items: [{
-        href: referenceChangeUrl,
+        href: replaceParamsInPath(routes.paymentLinksV2.reference, product.externalId) + "?change=true",
         text: __p('paymentLinksV2.confirm.change'),
         visuallyHiddenText: productReferenceLabel
       }]  
@@ -30,7 +30,7 @@
 {% if canChangeAmount %}
   {% set amountAction = {
       items: [{
-        href: amountChangeUrl,
+        href: replaceParamsInPath(routes.paymentLinksV2.amount, product.externalId) + "?change=true",
         text: __p('paymentLinksV2.confirm.change'),
         visuallyHiddenText: summaryElement.summaryLabel
       }]  

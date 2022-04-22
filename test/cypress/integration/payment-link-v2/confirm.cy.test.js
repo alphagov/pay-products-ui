@@ -19,7 +19,7 @@ function checkReferenceRow (rowNumber, shouldExist) {
     cy.get('dt').eq(0).should('contain', 'invoice number')
     cy.get('dd').eq(0).should('contain', 'a-invoice-number')
     cy.get('dd').eq(1).get('.govuk-link')
-      .should('have.attr', 'href', '/pay/a-product-id/reference')
+      .should('have.attr', 'href', '/pay/a-product-id/reference?change=true')
       .should('contain', 'Change')
   })
 }
@@ -39,7 +39,7 @@ function checkChangeAmountLink (rowNumber, shouldExist) {
   if (shouldExist) {
     changeAmountLink.within(() => {
       cy.get('dd').eq(1).get('.govuk-link')
-        .should('have.attr', 'href', '/pay/a-product-id/amount')
+        .should('have.attr', 'href', '/pay/a-product-id/amount?change=true')
         .should('contain', 'Change')
     })
   } else {

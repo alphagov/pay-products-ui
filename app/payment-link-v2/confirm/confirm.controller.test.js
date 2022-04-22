@@ -87,8 +87,6 @@ describe('Confirm Page Controller', () => {
         expect(pageData.sessionAmount).to.equal(1050)
         expect(pageData.amountAsPence).to.equal(1050)
         expect(pageData.amountAsGbp).to.equal('£10.50')
-        expect(pageData.referenceChangeUrl).to.equal('/pay/an-external-id/reference')
-        expect(pageData.amountChangeUrl).to.equal('/pay/an-external-id/amount')
       })
 
       it('when there is no amount in the session, then it should redirect to the start page', () => {
@@ -172,8 +170,6 @@ describe('Confirm Page Controller', () => {
         expect(pageData.sessionAmount).to.equal(undefined)
         expect(pageData.amountAsPence).to.equal(1000)
         expect(pageData.amountAsGbp).to.equal('£10.00')
-        expect(pageData.referenceChangeUrl).to.equal('/pay/an-external-id/reference')
-        expect(pageData.amountChangeUrl).to.equal('/pay/an-external-id/amount')
       })
 
       it('when there is no reference in the session then it should redirect to the start page', () => {
@@ -233,8 +229,6 @@ describe('Confirm Page Controller', () => {
         expect(pageData.sessionAmount).to.equal('1050')
         expect(pageData.amountAsPence).to.equal('1050')
         expect(pageData.amountAsGbp).to.equal('£10.50')
-        expect(pageData.referenceChangeUrl).to.equal('/pay/an-external-id/reference')
-        expect(pageData.amountChangeUrl).to.equal('/pay/an-external-id/amount')
       })
 
       it('when there is no amount in the session, then it should redirect to the start page', () => {
@@ -608,8 +602,6 @@ describe('Confirm Page Controller', () => {
         expect(pageData.sessionAmount).to.equal(undefined)
         expect(pageData.amountAsPence).to.equal(1000)
         expect(pageData.amountAsGbp).to.equal('£10.00')
-        expect(pageData.referenceChangeUrl).to.equal('/pay/an-external-id/reference')
-        expect(pageData.amountChangeUrl).to.equal('/pay/an-external-id/amount')
         expect(pageData.requireCaptcha).to.equal(true)
 
         expect(pageData.errors).to.contain({

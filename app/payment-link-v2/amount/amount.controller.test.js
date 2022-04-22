@@ -46,39 +46,56 @@ describe('Amount Page Controller', () => {
         price: null
       }))
 
-      it('when the amount is NOT in the session, then it should display the amount page', () => {
-        mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns(undefined)
-        req = {
-          correlationId: '123',
-          product,
-          service
-        }
-        res = {}
-        controller.getPage(req, res)
+      it('when the amount is NOT in the session, then it should display the amount page and set the ' +
+        'back link to the reference page', () => {
+          mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns(undefined)
+          req = {
+            correlationId: '123',
+            product,
+            service
+          }
+          res = {}
+          controller.getPage(req, res)
 
-        sinon.assert.calledWith(responseSpy, req, res, 'amount/amount')
+          sinon.assert.calledWith(responseSpy, req, res, 'amount/amount')
 
-        const pageData = mockResponses.response.args[0][3]
-        expect(pageData.backLinkHref).to.equal('/pay/an-external-id/reference')
-      })
+          const pageData = mockResponses.response.args[0][3]
+          expect(pageData.backLinkHref).to.equal('/pay/an-external-id/reference')
+        })
 
-      it('when the amount is in the session, then it should display that amount to 2 decimal places ' +
-        'and set the back link to the CONFIRM page', () => {
-        mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns(1050)
-        req = {
-          correlationId: '123',
-          product,
-          service
-        }
-        res = {}
-        controller.getPage(req, res)
+      it('when the amount is in the session, then it should display that amount to 2 decimal places', () => {
+          mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns(1050)
+          req = {
+            correlationId: '123',
+            product,
+            service
+          }
+          res = {}
+          controller.getPage(req, res)
 
-        sinon.assert.calledWith(responseSpy, req, res, 'amount/amount')
+          sinon.assert.calledWith(responseSpy, req, res, 'amount/amount')
 
-        const pageData = mockResponses.response.args[0][3]
-        expect(pageData.backLinkHref).to.equal('/pay/an-external-id/confirm')
-        expect(pageData.amount).to.equal('10.50')
-      })
+          const pageData = mockResponses.response.args[0][3]
+          expect(pageData.amount).to.equal('10.50')
+        })
+
+        it('when the change query parameter is present, should set the back link to the confirm page', () => {
+          req = {
+            correlationId: '123',
+            product,
+            service,
+            query: {
+              change: 'true'
+            }
+          }
+          res = {}
+          controller.getPage(req, res)
+
+          sinon.assert.calledWith(responseSpy, req, res, 'amount/amount')
+
+          const pageData = mockResponses.response.args[0][3]
+          expect(pageData.backLinkHref).to.equal('/pay/an-external-id/confirm')
+        })
     })
 
     describe('when product.reference_enabled=false', () => {
@@ -104,8 +121,7 @@ describe('Amount Page Controller', () => {
         expect(pageData.backLinkHref).to.equal('/pay/an-external-id')
       })
 
-      it('when the amount is in the session, then it should display that amount to 2 decimal points ' +
-        'and set the back link to the CONFIRM page', () => {
+      it('when the amount is in the session, then it should display that amount to 2 decimal points', () => {
         mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns(1000)
 
         req = {
@@ -119,8 +135,25 @@ describe('Amount Page Controller', () => {
         sinon.assert.calledWith(responseSpy, req, res, 'amount/amount')
 
         const pageData = mockResponses.response.args[0][3]
-        expect(pageData.backLinkHref).to.equal('/pay/an-external-id/confirm')
         expect(pageData.amount).to.equal('10.00')
+      })
+
+      it('when the change query parameter is present, should set the back link to the confirm page', () => {
+        req = {
+          correlationId: '123',
+          product,
+          service,
+          query: {
+            change: 'true'
+          }
+        }
+        res = {}
+        controller.getPage(req, res)
+
+        sinon.assert.calledWith(responseSpy, req, res, 'amount/amount')
+
+        const pageData = mockResponses.response.args[0][3]
+        expect(pageData.backLinkHref).to.equal('/pay/an-external-id/confirm')
       })
     })
 
@@ -157,23 +190,23 @@ describe('Amount Page Controller', () => {
 
     it('when a valid amount is entered, it should save the amount to the session and ' +
       'redirect to the confirm page', () => {
-      req = {
-        correlationId: '123',
-        product,
-        body: {
-          'payment-amount': '10'
+        req = {
+          correlationId: '123',
+          product,
+          body: {
+            'payment-amount': '10'
+          }
         }
-      }
 
-      res = {
-        redirect: sinon.spy()
-      }
+        res = {
+          redirect: sinon.spy()
+        }
 
-      controller.postPage(req, res)
+        controller.postPage(req, res)
 
-      sinon.assert.calledWith(mockPaymentLinkSession.setAmount, req, product.externalId, 1000)
-      sinon.assert.calledWith(res.redirect, '/pay/an-external-id/confirm')
-    })
+        sinon.assert.calledWith(mockPaymentLinkSession.setAmount, req, product.externalId, 1000)
+        sinon.assert.calledWith(res.redirect, '/pay/an-external-id/confirm')
+      })
 
     it('when an empty amount is entered, it should display an error message and the back link correctly', () => {
       req = {
@@ -201,31 +234,33 @@ describe('Amount Page Controller', () => {
       sinon.assert.calledWith(res.locals.__p, 'paymentLinksV2.fieldValidation.enterAnAmountInPounds')
     })
 
-    it('when an invalid amount is entered and an amount is already saved to the session, it should display an error' +
-    'message and set the back link to the CONFIRM page', () => {
-      req = {
-        correlationId: '123',
-        product,
-        body: {
-          'payment-amount': 'invalid amount'
+    it('when an invalid amount is entered and the change query parameter is present, it should display an error' +
+      'message and set the back link to the CONFIRM page', () => {
+        req = {
+          correlationId: '123',
+          product,
+          body: {
+            'payment-amount': 'invalid amount'
+          },
+          query: {
+            change: 'true'
+          }
         }
-      }
 
-      res = {
-        redirect: sinon.spy(),
-        locals: {
-          __p: sinon.spy()
+        res = {
+          redirect: sinon.spy(),
+          locals: {
+            __p: sinon.spy()
+          }
         }
-      }
-      mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns(1000)
-      controller.postPage(req, res)
+        controller.postPage(req, res)
 
-      sinon.assert.calledWith(responseSpy, req, res, 'amount/amount')
+        sinon.assert.calledWith(responseSpy, req, res, 'amount/amount')
 
-      const pageData = mockResponses.response.args[0][3]
-      expect(pageData.backLinkHref).to.equal('/pay/an-external-id/confirm')
+        const pageData = mockResponses.response.args[0][3]
+        expect(pageData.backLinkHref).to.equal('/pay/an-external-id/confirm')
 
-      sinon.assert.calledWith(res.locals.__p, 'paymentLinksV2.fieldValidation.enterAnAmountInTheCorrectFormat')
-    })
+        sinon.assert.calledWith(res.locals.__p, 'paymentLinksV2.fieldValidation.enterAnAmountInTheCorrectFormat')
+      })
   })
 })

@@ -25,6 +25,7 @@ const i18nConfig = require('./config/i18n')
 const logger = require('./app/utils/logger')(__filename)
 const loggingMiddleware = require('./app/middleware/logging-middleware')
 const Sentry = require('./app/utils/sentry.js').initialiseSentry()
+const replaceParamsInPath = require('./app/utils/replace-params-in-path')
 
 // Global constants
 const JAVASCRIPT_PATH = staticify.getVersionedPath('/js/application.min.js')
@@ -64,6 +65,7 @@ function initialiseGlobalMiddleware (app) {
     res.locals.analyticsTrackingId = ANALYTICS_TRACKING_ID
     res.locals.GOOGLE_RECAPTCHA_USE_ENTERPRISE_VERSION = process.env.GOOGLE_RECAPTCHA_USE_ENTERPRISE_VERSION === 'true'
     res.locals.GOOGLE_RECAPTCHA_SITE_KEY = process.env.GOOGLE_RECAPTCHA_SITE_KEY
+    res.locals.replaceParamsInPath = replaceParamsInPath
     noCache(res)
     next()
   })
