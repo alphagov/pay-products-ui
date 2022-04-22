@@ -14,6 +14,16 @@ const HIDDEN_FORM_FIELD_ID_AMOUNT = 'amount'
 const GOOGLE_RECAPTCHA_FORM_NAME = 'g-recaptcha-response'
 const ERROR_KEY_RECAPTCHA = 'recaptcha'
 
+function getBackLinkUrl(product, referenceProvidedByQueryParams, amountProvidedByQueryParams) {
+  if (!product.price && !amountProvidedByQueryParams) {
+    return replaceParamsInPath(paths.paymentLinksV2.amount, product.externalId)
+  } else if (product.reference_enabled && !referenceProvidedByQueryParams) {
+    return replaceParamsInPath(paths.paymentLinksV2.reference, product.externalId)
+  } else {
+    return replaceParamsInPath(paths.pay.product, product.externalId)
+  }
+}
+
 async function validateRecaptcha (
   googleRecaptchaFormValue,
   translationMethod
@@ -43,7 +53,8 @@ function setupPageData (product, sessionReferenceNumber, sessionAmount, referenc
   const amountTo2DecimalPoint = (parseFloat(amountAsPence) / 100).toFixed(2)
   const amountAsGbp = Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(amountTo2DecimalPoint)
   const canChangeAmount = !product.price && !amountProvidedByQueryParams
-  const canChangeReference = !referenceProvidedByQueryParams
+  const canChangeReference = product.reference_enabled && !referenceProvidedByQueryParams
+  const backLinkHref = getBackLinkUrl(product, referenceProvidedByQueryParams, amountProvidedByQueryParams)
 
   return {
     productExternalId: product.externalId,
@@ -55,7 +66,8 @@ function setupPageData (product, sessionReferenceNumber, sessionAmount, referenc
     sessionReferenceNumber,
     canChangeAmount,
     canChangeReference,
-    requireCaptcha: product.requireCaptcha
+    requireCaptcha: product.requireCaptcha,
+    backLinkHref
   }
 }
 

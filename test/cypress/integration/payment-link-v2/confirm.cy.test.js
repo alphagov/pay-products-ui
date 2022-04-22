@@ -71,6 +71,7 @@ describe('Confirm page', () => {
         cy.visit('/pay/a-product-id/confirm')
 
         cy.get('[data-cy=product-name]').should('contain', 'A Product Name')
+        cy.get('[data-cy=back-link]').should('have.attr', 'href', '/pay/a-product-id')
 
         checkNumberOfRows(1)
         checkAmountRow(0)
@@ -205,6 +206,7 @@ describe('Confirm page', () => {
         cy.url().should('include', '/pay/a-product-id/confirm')
 
         cy.get('[data-cy=product-name]').should('contain', 'A Product Name')
+        cy.get('[data-cy=back-link]').should('have.attr', 'href', '/pay/a-product-id/amount')
 
         checkNumberOfRows(1)
         checkAmountRow(0, true)
@@ -258,6 +260,7 @@ describe('Confirm page', () => {
         cy.url().should('include', '/pay/a-product-id/confirm')
 
         cy.get('[data-cy=product-name]').should('contain', 'A Product Name')
+        cy.get('[data-cy=back-link]').should('have.attr', 'href', '/pay/a-product-id/amount')
 
         checkNumberOfRows(2)
         checkReferenceRow(0, true)
