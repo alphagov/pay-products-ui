@@ -1,5 +1,6 @@
 {% extends "../../views/layout.njk" %}
 
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../views/macros/error-summary.njk" import errorSummary %}
 
@@ -7,9 +8,20 @@
   Confirm  - {{ productName }}
 {% endblock %}
 
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Back",
+    href: backLinkHref,
+    attributes: {
+      'data-cy': 'back-link'
+    }
+  }) }}
+{% endblock %}
+
 {% block contentBody %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+
       {{ errorSummary ({
         errors: errors
       }) }}

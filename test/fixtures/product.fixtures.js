@@ -42,7 +42,7 @@ module.exports = {
     if (data.type !== 'ADHOC') {
       data.price = data.price || 1000
     }
-    if (opts.reference_enabled) data.reference_enabled = opts.reference_enabled
+    if (opts.reference_enabled !== undefined) data.reference_enabled = opts.reference_enabled
     if (opts.reference_label) data.reference_label = opts.reference_label
     if (opts.reference_hint) data.reference_hint = opts.reference_hint
     if (opts.description) data.description = opts.description
