@@ -24,6 +24,7 @@ function validateAmountFormValue (amount, res) {
 
 function getPage (req, res, next) {
   const product = req.product
+  const { change } = req.query || {}
 
   const data = {
     productExternalId: product.externalId,
@@ -36,7 +37,7 @@ function getPage (req, res, next) {
 
   const sessionAmount = paymentLinkSession.getAmount(req, product.externalId)
   const referenceProvidedByQueryParams = paymentLinkSession.getReferenceProvidedByQueryParams(req, product.externalId)
-  data.backLinkHref = getBackLinkUrl(sessionAmount, product, referenceProvidedByQueryParams)
+  data.backLinkHref = getBackLinkUrl(change, product, referenceProvidedByQueryParams)
 
   if (sessionAmount) {
     data.amount = (parseFloat(sessionAmount) / 100).toFixed(2)
@@ -47,13 +48,13 @@ function getPage (req, res, next) {
 
 function postPage (req, res, next) {
   const paymentAmount = lodash.get(req.body, PAYMENT_AMOUNT, '')
+  const { change } = req.query || {}
   const errors = validateAmountFormValue(paymentAmount, res)
 
   const product = req.product
 
-  const sessionAmount = paymentLinkSession.getAmount(req, product.externalId)
   const referenceProvidedByQueryParams = paymentLinkSession.getReferenceProvidedByQueryParams(req, product.externalId)
-  const backLinkHref = getBackLinkUrl(sessionAmount, product, referenceProvidedByQueryParams)
+  const backLinkHref = getBackLinkUrl(change, product, referenceProvidedByQueryParams)
 
   const data = {
     productExternalId: product.externalId,

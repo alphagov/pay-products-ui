@@ -64,12 +64,14 @@ describe('Reference Page Controller', () => {
         expect(pageData.backLinkHref).to.equal('/pay/an-external-id')
       })
 
-      it('when the reference is in the session, then it should display the reference page ' +
-        'and set the back link to the CONFIRM page', () => {
+      it('when the change query parameter is present, should set the back link to the CONFIRM page', () => {
         req = {
           correlationId: '123',
           product,
-          service
+          service,
+          query: {
+            change: 'true'
+          }
         }
         res = {}
 
@@ -139,21 +141,21 @@ describe('Reference Page Controller', () => {
         sinon.assert.calledWith(res.redirect, '/pay/an-external-id/amount')
       })
 
-      it('when an valid reference is entered and an AMOUNT is already saved to the session, it should  ' +
-      'redirect to the CONFIRM page', () => {
+      it('when an valid reference is entered and the change query param is present, should redirect to the confirm page', () => {
         req = {
           correlationId: '123',
           product,
           body: {
             'payment-reference': 'valid reference'
+          },
+          query: {
+            change: 'true'
           }
         }
 
         res = {
           redirect: sinon.spy()
         }
-
-        mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns(1000)
 
         controller.postPage(req, res)
 
@@ -257,13 +259,16 @@ describe('Reference Page Controller', () => {
         expect(pageData.errors['payment-reference']).to.equal('Invoice number must be less than or equal to 50 characters')
       })
 
-      it('when an invalid reference is entered and a reference is already saved to the session, it should display an error ' +
+      it('when an invalid reference is entered and the change query parameter is present, it should display an error ' +
       'message and set the back link to the CONFIRM page', () => {
         req = {
           correlationId: '123',
           product,
           body: {
             'payment-reference': 'reference with invalid characters <>'
+          },
+          query: {
+            change: 'true'
           }
         }
 
@@ -273,8 +278,6 @@ describe('Reference Page Controller', () => {
             __p: sinon.stub()
           }
         }
-
-        mockPaymentLinkSession.getReference.withArgs(req, product.externalId).returns('a valid reference')
 
         res.locals.__p.withArgs('paymentLinksV2.fieldValidation.referenceCantUseInvalidChars').returns('%s can’t contain any of the following characters < > ; : ` ( ) " \' = &#124; "," ~ [ ]')
 

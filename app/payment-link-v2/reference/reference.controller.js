@@ -28,10 +28,10 @@ function validateReferenceFormValue (reference, referenceLabel, res) {
   return errors
 }
 
-function getNextPageUrl (productPrice, sessionAmount, reference) {
+function getNextPageUrl (productPrice, isEditing, reference) {
   if (isAPotentialPan(reference)) {
     return paths.paymentLinksV2.referenceConfirm
-  } else if (productPrice || sessionAmount) {
+  } else if (productPrice || isEditing) {
     return paths.paymentLinksV2.confirm
   } else {
     return paths.paymentLinksV2.amount
@@ -40,6 +40,7 @@ function getNextPageUrl (productPrice, sessionAmount, reference) {
 
 function getPage (req, res, next) {
   const product = req.product
+  const { change } = req.query || {}
 
   const data = {
     productExternalId: product.externalId,
@@ -54,7 +55,7 @@ function getPage (req, res, next) {
 
   const sessionReferenceNumber = paymentLinkSession.getReference(req, product.externalId)
 
-  data.backLinkHref = getBackLinkUrl(sessionReferenceNumber, product)
+  data.backLinkHref = getBackLinkUrl(change, product)
 
   if (sessionReferenceNumber) {
     data.reference = sessionReferenceNumber
@@ -66,13 +67,11 @@ function getPage (req, res, next) {
 function postPage (req, res, next) {
   const paymentReference = lodash.get(req.body, PAYMENT_REFERENCE, '')
   const product = req.product
+  const { change } = req.query || {}
 
   const errors = validateReferenceFormValue(paymentReference, product.reference_label, res)
 
-  const sessionRefererence = paymentLinkSession.getReference(req, product.externalId)
-  const sessionAmount = paymentLinkSession.getAmount(req, product.externalId)
-
-  const backLinkHref = getBackLinkUrl(sessionRefererence, product)
+  const backLinkHref = getBackLinkUrl(change, product)
 
   const data = {
     productExternalId: product.externalId,
@@ -89,7 +88,7 @@ function postPage (req, res, next) {
 
   paymentLinkSession.setReference(req, product.externalId, paymentReference)
 
-  return res.redirect(replaceParamsInPath(getNextPageUrl(product.price, sessionAmount, paymentReference), product.externalId))
+  return res.redirect(replaceParamsInPath(getNextPageUrl(product.price, change, paymentReference), product.externalId))
 }
 
 module.exports = {
