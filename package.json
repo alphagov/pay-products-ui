@@ -76,7 +76,7 @@
     "correlation-id": "^4.0.0",
     "csrf": "3.1.x",
     "currency-formatter": "^1.5.9",
-    "express": "4.17.x",
+    "express": "4.18.x",
     "govuk-frontend": "^3.14.0",
     "i18n": "^0.14.2",
     "lodash": "4.17.x",
