@@ -130,7 +130,7 @@
     "sinon": "13.0.x",
     "@snyk/protect": "^1.912.x",
     "standard": "^14.3.4",
-    "supertest": "^6.2.2"
+    "supertest": "^6.2.3"
   },
   "snyk": true
 }
