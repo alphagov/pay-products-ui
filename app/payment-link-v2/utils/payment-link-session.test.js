@@ -91,11 +91,10 @@ describe('Payment link session utilities', () => {
     it('should set the amount and amountProvidedByQueryParams', () => {
       const req = {}
       paymentLinkSession.setAmount(req, productExternalId, amount, true)
-      
+
       expect(paymentLinkSession.getAmount(req, productExternalId)).to.equal(amount)
       expect(paymentLinkSession.getAmountProvidedByQueryParams(req, productExternalId)).to.equal(true)
     })
-
 
     it('should override existing amount', () => {
       const req = {

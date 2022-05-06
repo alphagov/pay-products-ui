@@ -12,7 +12,7 @@ const { deletePaymentLinkSession } = require('../payment-link-v2/utils/payment-l
 // Constants
 const errorMessagePath = 'error.internal' // This is the object notation to string in en.json
 
-module.exports = async function redirectToProduct(req, res) {
+module.exports = async function redirectToProduct (req, res) {
   const { serviceNamePath, productNamePath } = req.params
   try {
     const product = await productsClient.product.getByProductPath(serviceNamePath, productNamePath)

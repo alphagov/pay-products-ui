@@ -163,6 +163,30 @@ describe('Reference Page Controller', () => {
         sinon.assert.calledWith(res.redirect, '/pay/an-external-id/confirm')
       })
 
+      it('when an valid reference is entered and the amount was provided by query parameters, should redirect to the confirm page', () => {
+        req = {
+          correlationId: '123',
+          product,
+          body: {
+            'payment-reference': 'valid reference'
+          },
+          session: {}
+        }
+        req.session[product.externalId] = {
+          amount: 1000,
+          amountProvidedByQueryParams: true
+        }
+
+        res = {
+          redirect: sinon.spy()
+        }
+
+        controller.postPage(req, res)
+
+        sinon.assert.calledWith(mockPaymentLinkSession.setReference, req, product.externalId, 'valid reference')
+        sinon.assert.calledWith(res.redirect, '/pay/an-external-id/confirm')
+      })
+
       it('when reference is a potential card number, it should  ' +
       'redirect to the REFERENCE CONFIRM page', () => {
         req = {

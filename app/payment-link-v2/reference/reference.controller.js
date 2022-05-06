@@ -28,10 +28,10 @@ function validateReferenceFormValue (reference, referenceLabel, res) {
   return errors
 }
 
-function getNextPageUrl (productPrice, isEditing, reference) {
+function getNextPageUrl (productPrice, isEditing, reference, amountProvidedByQueryParams) {
   if (isAPotentialPan(reference)) {
     return paths.paymentLinksV2.referenceConfirm
-  } else if (productPrice || isEditing) {
+  } else if (productPrice || isEditing || amountProvidedByQueryParams) {
     return paths.paymentLinksV2.confirm
   } else {
     return paths.paymentLinksV2.amount
@@ -87,8 +87,10 @@ function postPage (req, res, next) {
   }
 
   paymentLinkSession.setReference(req, product.externalId, paymentReference)
+  const amountProvidedByQueryParams = paymentLinkSession.getAmountProvidedByQueryParams(req, product.externalId)
 
-  return res.redirect(replaceParamsInPath(getNextPageUrl(product.price, change, paymentReference), product.externalId))
+  const redirectUrl = getNextPageUrl(product.price, change, paymentReference, amountProvidedByQueryParams)
+  return res.redirect(replaceParamsInPath(redirectUrl, product.externalId))
 }
 
 module.exports = {

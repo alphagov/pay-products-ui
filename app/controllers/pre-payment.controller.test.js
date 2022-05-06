@@ -26,7 +26,7 @@ const productExternalId = 'product-external-id'
 const queryParamAmount = '1111'
 const queryParamReference = 'abcd'
 
-function createProduct(referenceEnabled, fixedPrice, newPaymentLinkJourney = true) {
+function createProduct (referenceEnabled, fixedPrice, newPaymentLinkJourney = true) {
   return new Product(productFixtures.validProductResponse({
     type: 'ADHOC',
     external_id: productExternalId,
@@ -234,6 +234,27 @@ describe('Pre payment controller', () => {
           expect(req).to.not.have.property('session')
 
           sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/amount` })
+        })
+      })
+      describe('Values have previously been loaded from query params and page is revisited', () => {
+        it('should render the start payment link page with continue to confirm page', () => {
+          const product = createProduct(true, 1000)
+          const req = {
+            product,
+            session: {
+              'product-external-id': {
+                reference: queryParamReference,
+                amount: queryParamAmount,
+                referenceProvidedByQueryParams: true,
+                amountProvidedByQueryParams: true
+              }
+            }
+          }
+          const res = {}
+
+          controller(req, res)
+
+          sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/confirm` })
         })
       })
     })
