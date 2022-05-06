@@ -63,37 +63,37 @@ describe('Confirm Page Controller', () => {
 
       it('then it should display the confirm page with the reference and amount from the session and ' +
         'set the back link to the amount page', () => {
-          req = {
-            correlationId: '123',
-            product,
-            service
+        req = {
+          correlationId: '123',
+          product,
+          service
+        }
+        res = {
+          locals: {
+            __p: sinon.stub()
           }
-          res = {
-            locals: {
-              __p: sinon.stub()
-            }
-          }
+        }
 
-          mockPaymentLinkSession.getReference.withArgs(req, product.externalId).returns('test invoice number')
-          mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns(1050)
+        mockPaymentLinkSession.getReference.withArgs(req, product.externalId).returns('test invoice number')
+        mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns(1050)
 
-          res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
+        res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
 
-          controller.getPage(req, res)
+        controller.getPage(req, res)
 
-          sinon.assert.calledWith(responseSpy, req, res, 'confirm/confirm')
+        sinon.assert.calledWith(responseSpy, req, res, 'confirm/confirm')
 
-          const pageData = mockResponses.response.args[0][3]
+        const pageData = mockResponses.response.args[0][3]
 
-          expect(pageData.productReferenceLabel).to.equal('invoice number')
-          expect(pageData.sessionReferenceNumber).to.equal('test invoice number')
-          expect(pageData.sessionAmount).to.equal(1050)
-          expect(pageData.amountAsPence).to.equal(1050)
-          expect(pageData.amountAsGbp).to.equal('£10.50')
-          expect(pageData.canChangeAmount).to.equal(true)
-          expect(pageData.canChangeReference).to.equal(true)
-          expect(pageData.backLinkHref).to.equal('/pay/an-external-id/amount')
-        })
+        expect(pageData.productReferenceLabel).to.equal('invoice number')
+        expect(pageData.sessionReferenceNumber).to.equal('test invoice number')
+        expect(pageData.sessionAmount).to.equal(1050)
+        expect(pageData.amountAsPence).to.equal(1050)
+        expect(pageData.amountAsGbp).to.equal('£10.50')
+        expect(pageData.canChangeAmount).to.equal(true)
+        expect(pageData.canChangeReference).to.equal(true)
+        expect(pageData.backLinkHref).to.equal('/pay/an-external-id/amount')
+      })
 
       it('when there is no amount in the session, then it should redirect to the start page', () => {
         req = {
@@ -118,26 +118,26 @@ describe('Confirm Page Controller', () => {
 
       it('when there is an amount in the session and there is no reference in the session, ' +
         'then it should redirect to the start page', () => {
-          req = {
-            correlationId: '123',
-            product,
-            service
+        req = {
+          correlationId: '123',
+          product,
+          service
+        }
+        res = {
+          redirect: sinon.stub(),
+          locals: {
+            __p: sinon.stub()
           }
-          res = {
-            redirect: sinon.stub(),
-            locals: {
-              __p: sinon.stub()
-            }
-          }
+        }
 
-          mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns(1000)
-          mockPaymentLinkSession.getReference.withArgs(req, product.externalId).returns(null)
+        mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns(1000)
+        mockPaymentLinkSession.getReference.withArgs(req, product.externalId).returns(null)
 
-          const next = sinon.spy()
-          controller.getPage(req, res, next)
+        const next = sinon.spy()
+        controller.getPage(req, res, next)
 
-          sinon.assert.calledWith(res.redirect, '/pay/an-external-id')
-        })
+        sinon.assert.calledWith(res.redirect, '/pay/an-external-id')
+      })
 
       describe('when the reference and amount were both set by query parameters', () => {
         it('should set canChangeReference and canChangeAmount to false and the back link to the start page', () => {
@@ -240,36 +240,36 @@ describe('Confirm Page Controller', () => {
 
       it('when there is a reference in a session, should set the amount to the `product.price` the ' +
         'back link to the reference page', () => {
-          req = {
-            correlationId: '123',
-            product,
-            service
+        req = {
+          correlationId: '123',
+          product,
+          service
+        }
+        res = {
+          locals: {
+            __p: sinon.stub()
           }
-          res = {
-            locals: {
-              __p: sinon.stub()
-            }
-          }
+        }
 
-          mockPaymentLinkSession.getReference.withArgs(req, product.externalId).returns('test invoice number')
+        mockPaymentLinkSession.getReference.withArgs(req, product.externalId).returns('test invoice number')
 
-          res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
+        res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
 
-          controller.getPage(req, res)
+        controller.getPage(req, res)
 
-          sinon.assert.calledWith(responseSpy, req, res, 'confirm/confirm')
+        sinon.assert.calledWith(responseSpy, req, res, 'confirm/confirm')
 
-          const pageData = mockResponses.response.args[0][3]
+        const pageData = mockResponses.response.args[0][3]
 
-          expect(pageData.productReferenceLabel).to.equal('invoice number')
-          expect(pageData.sessionReferenceNumber).to.equal('test invoice number')
-          expect(pageData.sessionAmount).to.equal(undefined)
-          expect(pageData.amountAsPence).to.equal(1000)
-          expect(pageData.amountAsGbp).to.equal('£10.00')
-          expect(pageData.canChangeAmount).to.equal(false)
-          expect(pageData.canChangeReference).to.equal(true)
-          expect(pageData.backLinkHref).to.equal('/pay/an-external-id/reference')
-        })
+        expect(pageData.productReferenceLabel).to.equal('invoice number')
+        expect(pageData.sessionReferenceNumber).to.equal('test invoice number')
+        expect(pageData.sessionAmount).to.equal(undefined)
+        expect(pageData.amountAsPence).to.equal(1000)
+        expect(pageData.amountAsGbp).to.equal('£10.00')
+        expect(pageData.canChangeAmount).to.equal(false)
+        expect(pageData.canChangeReference).to.equal(true)
+        expect(pageData.backLinkHref).to.equal('/pay/an-external-id/reference')
+      })
 
       it('when there is no reference in the session then it should redirect to the start page', () => {
         req = {
@@ -302,36 +302,36 @@ describe('Confirm Page Controller', () => {
 
       it('then it should update the page data so there is NO reference and display ' +
         'the confirm page', () => {
-          req = {
-            correlationId: '123',
-            product,
-            service
+        req = {
+          correlationId: '123',
+          product,
+          service
+        }
+        res = {
+          locals: {
+            __p: sinon.stub()
           }
-          res = {
-            locals: {
-              __p: sinon.stub()
-            }
-          }
+        }
 
-          mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns('1050')
+        mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns('1050')
 
-          res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
+        res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
 
-          controller.getPage(req, res)
+        controller.getPage(req, res)
 
-          sinon.assert.calledWith(responseSpy, req, res, 'confirm/confirm')
+        sinon.assert.calledWith(responseSpy, req, res, 'confirm/confirm')
 
-          const pageData = mockResponses.response.args[0][3]
+        const pageData = mockResponses.response.args[0][3]
 
-          expect(pageData.productReferenceLabel).to.equal(undefined)
-          expect(pageData.sessionReferenceNumber).to.equal(undefined)
-          expect(pageData.sessionAmount).to.equal('1050')
-          expect(pageData.amountAsPence).to.equal('1050')
-          expect(pageData.amountAsGbp).to.equal('£10.50')
-          expect(pageData.canChangeAmount).to.equal(true)
-          expect(pageData.canChangeReference).to.equal(false)
-          expect(pageData.backLinkHref).to.equal('/pay/an-external-id/amount')
-        })
+        expect(pageData.productReferenceLabel).to.equal(undefined)
+        expect(pageData.sessionReferenceNumber).to.equal(undefined)
+        expect(pageData.sessionAmount).to.equal('1050')
+        expect(pageData.amountAsPence).to.equal('1050')
+        expect(pageData.amountAsGbp).to.equal('£10.50')
+        expect(pageData.canChangeAmount).to.equal(true)
+        expect(pageData.canChangeReference).to.equal(false)
+        expect(pageData.backLinkHref).to.equal('/pay/an-external-id/amount')
+      })
 
       it('when there is no amount in the session, then it should redirect to the start page', () => {
         req = {
@@ -364,33 +364,33 @@ describe('Confirm Page Controller', () => {
 
       it('then it should display the confirm page with canChangeReference and canChangeAmount to ' +
         'false and the back link set to the start page', () => {
-          req = {
-            correlationId: '123',
-            product,
-            service
+        req = {
+          correlationId: '123',
+          product,
+          service
+        }
+        res = {
+          locals: {
+            __p: sinon.stub()
           }
-          res = {
-            locals: {
-              __p: sinon.stub()
-            }
-          }
+        }
 
-          res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
+        res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
 
-          controller.getPage(req, res)
+        controller.getPage(req, res)
 
-          sinon.assert.calledWith(responseSpy, req, res, 'confirm/confirm')
+        sinon.assert.calledWith(responseSpy, req, res, 'confirm/confirm')
 
-          const pageData = mockResponses.response.args[0][3]
+        const pageData = mockResponses.response.args[0][3]
 
-          expect(pageData.productReferenceLabel).to.equal(undefined)
-          expect(pageData.sessionReferenceNumber).to.equal(undefined)
-          expect(pageData.amountAsPence).to.equal(1000)
-          expect(pageData.amountAsGbp).to.equal('£10.00')
-          expect(pageData.canChangeAmount).to.equal(false)
-          expect(pageData.canChangeReference).to.equal(false)
-          expect(pageData.backLinkHref).to.equal('/pay/an-external-id')
-        })
+        expect(pageData.productReferenceLabel).to.equal(undefined)
+        expect(pageData.sessionReferenceNumber).to.equal(undefined)
+        expect(pageData.amountAsPence).to.equal(1000)
+        expect(pageData.amountAsGbp).to.equal('£10.00')
+        expect(pageData.canChangeAmount).to.equal(false)
+        expect(pageData.canChangeReference).to.equal(false)
+        expect(pageData.backLinkHref).to.equal('/pay/an-external-id')
+      })
     })
 
     describe('when product.recaptcha=true', () => {
@@ -458,37 +458,37 @@ describe('Confirm Page Controller', () => {
         'ignore the hidden reference form field and ' +
         'use the amount from the hidden amount form field and ' +
         'redirect to the next_url ', async () => {
-          req = {
-            correlationId: '123',
-            product,
-            body: {
-              amount: '2000'
+        req = {
+          correlationId: '123',
+          product,
+          body: {
+            amount: '2000'
+          }
+        }
+
+        res = {
+          redirect: sinon.stub()
+        }
+
+        mockProductsClient.payment.create.resolves({
+          links: {
+            next: {
+              href: 'https://test.com'
             }
           }
-
-          res = {
-            redirect: sinon.stub()
-          }
-
-          mockProductsClient.payment.create.resolves({
-            links: {
-              next: {
-                href: 'https://test.com'
-              }
-            }
-          })
-
-          await controller.postPage(req, res)
-
-          sinon.assert.calledWith(
-            mockProductsClient.payment.create,
-            'an-external-id',
-            2000,
-            null
-          )
-          sinon.assert.calledWith(mockPaymentLinkSession.deletePaymentLinkSession, req, product.externalId)
-          sinon.assert.calledWith(res.redirect, 303, 'https://test.com')
         })
+
+        await controller.postPage(req, res)
+
+        sinon.assert.calledWith(
+          mockProductsClient.payment.create,
+          'an-external-id',
+          2000,
+          null
+        )
+        sinon.assert.calledWith(mockPaymentLinkSession.deletePaymentLinkSession, req, product.externalId)
+        sinon.assert.calledWith(res.redirect, 303, 'https://test.com')
+      })
 
       it('when creating a payment causes an error, should call next() with an error', async () => {
         req = {
@@ -532,37 +532,37 @@ describe('Confirm Page Controller', () => {
         'using the `hidden reference form field` and ' +
         'use the amount from the `hidden amount form field` and ' +
         'redirect to the next_url ', async () => {
-          req = {
-            correlationId: '123',
-            product,
-            body: {
-              'reference-value': 'a-invoice-number',
-              amount: '2000'
+        req = {
+          correlationId: '123',
+          product,
+          body: {
+            'reference-value': 'a-invoice-number',
+            amount: '2000'
+          }
+        }
+
+        res = {
+          redirect: sinon.stub()
+        }
+
+        mockProductsClient.payment.create.resolves({
+          links: {
+            next: {
+              href: 'https://test.com'
             }
           }
-
-          res = {
-            redirect: sinon.stub()
-          }
-
-          mockProductsClient.payment.create.resolves({
-            links: {
-              next: {
-                href: 'https://test.com'
-              }
-            }
-          })
-
-          await controller.postPage(req, res)
-
-          sinon.assert.calledWith(
-            mockProductsClient.payment.create,
-            'an-external-id',
-            2000,
-            'a-invoice-number'
-          )
-          sinon.assert.calledWith(res.redirect, 303, 'https://test.com')
         })
+
+        await controller.postPage(req, res)
+
+        sinon.assert.calledWith(
+          mockProductsClient.payment.create,
+          'an-external-id',
+          2000,
+          'a-invoice-number'
+        )
+        sinon.assert.calledWith(res.redirect, 303, 'https://test.com')
+      })
     })
 
     describe('when product.requireCaptcha=false, reference_enabled=false, product.price=1000, ', () => {
@@ -577,35 +577,35 @@ describe('Confirm Page Controller', () => {
         'use the product.price and ' +
         'ignore `hidden amount form field` and ' +
         'redirect to the next_url ', async () => {
-          req = {
-            correlationId: '123',
-            product,
-            body: {
-              amount: '2000'
+        req = {
+          correlationId: '123',
+          product,
+          body: {
+            amount: '2000'
+          }
+        }
+
+        res = {
+          redirect: sinon.stub()
+        }
+
+        mockProductsClient.payment.create.resolves({
+          links: {
+            next: {
+              href: 'https://test.com'
             }
           }
-
-          res = {
-            redirect: sinon.stub()
-          }
-
-          mockProductsClient.payment.create.resolves({
-            links: {
-              next: {
-                href: 'https://test.com'
-              }
-            }
-          })
-
-          await controller.postPage(req, res)
-
-          sinon.assert.calledWith(
-            mockProductsClient.payment.create,
-            'an-external-id',
-            1000
-          )
-          sinon.assert.calledWith(res.redirect, 303, 'https://test.com')
         })
+
+        await controller.postPage(req, res)
+
+        sinon.assert.calledWith(
+          mockProductsClient.payment.create,
+          'an-external-id',
+          1000
+        )
+        sinon.assert.calledWith(res.redirect, 303, 'https://test.com')
+      })
     })
 
     describe('when product.requireCaptcha=false, reference_enabled=true, product.price=1000, ', () => {
@@ -620,37 +620,37 @@ describe('Confirm Page Controller', () => {
         'use the product.price and ' +
         'ignore `hidden amount form field` and ' +
         'redirect to the next_url', async () => {
-          req = {
-            correlationId: '123',
-            product,
-            body: {
-              'reference-value': 'a-invoice-number',
-              amount: '2000'
+        req = {
+          correlationId: '123',
+          product,
+          body: {
+            'reference-value': 'a-invoice-number',
+            amount: '2000'
+          }
+        }
+
+        res = {
+          redirect: sinon.stub()
+        }
+
+        mockProductsClient.payment.create.resolves({
+          links: {
+            next: {
+              href: 'https://test.com'
             }
           }
-
-          res = {
-            redirect: sinon.stub()
-          }
-
-          mockProductsClient.payment.create.resolves({
-            links: {
-              next: {
-                href: 'https://test.com'
-              }
-            }
-          })
-
-          await controller.postPage(req, res)
-
-          sinon.assert.calledWith(
-            mockProductsClient.payment.create,
-            'an-external-id',
-            1000,
-            'a-invoice-number'
-          )
-          sinon.assert.calledWith(res.redirect, 303, 'https://test.com')
         })
+
+        await controller.postPage(req, res)
+
+        sinon.assert.calledWith(
+          mockProductsClient.payment.create,
+          'an-external-id',
+          1000,
+          'a-invoice-number'
+        )
+        sinon.assert.calledWith(res.redirect, 303, 'https://test.com')
+      })
     })
 
     describe('when product.requireCaptcha=true, reference_enabled=true, product.price=1000', () => {
@@ -664,125 +664,125 @@ describe('Confirm Page Controller', () => {
 
       it('when a successful captcha is entered, should redirect to the ' +
         'next_url', async () => {
-          req = {
-            correlationId: '123',
-            product,
-            body: {
-              'reference-value': 'a-invoice-number',
-              amount: '1000',
-              'g-recaptcha-response': 'recaptcha-test-token'
+        req = {
+          correlationId: '123',
+          product,
+          body: {
+            'reference-value': 'a-invoice-number',
+            amount: '1000',
+            'g-recaptcha-response': 'recaptcha-test-token'
+          }
+        }
+
+        res = {
+          locals: {
+            __p: sinon.stub()
+          },
+          redirect: sinon.stub()
+        }
+
+        mockCaptcha.verifyCAPTCHAToken.withArgs('recaptcha-test-token').resolves(true)
+
+        mockProductsClient.payment.create.resolves({
+          links: {
+            next: {
+              href: 'https://test.com'
             }
           }
-
-          res = {
-            locals: {
-              __p: sinon.stub()
-            },
-            redirect: sinon.stub()
-          }
-
-          mockCaptcha.verifyCAPTCHAToken.withArgs('recaptcha-test-token').resolves(true)
-
-          mockProductsClient.payment.create.resolves({
-            links: {
-              next: {
-                href: 'https://test.com'
-              }
-            }
-          })
-
-          await controller.postPage(req, res)
-
-          sinon.assert.calledWith(mockCaptcha.verifyCAPTCHAToken, 'recaptcha-test-token')
-
-          sinon.assert.calledWith(
-            mockProductsClient.payment.create,
-            'an-external-id',
-            1000,
-            'a-invoice-number'
-          )
-          sinon.assert.calledWith(res.redirect, 303, 'https://test.com')
         })
+
+        await controller.postPage(req, res)
+
+        sinon.assert.calledWith(mockCaptcha.verifyCAPTCHAToken, 'recaptcha-test-token')
+
+        sinon.assert.calledWith(
+          mockProductsClient.payment.create,
+          'an-external-id',
+          1000,
+          'a-invoice-number'
+        )
+        sinon.assert.calledWith(res.redirect, 303, 'https://test.com')
+      })
 
       it('when a failed captcha is entered, it should display an error and ' +
         'redirect to the confirm page and show the values from the hidden form fields to display ' +
         'the page so that it prevents session interference', async () => {
-          req = {
-            correlationId: '123',
-            product,
-            body: {
-              'reference-value': 'a-invoice-number',
-              amount: '2000',
-              'g-recaptcha-response': 'recaptcha-test-token'
-            }
+        req = {
+          correlationId: '123',
+          product,
+          body: {
+            'reference-value': 'a-invoice-number',
+            amount: '2000',
+            'g-recaptcha-response': 'recaptcha-test-token'
           }
+        }
 
-          res = {
-            locals: {
-              __p: sinon.stub()
-            }
+        res = {
+          locals: {
+            __p: sinon.stub()
           }
+        }
 
-          mockPaymentLinkSession.getReference.withArgs(req, product.externalId).returns('test invoice number')
+        mockPaymentLinkSession.getReference.withArgs(req, product.externalId).returns('test invoice number')
 
-          mockCaptcha.verifyCAPTCHAToken.resolves(false)
+        mockCaptcha.verifyCAPTCHAToken.resolves(false)
 
-          res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
-          res.locals.__p.withArgs('paymentLinksV2.fieldValidation.youMustSelectIAmNotARobot')
-            .returns('You failed the captcha challenge.  Please try again.')
+        res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
+        res.locals.__p.withArgs('paymentLinksV2.fieldValidation.youMustSelectIAmNotARobot')
+          .returns('You failed the captcha challenge.  Please try again.')
 
-          await controller.postPage(req, res)
+        await controller.postPage(req, res)
 
-          sinon.assert.calledWith(responseSpy, req, res, 'confirm/confirm')
+        sinon.assert.calledWith(responseSpy, req, res, 'confirm/confirm')
 
-          const pageData = mockResponses.response.args[0][3]
+        const pageData = mockResponses.response.args[0][3]
 
-          expect(pageData.productReferenceLabel).to.equal('invoice number')
-          expect(pageData.sessionReferenceNumber).to.equal('test invoice number')
-          expect(pageData.sessionAmount).to.equal(undefined)
-          expect(pageData.amountAsPence).to.equal(1000)
-          expect(pageData.amountAsGbp).to.equal('£10.00')
-          expect(pageData.requireCaptcha).to.equal(true)
+        expect(pageData.productReferenceLabel).to.equal('invoice number')
+        expect(pageData.sessionReferenceNumber).to.equal('test invoice number')
+        expect(pageData.sessionAmount).to.equal(undefined)
+        expect(pageData.amountAsPence).to.equal(1000)
+        expect(pageData.amountAsGbp).to.equal('£10.00')
+        expect(pageData.requireCaptcha).to.equal(true)
 
-          expect(pageData.errors).to.contain({
-            recaptcha: 'You failed the captcha challenge.  Please try again.'
-          })
+        expect(pageData.errors).to.contain({
+          recaptcha: 'You failed the captcha challenge.  Please try again.'
         })
+      })
 
       it('when the captcha call fails, it should display an error and ' +
         'redirect to the confirm page', async () => {
-          req = {
-            correlationId: '123',
-            product,
-            body: {
-              'reference-value': 'a-invoice-number',
-              amount: '1000',
-              'g-recaptcha-response': 'recaptcha-test-token'
-            }
+        req = {
+          correlationId: '123',
+          product,
+          body: {
+            'reference-value': 'a-invoice-number',
+            amount: '1000',
+            'g-recaptcha-response': 'recaptcha-test-token'
           }
+        }
 
-          res = {
-            locals: {
-              __p: sinon.stub()
-            }
+        res = {
+          locals: {
+            __p: sinon.stub()
           }
+        }
 
-          mockCaptcha.verifyCAPTCHAToken.rejects()
+        mockCaptcha.verifyCAPTCHAToken.rejects()
 
-          res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
-          res.locals.__p.withArgs('paymentLinksV2.fieldValidation.youMustSelectIAmNotARobot')
-            .returns('There was an issue with the recaptcha.  Please try again.')
+        res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
+        res.locals.__p.withArgs('paymentLinksV2.fieldValidation.youMustSelectIAmNotARobot')
+          .returns('There was an issue with the recaptcha.  Please try again.')
 
-          await controller.postPage(req, res)
+        await controller.postPage(req, res)
 
-          sinon.assert.calledWith(responseSpy, req, res, 'confirm/confirm')
+        sinon.assert.calledWith(responseSpy, req, res, 'confirm/confirm')
 
-          const pageData = mockResponses.response.args[0][3]
+        const pageData = mockResponses.response.args[0][3]
 
-          expect(pageData.errors).to.contain({
-            recaptcha: 'There was an issue with the recaptcha.  Please try again.'
-          })
+        expect(pageData.errors).to.contain({
+          recaptcha: 'There was an issue with the recaptcha.  Please try again.'
         })
+      })
     })
   })
 })

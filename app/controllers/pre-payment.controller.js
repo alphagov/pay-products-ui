@@ -13,11 +13,11 @@ const { validateReference, validateAmount } = require('../utils/validation/form-
 // Constants
 const errorMessagePath = 'error.internal' // This is the object notation to string in en.json
 
-function getContinueUrlForNewPaymentLinkJourney (product, validReferenceProvided, validAmountProvided) {
-  if (product.reference_enabled && !validReferenceProvided) {
+function getContinueUrlForNewPaymentLinkJourney (product, referenceProvidedByQueryParams, amountProvidedByQueryParams) {
+  if (product.reference_enabled && !referenceProvidedByQueryParams) {
     return replaceParamsInPath(paymentLinksV2.reference, product.externalId)
   }
-  if (!product.price && !validAmountProvided) {
+  if (!product.price && !amountProvidedByQueryParams) {
     return replaceParamsInPath(paymentLinksV2.amount, product.externalId)
   }
   return replaceParamsInPath(paymentLinksV2.confirm, product.externalId)
@@ -26,7 +26,7 @@ function getContinueUrlForNewPaymentLinkJourney (product, validReferenceProvided
 module.exports = (req, res) => {
   const product = req.product
   const correlationId = req.correlationId
-  const { reference, amount} = req.query || {}
+  const { reference, amount } = req.query || {}
 
   logger.info(`[${correlationId}] routing product of type ${product.type}`)
   switch (product.type) {
@@ -39,16 +39,15 @@ module.exports = (req, res) => {
         if (reference || amount) {
           paymentLinkSession.deletePaymentLinkSession(req, product.externalId)
         }
-        let validReferenceProvided, validAmountProvided
         if (product.reference_enabled && reference && validateReference(reference).valid) {
           paymentLinkSession.setReference(req, product.externalId, reference, true)
-          validReferenceProvided = true
         }
         if (!product.price && amount && validateAmount(amount).valid) {
           paymentLinkSession.setAmount(req, product.externalId, amount, true)
-          validAmountProvided = true
         }
-        const continueUrl = getContinueUrlForNewPaymentLinkJourney(product, validReferenceProvided, validAmountProvided)
+        const referenceProvidedByQueryParams = paymentLinkSession.getReferenceProvidedByQueryParams(req, product.externalId)
+        const amountProvidedByQueryParams = paymentLinkSession.getAmountProvidedByQueryParams(req, product.externalId)
+        const continueUrl = getContinueUrlForNewPaymentLinkJourney(product, referenceProvidedByQueryParams, amountProvidedByQueryParams)
         return response(req, res, 'start/start', {
           continueUrl
         })

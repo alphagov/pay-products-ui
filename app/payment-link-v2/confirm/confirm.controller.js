@@ -14,7 +14,7 @@ const HIDDEN_FORM_FIELD_ID_AMOUNT = 'amount'
 const GOOGLE_RECAPTCHA_FORM_NAME = 'g-recaptcha-response'
 const ERROR_KEY_RECAPTCHA = 'recaptcha'
 
-function getBackLinkUrl(product, referenceProvidedByQueryParams, amountProvidedByQueryParams) {
+function getBackLinkUrl (product, referenceProvidedByQueryParams, amountProvidedByQueryParams) {
   if (!product.price && !amountProvidedByQueryParams) {
     return replaceParamsInPath(paths.paymentLinksV2.amount, product.externalId)
   } else if (product.reference_enabled && !referenceProvidedByQueryParams) {
