@@ -50,35 +50,39 @@ describe('Reference and reference confirm page', () => {
       })
 
       it('when an reference is entered that looks like a card number, should go to the `reference confirm` page', () => {
+        Cypress.Cookies.preserveOnce('session')
         cy.get('[data-cy=input]')
           .clear()
           .type('4444333322221111', { delay: 0 })
         cy.get('[data-cy=button]').click()
 
-        cy.title().should('contain', 'Are you sure this is a reference number?')
+        cy.title().should('contain', 'Confirm your reference number - A Product Name')
       })
     })
 
     describe('Reference confirm page', () => {
       it('should display the `reference confirm` page correctly', () => {
         Cypress.Cookies.preserveOnce('session')
-        cy.get('[data-cy=product-name]').should('contain', 'A Product Name')
-        cy.get('[data-cy=description]').should('contain', 'Product description')
-        cy.get('[data-cy=reference-label]').should('contain', 'Invoice number')
-        cy.get('[data-cy=reference-hint]').should('contain', 'Invoice number hint')
+        cy.get('[data-cy=back-link]').should('have.attr', 'href', '/pay/a-product-id/reference')
         cy.get('[data-cy=reference]').should('contain', '4444333322221111')
-
-        cy.get('[data-cy=confirm-button]')
-          .should('contain', 'Confirm and continue')
-          .should('have.attr', 'href', '/pay/a-product-id/amount')
-
-        cy.get('[data-cy=edit-button]')
-          .should('contain', 'Edit')
-          .should('have.attr', 'href', '/pay/a-product-id/reference')
+        cy.get('[data-cy=button]').should('exist')
       })
 
-      it('when `click and confirm` is clicked, should then go to the amount page', () => {
-        cy.get('[data-cy=confirm-button]').click()
+      it('when no radio option is selected and the `Continue` button is clicked, should display an error', () => {
+        Cypress.Cookies.preserveOnce('session')
+        cy.get('[data-cy=button]').click()
+
+        cy.get('[data-cy=error-summary] a')
+          .should('contain', 'You must choose an option')
+          .should('have.attr', 'href', '#confirm-reference')
+
+        cy.get('[data-cy=error-message]').should('contain', 'You must choose an option')
+      })
+
+      it('when `Yes` is selected and `Continue` is clicked, should then go to the amount page', () => {
+        Cypress.Cookies.preserveOnce('session')
+        cy.get('[data-cy=yes-radio]').click()
+        cy.get('[data-cy=button]').click()
 
         cy.title().should('contain', 'Enter amount to pay - A Product Name')
       })

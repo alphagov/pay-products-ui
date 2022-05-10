@@ -30,7 +30,7 @@ function validateReferenceFormValue (reference, referenceLabel, res) {
 
 function getNextPageUrl (productPrice, isEditing, reference, amountProvidedByQueryParams) {
   if (isAPotentialPan(reference)) {
-    return paths.paymentLinksV2.referenceConfirm
+    return paths.paymentLinksV2.referenceConfirm + (isEditing ? '?change=true' : '')
   } else if (productPrice || isEditing || amountProvidedByQueryParams) {
     return paths.paymentLinksV2.confirm
   } else {

@@ -71,6 +71,7 @@ module.exports.bind = function (app) {
   app.post(paymentLinksV2.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceCtrl.postPage)
 
   app.get(paymentLinksV2.referenceConfirm, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceConfirmCtrl.getPage)
+  app.post(paymentLinksV2.referenceConfirm, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceConfirmCtrl.postPage)
 
   app.get(paymentLinksV2.amount, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, amountCtrl.getPage)
   app.post(paymentLinksV2.amount, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, amountCtrl.postPage)
