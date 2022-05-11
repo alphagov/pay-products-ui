@@ -59,27 +59,32 @@
     "potentialPANInReference": "Check that you’ve entered the number correctly before making the payment. Do not enter your debit or credit card number."
   },
   "paymentLinksV2": {
+    "common": {
+      "back": "Back"
+    },
     "start": {
       "title": "Make a payment"
     },
     "reference": {
-			"pleaseEnterYour": "Enter your"
-		},
-		"referenceConfirm": {
-			"areYouSureThisIsAReferenceNumber": "Are you sure this is a reference number?",
-			"checkYouveEnteredTheNumberCorrectly": "Check that you've entered the number correctly before making the payment. Do not enter your debit or credit card number.",
-			"confirmAndContinue": "Confirm and continue",
-			"edit": "Edit"
-		},
+      "pleaseEnterYour": "Enter your"
+    },
+    "referenceConfirm": {
+      "confirmYourReferenceNumber": "Confirm your reference number",
+      "checkYouveEnteredTheNumberCorrectly": "Check that you've entered the number correctly before making the payment. Do not enter your debit or credit card number.",
+      "yesThisIsTheCorrectReferenceNumber": "Yes, this is the correct reference number",
+      "noItIsIncorrect": "No, it is not correct",
+      "continue": "Continue",
+      "youMustChooseAnOption": "You must choose an option"
+    },
     "amount": {
-			"enterAmountToPay": "Enter amount to pay"
-		},
+      "enterAmountToPay": "Enter amount to pay"
+    },
     "confirm": {
-			"checkYourDetails": "Check your details",
+      "checkYourDetails": "Check your details",
       "totalToPay": "Total to pay",
       "change": "Change",
       "continueToPayment": "Continue to payment"
-		},
+    },
     "fieldValidation": {
       "enterAnAmountInPounds": "Enter an amount of money to pay",
       "enterAnAmountInTheCorrectFormat": "Enter an amount in pounds and pence using digits and a decimal point, like 123.45 or 156.00",

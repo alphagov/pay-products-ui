@@ -2,51 +2,84 @@
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "../../views/macros/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
-  {{ __p('paymentLinksV2.referenceConfirm.areYouSureThisIsAReferenceNumber') }}  - {{ productName }}
+  {{ __p('paymentLinksV2.referenceConfirm.confirmYourReferenceNumber') }}  - {{ productName }}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: __p('paymentLinksV2.common.back'),
+    href: backLinkHref,
+    attributes: {
+      'data-cy': 'back-link'
+    }
+  }) }}
 {% endblock %}
 
 {% block contentBody %}
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <h1 class="govuk-heading-l" data-cy="product-name">{{ productName }}</h1>  
+    {% set hintHtml %}
+      <p class="govuk-body">{{ __p('paymentLinksV2.referenceConfirm.checkYouveEnteredTheNumberCorrectly') }}</p>
 
-    {% if productDescription %}
-      <p class="govuk-body" data-cy="description">{{ productDescription }}</p>
-    {% endif %}
+      {{ govukInsetText({
+        text: reference,
+        classes: "govuk-!-font-weight-bold",
+        attributes: { 'data-cy': 'reference' }
+      }) }} 
+    {% endset %}
 
-    <h2 class="govuk-heading-m" data-cy="reference-label">{{ paymentReferenceLabel | capitalize }}</h2>
-
-    {% if paymentReferenceHint %}
-      <p class="govuk-hint" data-cy="reference-hint">{{ paymentReferenceHint }}</p>    
-    {% endif %}
-
-    {{ govukInsetText({
-      text: reference,
-      classes: "govuk-!-font-weight-bold",
-      attributes: { 'data-cy': 'reference' }
+    {{ errorSummary ({
+      errors: errors,
+      hrefs: {
+        'confirm-reference': '#confirm-reference'
+      }
     }) }}
 
+    {% set radioErrorMessage = { text: errors['confirm-reference'], attributes: { 'data-cy': 'error-message'} } if errors['confirm-reference'] %}  
 
-    <h2 class="govuk-heading-m">{{ __p('paymentLinksV2.referenceConfirm.areYouSureThisIsAReferenceNumber') }}</h2>
+    <form method="post">
+      <input id="csrf" name="csrfToken" type="hidden" value="{{ csrf }}"/>
 
-    <p class="govuk-body">{{ __p('paymentLinksV2.referenceConfirm.checkYouveEnteredTheNumberCorrectly') }}</p>
+      {{ govukRadios({
+        idPrefix: "confirm-reference",
+        name: "confirm-reference",
+        fieldset: {
+        legend: {
+          isPageHeading: true,
+          text: __p('paymentLinksV2.referenceConfirm.confirmYourReferenceNumber'),
+          classes: "govuk-fieldset__legend--l"
+          }
+        },
+        hint: {
+          html: hintHtml
+        },
+        items: [
+          {
+            value: "yes",
+            text: __p('paymentLinksV2.referenceConfirm.yesThisIsTheCorrectReferenceNumber'),
+            attributes: {'data-cy': 'yes-radio'}
+          },
+          {
+            value: "no",
+            text: __p('paymentLinksV2.referenceConfirm.noItIsIncorrect'),
+            attributes: {'data-cy': 'no-radio'}
+          }
+        ],
+        errorMessage: radioErrorMessage
+        })
+      }}
 
-    <div class="govuk-button-group">
       {{ govukButton({
-        text: __p('paymentLinksV2.referenceConfirm.confirmAndContinue'),
-        href: confirmAndContinuePageUrl,
-        attributes: { 'data-cy': 'confirm-button' }
-      }) }}
-
-      {{ govukButton({
-        text: __p('paymentLinksV2.referenceConfirm.edit'),
-        href: referencePageUrl,
-        classes: 'govuk-button--secondary',
-        attributes: { 'data-cy': 'edit-button' }
-      }) }}
-    </div>
+        text: __p('buttons.continue'),
+        attributes: {
+          'data-cy': 'button'
+        }
+      }) }} 
+    </form>
   </div>  
 </div>
 {% endblock %}
