@@ -102,7 +102,7 @@
     "cheerio": "^1.0.0-rc.10",
     "chokidar-cli": "latest",
     "cypress": "^9.6.1",
-    "dotenv": "^16.0.0",
+    "dotenv": "^16.0.1",
     "envfile": "^5.2.0",
     "eslint": "8.15.x",
     "grunt": "1.5.x",
