@@ -69,12 +69,12 @@
       "pleaseEnterYour": "TODO convert to Welsh - Enter your"
     },
     "referenceConfirm": {
-      "confirmYourReferenceNumber": "TODO convert to Welsh - Confirm your reference number",
+      "confirmYourReference": "TODO convert to Welsh - Confirm your %s",
 			"checkYouveEnteredTheNumberCorrectly": "TODO convert to Welsh - Check that you've entered the number correctly before making the payment. Do not enter your debit or credit card number.",
 			"yesThisIsTheCorrectReferenceNumber": "TODO convert to Welsh - Yes, this is the correct reference number",
 			"noItIsIncorrect": "TODO convert to Welsh - No, it is not correct",
 			"continue": "TODO convert to Welsh - Continue",
-			"youMustChooseAnOption": "TODO convert to Welsh - You must choose an option"
+			"selectYesIfYourReferenceIsCorrect": "TODO convert to Welsh - Select yes if your %s is correct"
     },
     "amount": {
       "enterAmountToPay": "TODO convert to Welsh - Enter amount to pay"

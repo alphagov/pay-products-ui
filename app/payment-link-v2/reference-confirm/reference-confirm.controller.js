@@ -20,11 +20,11 @@ function getNextPageUrl (productPrice, isEditing, confirmReference, amountProvid
   }
 }
 
-function validateConfirmReferenceFormValue (confirmReference, res) {
+function validateConfirmReferenceFormValue (confirmReference, referenceLabel, res) {
   const errors = {}
 
   if (!confirmReference) {
-    errors[CONFIRM_REFERENCE] = res.locals.__p('paymentLinksV2.referenceConfirm.youMustChooseAnOption')
+    errors[CONFIRM_REFERENCE] = res.locals.__p('paymentLinksV2.referenceConfirm.selectYesIfYourReferenceIsCorrect').replace('%s', referenceLabel)
   }
 
   return errors
@@ -33,22 +33,24 @@ function validateConfirmReferenceFormValue (confirmReference, res) {
 function getPage (req, res, next) {
   const product = req.product
 
+  const sessionReferenceNumber = paymentLinkSession.getReference(req, product.externalId)
+
   if (!product.reference_enabled) {
     return next(new NotFoundError('Attempted to access reference confirm page with a product that auto-generates references.'))
+  } else if (!sessionReferenceNumber) {
+    return next(new NotFoundError('Attempted to access reference confirm page without a reference in the session.'))
   }
 
+  const heading = res.locals.__p('paymentLinksV2.referenceConfirm.confirmYourReference').replace('%s', product.reference_label)
+
   const data = {
+    heading,
     productExternalId: product.externalId,
     productName: product.name,
     productDescription: product.description,
     paymentReferenceLabel: product.reference_label,
-    paymentReferenceHint: product.reference_hint
-  }
-
-  const sessionReferenceNumber = paymentLinkSession.getReference(req, product.externalId)
-
-  if (sessionReferenceNumber) {
-    data.reference = sessionReferenceNumber
+    paymentReferenceHint: product.reference_hint,
+    reference: sessionReferenceNumber
   }
 
   const backLinkHref = replaceParamsInPath(paths.paymentLinksV2.reference, product.externalId)
@@ -62,7 +64,7 @@ function postPage (req, res, next) {
   const product = req.product
   const { change } = req.query || {}
 
-  const errors = validateConfirmReferenceFormValue(confirmReference, res)
+  const errors = validateConfirmReferenceFormValue(confirmReference, product.reference_label, res)
 
   const backLinkHref = replaceParamsInPath(paths.paymentLinksV2.reference, product.externalId)
 

@@ -6,7 +6,7 @@
 {% from "../../views/macros/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
-  {{ __p('paymentLinksV2.referenceConfirm.confirmYourReferenceNumber') }}  - {{ productName }}
+  {{ heading }}  - {{ productName }}
 {% endblock %}
 
 {% block beforeContent %}
@@ -50,7 +50,7 @@
         fieldset: {
         legend: {
           isPageHeading: true,
-          text: __p('paymentLinksV2.referenceConfirm.confirmYourReferenceNumber'),
+          text: heading,
           classes: "govuk-fieldset__legend--l"
           }
         },
