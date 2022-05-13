@@ -51,15 +51,70 @@ describe('Reference Confirm Page Controller', () => {
           service
         }
 
-        res = {}
+        res = {
+          locals: {
+            __p: sinon.stub()
+          }
+        }
 
         mockPaymentLinkSession.getReference.withArgs(req, product.externalId).returns('reference test value')
+        res.locals.__p.withArgs('paymentLinksV2.referenceConfirm.confirmYourReference').returns('Confirm your %s')
+
         controller.getPage(req, res)
 
         sinon.assert.calledWith(responseSpy, req, res, 'reference-confirm/reference-confirm')
 
         const pageData = mockResponses.response.args[0][3]
         expect(pageData.reference).to.equal('reference test value')
+      })
+
+      it('when the reference is in the session, then it should display the REFERENCE CONFIRM page ' +
+        'and set the heading correctly to include the reference label', () => {
+        req = {
+          correlationId: '123',
+          product,
+          service
+        }
+
+        res = {
+          locals: {
+            __p: sinon.stub()
+          }
+        }
+
+        mockPaymentLinkSession.getReference.withArgs(req, product.externalId).returns('reference test value')
+        res.locals.__p.withArgs('paymentLinksV2.referenceConfirm.confirmYourReference').returns('Confirm your %s')
+
+        controller.getPage(req, res)
+
+        sinon.assert.calledWith(responseSpy, req, res, 'reference-confirm/reference-confirm')
+
+        const pageData = mockResponses.response.args[0][3]
+        expect(pageData.heading).to.equal('Confirm your invoice number')
+      })
+
+      it('when there is NO reference is in the session, then it should display the 404 page', () => {
+        req = {
+          correlationId: '123',
+          product,
+          service
+        }
+
+        res = {
+          locals: {
+            __p: sinon.stub()
+          }
+        }
+
+        mockPaymentLinkSession.getReference.withArgs(req, product.externalId).returns(null)
+
+        const next = sinon.spy()
+        controller.getPage(req, res, next)
+
+        const expectedError = sinon.match.instanceOf(NotFoundError)
+          .and(sinon.match.has('message', 'Attempted to access reference confirm page without a reference in the session.'))
+
+        sinon.assert.calledWith(next, expectedError)
       })
     })
 
@@ -79,9 +134,15 @@ describe('Reference Confirm Page Controller', () => {
           service
         }
 
-        res = {}
+        res = {
+          locals: {
+            __p: sinon.stub()
+          }
+        }
 
         mockPaymentLinkSession.getReference.withArgs(req, product.externalId).returns('reference test value')
+        res.locals.__p.withArgs('paymentLinksV2.referenceConfirm.confirmYourReference').returns('Confirm your %s')
+
         controller.getPage(req, res)
 
         sinon.assert.calledWith(responseSpy, req, res, 'reference-confirm/reference-confirm')
@@ -104,7 +165,12 @@ describe('Reference Confirm Page Controller', () => {
           product,
           service
         }
-        res = {}
+
+        res = {
+          locals: {
+            __p: sinon.stub()
+          }
+        }
 
         const next = sinon.spy()
         controller.getPage(req, res, next)
@@ -162,7 +228,7 @@ describe('Reference Confirm Page Controller', () => {
         sinon.assert.calledWith(res.redirect, '/pay/an-external-id/reference')
       })
 
-      it('when the user does NOT selet an option then it should show an error', () => {
+      it('when the user does NOT select an option then it should show an error', () => {
         req = {
           correlationId: '123',
           product,
@@ -177,7 +243,7 @@ describe('Reference Confirm Page Controller', () => {
           }
         }
 
-        res.locals.__p.withArgs('paymentLinksV2.referenceConfirm.youMustChooseAnOption').returns('You must select an option')
+        res.locals.__p.withArgs('paymentLinksV2.referenceConfirm.selectYesIfYourReferenceIsCorrect').returns('Select yes if your %s is correct')
 
         controller.postPage(req, res)
 
@@ -186,7 +252,7 @@ describe('Reference Confirm Page Controller', () => {
         const pageData = mockResponses.response.args[0][3]
         expect(pageData.backLinkHref).to.equal('/pay/an-external-id/reference')
 
-        expect(pageData.errors['confirm-reference']).to.equal('You must select an option')
+        expect(pageData.errors['confirm-reference']).to.equal('Select yes if your invoice number is correct')
       })
 
       it('when change query parameter is present and user select `yes`, it should redirect to the confirm page', () => {

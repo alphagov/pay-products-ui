@@ -56,14 +56,16 @@ describe('Reference and reference confirm page', () => {
           .type('4444333322221111', { delay: 0 })
         cy.get('[data-cy=button]').click()
 
-        cy.title().should('contain', 'Confirm your reference number - A Product Name')
+        cy.title().should('contain', 'Confirm your invoice number - A Product Name')
       })
     })
 
     describe('Reference confirm page', () => {
       it('should display the `reference confirm` page correctly', () => {
         Cypress.Cookies.preserveOnce('session')
+
         cy.get('[data-cy=back-link]').should('have.attr', 'href', '/pay/a-product-id/reference')
+        cy.get('h1').should('contain', 'Confirm your invoice number')
         cy.get('[data-cy=reference]').should('contain', '4444333322221111')
         cy.get('[data-cy=button]').should('exist')
       })
@@ -73,10 +75,10 @@ describe('Reference and reference confirm page', () => {
         cy.get('[data-cy=button]').click()
 
         cy.get('[data-cy=error-summary] a')
-          .should('contain', 'You must choose an option')
+          .should('contain', 'Select yes if your invoice number is correct')
           .should('have.attr', 'href', '#confirm-reference')
 
-        cy.get('[data-cy=error-message]').should('contain', 'You must choose an option')
+        cy.get('[data-cy=error-message]').should('contain', 'Select yes if your invoice number is correct')
       })
 
       it('when `Yes` is selected and `Continue` is clicked, should then go to the amount page', () => {
