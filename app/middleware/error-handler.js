@@ -6,12 +6,6 @@ const { response } = require('../utils/response')
 const logger = require('../utils/logger')(__filename)
 
 module.exports = function (err, req, res, next) {
-  if (err instanceof NotFoundError) {
-    logger.info(`[${req.correlationId}] NotFoundError handled: ${err.message}. Rendering 404 page`)
-    res.status(404)
-    return response(req, res, '404')
-  }
-
   const errorPayload = {
     request: {
       originalUrl: req.originalUrl,
@@ -27,6 +21,17 @@ module.exports = function (err, req, res, next) {
     errorPayload.error = {
       message: err
     }
+  }
+
+  if (res.headersSent) {
+    logger.warn(`[${req.correlationId}] Headers already sent for error`, errorPayload)
+    return next(err)
+  }
+
+  if (err instanceof NotFoundError) {
+    logger.info(`[${req.correlationId}] NotFoundError handled: ${err.message}. Rendering 404 page`)
+    res.status(404)
+    return response(req, res, '404')
   }
 
   logger.error(`[requestId=${req.correlationId}] Internal server error`, errorPayload)
