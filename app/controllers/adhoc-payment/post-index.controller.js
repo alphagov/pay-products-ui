@@ -21,7 +21,7 @@ module.exports = async (req, res) => {
       req.referenceNumber = sessionReferenceNumber
       setSessionVariable(req, 'referenceNumber', '')
     } else {
-      productReferenceCtrl.index(req, res)
+      return productReferenceCtrl.index(req, res)
     }
   }
 
