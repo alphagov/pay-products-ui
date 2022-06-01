@@ -118,7 +118,7 @@
     "grunt-sass": "3.1.x",
     "html5shiv": "3.7.x",
     "husky": "^8.0.1",
-    "lint-staged": "^12.4.3",
+    "lint-staged": "^12.5.0",
     "mocha": "7.2.x",
     "mountebank": "^2.6.0",
     "nock": "13.2.x",
