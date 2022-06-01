@@ -98,7 +98,7 @@
     "@babel/preset-env": "^7.18.2",
     "@pact-foundation/pact": "^9.17.3",
     "@pact-foundation/pact-node": "10.17.2",
-    "@snyk/protect": "^1.942.x",
+    "@snyk/protect": "^1.945.x",
     "chai": "^4.3.6",
     "cheerio": "^1.0.0-rc.11",
     "chokidar-cli": "latest",
