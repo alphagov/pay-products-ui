@@ -31,28 +31,9 @@ jobs:
         uses: actions/setup-node@56337c425554a6be30cdef71bf441f15be286854
         with:
           node-version: ${{ needs.version.outputs.node-version }}
-      - name: Cache build directories
-        uses: actions/cache@136d96b4aee02b1f0de3ba493b1d47135042d9c0
-        with:
-          path: |
-            node_modules
-            govuk_modules
-            public
-          key: ${{ runner.os }}-build-id-${{ github.head_ref }}-${{ github.sha }}
-      - name: Cache NPM packages
-        uses: actions/cache@136d96b4aee02b1f0de3ba493b1d47135042d9c0
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: ${{ runner.os }}-node-
       - name: Parse Cypress version
         id: parse-cypress-version
         run: echo "::set-output name=CYPRESS_VERSION::$(jq -r '.devDependencies.cypress' package.json)"
-      - name: Cache Cypress
-        uses: actions/cache@136d96b4aee02b1f0de3ba493b1d47135042d9c0
-        with:
-          path: ~/.cache/Cypress
-          key: ${{ runner.os }}-cypress-${{ steps.parse-cypress-version.outputs.CYPRESS_VERSION }}
       - name: Install dependencies
         run: npm ci
       - name: Compile
@@ -72,19 +53,10 @@ jobs:
         uses: actions/setup-node@56337c425554a6be30cdef71bf441f15be286854
         with:
           node-version: ${{ needs.version.outputs.node-version }}
-      - name: Cache build directories
-        uses: actions/cache@136d96b4aee02b1f0de3ba493b1d47135042d9c0
-        with:
-          path: |
-            node_modules
-            govuk_modules
-            public
-          key: ${{ runner.os }}-build-id-${{ github.head_ref }}-${{ github.sha }}
-      - name: Cache pacts directory
-        uses: actions/cache@136d96b4aee02b1f0de3ba493b1d47135042d9c0
-        with:
-          path: pacts
-          key: ${{ runner.os }}-build-id-${{ github.head_ref }}-${{ github.sha }}-pacts
+      - name: Install dependencies
+        run: npm ci
+      - name: Compile
+        run: npm run compile
       - name: Run unit tests
         run: npm test -- --forbid-only --forbid-pending
 
@@ -100,22 +72,13 @@ jobs:
         uses: actions/setup-node@56337c425554a6be30cdef71bf441f15be286854
         with:
           node-version: ${{ needs.version.outputs.node-version }}
-      - name: Cache build directories
-        uses: actions/cache@136d96b4aee02b1f0de3ba493b1d47135042d9c0
-        with:
-          path: |
-            node_modules
-            govuk_modules
-            public
-          key: ${{ runner.os }}-build-id-${{ github.head_ref }}-${{ github.sha }}
       - name: Parse Cypress version
         id: parse-cypress-version
         run: echo "::set-output name=CYPRESS_VERSION::$(jq -r '.devDependencies.cypress' package.json)"
-      - name: Cache Cypress
-        uses: actions/cache@136d96b4aee02b1f0de3ba493b1d47135042d9c0
-        with:
-          path: ~/.cache/Cypress
-          key: ${{ runner.os }}-cypress-${{ steps.parse-cypress-version.outputs.CYPRESS_VERSION }}
+      - name: Install dependencies
+        run: npm ci
+      - name: Compile
+        run: npm run compile
       - name: Run cypress tests
         run: |
           npm run cypress:server > /dev/null 2>&1 &
