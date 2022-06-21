@@ -7,6 +7,7 @@ const productsClient = require('../services/clients/products.client')
 
 // Constants
 const errorMessagePath = 'error.internal' // This is the object notation to string in en.json
+const paymentForbiddenErrorMessagePath = 'error.accountCannotTakePayments'
 
 module.exports = (req, res) => {
   const product = req.product
@@ -22,7 +23,11 @@ module.exports = (req, res) => {
       })
       .catch(err => {
         logger.info(`[${correlationId}] error creating charge for product ${product.externalId}. err = ${err}`)
-        return renderErrorView(req, res, errorMessagePath, err.errorCode || 500)
+        if (err.errorCode === 403) {
+          return renderErrorView(req, res, paymentForbiddenErrorMessagePath, 400)
+        } else {
+          return renderErrorView(req, res, errorMessagePath, err.errorCode || 500)
+        }
       })
   } else {
     logger.error(`[${correlationId}] product not found to make payment`)

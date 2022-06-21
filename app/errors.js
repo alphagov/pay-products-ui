@@ -11,6 +11,10 @@ class DomainError extends Error {
 class NotFoundError extends DomainError {
 }
 
+class AccountCannotTakePaymentsError extends DomainError {
+}
+
 module.exports = {
-  NotFoundError
+  NotFoundError,
+  AccountCannotTakePaymentsError
 }

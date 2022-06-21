@@ -1,9 +1,10 @@
 'use strict'
 
-const { NotFoundError } = require('../errors')
+const { NotFoundError, AccountCannotTakePaymentsError } = require('../errors')
 const { response } = require('../utils/response')
 
 const logger = require('../utils/logger')(__filename)
+const accountCannotTakePaymentsErrorMessagePath = 'error.accountCannotTakePayments'
 
 module.exports = function (err, req, res, next) {
   const errorPayload = {
@@ -32,6 +33,11 @@ module.exports = function (err, req, res, next) {
     logger.info(`[${req.correlationId}] NotFoundError handled: ${err.message}. Rendering 404 page`)
     res.status(404)
     return response(req, res, '404')
+  }
+  if (err instanceof AccountCannotTakePaymentsError) {
+    logger.info(`[${req.correlationId}] AccountCannotTakePaymentsError handled: ${err.message}. Rendering error page`)
+    res.status(400)
+    return response(req, res, 'error', { message: accountCannotTakePaymentsErrorMessagePath })
   }
 
   logger.error(`[requestId=${req.correlationId}] Internal server error`, errorPayload)

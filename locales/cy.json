@@ -17,7 +17,8 @@
   "error": {
     "title": "Digwyddodd gwall:",
     "default": "Mae’n ddrwg gennym, ond ni allwn brosesu eich cais. Rhowch gynnig arall arni wedyn.",
-    "internal": "Mae problem gyda’r cyfleuster taliadau. Rhowch gynnig arall arni wedyn"
+    "internal": "Mae problem gyda’r cyfleuster taliadau. Rhowch gynnig arall arni wedyn",
+    "accountCannotTakePayments": "Mae problem gyda’r cyfleuster taliadau. Rhowch gynnig arall arni wedyn"
   },
   "404Page": {
     "title": "TODO convert to Welsh - Page not found",
