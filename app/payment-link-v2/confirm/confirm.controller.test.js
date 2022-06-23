@@ -9,6 +9,7 @@ const serviceFixtures = require('../../../test/fixtures/service.fixtures')
 const Service = require('../../models/Service.class')
 const responseSpy = sinon.spy()
 const Product = require('../../models/Product.class')
+const { AccountCannotTakePaymentsError } = require('../../errors')
 
 const mockResponses = {
   response: responseSpy
@@ -517,6 +518,38 @@ describe('Confirm Page Controller', () => {
 
         const expectedError = sinon.match.instanceOf(Error)
           .and(sinon.match.has('message', 'Failed to create payment.'))
+        sinon.assert.calledWith(next, expectedError)
+      })
+
+      it('when creating a payment returns a 403, should call next() with an AccountCannotTakePaymentsError', async () => {
+        req = {
+          correlationId: '123',
+          product,
+          body: {
+            amount: '1000'
+          }
+        }
+
+        res = {
+          redirect: sinon.stub()
+        }
+
+        const next = sinon.stub()
+
+        const error = new Error('Failed to create payment.')
+        error.errorCode = 403
+        mockProductsClient.payment.create.rejects(error)
+
+        await controller.postPage(req, res, next)
+
+        sinon.assert.calledWith(
+          mockProductsClient.payment.create,
+          'an-external-id',
+          1000
+        )
+
+        const expectedError = sinon.match.instanceOf(AccountCannotTakePaymentsError)
+          .and(sinon.match.has('message', 'Forbidden response returned by Public API when creating payment'))
         sinon.assert.calledWith(next, expectedError)
       })
     })

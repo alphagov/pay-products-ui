@@ -123,6 +123,38 @@ describe('adhoc payment submit-amount controller', function () {
       })
     })
 
+    describe('when a 403 error is returned when creating the payment', function () {
+      before(done => {
+        product = productFixtures.validProductResponse({ type: 'ADHOC' })
+        service = serviceFixtures.validServiceResponse()
+        nock(config.PRODUCTS_URL).get(`/v1/api/products/${product.external_id}`).reply(200, product)
+        nock(config.PRODUCTS_URL).post(`/v1/api/products/${product.external_id}/payments`, { price: 995 }).reply(403)
+        nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
+
+        session = getMockSession()
+        supertest(createAppWithSession(getApp(), session))
+          .post(paths.pay.product.replace(':productExternalId', product.external_id))
+          .send({
+            'payment-amount': '9.95',
+            csrfToken: csrf().create('123')
+          })
+          .end((err, res) => {
+            response = res
+            $ = cheerio.load(res.text || '')
+            done(err)
+          })
+      })
+
+      it('should respond with code:400 OK', () => {
+        expect(response.statusCode).to.equal(400)
+      })
+
+      it('should render an error page', () => {
+        expect($('.govuk-heading-l').text()).to.equal('An error occurred:')
+        expect($('#errorMsg').text()).to.equal('Please contact the service you are trying to make a payment to.')
+      })
+    })
+
     describe('when a product requires CAPTCHA and the challenge is rejected', function () {
       before(done => {
         const browserCAPTCHAresult = 'some-captcha-managed-response'

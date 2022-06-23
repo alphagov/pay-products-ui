@@ -8,6 +8,7 @@ const captcha = require('../../utils/captcha')
 const logger = require('../../utils/logger')(__filename)
 const productsClient = require('../../services/clients/products.client')
 const paymentLinkSession = require('../utils/payment-link-session')
+const { AccountCannotTakePaymentsError } = require('../../errors')
 
 const HIDDEN_FORM_FIELD_ID_REFERENCE_VALUE = 'reference-value'
 const HIDDEN_FORM_FIELD_ID_AMOUNT = 'amount'
@@ -132,6 +133,9 @@ async function postPage (req, res, next) {
     paymentLinkSession.deletePaymentLinkSession(req, product.externalId)
     res.redirect(303, payment.links.next.href)
   } catch (error) {
+    if (error.errorCode === 403) {
+      return next(new AccountCannotTakePaymentsError('Forbidden response returned by Public API when creating payment'))
+    }
     return next(error)
   }
 }
