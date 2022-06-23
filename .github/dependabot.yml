@@ -19,6 +19,25 @@ updates:
     versions:
     - ">= 16.a"
     - "< 17"
+- package-ecosystem: docker
+  directory: "/"
+  schedule:
+    interval: weekly
+    time: "03:00"
+  open-pull-requests-limit: 10
+  labels:
+  - govuk-pay
+  - dependencies
+  - docker
+  ignore:
+  - dependency-name: node
+    versions:
+    - ">= 14.a"
+    - "< 15"
+  - dependency-name: node
+    versions:
+    - ">= 15.a"
+    - "< 16"
 - package-ecosystem: github-actions
   directory: "/"
   schedule:
