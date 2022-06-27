@@ -123,7 +123,7 @@
     "mountebank": "^2.6.0",
     "nock": "13.2.x",
     "node-sass": "7.0.x",
-    "nodemon": "^2.0.16",
+    "nodemon": "^2.0.18",
     "nunjucksify": "^2.2.0",
     "nyc": "^15.1.0",
     "proxyquire": "~2.1.3",
