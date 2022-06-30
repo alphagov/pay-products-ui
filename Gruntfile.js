@@ -1,4 +1,4 @@
-const nodeSass = require('node-sass')
+const dartSass = require('sass')
 
 module.exports = function (grunt) {
   grunt.initConfig({
@@ -9,9 +9,10 @@ module.exports = function (grunt) {
     sass: {
       dev: {
         options: {
-          implementation: nodeSass,
+          implementation: dartSass,
           style: 'expanded',
           sourcemap: true,
+          quietDeps: true,
           includePaths: [
             'node_modules',
             'app/assets/sass'
