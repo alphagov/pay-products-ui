@@ -122,7 +122,7 @@
     "mocha": "7.2.x",
     "mountebank": "^2.6.0",
     "nock": "13.2.x",
-    "nodemon": "^2.0.18",
+    "nodemon": "^2.0.19",
     "nunjucksify": "^2.2.0",
     "nyc": "^15.1.0",
     "proxyquire": "~2.1.3",
