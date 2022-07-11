@@ -21,10 +21,10 @@
     "accountCannotTakePayments": "Mae problem gyda’r cyfleuster taliadau. Rhowch gynnig arall arni wedyn"
   },
   "404Page": {
-    "title": "TODO convert to Welsh - Page not found",
-    "bodyTextParagraph1": "TODO convert to Welsh - If you typed the web address, check it is correct.",
-    "bodyTextParagraph2": "TODO convert to Welsh - If you pasted the web address, check that you copied the entire address.",
-    "bodyTextParagraph3": "TODO convert to Welsh - If the web address is correct or you selected a link or button, please contact the service you are trying to make a payment to."
+    "title": "Ni chanfuwyd y dudalen",
+    "bodyTextParagraph1": "Os wnaethoch deipio’r gwegyfeiriad, gwiriwch ei fod yn gywir.",
+    "bodyTextParagraph2": "Os wnaethoch ludo’r gwegyfeiriad, gwiriwch eich bod wedi copïo’r cyfeiriad cyfan.",
+    "bodyTextParagraph3": "Os yw’r gwegyfeiriad yn gywir neu’ch bod wedi dewis dolen neu fotwm, cysylltwch â’r gwasanaeth rydych chi’n ceisio gwneud taliad iddo."
   },
   "confirmation": {
     "title": "Roedd eich taliad yn llwyddiannus",
@@ -53,52 +53,52 @@
     "generic": "Rhowch %s dilys",
     "required": "Ni all y maes hwn fod yn wag",
     "currency": "Dewiswch swm mewn punnoedd a cheiniogau drwy ddefnyddio digidau a phwynt degol. Er enghraifft “10.50”",
-    "isAboveMaxAmount": "Dewiswch swm sy'n llai na £%s",
-    "isGreaterThanMaxLengthChars": "Mae'r testun yn rhy hir. Ni all fod yn fwy na 50 o nodau.",
-    "invalidCharacters": "Ni allwch ddefnyddio unrhyw rai o'r nodau canlynol < > ; : ` ( ) \" ' = &#124; \",\" ~ [ ]",
+    "isAboveMaxAmount": "Dewiswch swm sy’n llai na £%s",
+    "isGreaterThanMaxLengthChars": "Mae’r testun yn rhy hir. Ni all fod yn fwy na 50 o nodau.",
+    "invalidCharacters": "Ni allwch ddefnyddio unrhyw rai o’r nodau canlynol < > ; : ` ( ) \" ' = &#124; \",\" ~ [ ]",
     "potentialPANInReferenceTitle": "Ydych chi’n siŵr mae rhif cyfeirnod yw hwn? ",
     "potentialPANInReference": "Gwiriwch eich bod wedi nodi’r rhif yn gywir cyn gwneud y taliad. Peidiwch â nodi’ch rhif cerdyn debyd neu gredyd."
   },
   "paymentLinksV2": {
     "common": {
-      "back": "TODO convert to Welsh - Back"
+      "back": "Yn ôl"
     },
     "start": {
-      "title": "TODO convert to Welsh - Make a payment"
+      "title": "Gwneud taliad"
     },
     "reference": {
-      "pleaseEnterYour": "TODO convert to Welsh - Enter your"
+      "pleaseEnterYour": "Cofnodwch eich"
     },
     "referenceConfirm": {
-      "confirmYourReference": "TODO convert to Welsh - Confirm your %s",
-			"checkYouveEnteredTheNumberCorrectly": "TODO convert to Welsh - Check that you've entered the number correctly before making the payment. Do not enter your debit or credit card number.",
-			"yesThisIsTheCorrectReferenceNumber": "TODO convert to Welsh - Yes, this is the correct reference number",
-			"noItIsIncorrect": "TODO convert to Welsh - No, it is not correct",
-			"continue": "TODO convert to Welsh - Continue",
-			"selectYesIfYourReferenceIsCorrect": "TODO convert to Welsh - Select yes if your %s is correct"
+      "confirmYourReference": "Cadarnhewch eich %s",
+			"checkYouveEnteredTheNumberCorrectly": "Gwiriwch eich bod wedi cofnodi’r rhif yn gywir cyn gwneud y taliad. Peidiwch â chofnodi’ch rhif cerdyn debyd neu gredyd.",
+			"yesThisIsTheCorrectReferenceNumber": "Ie, mae hyn yn gywir",
+			"noItIsIncorrect": "Na, nid yw’n gywir",
+			"continue": "Parhau",
+			"selectYesIfYourReferenceIsCorrect": "Dewiswch ie os yw’ch %s yn gywir"
     },
     "amount": {
-      "enterAmountToPay": "TODO convert to Welsh - Enter amount to pay"
+      "enterAmountToPay": "Cofnodwch swm i’w dalu"
     },
     "confirm": {
-      "checkYourDetails": "TODO convert to Welsh - Check your details",
-      "totalToPay": "TODO convert to Welsh - Total to pay",
-      "change": "TODO convert to Welsh - Change",
-      "continueToPayment": "TODO convert to Welsh - Continue to payment"
+      "checkYourDetails": "Gwiriwch eich manylion",
+      "totalToPay": "Cyfanswm i’w dalu",
+      "change": "Newid",
+      "continueToPayment": "Parhau at daliad"
     },
     "fieldValidation": {
-      "enterAnAmountInPounds": "TODO convert to Welsh - Enter an amount of money to pay",
-      "enterAnAmountInTheCorrectFormat": "TODO convert to Welsh - Enter an amount in pounds and pence using digits and a decimal point, like 123.45 or 156.00",
-      "enterAnAmountUnderMaxAmount": "TODO convert to Welsh - Enter an amount that is £100,000 or less",
-      "enterAReference": "TODO convert to Welsh - You must enter your %s",
-      "referenceMustBeLessThanOrEqual50Chars": "TODO convert to Welsh - %s must be 50 characters or fewer",
-      "referenceCantUseInvalidChars": "TODO convert to Welsh - %s must not include any of the following characters < > ; : ` ( ) \" ' = | \",\" ~ [ ]",
-      "youMustSelectIAmNotARobot": "TODO convert to Welsh - You must select 'I’m not a robot' before proceeding to payment."
+      "enterAnAmountInPounds": "Cofnodwch swm o arian i’w dalu",
+      "enterAnAmountInTheCorrectFormat": "Cofnodwch swm mewn punnoedd a cheiniogau gan ddefnyddio digidau a phwynt degol, fel 123.45 neu 156.00",
+      "enterAnAmountUnderMaxAmount": "Cofnodwch swm sy’n £100,000 neu lai",
+      "enterAReference": "Mae’n rhaid i chi gofnodi’ch %s",
+      "referenceMustBeLessThanOrEqual50Chars": "Mae’n rhaid i %s fod yn 50 nod neu lai",
+      "referenceCantUseInvalidChars": "Mae’n rhaid i %s beidio â chynnwys unrhyw un o’r nodau canlynol < > ; : ` ( ) \" ’ = | \",\" ~ [ ]",
+      "youMustSelectIAmNotARobot": "Mae’n rhaid i chi ddewis ’dw i ddim yn robot’ cyn symud ymlaen at dalu"
     },
     "error": {
       "internal": {
-        "title": "TODO convert to Welsh - Sorry, there is a problem with the service",
-        "message": "TODO convert to Welsh - Try again later or contact the service you are trying to make a payment to."
+        "title": "Mae’n ddrwg gen i, mae problem gyda’r gwasanaeth",
+        "message": "Rhowch gynnig arni’n ddiweddarach neu cysylltwch â’r gwasanaeth rydych chi’n ceisio gwneud taliad iddo"
       }
     }
   }
