@@ -72,7 +72,7 @@
     "referenceConfirm": {
       "confirmYourReference": "Cadarnhewch eich %s",
 			"checkYouveEnteredTheNumberCorrectly": "Gwiriwch eich bod wedi cofnodi’r rhif yn gywir cyn gwneud y taliad. Peidiwch â chofnodi’ch rhif cerdyn debyd neu gredyd.",
-			"yesThisIsTheCorrectReferenceNumber": "Ie, mae hyn yn gywir",
+			"yesThisIsCorrect": "Ie, mae hyn yn gywir",
 			"noItIsIncorrect": "Na, nid yw’n gywir",
 			"continue": "Parhau",
 			"selectYesIfYourReferenceIsCorrect": "Dewiswch ie os yw’ch %s yn gywir"

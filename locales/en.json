@@ -72,7 +72,7 @@
     "referenceConfirm": {
       "confirmYourReference": "Confirm your %s",
       "checkYouveEnteredTheNumberCorrectly": "Check that you've entered the number correctly before making the payment. Do not enter your debit or credit card number.",
-      "yesThisIsTheCorrectReferenceNumber": "Yes, this is the correct reference number",
+      "yesThisIsCorrect": "Yes, this is correct",
       "noItIsIncorrect": "No, it is not correct",
       "continue": "Continue",
       "selectYesIfYourReferenceIsCorrect": "Select yes if your %s is correct"
