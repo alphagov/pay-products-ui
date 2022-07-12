@@ -61,7 +61,8 @@
   },
   "paymentLinksV2": {
     "common": {
-      "back": "Back"
+      "back": "Back",
+      "thereIsAProblem": "There is a problem"
     },
     "start": {
       "title": "Make a payment"

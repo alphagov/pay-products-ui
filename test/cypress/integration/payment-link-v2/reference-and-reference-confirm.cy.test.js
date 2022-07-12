@@ -32,7 +32,10 @@ describe('Reference and reference confirm page', () => {
         Cypress.Cookies.preserveOnce('session')
         cy.visit('/pay/a-product-id/reference')
 
-        cy.get('[data-cy=back-link]').should('have.attr', 'href', '/pay/a-product-id')
+        cy.get('[data-cy=back-link]')
+          .should('have.attr', 'href', '/pay/a-product-id')
+          .should('contain', 'Back')
+
         cy.get('[data-cy=label]').should('contain', 'Enter your invoice number')
         cy.get('[data-cy=button]').should('exist')
       })
@@ -41,6 +44,8 @@ describe('Reference and reference confirm page', () => {
         Cypress.Cookies.preserveOnce('session')
         cy.get('[data-cy=input]').type('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1', { delay: 0 })
         cy.get('[data-cy=button]').click()
+
+        cy.get('[data-cy=error-summary] h2').should('contain', 'There is a problem')
 
         cy.get('[data-cy=error-summary] a')
           .should('contain', 'Invoice number must be 50 characters or fewer')
