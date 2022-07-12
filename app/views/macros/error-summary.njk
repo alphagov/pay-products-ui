@@ -11,7 +11,7 @@
 
   {% if errorList | length %}
     {{ govukErrorSummary({
-        titleText: "There is a problem",
+        titleText: params.titleText,
         errorList: errorList,
         attributes: {
           'data-cy': 'error-summary'

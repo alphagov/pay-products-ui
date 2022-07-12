@@ -61,7 +61,8 @@
   },
   "paymentLinksV2": {
     "common": {
-      "back": "Yn ôl"
+      "back": "Yn ôl",
+      "thereIsAProblem": "Mae yna broblem"
     },
     "start": {
       "title": "Gwneud taliad"
