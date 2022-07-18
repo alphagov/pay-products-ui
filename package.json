@@ -120,7 +120,7 @@
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
     "mocha": "7.2.x",
-    "mountebank": "^2.6.0",
+    "mountebank": "^2.7.0",
     "nock": "13.2.x",
     "nodemon": "^2.0.19",
     "nunjucksify": "^2.2.0",
