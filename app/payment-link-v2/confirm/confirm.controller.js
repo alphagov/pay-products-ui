@@ -130,7 +130,6 @@ async function postPage (req, res, next) {
       referenceToUseForPayment
     )
 
-    paymentLinkSession.deletePaymentLinkSession(req, product.externalId)
     res.redirect(303, payment.links.next.href)
   } catch (error) {
     if (error.errorCode === 403) {

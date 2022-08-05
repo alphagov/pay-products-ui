@@ -487,7 +487,6 @@ describe('Confirm Page Controller', () => {
           2000,
           null
         )
-        sinon.assert.calledWith(mockPaymentLinkSession.deletePaymentLinkSession, req, product.externalId)
         sinon.assert.calledWith(res.redirect, 303, 'https://test.com')
       })
 
