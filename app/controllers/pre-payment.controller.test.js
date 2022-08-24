@@ -46,34 +46,34 @@ describe('Pre payment controller', () => {
       describe('The product has reference enabled', () => {
         it('should render the start payment link page with continue to reference page', () => {
           const product = createProduct(true, 1000)
-          const req = { product }
+          const req = {product}
           const res = {}
 
           controller(req, res)
 
-          sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/reference` })
+          sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', {continueUrl: `/pay/${productExternalId}/reference`})
         })
       })
       describe('The product has reference disabled and does not have fixed price', () => {
         it('should render the start payment link page with continue to amount page', () => {
           const product = createProduct(false, null)
-          const req = { product }
+          const req = {product}
           const res = {}
 
           controller(req, res)
 
-          sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/amount` })
+          sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', {continueUrl: `/pay/${productExternalId}/amount`})
         })
       })
       describe('The product has reference disabled and fixed price', () => {
         it('should render the start payment link page with continue to confirm page', () => {
           const product = createProduct(false, 1000)
-          const req = { product }
+          const req = {product}
           const res = {}
 
           controller(req, res)
 
-          sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/confirm` })
+          sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', {continueUrl: `/pay/${productExternalId}/confirm`})
         })
       })
       describe('A reference and amount are passed as query parameters', () => {
@@ -100,7 +100,7 @@ describe('Pre payment controller', () => {
               amountProvidedByQueryParams: true
             })
 
-            sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/confirm` })
+            sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', {continueUrl: `/pay/${productExternalId}/confirm`})
           })
 
           describe('The product has reference_enabled=false and no price', () => {
@@ -124,7 +124,7 @@ describe('Pre payment controller', () => {
                 amountProvidedByQueryParams: true
               })
 
-              sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/confirm` })
+              sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', {continueUrl: `/pay/${productExternalId}/confirm`})
             })
           })
 
@@ -149,7 +149,7 @@ describe('Pre payment controller', () => {
                 referenceProvidedByQueryParams: true
               })
 
-              sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/confirm` })
+              sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', {continueUrl: `/pay/${productExternalId}/confirm`})
             })
           })
         })
@@ -175,7 +175,7 @@ describe('Pre payment controller', () => {
               referenceProvidedByQueryParams: true
             })
 
-            sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/amount` })
+            sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', {continueUrl: `/pay/${productExternalId}/amount`})
           })
           it('should ignore reference if it is not valid', () => {
             const product = createProduct(true, null)
@@ -191,7 +191,7 @@ describe('Pre payment controller', () => {
 
             expect(req).to.not.have.property('session')
 
-            sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/reference` })
+            sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', {continueUrl: `/pay/${productExternalId}/reference`})
           })
         })
       })
@@ -216,7 +216,7 @@ describe('Pre payment controller', () => {
               amountProvidedByQueryParams: true
             })
 
-            sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/reference` })
+            sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', {continueUrl: `/pay/${productExternalId}/reference`})
           })
         })
         it('should ignore amount in query parameter when it is invalid', () => {
@@ -233,7 +233,7 @@ describe('Pre payment controller', () => {
 
           expect(req).to.not.have.property('session')
 
-          sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/amount` })
+          sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', {continueUrl: `/pay/${productExternalId}/amount`})
         })
       })
       describe('Values have previously been loaded from query params and page is revisited', () => {
@@ -254,11 +254,17 @@ describe('Pre payment controller', () => {
 
           controller(req, res)
 
-          sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/confirm` })
+          sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', {continueUrl: `/pay/${productExternalId}/confirm`})
         })
       })
     })
     describe('The new payment link journey is disabled', () => {
+      beforeEach(() => {
+        process.env.NEW_PAYMENT_LINK_JOURNEY_ENABLED_FOR_ALL_PAYMENT_LINKS = 'false'
+      })
+      afterEach(() => {
+        process.env.NEW_PAYMENT_LINK_JOURNEY_ENABLED_FOR_ALL_PAYMENT_LINKS = 'true'
+      })
       describe('The product has reference enabled', () => {
         it('Should call the payment links V1 reference controller', () => {
           const product = createProduct(true, 1000, false)

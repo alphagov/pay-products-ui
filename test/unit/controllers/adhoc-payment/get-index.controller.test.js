@@ -1,9 +1,9 @@
 'use strict'
+
 const chai = require('chai')
 const config = require('../../../../config')
 const cheerio = require('cheerio')
 const nock = require('nock')
-const currencyFormatter = require('currency-formatter')
 const supertest = require('supertest')
 const { getApp } = require('../../../../server')
 const { createAppWithSession } = require('../../../test-helpers/mock-session')
@@ -13,16 +13,12 @@ const paths = require('../../../../app/paths')
 const expect = chai.expect
 let product, response, service, $
 
-function asGBP (amountInPence) {
-  return currencyFormatter.format((amountInPence / 100).toFixed(2), { code: 'GBP' })
-}
-
 describe('adhoc payment index controller', function () {
   afterEach(() => {
     nock.cleanAll()
   })
 
-  describe('variable amount ADHOC payment with reference disabled', function () {
+  describe('ADHOC payment starting page', function () {
     before(done => {
       product = productFixtures.validProductResponse({
         type: 'ADHOC',
@@ -52,19 +48,15 @@ describe('adhoc payment index controller', function () {
     })
 
     it('should render adhoc payment start page', () => {
-      expect($('title').text()).to.include(service.service_name.en)
+      expect($('title').text()).to.include(product.name)
+      expect($('.govuk-caption-l').text()).to.include(service.service_name.en)
       expect($('h1').text()).to.include(product.name)
-      expect($('p#description').text()).to.include(product.description)
-      expect($('form').attr('action')).to.equal(`/pay/${product.external_id}`)
-    })
-
-    it('should show the amount input', () => {
-      expect($('.govuk-label').text()).to.include('Payment amount')
-      expect($('#payment-amount').text()).to.include('')
+      expect($('p').text()).to.include(product.description)
+      expect($('.govuk-button').attr('href')).to.equal(`/pay/${product.external_id}/amount`)
     })
   })
 
-  describe('enter amount page for a Welsh product', function () {
+  describe('start page for a Welsh product', function () {
     before(done => {
       product = productFixtures.validProductResponse({
         type: 'ADHOC',
@@ -94,17 +86,13 @@ describe('adhoc payment index controller', function () {
     })
 
     it('should render adhoc payment start page with Welsh translations', () => {
-      expect($('title').text()).to.include(service.service_name.cy)
-      expect($('.govuk-header__content').text()).to.include(service.service_name.cy)
-    })
-
-    it('should show the amount input with Welsh translations', () => {
-      expect($('.govuk-label').text()).to.include('Swm y taliad')
-      expect($('#payment-amount').text()).to.include('')
+      expect($('title').text()).to.include(product.name)
+      expect($('.govuk-caption-l').text()).to.include(service.service_name.cy)
+      expect($('.govuk-button').attr('href')).to.equal(`/pay/${product.external_id}/amount`)
     })
   })
 
-  describe('fixed amount ADHOC payment with reference disabled', function () {
+  describe('fixed amount ADHOC payment and reference disabled', function () {
     before(done => {
       product = productFixtures.validProductResponse({
         type: 'ADHOC',
@@ -124,12 +112,12 @@ describe('adhoc payment index controller', function () {
       nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
       supertest(createAppWithSession(getApp()))
-        .get(paths.pay.product.replace(':productExternalId', product.external_id))
-        .end((err, res) => {
-          response = res
-          $ = cheerio.load(res.text || '')
-          done(err)
-        })
+          .get(paths.pay.product.replace(':productExternalId', product.external_id))
+          .end((err, res) => {
+            response = res
+            $ = cheerio.load(res.text || '')
+            done(err)
+          })
     })
 
     it('should respond with code:200 OK', () => {
@@ -137,25 +125,22 @@ describe('adhoc payment index controller', function () {
     })
 
     it('should render adhoc payment start page', () => {
-      expect($('title').text()).to.include(service.service_name.en)
+      expect($('title').text()).to.include(product.name)
+      expect($('.govuk-caption-l').text()).to.include(service.service_name.en)
       expect($('h1').text()).to.include(product.name)
-      expect($('p#description').text()).to.include(product.description)
-      expect($('form').attr('action')).to.equal(`/pay/${product.external_id}`)
-    })
-
-    it('should show the fixed amount', () => {
-      expect($('.govuk-label').text()).to.include('Payment amount')
-      expect($('#payment-amount').text()).to.include(asGBP(product.price))
+      expect($('p').text()).to.include(product.description)
+      expect($('.govuk-button').attr('href')).to.equal(`/pay/${product.external_id}/confirm`)
     })
   })
 
-  describe('ADHOC payment with reference enabled and no reference number set', function () {
+  describe('fixed amount ADHOC payment and reference enabled', function () {
     before(done => {
       product = productFixtures.validProductResponse({
         type: 'ADHOC',
-        product_name: 'Test ADHOC Product Name',
-        service_name: 'Test ADHOC GOV service',
-        description: 'Test ADHOC product description',
+        price: 600,
+        product_name: 'Super duper product',
+        service_name: 'Super GOV service',
+        description: 'Super duper product description',
         reference_enabled: true
       })
       service = serviceFixtures.validServiceResponse({
@@ -169,23 +154,24 @@ describe('adhoc payment index controller', function () {
       nock(config.ADMINUSERS_URL).get(`/v1/api/services?gatewayAccountId=${product.gateway_account_id}`).reply(200, service)
 
       supertest(createAppWithSession(getApp()))
-        .get(paths.pay.product.replace(':productExternalId', product.external_id))
-        .end((err, res) => {
-          response = res
-          $ = cheerio.load(res.text || '')
-          done(err)
-        })
+          .get(paths.pay.product.replace(':productExternalId', product.external_id))
+          .end((err, res) => {
+            response = res
+            $ = cheerio.load(res.text || '')
+            done(err)
+          })
     })
 
     it('should respond with code:200 OK', () => {
       expect(response.statusCode).to.equal(200)
     })
 
-    it('should render payment reference start page', () => {
-      expect($('title').text()).to.include(service.service_name.en)
+    it('should render adhoc payment start page', () => {
+      expect($('title').text()).to.include(product.name)
+      expect($('.govuk-caption-l').text()).to.include(service.service_name.en)
       expect($('h1').text()).to.include(product.name)
-      expect($('p#description').text()).to.include(product.description)
-      expect($('form').attr('action')).to.equal(`/pay/reference/${product.external_id}`)
+      expect($('p').text()).to.include(product.description)
+      expect($('.govuk-button').attr('href')).to.equal(`/pay/${product.external_id}/reference`)
     })
   })
 })

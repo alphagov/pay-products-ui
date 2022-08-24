@@ -13,8 +13,12 @@ const expect = chai.expect
 let product, service, response, $
 
 describe('product reference index controller', function () {
+  beforeEach(() => {
+    process.env.NEW_PAYMENT_LINK_JOURNEY_ENABLED_FOR_ALL_PAYMENT_LINKS = 'false'
+  })
   afterEach(() => {
     nock.cleanAll()
+    process.env.NEW_PAYMENT_LINK_JOURNEY_ENABLED_FOR_ALL_PAYMENT_LINKS = 'true'
   })
 
   describe('with reference enabled and label and hint', function () {
@@ -46,14 +50,12 @@ describe('product reference index controller', function () {
     })
 
     it('should render product reference start page with all fields', () => {
-      expect($('title').text()).to.include(service.service_name.en)
-      expect($('.govuk-header__content').text()).to.include(service.service_name.en)
+      expect($('title').text()).to.include(product.name)
+      expect($('.govuk-header__content').text()).to.include(product.name)
       expect($('h1').text()).to.include(product.name)
-      expect($('p#description').text()).to.include(product.description)
-      expect($('form').attr('action')).to.equal(`/pay/reference/${product.external_id}`)
-      expect($('.govuk-label').text()).to.include('Test reference label')
-      expect($('#payment-reference-hint').text()).to.include('Test reference hint')
-      expect($('button').text()).to.include('Continue')
+      expect($('p').text()).to.include(product.description)
+      expect($('.govuk-button').attr('href')).to.equal(`/pay/${product.external_id}/reference`)
+      expect($('.govuk-button').text()).to.include('Continue')
     })
   })
 
@@ -85,13 +87,11 @@ describe('product reference index controller', function () {
     })
 
     it('should render product reference start page with all fields', () => {
-      expect($('title').text()).to.include(service.service_name.en)
-      expect($('.govuk-header__content').text()).to.include(service.service_name.en)
-      expect($('h1').text()).to.include(product.name)
-      expect($('p#description').text()).to.include(product.description)
-      expect($('form').attr('action')).to.equal(`/pay/reference/${product.external_id}`)
-      expect($('.govuk-label').text()).to.include('Test reference label')
-      expect($('#payment-reference-hint').text().trim()).to.equal('')
+      expect($('title').text()).to.include(product.name)
+      expect($('.govuk-header__content').text()).to.include(product.name)
+      expect($('p').text()).to.include(product.description)
+      expect($('.govuk-button').attr('href')).to.equal(`/pay/${product.external_id}/reference`)
+      expect($('#hint').text().trim()).to.equal('')
     })
   })
 
@@ -123,13 +123,11 @@ describe('product reference index controller', function () {
     })
 
     it('should render product reference start page with reference pre-populated', () => {
-      expect($('title').text()).to.include(service.service_name.en)
-      expect($('.govuk-header__content').text()).to.include(service.service_name.en)
+      expect($('.govuk-caption-l').text()).to.include(service.service_name.en)
+      expect($('.govuk-button').text()).to.include('Continue')
       expect($('h1').text()).to.include(product.name)
-      expect($('p#description').text()).to.include(product.description)
-      expect($('form').attr('action')).to.equal(`/pay/reference/${product.external_id}`)
-      expect($('#payment-reference').attr('value')).to.equal('Test reference')
-      expect($('.govuk-label').text()).to.include('Test reference label')
+      expect($('p').text()).to.include(product.description)
+      expect($('.govuk-button').attr('href')).to.equal(`/pay/${product.external_id}/reference`)
       expect($('#payment-reference-hint').text().trim()).to.equal('')
     })
   })
@@ -166,9 +164,9 @@ describe('product reference index controller', function () {
     })
 
     it('should render product reference start page with Welsh text and the Welsh service name', () => {
-      expect($('title').text()).to.include(service.service_name.cy)
-      expect($('.govuk-header__content').text()).to.include(service.service_name.cy)
-      expect($('button').text()).to.include('Parhau')
+      expect($('title').text()).to.include(product.name)
+      expect($('.govuk-caption-l').text()).to.include(service.service_name.cy)
+      expect($('.govuk-button').text()).to.include('Parhau')
     })
   })
 
@@ -203,9 +201,9 @@ describe('product reference index controller', function () {
     })
 
     it('should render product reference start page with Welsh text and the English service name', () => {
-      expect($('title').text()).to.include(service.service_name.en)
-      expect($('.govuk-header__content').text()).to.include(service.service_name.en)
-      expect($('button').text()).to.include('Parhau')
+      expect($('title').text()).to.include(product.name)
+      expect($('.govuk-caption-l').text()).to.include(service.service_name.en)
+      expect($('.govuk-button').text()).to.include('Parhau')
     })
   })
 })
