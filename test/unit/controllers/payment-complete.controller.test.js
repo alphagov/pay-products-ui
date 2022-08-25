@@ -111,7 +111,11 @@ describe('payment complete controller', () => {
   describe('when a ADHOC payment is returned', () => {
     let product, payment, service, response, $
     describe('when the payment was a success', () => {
+      after(() => {
+        process.env.NEW_PAYMENT_LINK_JOURNEY_ENABLED_FOR_ALL_PAYMENT_LINKS = 'true'
+      })
       before(done => {
+        process.env.NEW_PAYMENT_LINK_JOURNEY_ENABLED_FOR_ALL_PAYMENT_LINKS = 'false'
         product = productFixtures.validProductResponse({
           type: 'ADHOC'
         })
@@ -149,7 +153,11 @@ describe('payment complete controller', () => {
     })
 
     describe('when the payment was a success for a Welsh product', () => {
+      after(() => {
+        process.env.NEW_PAYMENT_LINK_JOURNEY_ENABLED_FOR_ALL_PAYMENT_LINKS = 'true'
+      })
       before(done => {
+        process.env.NEW_PAYMENT_LINK_JOURNEY_ENABLED_FOR_ALL_PAYMENT_LINKS = 'false'
         product = productFixtures.validProductResponse({
           type: 'ADHOC',
           language: 'cy'

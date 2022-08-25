@@ -35,7 +35,7 @@ module.exports = (req, res) => {
       return makePayment(req, res)
     case ('ADHOC'):
     case ('AGENT_INITIATED_MOTO'):
-      if (product.newPaymentLinkJourneyEnabled) {
+      if (product.newPaymentLinkJourneyEnabled || process.env.NEW_PAYMENT_LINK_JOURNEY_ENABLED_FOR_ALL_PAYMENT_LINKS === 'true') {
         if (reference || amount) {
           paymentLinkSession.deletePaymentLinkSession(req, product.externalId)
         }
