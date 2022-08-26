@@ -63,7 +63,6 @@ class Product {
     this.amountHint = opts.amount_hint
     this.language = opts.language
     this.requireCaptcha = opts.require_captcha
-    this.newPaymentLinkJourneyEnabled = opts.new_payment_link_journey_enabled
     opts._links.forEach(link => lodash.set(this, `links.${link.rel}`, { method: link.method, href: link.href }))
   }
 }

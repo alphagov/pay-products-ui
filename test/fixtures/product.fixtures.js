@@ -36,7 +36,6 @@ module.exports = {
       description: opts.description || '',
       price: opts.price,
       language: opts.language || 'en',
-      new_payment_link_journey_enabled: opts.new_payment_link_journey_enabled || false,
       _links: opts.links
     }
     if (data.type !== 'ADHOC') {

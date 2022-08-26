@@ -111,11 +111,7 @@ describe('payment complete controller', () => {
   describe('when a ADHOC payment is returned', () => {
     let product, payment, service, response, $
     describe('when the payment was a success', () => {
-      after(() => {
-        process.env.NEW_PAYMENT_LINK_JOURNEY_ENABLED_FOR_ALL_PAYMENT_LINKS = 'true'
-      })
       before(done => {
-        process.env.NEW_PAYMENT_LINK_JOURNEY_ENABLED_FOR_ALL_PAYMENT_LINKS = 'false'
         product = productFixtures.validProductResponse({
           type: 'ADHOC'
         })
@@ -145,7 +141,7 @@ describe('payment complete controller', () => {
 
       it('should redirect to the payment success page', () => {
         expect($('title').text()).to.include(`Your payment was successful - ${service.service_name.en}`)
-        expect($('.govuk-header__content').text()).to.include(service.service_name.en)
+        expect($('.govuk-header__content').text()).to.include(product.name)
         expect($('#payment-reference').text()).to.include('ABC D123 4EF')
         expect($('#payment-amount').text()).to.include('£20.00')
         expect($('a.dashboard-link').length).to.equal(0)
@@ -153,11 +149,7 @@ describe('payment complete controller', () => {
     })
 
     describe('when the payment was a success for a Welsh product', () => {
-      after(() => {
-        process.env.NEW_PAYMENT_LINK_JOURNEY_ENABLED_FOR_ALL_PAYMENT_LINKS = 'true'
-      })
       before(done => {
-        process.env.NEW_PAYMENT_LINK_JOURNEY_ENABLED_FOR_ALL_PAYMENT_LINKS = 'false'
         product = productFixtures.validProductResponse({
           type: 'ADHOC',
           language: 'cy'
@@ -193,7 +185,7 @@ describe('payment complete controller', () => {
 
       it('should redirect to the payment success page', () => {
         expect($('title').text()).to.include(`Roedd eich taliad yn llwyddiannus - ${service.service_name.cy}`)
-        expect($('.govuk-header__content').text()).to.include(service.service_name.cy)
+        expect($('.govuk-header__content').text()).to.include(product.name)
         expect($('#payment-reference').text()).to.include('ABC D123 4EF')
         expect($('#payment-amount').text()).to.include('£20.00')
         expect($('a.dashboard-link').length).to.equal(0)

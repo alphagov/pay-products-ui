@@ -13,12 +13,8 @@ const expect = chai.expect
 let product, service, response, $
 
 describe('product reference index controller', function () {
-  beforeEach(() => {
-    process.env.NEW_PAYMENT_LINK_JOURNEY_ENABLED_FOR_ALL_PAYMENT_LINKS = 'false'
-  })
   afterEach(() => {
     nock.cleanAll()
-    process.env.NEW_PAYMENT_LINK_JOURNEY_ENABLED_FOR_ALL_PAYMENT_LINKS = 'true'
   })
 
   describe('with reference enabled and label and hint', function () {
