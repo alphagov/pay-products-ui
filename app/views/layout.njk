@@ -20,7 +20,7 @@
   {% set serviceName = service.serviceName.en %}
 {% endif %}
 
-{% set headerText = product.name if product and product.type === 'ADHOC' and (product.newPaymentLinkJourneyEnabled or newPaymentLinkJourneyEnabledForAllServices ) else serviceName %}
+{% set headerText = product.name if product and product.type === 'ADHOC' else serviceName %}
 
 {% block header %}
   {% if service and service.customBranding and service.customBranding.cssUrl %}

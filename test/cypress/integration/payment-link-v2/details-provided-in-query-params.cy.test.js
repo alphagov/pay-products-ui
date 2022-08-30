@@ -16,8 +16,7 @@ const productOpts = {
   reference_label: 'Council tax number',
   price: null,
   type: 'ADHOC',
-  name: productName,
-  new_payment_link_journey_enabled: true
+  name: productName
 }
 
 describe('Payment link visited with amount and reference provided as query params', () => {

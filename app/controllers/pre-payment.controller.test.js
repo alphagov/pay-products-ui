@@ -26,13 +26,12 @@ const productExternalId = 'product-external-id'
 const queryParamAmount = '1111'
 const queryParamReference = 'abcd'
 
-function createProduct (referenceEnabled, fixedPrice, newPaymentLinkJourney = true) {
+function createProduct (referenceEnabled, fixedPrice) {
   return new Product(productFixtures.validProductResponse({
     type: 'ADHOC',
     external_id: productExternalId,
     reference_enabled: referenceEnabled,
     price: fixedPrice,
-    new_payment_link_journey_enabled: newPaymentLinkJourney
   }))
 }
 
@@ -255,36 +254,6 @@ describe('Pre payment controller', () => {
           controller(req, res)
 
           sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', {continueUrl: `/pay/${productExternalId}/confirm`})
-        })
-      })
-    })
-    describe('The new payment link journey is disabled', () => {
-      beforeEach(() => {
-        process.env.NEW_PAYMENT_LINK_JOURNEY_ENABLED_FOR_ALL_PAYMENT_LINKS = 'false'
-      })
-      afterEach(() => {
-        process.env.NEW_PAYMENT_LINK_JOURNEY_ENABLED_FOR_ALL_PAYMENT_LINKS = 'true'
-      })
-      describe('The product has reference enabled', () => {
-        it('Should call the payment links V1 reference controller', () => {
-          const product = createProduct(true, 1000, false)
-          const req = { product }
-          const res = {}
-
-          controller(req, res)
-
-          sinon.assert.calledWith(mockPaymentLinkV1ReferenceController.index, req, res)
-        })
-      })
-      describe('The product has reference disabled', () => {
-        it('Should call the payment links V1 index controller', () => {
-          const product = createProduct(false, 1000, false)
-          const req = { product }
-          const res = {}
-
-          controller(req, res)
-
-          sinon.assert.calledWith(mockPaymentLinkV1IndexController.index, req, res)
         })
       })
     })

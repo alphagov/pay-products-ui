@@ -21,8 +21,7 @@ describe('The payment link start page', () => {
       reference_enabled: true,
       reference_label: referenceLabel,
       description: 'Once payment is received your permit will be printed and posted to you. Please note that this can take up to 10 working days from receipt of payment.',
-      type: 'ADHOC',
-      new_payment_link_journey_enabled: true
+      type: 'ADHOC'
     }
 
     beforeEach(() => {
@@ -64,8 +63,7 @@ describe('The payment link start page', () => {
         productStubs.getProductByExternalIdStub({
           gateway_account_id: gatewayAccountId,
           external_id: productExternalId,
-          type: 'ADHOC',
-          new_payment_link_journey_enabled: true
+          type: 'ADHOC'
         }),
         serviceStubs.getServiceSuccess({
           gatewayAccountId: gatewayAccountId,
@@ -87,7 +85,6 @@ describe('The payment link start page', () => {
       service_name_path: serviceNamePath,
       product_name_path: productNamePath,
       type: 'ADHOC',
-      new_payment_link_journey_enabled: true,
       description: null
     }
     it('should display the start page without a description', () => {
