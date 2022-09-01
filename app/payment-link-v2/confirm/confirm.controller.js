@@ -8,6 +8,7 @@ const captcha = require('../../utils/captcha')
 const logger = require('../../utils/logger')(__filename)
 const productsClient = require('../../services/clients/products.client')
 const paymentLinkSession = require('../utils/payment-link-session')
+const { convertPenceToPoundsAndPence } = require('../../utils/currency')
 const { AccountCannotTakePaymentsError } = require('../../errors')
 
 const HIDDEN_FORM_FIELD_ID_REFERENCE_VALUE = 'reference-value'
@@ -51,7 +52,7 @@ async function validateRecaptcha (
 
 function setupPageData (product, sessionReferenceNumber, sessionAmount, referenceProvidedByQueryParams, amountProvidedByQueryParams) {
   const amountAsPence = product.price || sessionAmount
-  const amountTo2DecimalPoint = (parseFloat(amountAsPence) / 100).toFixed(2)
+  const amountTo2DecimalPoint = convertPenceToPoundsAndPence(amountAsPence)
   const amountAsGbp = Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(amountTo2DecimalPoint)
   const canChangeAmount = !product.price && !amountProvidedByQueryParams
   const canChangeReference = product.reference_enabled && !referenceProvidedByQueryParams
