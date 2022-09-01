@@ -194,7 +194,7 @@ describe('Amount Page Controller', () => {
         correlationId: '123',
         product,
         body: {
-          'payment-amount': '10'
+          'payment-amount': '9.95' // deliberately picked because in IEEE 754, 9.95 * 100 is not 995
         }
       }
 
@@ -204,7 +204,7 @@ describe('Amount Page Controller', () => {
 
       controller.postPage(req, res)
 
-      sinon.assert.calledWith(mockPaymentLinkSession.setAmount, req, product.externalId, 1000)
+      sinon.assert.calledWith(mockPaymentLinkSession.setAmount, req, product.externalId, 995)
       sinon.assert.calledWith(res.redirect, '/pay/an-external-id/confirm')
     })
 

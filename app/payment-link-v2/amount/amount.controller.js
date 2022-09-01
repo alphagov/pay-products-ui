@@ -9,6 +9,7 @@ const paths = require('../../paths')
 const { validateAmount } = require('../../utils/validation/form-validations')
 const replaceParamsInPath = require('../../utils/replace-params-in-path')
 const paymentLinkSession = require('../utils/payment-link-session')
+const { convertPoundsAndPenceToPence, convertPenceToPoundsAndPence } = require('../../utils/currency')
 
 const PAYMENT_AMOUNT = 'payment-amount'
 
@@ -40,7 +41,7 @@ function getPage (req, res, next) {
   data.backLinkHref = getBackLinkUrl(change, product, referenceProvidedByQueryParams)
 
   if (sessionAmount) {
-    data.amount = (parseFloat(sessionAmount) / 100).toFixed(2)
+    data.amount = convertPenceToPoundsAndPence(sessionAmount)
   }
 
   return response(req, res, 'amount/amount', data)
@@ -69,7 +70,7 @@ function postPage (req, res, next) {
     return response(req, res, 'amount/amount', data)
   }
 
-  const paymentAmountInPence = parseFloat(paymentAmount) * 100
+  const paymentAmountInPence = convertPoundsAndPenceToPence(paymentAmount)
 
   paymentLinkSession.setAmount(req, product.externalId, paymentAmountInPence)
 
