@@ -32,6 +32,18 @@ describe('Currency utilities', () => {
       expect(actual).to.equal(expected)
     })
 
+    it('should convert 0.7 to 70', () => {
+      var expected = 70
+      var actual = convertPoundsAndPenceToPence('0.7')
+      expect(actual).to.equal(expected)
+    })
+
+    it('should convert 131.2 to 13120', () => {
+      var expected = 13120
+      var actual = convertPoundsAndPenceToPence('131.2')
+      expect(actual).to.equal(expected)
+    })
+
   })
 
   describe('when converting pence to pounds and pence', () => {
