@@ -4,6 +4,14 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../views/macros/error-summary.njk" import errorSummary %}
 
+{% block bodyEnd %}
+  {{ super() }}
+  {% if requireCaptcha %}
+    {% set googleRECAPTCHASiteWidgetUrl = "https://www.recaptcha.net/recaptcha/enterprise.js" if GOOGLE_RECAPTCHA_USE_ENTERPRISE_VERSION else "https://www.recaptcha.net/recaptcha/api.js" %}
+    <script src="{{ googleRECAPTCHASiteWidgetUrl }}" async defer></script>
+  {% endif %}
+{% endblock %}
+
 {% block pageTitle %}
   Confirm  - {{ productName }}
 {% endblock %}
