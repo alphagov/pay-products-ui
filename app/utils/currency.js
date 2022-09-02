@@ -6,25 +6,46 @@
  * while avoiding the perils of IEEE floating-
  * point arithmetic.
  * 
- * Acceptable input strings either have two
- * decimal places, such as '131.20', or are whole
- * pound amounts, such as '131'.
+ * Acceptable input strings are either whole
+ * pound amounts, such as '131', amounts with two
+ * decimal places, such as '131.20', or amounts
+ * with one decimal place, such as '131.2' (which
+ * is equivalent to '131.20').
  * 
  * Examples:
  * 
+ * 131 → 131
+ * 
  * 131.20 → 13120
  * 
- * 131 → 131
+ * 131.2 → 13120
  *
  * @param {string} poundsAndPenceAmount
  * @returns {number}
  */
 function convertPoundsAndPenceToPence (poundsAndPenceAmount) {
-  if (!poundsAndPenceAmount.includes('.')) {
-    poundsAndPenceAmount = poundsAndPenceAmount + '.00'
+  const indexOfLastCharacter = poundsAndPenceAmount.length - 1
+  const indexOfDecimalPoint = poundsAndPenceAmount.lastIndexOf('.')
+  const charactersAfterDecimalPoint = indexOfDecimalPoint !== -1 ? indexOfLastCharacter - indexOfDecimalPoint : 0
+
+  let pounds
+  let pence
+
+  switch (charactersAfterDecimalPoint) {
+    case 2:
+      pounds = poundsAndPenceAmount.slice(0, indexOfDecimalPoint)
+      pence = poundsAndPenceAmount.slice(indexOfDecimalPoint + 1)
+      break
+    case 1:
+      pounds = poundsAndPenceAmount.slice(0, indexOfDecimalPoint)
+      pence = poundsAndPenceAmount.slice(indexOfDecimalPoint + 1).concat('0')
+      break
+    default:
+      pounds = poundsAndPenceAmount
+      pence = '00'
   }
 
-  return Number(poundsAndPenceAmount.replace('.', ''))
+  return Number(pounds.concat(pence))
 }
 
 /**
