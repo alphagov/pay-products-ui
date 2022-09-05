@@ -15,6 +15,14 @@ const mockResponses = {
   response: responseSpy
 }
 
+const textThatIs255CharactersLong = 'This text contains exactly 255 characters and this is the precise maximum number '
+    + 'allowed for a payment reference and therefore it should pass the validation that checks the text is at most 255 '
+    + 'characters in length and not a single character more than that'
+
+const textThatIs256CharactersLong = 'This is a piece of text that contains exactly 256 characters and this is 1 higher '
+    + 'than 255 characters and as such it will fail any validation that checks if the text has a length of 255 '
+    + 'characters or fewer because it is exactly 1 character longer than that'
+
 let req, res
 
 describe('Reference Page Controller', () => {
@@ -127,7 +135,7 @@ describe('Reference Page Controller', () => {
           correlationId: '123',
           product,
           body: {
-            'payment-reference': 'valid reference'
+            'payment-reference': textThatIs255CharactersLong
           }
         }
 
@@ -137,7 +145,7 @@ describe('Reference Page Controller', () => {
 
         controller.postPage(req, res)
 
-        sinon.assert.calledWith(mockPaymentLinkSession.setReference, req, product.externalId, 'valid reference')
+        sinon.assert.calledWith(mockPaymentLinkSession.setReference, req, product.externalId, textThatIs255CharactersLong)
         sinon.assert.calledWith(res.redirect, '/pay/an-external-id/amount')
       })
 
@@ -146,7 +154,7 @@ describe('Reference Page Controller', () => {
           correlationId: '123',
           product,
           body: {
-            'payment-reference': 'valid reference'
+            'payment-reference': textThatIs255CharactersLong
           },
           query: {
             change: 'true'
@@ -159,7 +167,7 @@ describe('Reference Page Controller', () => {
 
         controller.postPage(req, res)
 
-        sinon.assert.calledWith(mockPaymentLinkSession.setReference, req, product.externalId, 'valid reference')
+        sinon.assert.calledWith(mockPaymentLinkSession.setReference, req, product.externalId, textThatIs255CharactersLong)
         sinon.assert.calledWith(res.redirect, '/pay/an-external-id/confirm')
       })
 
@@ -168,7 +176,7 @@ describe('Reference Page Controller', () => {
           correlationId: '123',
           product,
           body: {
-            'payment-reference': 'valid reference'
+            'payment-reference': textThatIs255CharactersLong
           },
           session: {}
         }
@@ -183,7 +191,7 @@ describe('Reference Page Controller', () => {
 
         controller.postPage(req, res)
 
-        sinon.assert.calledWith(mockPaymentLinkSession.setReference, req, product.externalId, 'valid reference')
+        sinon.assert.calledWith(mockPaymentLinkSession.setReference, req, product.externalId, textThatIs255CharactersLong)
         sinon.assert.calledWith(res.redirect, '/pay/an-external-id/confirm')
       })
 
@@ -278,12 +286,12 @@ describe('Reference Page Controller', () => {
         expect(pageData.errors['payment-reference']).to.equal('Enter your invoice number')
       })
 
-      it('when a reference > 50 is entered, it should display an error message with the `reference_label` and the back link correctly', () => {
+      it('when a reference > 255 is entered, it should display an error message with the `reference_label` and the back link correctly', () => {
         req = {
           correlationId: '123',
           product,
           body: {
-            'payment-reference': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1'
+            'payment-reference': textThatIs256CharactersLong
           }
         }
 
@@ -352,7 +360,7 @@ describe('Reference Page Controller', () => {
           correlationId: '123',
           product,
           body: {
-            'payment-reference': 'valid reference'
+            'payment-reference': textThatIs255CharactersLong
           }
         }
 
@@ -362,7 +370,7 @@ describe('Reference Page Controller', () => {
 
         controller.postPage(req, res)
 
-        sinon.assert.calledWith(mockPaymentLinkSession.setReference, req, product.externalId, 'valid reference')
+        sinon.assert.calledWith(mockPaymentLinkSession.setReference, req, product.externalId, textThatIs255CharactersLong)
         sinon.assert.calledWith(res.redirect, '/pay/an-external-id/confirm')
       })
     })

@@ -4,6 +4,14 @@ const { expect } = require('chai')
 
 const validations = require('./form-validations')
 
+const textThatIs255CharactersLong = 'This text contains exactly 255 characters and this is the precise maximum number '
+    + 'allowed for a payment reference and therefore it should pass the validation that checks the text is at most 255 '
+    + 'characters in length and not a single character more than that'
+
+const textThatIs256CharactersLong = 'This is a piece of text that contains exactly 256 characters and this is 1 higher '
+    + 'than 255 characters and as such it will fail any validation that checks if the text has a length of 255 '
+    + 'characters or fewer because it is exactly 1 character longer than that'
+
 describe('Server side form validations', () => {
   describe('amount validation', () => {
     it('when valid amount entered, should return valid=true', () => {
@@ -34,7 +42,7 @@ describe('Server side form validations', () => {
 
   describe('reference validation', () => {
     it('when valid reference is entered, should return valid=true', () => {
-      expect(validations.validateReference('test reference').valid).to.be.true // eslint-disable-line
+      expect(validations.validateReference(textThatIs255CharactersLong).valid).to.be.true // eslint-disable-line
     })
 
     it('when no amount entered, should return valid=false and the correct error message key', () => {
@@ -45,7 +53,7 @@ describe('Server side form validations', () => {
     })
 
     it('when a reference is too long, should return valid=false and correct error message key', () => {
-      expect(validations.validateReference('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1')).to.deep.equal({
+      expect(validations.validateReference(textThatIs256CharactersLong)).to.deep.equal({
         valid: false,
         messageKey: 'paymentLinksV2.fieldValidation.referenceMustBeLessThanOrEqual50Chars'
       })
