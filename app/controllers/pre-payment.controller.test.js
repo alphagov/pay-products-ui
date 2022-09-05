@@ -10,17 +10,9 @@ const Product = require('../models/Product.class')
 const mockResponse = {
   response: sinon.spy()
 }
-const mockPaymentLinkV1ReferenceController = {
-  index: sinon.spy()
-}
-const mockPaymentLinkV1IndexController = {
-  index: sinon.spy()
-}
 
 const controller = proxyquire('./pre-payment.controller', {
-  '../utils/response': mockResponse,
-  './product-reference': mockPaymentLinkV1ReferenceController,
-  './adhoc-payment': mockPaymentLinkV1IndexController
+  '../utils/response': mockResponse
 })
 const productExternalId = 'product-external-id'
 const queryParamAmount = '1111'
@@ -41,44 +33,69 @@ describe('Pre payment controller', () => {
   })
 
   describe('The product type is ADHOC', () => {
-    describe('The new payment link journey is enabled', () => {
-      describe('The product has reference enabled', () => {
-        it('should render the start payment link page with continue to reference page', () => {
-          const product = createProduct(true, 1000)
-          const req = {product}
+    describe('The product has reference enabled', () => {
+      it('should render the start payment link page with continue to reference page', () => {
+        const product = createProduct(true, 1000)
+        const req = { product }
+        const res = {}
+
+        controller(req, res)
+
+        sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/reference` })
+      })
+    })
+    describe('The product has reference disabled and does not have fixed price', () => {
+      it('should render the start payment link page with continue to amount page', () => {
+        const product = createProduct(false, null)
+        const req = { product }
+        const res = {}
+
+        controller(req, res)
+
+        sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/amount` })
+      })
+    })
+    describe('The product has reference disabled and fixed price', () => {
+      it('should render the start payment link page with continue to confirm page', () => {
+        const product = createProduct(false, 1000)
+        const req = { product }
+        const res = {}
+
+        controller(req, res)
+
+        sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/confirm` })
+      })
+    })
+    describe('A reference and amount are passed as query parameters', () => {
+      describe('The product has reference_enabled and no price', () => {
+        it('should add reference and amount to session and render the start page with continue linking to the confirm page', () => {
+          const product = createProduct(true, null)
+          const req = {
+            product,
+            query: {
+              amount: queryParamAmount,
+              reference: queryParamReference
+            }
+          }
           const res = {}
 
           controller(req, res)
 
-          sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', {continueUrl: `/pay/${productExternalId}/reference`})
+          expect(req).to.have.property('session')
+          expect(req.session).to.have.property(product.externalId)
+          expect(req.session[product.externalId]).to.deep.equal({
+            reference: queryParamReference,
+            amount: queryParamAmount,
+            referenceProvidedByQueryParams: true,
+            amountProvidedByQueryParams: true
+          })
+
+          sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/confirm` })
         })
-      })
-      describe('The product has reference disabled and does not have fixed price', () => {
-        it('should render the start payment link page with continue to amount page', () => {
-          const product = createProduct(false, null)
-          const req = {product}
-          const res = {}
 
-          controller(req, res)
-
-          sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', {continueUrl: `/pay/${productExternalId}/amount`})
-        })
-      })
-      describe('The product has reference disabled and fixed price', () => {
-        it('should render the start payment link page with continue to confirm page', () => {
-          const product = createProduct(false, 1000)
-          const req = {product}
-          const res = {}
-
-          controller(req, res)
-
-          sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', {continueUrl: `/pay/${productExternalId}/confirm`})
-        })
-      })
-      describe('A reference and amount are passed as query parameters', () => {
-        describe('The product has reference_enabled and no price', () => {
-          it('should add reference and amount to session and render the start page with continue linking to the confirm page', () => {
-            const product = createProduct(true, null)
+        describe('The product has reference_enabled=false and no price', () => {
+          it('should not add reference to the session', () => {
+            const product = createProduct(false, null)
             const req = {
               product,
               query: {
@@ -93,73 +110,21 @@ describe('Pre payment controller', () => {
             expect(req).to.have.property('session')
             expect(req.session).to.have.property(product.externalId)
             expect(req.session[product.externalId]).to.deep.equal({
-              reference: queryParamReference,
               amount: queryParamAmount,
-              referenceProvidedByQueryParams: true,
               amountProvidedByQueryParams: true
             })
 
-            sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', {continueUrl: `/pay/${productExternalId}/confirm`})
-          })
-
-          describe('The product has reference_enabled=false and no price', () => {
-            it('should not add reference to the session', () => {
-              const product = createProduct(false, null)
-              const req = {
-                product,
-                query: {
-                  amount: queryParamAmount,
-                  reference: queryParamReference
-                }
-              }
-              const res = {}
-
-              controller(req, res)
-
-              expect(req).to.have.property('session')
-              expect(req.session).to.have.property(product.externalId)
-              expect(req.session[product.externalId]).to.deep.equal({
-                amount: queryParamAmount,
-                amountProvidedByQueryParams: true
-              })
-
-              sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', {continueUrl: `/pay/${productExternalId}/confirm`})
-            })
-          })
-
-          describe('The product has reference_enabled and a fixed price', () => {
-            it('should not add amount to session', () => {
-              const product = createProduct(true, 2222)
-              const req = {
-                product,
-                query: {
-                  amount: queryParamAmount,
-                  reference: queryParamReference
-                }
-              }
-              const res = {}
-
-              controller(req, res)
-
-              expect(req).to.have.property('session')
-              expect(req.session).to.have.property(product.externalId)
-              expect(req.session[product.externalId]).to.deep.equal({
-                reference: queryParamReference,
-                referenceProvidedByQueryParams: true
-              })
-
-              sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', {continueUrl: `/pay/${productExternalId}/confirm`})
-            })
+            sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/confirm` })
           })
         })
-      })
-      describe('Only the reference is passed in as a query parameter', () => {
-        describe('Product has no fixed price', () => {
-          it('should render page with continue link to amount page', () => {
-            const product = createProduct(true, null)
+
+        describe('The product has reference_enabled and a fixed price', () => {
+          it('should not add amount to session', () => {
+            const product = createProduct(true, 2222)
             const req = {
               product,
               query: {
+                amount: queryParamAmount,
                 reference: queryParamReference
               }
             }
@@ -174,56 +139,40 @@ describe('Pre payment controller', () => {
               referenceProvidedByQueryParams: true
             })
 
-            sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', {continueUrl: `/pay/${productExternalId}/amount`})
-          })
-          it('should ignore reference if it is not valid', () => {
-            const product = createProduct(true, null)
-            const req = {
-              product,
-              query: {
-                reference: '[]<>'
-              }
-            }
-            const res = {}
-
-            controller(req, res)
-
-            expect(req).to.not.have.property('session')
-
-            sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', {continueUrl: `/pay/${productExternalId}/reference`})
+            sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/confirm` })
           })
         })
       })
-      describe('Only the amount is passed in as a query parameter', () => {
-        describe('Product has reference enabled', () => {
-          it('should render page with continue link to reference page', () => {
-            const product = createProduct(true, null)
-            const req = {
-              product,
-              query: {
-                amount: queryParamAmount
-              }
-            }
-            const res = {}
-
-            controller(req, res)
-
-            expect(req).to.have.property('session')
-            expect(req.session).to.have.property(product.externalId)
-            expect(req.session[product.externalId]).to.deep.equal({
-              amount: queryParamAmount,
-              amountProvidedByQueryParams: true
-            })
-
-            sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', {continueUrl: `/pay/${productExternalId}/reference`})
-          })
-        })
-        it('should ignore amount in query parameter when it is invalid', () => {
-          const product = createProduct(false, null)
+    })
+    describe('Only the reference is passed in as a query parameter', () => {
+      describe('Product has no fixed price', () => {
+        it('should render page with continue link to amount page', () => {
+          const product = createProduct(true, null)
           const req = {
             product,
             query: {
-              amount: 'not-valid-amount'
+              reference: queryParamReference
+            }
+          }
+          const res = {}
+
+          controller(req, res)
+
+          expect(req).to.have.property('session')
+          expect(req.session).to.have.property(product.externalId)
+          expect(req.session[product.externalId]).to.deep.equal({
+            reference: queryParamReference,
+            referenceProvidedByQueryParams: true
+          })
+
+          sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/amount` })
+        })
+        it('should ignore reference if it is not valid', () => {
+          const product = createProduct(true, null)
+          const req = {
+            product,
+            query: {
+              reference: '[]<>'
             }
           }
           const res = {}
@@ -232,29 +181,70 @@ describe('Pre payment controller', () => {
 
           expect(req).to.not.have.property('session')
 
-          sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', {continueUrl: `/pay/${productExternalId}/amount`})
+          sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/reference` })
         })
       })
-      describe('Values have previously been loaded from query params and page is revisited', () => {
-        it('should render the start payment link page with continue to confirm page', () => {
-          const product = createProduct(true, 1000)
+    })
+    describe('Only the amount is passed in as a query parameter', () => {
+      describe('Product has reference enabled', () => {
+        it('should render page with continue link to reference page', () => {
+          const product = createProduct(true, null)
           const req = {
             product,
-            session: {
-              'product-external-id': {
-                reference: queryParamReference,
-                amount: queryParamAmount,
-                referenceProvidedByQueryParams: true,
-                amountProvidedByQueryParams: true
-              }
+            query: {
+              amount: queryParamAmount
             }
           }
           const res = {}
 
           controller(req, res)
 
-          sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', {continueUrl: `/pay/${productExternalId}/confirm`})
+          expect(req).to.have.property('session')
+          expect(req.session).to.have.property(product.externalId)
+          expect(req.session[product.externalId]).to.deep.equal({
+            amount: queryParamAmount,
+            amountProvidedByQueryParams: true
+          })
+
+          sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/reference` })
         })
+      })
+      it('should ignore amount in query parameter when it is invalid', () => {
+        const product = createProduct(false, null)
+        const req = {
+          product,
+          query: {
+            amount: 'not-valid-amount'
+          }
+        }
+        const res = {}
+
+        controller(req, res)
+
+        expect(req).to.not.have.property('session')
+
+        sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/amount` })
+      })
+    })
+    describe('Values have previously been loaded from query params and page is revisited', () => {
+      it('should render the start payment link page with continue to confirm page', () => {
+        const product = createProduct(true, 1000)
+        const req = {
+          product,
+          session: {
+            'product-external-id': {
+              reference: queryParamReference,
+              amount: queryParamAmount,
+              referenceProvidedByQueryParams: true,
+              amountProvidedByQueryParams: true
+            }
+          }
+        }
+        const res = {}
+
+        controller(req, res)
+
+        sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/confirm` })
       })
     })
   })
