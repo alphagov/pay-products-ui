@@ -99,7 +99,7 @@
     "chokidar-cli": "latest",
     "cypress": "^9.7.0",
     "dotenv": "^16.0.1",
-    "envfile": "^5.2.0",
+    "envfile": "^6.17.0",
     "eslint": "8.22.x",
     "eslint-plugin-import": "^2.26.0",
     "grunt": "1.5.x",
