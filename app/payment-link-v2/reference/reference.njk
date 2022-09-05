@@ -53,7 +53,6 @@
           html: product.reference_hint | striptags(true) | escape | nl2br if product.reference_hint else false
         },
         value: reference,
-        classes: "govuk-input--width-20",
         spellcheck: false,
         attributes: {
           'data-cy': 'input'

@@ -6,6 +6,10 @@ const serviceStubs = require('../../stubs/service-stubs')
 const gatewayAccountId = 666
 const productExternalId = 'a-product-id'
 
+const textThatIs256CharactersLong = 'This is a piece of text that contains exactly 256 characters and this is 1 higher '
+    + 'than 255 characters and as such it will fail any validation that checks if the text has a length of 255 '
+    + 'characters or fewer because it is exactly 1 character longer than that'
+
 describe('Reference and reference confirm page', () => {
   describe('when the Payment Link has no price', () => {
     beforeEach(() => {
@@ -42,7 +46,7 @@ describe('Reference and reference confirm page', () => {
 
       it('when an reference is entered that is too long, should display an error', () => {
         Cypress.Cookies.preserveOnce('session')
-        cy.get('[data-cy=input]').type('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1', { delay: 0 })
+        cy.get('[data-cy=input]').type(textThatIs256CharactersLong, { delay: 0 })
         cy.get('[data-cy=button]').click()
 
         cy.get('[data-cy=error-summary] h2').should('contain', 'There is a problem')

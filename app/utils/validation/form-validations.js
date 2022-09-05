@@ -2,6 +2,7 @@
 
 // Constants
 const MAX_AMOUNT = 100000
+const MAX_REFERENCE_LENGTH = 255
 
 const validationMessageKeys = {
   enterAnAmountInPounds: 'paymentLinksV2.fieldValidation.enterAnAmountInPounds',
@@ -58,7 +59,7 @@ function isEmptyReference (value) {
 }
 
 function isReferenceTooLong (value) {
-  if (value.trim().length > 50) {
+  if (value.trim().length > MAX_REFERENCE_LENGTH) {
     return validationMessageKeys.referenceMustBeLessThanOrEqual50Chars
   } else {
     return false
