@@ -13,9 +13,7 @@ const prePaymentCtrl = require('./controllers/pre-payment.controller')
 const completeCtrl = require('./controllers/payment-complete.controller')
 const failedCtrl = require('./controllers/demo-payment/payment-failed.controller')
 const successCtrl = require('./controllers/demo-payment/payment-success.controller')
-const adhocPaymentCtrl = require('./controllers/adhoc-payment')
 const amountCtrl = require('./payment-link-v2/amount/amount.controller')
-const productReferenceCtrl = require('./controllers/product-reference')
 const referenceCtrl = require('./payment-link-v2/reference/reference.controller')
 const referenceConfirmCtrl = require('./payment-link-v2/reference-confirm/reference-confirm.controller')
 const confirmCtrl = require('./payment-link-v2/confirm/confirm.controller')
@@ -55,7 +53,6 @@ module.exports.bind = function (app) {
 
   // CREATE REFERENCE
   app.get(pay.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, prePaymentCtrl)
-  app.post(pay.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, productReferenceCtrl.postReference)
 
   // PAYMENT COMPLETE
   app.get(pay.complete, resolvePaymentAndProduct, resolveLanguage, completeCtrl)
@@ -65,8 +62,6 @@ module.exports.bind = function (app) {
   app.get(demoPayment.success, successCtrl)
 
   // ADHOC AND AGENT_INITIATED_MOTO SPECIFIC SCREENS
-  app.post(pay.product, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, adhocPaymentCtrl.postIndex)
-
   app.get(paymentLinksV2.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceCtrl.getPage)
   app.post(paymentLinksV2.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceCtrl.postPage)
 
