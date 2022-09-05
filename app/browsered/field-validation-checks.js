@@ -1,12 +1,13 @@
 'use strict'
 
+const validations = require('@govuk-pay/pay-js-commons').utils.fieldValidationChecks
 const Luhn = require('luhn-js')
 
 // Constants
 const MAX_AMOUNT = 100000
 
 exports.isEmpty = (value, message) => {
-  if (value === '') {
+  if (validations.isEmpty(value)) {
     return message
   } else {
     return false
@@ -14,7 +15,7 @@ exports.isEmpty = (value, message) => {
 }
 
 exports.isCurrency = (value, message) => {
-  if (!/^([0-9]+)(?:\.([0-9]{2}))?$/.test(value)) {
+  if (validations.isCurrency(value)) {
     return message
   } else {
     return false
@@ -22,14 +23,14 @@ exports.isCurrency = (value, message) => {
 }
 
 exports.isAboveMaxAmount = (value, message) => {
-  if (!exports.isCurrency(value, message) && parseFloat(value) > MAX_AMOUNT) {
+  if (!validations.isCurrency(value) && parseFloat(value) > MAX_AMOUNT) {
     return message.replace('%s', MAX_AMOUNT.toLocaleString())
   }
   return false
 }
 
 exports.isNaxsiSafe = (value, message) => {
-  if (/[<>;:`()"'=|,~[\]]+/g.test(value)) {
+  if (validations.isNaxsiSafe(value)) {
     return message
   } else {
     return false

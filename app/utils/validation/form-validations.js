@@ -1,5 +1,7 @@
 'use strict'
 
+const validations = require('@govuk-pay/pay-js-commons').utils.fieldValidationChecks
+
 // Constants
 const MAX_AMOUNT = 100000
 const MAX_REFERENCE_LENGTH = 255
@@ -28,7 +30,7 @@ function notValidReturnObject (messageKey) {
 }
 
 function isEmptyAmount (value) {
-  if (value === '') {
+  if (validations.isEmpty(value)) {
     return validationMessageKeys.enterAnAmountInPounds
   } else {
     return false
@@ -36,7 +38,7 @@ function isEmptyAmount (value) {
 }
 
 function isNotCurrency (value) {
-  if (!/^([0-9]+)(?:\.([0-9]{1,2}))?$/.test(value)) {
+  if (validations.isCurrency(value)) {
     return validationMessageKeys.enterAnAmountInTheCorrectFormat
   } else {
     return false
@@ -51,7 +53,7 @@ function isAboveMaxAmount (value) {
 }
 
 function isEmptyReference (value) {
-  if (value === '') {
+  if (validations.isEmpty(value)) {
     return validationMessageKeys.enterAReference
   } else {
     return false
@@ -67,7 +69,7 @@ function isReferenceTooLong (value) {
 }
 
 function isReferenceNaxsiSafe (value) {
-  if (/[<>;:`()"'=|,~[\]]+/g.test(value)) {
+  if (validations.isNaxsiSafe(value)) {
     return validationMessageKeys.referenceCantUseInvalidChars
   } else {
     return false
