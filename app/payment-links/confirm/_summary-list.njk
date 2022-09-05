@@ -5,8 +5,8 @@
 {% if canChangeReference %}
   {% set referenceAction = {
       items: [{
-        href: replaceParamsInPath(routes.paymentLinksV2.reference, product.externalId) + "?change=true",
-        text: __p('paymentLinksV2.confirm.change'),
+        href: replaceParamsInPath(routes.paymentLinks.reference, product.externalId) + "?change=true",
+        text: __p('paymentLinks.confirm.change'),
         visuallyHiddenText: productReferenceLabel
       }]  
     }
@@ -30,8 +30,8 @@
 {% if canChangeAmount %}
   {% set amountAction = {
       items: [{
-        href: replaceParamsInPath(routes.paymentLinksV2.amount, product.externalId) + "?change=true",
-        text: __p('paymentLinksV2.confirm.change'),
+        href: replaceParamsInPath(routes.paymentLinks.amount, product.externalId) + "?change=true",
+        text: __p('paymentLinks.confirm.change'),
         visuallyHiddenText: summaryElement.summaryLabel
       }]  
     }
@@ -40,7 +40,7 @@
 
 {% set amountSummaryElement = {
     key: {
-      text: __p('paymentLinksV2.confirm.totalToPay')
+      text: __p('paymentLinks.confirm.totalToPay')
     },
     value: {
       text: amountAsGbp

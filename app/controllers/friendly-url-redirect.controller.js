@@ -7,7 +7,7 @@ const productsClient = require('../services/clients/products.client')
 const { renderErrorView } = require('../utils/response')
 const replaceParamsInPath = require('../utils/replace-params-in-path')
 const paths = require('../paths')
-const { deletePaymentLinkSession } = require('../payment-link-v2/utils/payment-link-session')
+const { deletePaymentLinkSession } = require('../payment-links/utils/payment-link-session')
 
 // Constants
 const errorMessagePath = 'error.internal' // This is the object notation to string in en.json

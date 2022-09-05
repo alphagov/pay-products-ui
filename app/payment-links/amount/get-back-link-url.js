@@ -1,14 +1,14 @@
 'use strict'
 
 const replaceParamsInPath = require('../../utils/replace-params-in-path')
-const { paymentLinksV2 } = require('../../paths')
+const { paymentLinks } = require('../../paths')
 
 module.exports = function getBackLinkUrl (isEditing, product, referenceProvidedByQueryParams) {
   if (isEditing) {
-    return replaceParamsInPath(paymentLinksV2.confirm, product.externalId)
+    return replaceParamsInPath(paymentLinks.confirm, product.externalId)
   } else if (product.reference_enabled && !referenceProvidedByQueryParams) {
-    return replaceParamsInPath(paymentLinksV2.reference, product.externalId)
+    return replaceParamsInPath(paymentLinks.reference, product.externalId)
   } else {
-    return replaceParamsInPath(paymentLinksV2.product, product.externalId)
+    return replaceParamsInPath(paymentLinks.product, product.externalId)
   }
 }

@@ -4,8 +4,8 @@ const logger = require('../utils/logger')(__filename)
 const { response, renderErrorView } = require('../utils/response')
 const makePayment = require('./make-payment.controller')
 const replaceParamsInPath = require('../utils/replace-params-in-path')
-const { paymentLinksV2 } = require('../paths')
-const paymentLinkSession = require('../payment-link-v2/utils/payment-link-session')
+const { paymentLinks } = require('../paths')
+const paymentLinkSession = require('../payment-links/utils/payment-link-session')
 const { validateReference, validateAmount } = require('../utils/validation/form-validations')
 
 // Constants
@@ -13,12 +13,12 @@ const errorMessagePath = 'error.internal' // This is the object notation to stri
 
 function getContinueUrlForNewPaymentLinkJourney (product, referenceProvidedByQueryParams, amountProvidedByQueryParams) {
   if (product.reference_enabled && !referenceProvidedByQueryParams) {
-    return replaceParamsInPath(paymentLinksV2.reference, product.externalId)
+    return replaceParamsInPath(paymentLinks.reference, product.externalId)
   }
   if (!product.price && !amountProvidedByQueryParams) {
-    return replaceParamsInPath(paymentLinksV2.amount, product.externalId)
+    return replaceParamsInPath(paymentLinks.amount, product.externalId)
   }
-  return replaceParamsInPath(paymentLinksV2.confirm, product.externalId)
+  return replaceParamsInPath(paymentLinks.confirm, product.externalId)
 }
 
 module.exports = (req, res) => {

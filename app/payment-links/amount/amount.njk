@@ -5,12 +5,12 @@
 {% from "../../views/macros/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
-  {{ __p('paymentLinksV2.reference.pleaseEnterYour') }} {{product.reference_label}}  - {{ productName }}
+  {{ __p('paymentLinks.amount.enterAmountToPay') }} - {{ productName }}
 {% endblock %}
 
 {% block beforeContent %}
   {{ govukBackLink({
-    text: __p('paymentLinksV2.common.back'),
+    text: __p('paymentLinks.common.back'),
     href: backLinkHref,
     attributes: {
       'data-cy': 'back-link'
@@ -22,10 +22,10 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     {{ errorSummary ({
-      titleText: __p("paymentLinksV2.common.thereIsAProblem"),
+      titleText: __p("paymentLinks.common.thereIsAProblem"),
       errors: errors,
       hrefs: {
-        'payment-reference': '#payment-reference'
+        'payment-amount': '#payment-amount'
       }
     }) }}
 
@@ -33,37 +33,33 @@
       <input id="csrf" name="csrfToken" type="hidden" value="{{ csrf }}"/>
 
       {{ govukInput({
-        id: "payment-reference",
-        name: "payment-reference",
+        id: "payment-amount",
+        name: "payment-amount",
         errorMessage: { 
-          text: errors['payment-reference'], 
-          attributes: {
-            'data-cy': 'error-message'
-          }
-        } if errors['payment-reference'] else false,
+          text: errors['payment-amount'],
+          attributes: { 'data-cy': 'error-message'}
+        } if errors['payment-amount'] else false,
         label: {
-          text: __p('paymentLinksV2.reference.pleaseEnterYour') + ' ' + product.reference_label,
+          text: __p('paymentLinks.amount.enterAmountToPay'),
           classes: "govuk-label--l",
           isPageHeading: true,
-          attributes: {
-            'data-cy': 'label'
-          }
+          attributes: { 'data-cy': 'label' }
         },
         hint: {
-          html: product.reference_hint | striptags(true) | escape | nl2br if product.reference_hint else false
+          html: product.amountHint | striptags(true) | escape | nl2br if product.amountHint else false
         },
-        value: reference,
+        value: amount,
+        prefix: {
+          text: "£"
+        },
+        classes: "govuk-input--width-5",
         spellcheck: false,
-        attributes: {
-          'data-cy': 'input'
-        }
+        attributes: { 'data-cy': 'input' }
       }) }}
       
       {{ govukButton({
         text: __p('buttons.continue'),
-        attributes: {
-          'data-cy': 'button'
-        }
+        attributes: { 'data-cy': 'button' }
       }) }}
     </form>
   </div>

@@ -21,21 +21,21 @@ describe('Server side form validations', () => {
     it('when no amount entered, should return valid=false and the correct error message key', () => {
       expect(validations.validateAmount('')).to.deep.equal({
         valid: false,
-        messageKey: 'paymentLinksV2.fieldValidation.enterAnAmountInPounds'
+        messageKey: 'paymentLinks.fieldValidation.enterAnAmountInPounds'
       })
     })
 
     it('when an invalid string entered, should return valid=false and correct error message key', () => {
       expect(validations.validateAmount('Invalid amount')).to.deep.equal({
         valid: false,
-        messageKey: 'paymentLinksV2.fieldValidation.enterAnAmountInTheCorrectFormat'
+        messageKey: 'paymentLinks.fieldValidation.enterAnAmountInTheCorrectFormat'
       })
     })
 
     it('when a number entered that is greater then the MAX amount, should return valid=false and correct error message key', () => {
       expect(validations.validateAmount('100000.01')).to.deep.equal({
         valid: false,
-        messageKey: 'paymentLinksV2.fieldValidation.enterAnAmountUnderMaxAmount'
+        messageKey: 'paymentLinks.fieldValidation.enterAnAmountUnderMaxAmount'
       })
     })
   })
@@ -48,21 +48,21 @@ describe('Server side form validations', () => {
     it('when no amount entered, should return valid=false and the correct error message key', () => {
       expect(validations.validateReference('')).to.deep.equal({
         valid: false,
-        messageKey: 'paymentLinksV2.fieldValidation.enterAReference'
+        messageKey: 'paymentLinks.fieldValidation.enterAReference'
       })
     })
 
     it('when a reference is too long, should return valid=false and correct error message key', () => {
       expect(validations.validateReference(textThatIs256CharactersLong)).to.deep.equal({
         valid: false,
-        messageKey: 'paymentLinksV2.fieldValidation.referenceMustBeLessThanOrEqual50Chars'
+        messageKey: 'paymentLinks.fieldValidation.referenceMustBeLessThanOrEqual50Chars'
       })
     })
 
     it('when a reference is entered that is not Naxsi safe, should return valid=false and correct error message key', () => {
       expect(validations.validateAmount('>')).to.deep.equal({
         valid: false,
-        messageKey: 'paymentLinksV2.fieldValidation.enterAnAmountInTheCorrectFormat'
+        messageKey: 'paymentLinks.fieldValidation.enterAnAmountInTheCorrectFormat'
       })
     })
   })

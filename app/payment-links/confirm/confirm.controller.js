@@ -18,9 +18,9 @@ const ERROR_KEY_RECAPTCHA = 'recaptcha'
 
 function getBackLinkUrl (product, referenceProvidedByQueryParams, amountProvidedByQueryParams) {
   if (!product.price && !amountProvidedByQueryParams) {
-    return replaceParamsInPath(paths.paymentLinksV2.amount, product.externalId)
+    return replaceParamsInPath(paths.paymentLinks.amount, product.externalId)
   } else if (product.reference_enabled && !referenceProvidedByQueryParams) {
-    return replaceParamsInPath(paths.paymentLinksV2.reference, product.externalId)
+    return replaceParamsInPath(paths.paymentLinks.reference, product.externalId)
   } else {
     return replaceParamsInPath(paths.pay.product, product.externalId)
   }
@@ -40,11 +40,11 @@ async function validateRecaptcha (
       logger.info('User passed CAPTCHA challenge')
     } else {
       logger.warn('User failed CAPTCHA challenge')
-      errors[ERROR_KEY_RECAPTCHA] = translationMethod('paymentLinksV2.fieldValidation.youMustSelectIAmNotARobot')
+      errors[ERROR_KEY_RECAPTCHA] = translationMethod('paymentLinks.fieldValidation.youMustSelectIAmNotARobot')
     }
   } catch (error) {
     logger.error('CAPTCHA challenge failed to respond correctly', error)
-    errors[ERROR_KEY_RECAPTCHA] = translationMethod('paymentLinksV2.fieldValidation.youMustSelectIAmNotARobot')
+    errors[ERROR_KEY_RECAPTCHA] = translationMethod('paymentLinks.fieldValidation.youMustSelectIAmNotARobot')
   }
 
   return errors

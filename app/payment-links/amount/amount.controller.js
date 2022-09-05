@@ -74,7 +74,7 @@ function postPage (req, res, next) {
 
   paymentLinkSession.setAmount(req, product.externalId, paymentAmountInPence)
 
-  return res.redirect(replaceParamsInPath(paths.paymentLinksV2.confirm, product.externalId))
+  return res.redirect(replaceParamsInPath(paths.paymentLinks.confirm, product.externalId))
 }
 
 module.exports = {

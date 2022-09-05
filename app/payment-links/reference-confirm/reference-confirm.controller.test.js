@@ -58,7 +58,7 @@ describe('Reference Confirm Page Controller', () => {
         }
 
         mockPaymentLinkSession.getReference.withArgs(req, product.externalId).returns('reference test value')
-        res.locals.__p.withArgs('paymentLinksV2.referenceConfirm.confirmYourReference').returns('Confirm your %s')
+        res.locals.__p.withArgs('paymentLinks.referenceConfirm.confirmYourReference').returns('Confirm your %s')
 
         controller.getPage(req, res)
 
@@ -83,7 +83,7 @@ describe('Reference Confirm Page Controller', () => {
         }
 
         mockPaymentLinkSession.getReference.withArgs(req, product.externalId).returns('reference test value')
-        res.locals.__p.withArgs('paymentLinksV2.referenceConfirm.confirmYourReference').returns('Confirm your %s')
+        res.locals.__p.withArgs('paymentLinks.referenceConfirm.confirmYourReference').returns('Confirm your %s')
 
         controller.getPage(req, res)
 
@@ -141,7 +141,7 @@ describe('Reference Confirm Page Controller', () => {
         }
 
         mockPaymentLinkSession.getReference.withArgs(req, product.externalId).returns('reference test value')
-        res.locals.__p.withArgs('paymentLinksV2.referenceConfirm.confirmYourReference').returns('Confirm your %s')
+        res.locals.__p.withArgs('paymentLinks.referenceConfirm.confirmYourReference').returns('Confirm your %s')
 
         controller.getPage(req, res)
 
@@ -243,7 +243,7 @@ describe('Reference Confirm Page Controller', () => {
           }
         }
 
-        res.locals.__p.withArgs('paymentLinksV2.referenceConfirm.selectYesIfYourReferenceIsCorrect').returns('Select yes if your %s is correct')
+        res.locals.__p.withArgs('paymentLinks.referenceConfirm.selectYesIfYourReferenceIsCorrect').returns('Select yes if your %s is correct')
 
         controller.postPage(req, res)
 

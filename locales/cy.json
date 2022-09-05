@@ -59,7 +59,7 @@
     "potentialPANInReferenceTitle": "Ydych chi’n siŵr mae rhif cyfeirnod yw hwn? ",
     "potentialPANInReference": "Gwiriwch eich bod wedi nodi’r rhif yn gywir cyn gwneud y taliad. Peidiwch â nodi’ch rhif cerdyn debyd neu gredyd."
   },
-  "paymentLinksV2": {
+  "paymentLinks": {
     "common": {
       "back": "Yn ôl",
       "thereIsAProblem": "Mae yna broblem"
