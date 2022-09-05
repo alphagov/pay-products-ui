@@ -55,7 +55,7 @@ describe('Server side form validations', () => {
     it('when a reference is too long, should return valid=false and correct error message key', () => {
       expect(validations.validateReference(textThatIs256CharactersLong)).to.deep.equal({
         valid: false,
-        messageKey: 'paymentLinks.fieldValidation.referenceMustBeLessThanOrEqual50Chars'
+        messageKey: 'paymentLinks.fieldValidation.referenceTooLong'
       })
     })
 

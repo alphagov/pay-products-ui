@@ -92,7 +92,7 @@
       "enterAnAmountInTheCorrectFormat": "Enter an amount in pounds and pence using digits and a decimal point, like 123.45 or 156.00",
       "enterAnAmountUnderMaxAmount": "Enter an amount that is £100,000 or less",
       "enterAReference": "You must enter your %s",
-      "referenceMustBeLessThanOrEqual50Chars": "%s must be 50 characters or fewer",
+      "referenceTooLong": "%s must be 255 characters or fewer",
       "referenceCantUseInvalidChars": "%s must not include any of the following characters < > ; : ` ( ) \" ' = | \",\" ~ [ ]",
       "youMustSelectIAmNotARobot": "You must select 'I’m not a robot' before proceeding to payment."
     },

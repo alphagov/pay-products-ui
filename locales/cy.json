@@ -92,7 +92,7 @@
       "enterAnAmountInTheCorrectFormat": "Cofnodwch swm mewn punnoedd a cheiniogau gan ddefnyddio digidau a phwynt degol, fel 123.45 neu 156.00",
       "enterAnAmountUnderMaxAmount": "Cofnodwch swm sy’n £100,000 neu lai",
       "enterAReference": "Mae’n rhaid i chi gofnodi’ch %s",
-      "referenceMustBeLessThanOrEqual50Chars": "Mae’n rhaid i %s fod yn 50 nod neu lai",
+      "referenceTooLong": "Mae’n rhaid i %s fod yn 255 nod neu lai",
       "referenceCantUseInvalidChars": "Mae’n rhaid i %s beidio â chynnwys unrhyw un o’r nodau canlynol < > ; : ` ( ) \" ’ = | \",\" ~ [ ]",
       "youMustSelectIAmNotARobot": "Mae’n rhaid i chi ddewis ’dw i ddim yn robot’ cyn symud ymlaen at dalu"
     },

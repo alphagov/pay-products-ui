@@ -53,10 +53,10 @@ describe('Welsh - reference page', () => {
         cy.get('[data-cy=error-summary] h2').should('contain', 'Mae yna broblem')
 
         cy.get('[data-cy=error-summary] a')
-          .should('contain', 'Mae’n rhaid i rhif anfoneb fod yn 50 nod neu lai')
+          .should('contain', 'Mae’n rhaid i rhif anfoneb fod yn 255 nod neu lai')
           .should('have.attr', 'href', '#payment-reference')
 
-        cy.get('[data-cy=error-message]').should('contain', 'Mae’n rhaid i rhif anfoneb fod yn 50 nod neu lai')
+        cy.get('[data-cy=error-message]').should('contain', 'Mae’n rhaid i rhif anfoneb fod yn 255 nod neu lai')
       })
     })
   })

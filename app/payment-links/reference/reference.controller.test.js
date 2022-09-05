@@ -302,7 +302,7 @@ describe('Reference Page Controller', () => {
           }
         }
 
-        res.locals.__p.withArgs('paymentLinks.fieldValidation.referenceMustBeLessThanOrEqual50Chars').returns('%s must be less than or equal to 50 characters')
+        res.locals.__p.withArgs('paymentLinks.fieldValidation.referenceTooLong').returns('%s must be less than or equal to 255 characters')
 
         controller.postPage(req, res)
 
@@ -311,7 +311,7 @@ describe('Reference Page Controller', () => {
         const pageData = mockResponses.response.args[0][3]
         expect(pageData.backLinkHref).to.equal('/pay/an-external-id')
 
-        expect(pageData.errors['payment-reference']).to.equal('Invoice number must be less than or equal to 50 characters')
+        expect(pageData.errors['payment-reference']).to.equal('Invoice number must be less than or equal to 255 characters')
       })
 
       it('when an invalid reference is entered and the change query parameter is present, it should display an error ' +

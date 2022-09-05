@@ -52,10 +52,10 @@ describe('Reference and reference confirm page', () => {
         cy.get('[data-cy=error-summary] h2').should('contain', 'There is a problem')
 
         cy.get('[data-cy=error-summary] a')
-          .should('contain', 'Invoice number must be 50 characters or fewer')
+          .should('contain', 'Invoice number must be 255 characters or fewer')
           .should('have.attr', 'href', '#payment-reference')
 
-        cy.get('[data-cy=error-message]').should('contain', 'Invoice number must be 50 characters or fewer')
+        cy.get('[data-cy=error-message]').should('contain', 'Invoice number must be 255 characters or fewer')
       })
 
       it('when an reference is entered that looks like a card number, should go to the `reference confirm` page', () => {
