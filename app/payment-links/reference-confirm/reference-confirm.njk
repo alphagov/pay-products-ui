@@ -11,7 +11,7 @@
 
 {% block beforeContent %}
   {{ govukBackLink({
-    text: __p('paymentLinksV2.common.back'),
+    text: __p('paymentLinks.common.back'),
     href: backLinkHref,
     attributes: {
       'data-cy': 'back-link'
@@ -23,7 +23,7 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     {% set hintHtml %}
-      <p class="govuk-body">{{ __p('paymentLinksV2.referenceConfirm.checkYouveEnteredTheNumberCorrectly') }}</p>
+      <p class="govuk-body">{{ __p('paymentLinks.referenceConfirm.checkYouveEnteredTheNumberCorrectly') }}</p>
 
       {{ govukInsetText({
         text: reference,
@@ -33,7 +33,7 @@
     {% endset %}
 
     {{ errorSummary ({
-      titleText: __p("paymentLinksV2.common.thereIsAProblem"),
+      titleText: __p("paymentLinks.common.thereIsAProblem"),
       errors: errors,
       hrefs: {
         'confirm-reference': '#confirm-reference'
@@ -61,12 +61,12 @@
         items: [
           {
             value: "yes",
-            text: __p('paymentLinksV2.referenceConfirm.yesThisIsCorrect'),
+            text: __p('paymentLinks.referenceConfirm.yesThisIsCorrect'),
             attributes: {'data-cy': 'yes-radio'}
           },
           {
             value: "no",
-            text: __p('paymentLinksV2.referenceConfirm.noItIsIncorrect'),
+            text: __p('paymentLinks.referenceConfirm.noItIsIncorrect'),
             attributes: {'data-cy': 'no-radio'}
           }
         ],

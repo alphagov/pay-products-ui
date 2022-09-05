@@ -231,7 +231,7 @@ describe('Amount Page Controller', () => {
       const pageData = mockResponses.response.args[0][3]
       expect(pageData.backLinkHref).to.equal('/pay/an-external-id/reference')
 
-      sinon.assert.calledWith(res.locals.__p, 'paymentLinksV2.fieldValidation.enterAnAmountInPounds')
+      sinon.assert.calledWith(res.locals.__p, 'paymentLinks.fieldValidation.enterAnAmountInPounds')
     })
 
     it('when an invalid amount is entered and the change query parameter is present, it should display an error' +
@@ -260,7 +260,7 @@ describe('Amount Page Controller', () => {
       const pageData = mockResponses.response.args[0][3]
       expect(pageData.backLinkHref).to.equal('/pay/an-external-id/confirm')
 
-      sinon.assert.calledWith(res.locals.__p, 'paymentLinksV2.fieldValidation.enterAnAmountInTheCorrectFormat')
+      sinon.assert.calledWith(res.locals.__p, 'paymentLinks.fieldValidation.enterAnAmountInTheCorrectFormat')
     })
   })
 })

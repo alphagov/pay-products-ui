@@ -13,10 +13,10 @@ const prePaymentCtrl = require('./controllers/pre-payment.controller')
 const completeCtrl = require('./controllers/payment-complete.controller')
 const failedCtrl = require('./controllers/demo-payment/payment-failed.controller')
 const successCtrl = require('./controllers/demo-payment/payment-success.controller')
-const amountCtrl = require('./payment-link-v2/amount/amount.controller')
-const referenceCtrl = require('./payment-link-v2/reference/reference.controller')
-const referenceConfirmCtrl = require('./payment-link-v2/reference-confirm/reference-confirm.controller')
-const confirmCtrl = require('./payment-link-v2/confirm/confirm.controller')
+const amountCtrl = require('./payment-links/amount/amount.controller')
+const referenceCtrl = require('./payment-links/reference/reference.controller')
+const referenceConfirmCtrl = require('./payment-links/reference-confirm/reference-confirm.controller')
+const confirmCtrl = require('./payment-links/confirm/confirm.controller')
 
 // Middleware
 const { validateAndRefreshCsrf, ensureSessionHasCsrfSecret } = require('./middleware/csrf')
@@ -27,7 +27,7 @@ const resolveLanguage = require('./middleware/resolve-language')
 const correlationId = require('./middleware/correlation-id')
 
 // Assignments
-const { healthcheck, staticPaths, friendlyUrl, pay, demoPayment, paymentLinksV2 } = paths
+const { healthcheck, staticPaths, friendlyUrl, pay, demoPayment, paymentLinks } = paths
 
 // Exports
 module.exports.generateRoute = generateRoute
@@ -62,17 +62,17 @@ module.exports.bind = function (app) {
   app.get(demoPayment.success, successCtrl)
 
   // ADHOC AND AGENT_INITIATED_MOTO SPECIFIC SCREENS
-  app.get(paymentLinksV2.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceCtrl.getPage)
-  app.post(paymentLinksV2.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceCtrl.postPage)
+  app.get(paymentLinks.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceCtrl.getPage)
+  app.post(paymentLinks.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceCtrl.postPage)
 
-  app.get(paymentLinksV2.referenceConfirm, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceConfirmCtrl.getPage)
-  app.post(paymentLinksV2.referenceConfirm, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceConfirmCtrl.postPage)
+  app.get(paymentLinks.referenceConfirm, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceConfirmCtrl.getPage)
+  app.post(paymentLinks.referenceConfirm, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceConfirmCtrl.postPage)
 
-  app.get(paymentLinksV2.amount, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, amountCtrl.getPage)
-  app.post(paymentLinksV2.amount, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, amountCtrl.postPage)
+  app.get(paymentLinks.amount, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, amountCtrl.getPage)
+  app.post(paymentLinks.amount, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, amountCtrl.postPage)
 
-  app.get(paymentLinksV2.confirm, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, confirmCtrl.getPage)
-  app.post(paymentLinksV2.confirm, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, confirmCtrl.postPage)
+  app.get(paymentLinks.confirm, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, confirmCtrl.getPage)
+  app.post(paymentLinks.confirm, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, confirmCtrl.postPage)
 
   // security.txt — https://gds-way.cloudapps.digital/standards/vulnerability-disclosure.html
   const securitytxt = 'https://vdp.cabinetoffice.gov.uk/.well-known/security.txt'

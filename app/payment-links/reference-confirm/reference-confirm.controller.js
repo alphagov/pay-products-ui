@@ -12,11 +12,11 @@ const CONFIRM_REFERENCE = 'confirm-reference'
 
 function getNextPageUrl (productPrice, isEditing, confirmReference, amountProvidedByQueryParams) {
   if (confirmReference === 'no') {
-    return paths.paymentLinksV2.reference
+    return paths.paymentLinks.reference
   } else if (productPrice || isEditing || amountProvidedByQueryParams) {
-    return paths.paymentLinksV2.confirm
+    return paths.paymentLinks.confirm
   } else {
-    return paths.paymentLinksV2.amount
+    return paths.paymentLinks.amount
   }
 }
 
@@ -24,7 +24,7 @@ function validateConfirmReferenceFormValue (confirmReference, referenceLabel, re
   const errors = {}
 
   if (!confirmReference) {
-    errors[CONFIRM_REFERENCE] = res.locals.__p('paymentLinksV2.referenceConfirm.selectYesIfYourReferenceIsCorrect').replace('%s', referenceLabel)
+    errors[CONFIRM_REFERENCE] = res.locals.__p('paymentLinks.referenceConfirm.selectYesIfYourReferenceIsCorrect').replace('%s', referenceLabel)
   }
 
   return errors
@@ -41,7 +41,7 @@ function getPage (req, res, next) {
     return next(new NotFoundError('Attempted to access reference confirm page without a reference in the session.'))
   }
 
-  const heading = res.locals.__p('paymentLinksV2.referenceConfirm.confirmYourReference').replace('%s', product.reference_label)
+  const heading = res.locals.__p('paymentLinks.referenceConfirm.confirmYourReference').replace('%s', product.reference_label)
 
   const data = {
     heading,
@@ -53,7 +53,7 @@ function getPage (req, res, next) {
     reference: sessionReferenceNumber
   }
 
-  const backLinkHref = replaceParamsInPath(paths.paymentLinksV2.reference, product.externalId)
+  const backLinkHref = replaceParamsInPath(paths.paymentLinks.reference, product.externalId)
   data.backLinkHref = backLinkHref
 
   return response(req, res, 'reference-confirm/reference-confirm', data)
@@ -66,7 +66,7 @@ function postPage (req, res, next) {
 
   const errors = validateConfirmReferenceFormValue(confirmReference, product.reference_label, res)
 
-  const backLinkHref = replaceParamsInPath(paths.paymentLinksV2.reference, product.externalId)
+  const backLinkHref = replaceParamsInPath(paths.paymentLinks.reference, product.externalId)
 
   const data = {
     productExternalId: product.externalId,

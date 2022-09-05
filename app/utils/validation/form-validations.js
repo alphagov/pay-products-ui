@@ -5,12 +5,12 @@ const MAX_AMOUNT = 100000
 const MAX_REFERENCE_LENGTH = 255
 
 const validationMessageKeys = {
-  enterAnAmountInPounds: 'paymentLinksV2.fieldValidation.enterAnAmountInPounds',
-  enterAnAmountInTheCorrectFormat: 'paymentLinksV2.fieldValidation.enterAnAmountInTheCorrectFormat',
-  enterAnAmountUnderMaxAmount: 'paymentLinksV2.fieldValidation.enterAnAmountUnderMaxAmount',
-  enterAReference: 'paymentLinksV2.fieldValidation.enterAReference',
-  referenceMustBeLessThanOrEqual50Chars: 'paymentLinksV2.fieldValidation.referenceMustBeLessThanOrEqual50Chars',
-  referenceCantUseInvalidChars: 'paymentLinksV2.fieldValidation.referenceCantUseInvalidChars'
+  enterAnAmountInPounds: 'paymentLinks.fieldValidation.enterAnAmountInPounds',
+  enterAnAmountInTheCorrectFormat: 'paymentLinks.fieldValidation.enterAnAmountInTheCorrectFormat',
+  enterAnAmountUnderMaxAmount: 'paymentLinks.fieldValidation.enterAnAmountUnderMaxAmount',
+  enterAReference: 'paymentLinks.fieldValidation.enterAReference',
+  referenceMustBeLessThanOrEqual50Chars: 'paymentLinks.fieldValidation.referenceMustBeLessThanOrEqual50Chars',
+  referenceCantUseInvalidChars: 'paymentLinks.fieldValidation.referenceCantUseInvalidChars'
 }
 
 exports.validationErrors = validationMessageKeys

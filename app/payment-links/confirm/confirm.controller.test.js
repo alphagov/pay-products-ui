@@ -78,7 +78,7 @@ describe('Confirm Page Controller', () => {
         mockPaymentLinkSession.getReference.withArgs(req, product.externalId).returns('test invoice number')
         mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns(1050)
 
-        res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
+        res.locals.__p.withArgs('paymentLinks.confirm.totalToPay').returns('Total to pay')
 
         controller.getPage(req, res)
 
@@ -157,7 +157,7 @@ describe('Confirm Page Controller', () => {
           mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns(1050)
           mockPaymentLinkSession.getReferenceProvidedByQueryParams.withArgs(req, product.externalId).returns(true)
           mockPaymentLinkSession.getAmountProvidedByQueryParams.withArgs(req, product.externalId).returns(true)
-          res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
+          res.locals.__p.withArgs('paymentLinks.confirm.totalToPay').returns('Total to pay')
 
           controller.getPage(req, res)
 
@@ -187,7 +187,7 @@ describe('Confirm Page Controller', () => {
           mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns(1050)
           mockPaymentLinkSession.getReferenceProvidedByQueryParams.withArgs(req, product.externalId).returns(false)
           mockPaymentLinkSession.getAmountProvidedByQueryParams.withArgs(req, product.externalId).returns(true)
-          res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
+          res.locals.__p.withArgs('paymentLinks.confirm.totalToPay').returns('Total to pay')
 
           controller.getPage(req, res)
 
@@ -217,7 +217,7 @@ describe('Confirm Page Controller', () => {
           mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns(1050)
           mockPaymentLinkSession.getReferenceProvidedByQueryParams.withArgs(req, product.externalId).returns(true)
           mockPaymentLinkSession.getAmountProvidedByQueryParams.withArgs(req, product.externalId).returns(false)
-          res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
+          res.locals.__p.withArgs('paymentLinks.confirm.totalToPay').returns('Total to pay')
 
           controller.getPage(req, res)
 
@@ -254,7 +254,7 @@ describe('Confirm Page Controller', () => {
 
         mockPaymentLinkSession.getReference.withArgs(req, product.externalId).returns('test invoice number')
 
-        res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
+        res.locals.__p.withArgs('paymentLinks.confirm.totalToPay').returns('Total to pay')
 
         controller.getPage(req, res)
 
@@ -316,7 +316,7 @@ describe('Confirm Page Controller', () => {
 
         mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns('1050')
 
-        res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
+        res.locals.__p.withArgs('paymentLinks.confirm.totalToPay').returns('Total to pay')
 
         controller.getPage(req, res)
 
@@ -376,7 +376,7 @@ describe('Confirm Page Controller', () => {
           }
         }
 
-        res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
+        res.locals.__p.withArgs('paymentLinks.confirm.totalToPay').returns('Total to pay')
 
         controller.getPage(req, res)
 
@@ -759,8 +759,8 @@ describe('Confirm Page Controller', () => {
 
         mockCaptcha.verifyCAPTCHAToken.resolves(false)
 
-        res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
-        res.locals.__p.withArgs('paymentLinksV2.fieldValidation.youMustSelectIAmNotARobot')
+        res.locals.__p.withArgs('paymentLinks.confirm.totalToPay').returns('Total to pay')
+        res.locals.__p.withArgs('paymentLinks.fieldValidation.youMustSelectIAmNotARobot')
           .returns('You failed the captcha challenge.  Please try again.')
 
         await controller.postPage(req, res)
@@ -801,8 +801,8 @@ describe('Confirm Page Controller', () => {
 
         mockCaptcha.verifyCAPTCHAToken.rejects()
 
-        res.locals.__p.withArgs('paymentLinksV2.confirm.totalToPay').returns('Total to pay')
-        res.locals.__p.withArgs('paymentLinksV2.fieldValidation.youMustSelectIAmNotARobot')
+        res.locals.__p.withArgs('paymentLinks.confirm.totalToPay').returns('Total to pay')
+        res.locals.__p.withArgs('paymentLinks.fieldValidation.youMustSelectIAmNotARobot')
           .returns('There was an issue with the recaptcha.  Please try again.')
 
         await controller.postPage(req, res)

@@ -59,7 +59,7 @@
     "potentialPANInReferenceTitle": "Are you sure this is a reference number?",
     "potentialPANInReference": "Check that you’ve entered the number correctly before making the payment. Do not enter your debit or credit card number."
   },
-  "paymentLinksV2": {
+  "paymentLinks": {
     "common": {
       "back": "Back",
       "thereIsAProblem": "There is a problem"

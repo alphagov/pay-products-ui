@@ -274,7 +274,7 @@ describe('Reference Page Controller', () => {
           }
         }
 
-        res.locals.__p.withArgs('paymentLinksV2.fieldValidation.enterAReference').returns('Enter your %s')
+        res.locals.__p.withArgs('paymentLinks.fieldValidation.enterAReference').returns('Enter your %s')
 
         controller.postPage(req, res)
 
@@ -302,7 +302,7 @@ describe('Reference Page Controller', () => {
           }
         }
 
-        res.locals.__p.withArgs('paymentLinksV2.fieldValidation.referenceMustBeLessThanOrEqual50Chars').returns('%s must be less than or equal to 50 characters')
+        res.locals.__p.withArgs('paymentLinks.fieldValidation.referenceMustBeLessThanOrEqual50Chars').returns('%s must be less than or equal to 50 characters')
 
         controller.postPage(req, res)
 
@@ -334,7 +334,7 @@ describe('Reference Page Controller', () => {
           }
         }
 
-        res.locals.__p.withArgs('paymentLinksV2.fieldValidation.referenceCantUseInvalidChars').returns('%s can’t contain any of the following characters < > ; : ` ( ) " \' = &#124; "," ~ [ ]')
+        res.locals.__p.withArgs('paymentLinks.fieldValidation.referenceCantUseInvalidChars').returns('%s can’t contain any of the following characters < > ; : ` ( ) " \' = &#124; "," ~ [ ]')
 
         controller.postPage(req, res)
 

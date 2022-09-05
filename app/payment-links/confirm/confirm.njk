@@ -18,7 +18,7 @@
 
 {% block beforeContent %}
   {{ govukBackLink({
-    text: __p('paymentLinksV2.common.back'),
+    text: __p('paymentLinks.common.back'),
     href: backLinkHref,
     attributes: {
       'data-cy': 'back-link'
@@ -31,13 +31,13 @@
     <div class="govuk-grid-column-two-thirds">
 
       {{ errorSummary ({
-        titleText: __p("paymentLinksV2.common.thereIsAProblem"),
+        titleText: __p("paymentLinks.common.thereIsAProblem"),
         errors: errors
       }) }}
 
       <h1 class="govuk-heading-l" data-cy="product-name">{{ productName }}</h1>
 
-      <h2 class="govuk-heading-m" data-cy="reference-label">{{ __p('paymentLinksV2.confirm.checkYourDetails') }}</h2>
+      <h2 class="govuk-heading-m" data-cy="reference-label">{{ __p('paymentLinks.confirm.checkYourDetails') }}</h2>
 
       {% include "./_summary-list.njk" %}
 
@@ -55,7 +55,7 @@
         {% endif %}
 
         {{ govukButton({
-          text:  __p('paymentLinksV2.confirm.continueToPayment'),
+          text:  __p('paymentLinks.confirm.continueToPayment'),
           attributes: { 'data-cy': 'continue-to-payment-button' }
         }) }}
       </form>
