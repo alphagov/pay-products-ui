@@ -9,7 +9,7 @@ const validationMessageKeys = {
   enterAnAmountInTheCorrectFormat: 'paymentLinks.fieldValidation.enterAnAmountInTheCorrectFormat',
   enterAnAmountUnderMaxAmount: 'paymentLinks.fieldValidation.enterAnAmountUnderMaxAmount',
   enterAReference: 'paymentLinks.fieldValidation.enterAReference',
-  referenceMustBeLessThanOrEqual50Chars: 'paymentLinks.fieldValidation.referenceMustBeLessThanOrEqual50Chars',
+  referenceTooLong: 'paymentLinks.fieldValidation.referenceTooLong',
   referenceCantUseInvalidChars: 'paymentLinks.fieldValidation.referenceCantUseInvalidChars'
 }
 
@@ -60,7 +60,7 @@ function isEmptyReference (value) {
 
 function isReferenceTooLong (value) {
   if (value.trim().length > MAX_REFERENCE_LENGTH) {
-    return validationMessageKeys.referenceMustBeLessThanOrEqual50Chars
+    return validationMessageKeys.referenceTooLong
   } else {
     return false
   }
