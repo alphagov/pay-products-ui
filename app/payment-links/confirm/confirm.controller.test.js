@@ -40,7 +40,7 @@ describe('Confirm Page Controller', () => {
     '../../utils/response': mockResponses,
     '../utils/payment-link-session': mockPaymentLinkSession,
     '../../utils/captcha': mockCaptcha,
-    '../../services/clients/products.client': mockProductsClient
+    '../../services/clients/products/products.client': mockProductsClient
   })
 
   const service = new Service(serviceFixtures.validServiceResponse())
