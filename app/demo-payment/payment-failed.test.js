@@ -6,9 +6,9 @@ const cheerio = require('cheerio')
 const supertest = require('supertest')
 
 // Local dependencies
-const { SELFSERVICE_TRANSACTIONS_URL } = require('../../../config')
-const { getApp } = require('../../../server')
-const paths = require('../../paths')
+const { SELFSERVICE_TRANSACTIONS_URL } = require('../../config')
+const { getApp } = require('../../server')
+const paths = require('../paths')
 
 describe('payment failed controller', () => {
   let response, $

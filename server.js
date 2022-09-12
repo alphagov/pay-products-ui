@@ -43,7 +43,8 @@ function warnIfAnalyticsNotSet () {
 const APP_VIEWS = [
   path.join(__dirname, 'node_modules/govuk-frontend/'),
   path.join(__dirname, '/app/views'),
-  path.join(__dirname, '/app/payment-links')
+  path.join(__dirname, '/app/payment-links'),
+  path.join(__dirname, '/app/demo-payment')
 ]
 
 function initialiseGlobalMiddleware (app) {
