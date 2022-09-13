@@ -2,10 +2,10 @@
 
 const urlJoin = require('url-join')
 
-const staticify = require('../../../server').staticify
-const { SELFSERVICE_TRANSACTIONS_URL, DOCS_URL } = require('../../../config/index')
+const staticify = require('../../server').staticify
+const { SELFSERVICE_TRANSACTIONS_URL, DOCS_URL } = require('../../config')
 
-const CONFIRM_FAILURE_VIEW = 'confirm-demo-payment/failed'
+const CONFIRM_FAILURE_VIEW = './failed'
 
 const data = {
   scenarioDocsLink: urlJoin(DOCS_URL, '/#payment-flow-payment-fails'),
