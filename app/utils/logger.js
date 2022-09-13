@@ -5,7 +5,6 @@ const { addSentryToErrorLevel } = require('./sentry.js')
 const { getLoggingFields } = require('./log-context')
 
 const supplementSharedLoggingFields = format((info) => {
- console.log('--------------' + getLoggingFields())
   if (getLoggingFields()) {
     return Object.assign(info, getLoggingFields())
   }

@@ -14,11 +14,18 @@ function logContextMiddleware (req, res, next) {
   })
 }
 
+function addLoggingField (key, value) {
+  if (asyncLocalStorage.getStore()) {
+    asyncLocalStorage.getStore()[key] = value
+  }
+}
+
 function getLoggingFields () {
   return asyncLocalStorage.getStore()
 }
 
 module.exports = {
   logContextMiddleware,
+  addLoggingField,
   getLoggingFields
 }
