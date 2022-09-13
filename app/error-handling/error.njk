@@ -1,9 +1,9 @@
-{% extends "layout.njk" %}
+{% extends "../views/layout.njk" %}
 
 {% block pageTitle %}{{ __p('error.title') }} - GOV.UK Pay{% endblock %}
 
 {% block contentBody %}
   <h1 class="govuk-heading-l">{{ __p('error.title') }}</h1>
-
+  <h2>chumbawamba</h2>
   <div id="errorMsg" class="govuk-body">{{ __p(message) }}</div>
 {% endblock %}

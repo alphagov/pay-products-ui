@@ -18,7 +18,7 @@ exports.staticify = staticify
 // Custom dependencies
 const router = require('./app/routes')
 const noCache = require('./app/utils/no-cache')
-const errorHandler = require('./app/middleware/error-handler')
+const errorHandler = require('./app/error-handling/error-handler')
 const middlewareUtils = require('./app/utils/middleware')
 const cookieUtil = require('./app/utils/cookie')
 const i18nConfig = require('./config/i18n')
@@ -43,6 +43,7 @@ function warnIfAnalyticsNotSet () {
 // Define app views
 const APP_VIEWS = [
   path.join(__dirname, 'node_modules/govuk-frontend/'),
+  path.join(__dirname, '/app/error-handling'),
   path.join(__dirname, '/app/views'),
   path.join(__dirname, '/app/payment-links'),
   path.join(__dirname, '/app/demo-payment'),
