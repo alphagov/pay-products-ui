@@ -15,14 +15,14 @@ module.exports = (req, res) => {
   const paymentAmount = req.paymentAmount // may be undefined
   const referenceNumber = req.referenceNumber // may be undefined
   if (product) {
-    logger.info(`[${correlationId}] creating charge for product ${product.name}`)
+    logger.info(`Creating charge for product ${product.name}`)
     return productsClient.payment.create(product.externalId, paymentAmount, referenceNumber)
       .then(payment => {
-        logger.info(`[${correlationId}] initiating payment for charge ${payment.externalChargeId}`)
+        logger.info(`Initiating payment for charge ${payment.externalChargeId}`)
         return res.redirect(303, payment.links.next.href)
       })
       .catch(err => {
-        logger.info(`[${correlationId}] error creating charge for product ${product.externalId}. err = ${err}`)
+        logger.info(`Error creating charge for product. err = ${err}`)
         if (err.errorCode === 403) {
           return renderErrorView(req, res, paymentForbiddenErrorMessagePath, 400)
         } else {
@@ -30,7 +30,7 @@ module.exports = (req, res) => {
         }
       })
   } else {
-    logger.error(`[${correlationId}] product not found to make payment`)
+    logger.error('Product not found to make payment')
     return renderErrorView(req, res, errorMessagePath, 500)
   }
 }

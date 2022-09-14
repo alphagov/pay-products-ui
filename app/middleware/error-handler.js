@@ -30,16 +30,16 @@ module.exports = function (err, req, res, next) {
   }
 
   if (err instanceof NotFoundError) {
-    logger.info(`[${req.correlationId}] NotFoundError handled: ${err.message}. Rendering 404 page`)
+    logger.info(`NotFoundError handled: ${err.message}. Rendering 404 page`)
     res.status(404)
     return response(req, res, '404')
   }
   if (err instanceof AccountCannotTakePaymentsError) {
-    logger.info(`[${req.correlationId}] AccountCannotTakePaymentsError handled: ${err.message}. Rendering error page`)
+    logger.info(`AccountCannotTakePaymentsError handled: ${err.message}. Rendering error page`)
     res.status(400)
     return response(req, res, 'error', { message: accountCannotTakePaymentsErrorMessagePath })
   }
 
-  logger.error(`[requestId=${req.correlationId}] Internal server error`, errorPayload)
+  logger.error(`Internal server error`, errorPayload)
   return response(req, res, '500')
 }

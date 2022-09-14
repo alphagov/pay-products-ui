@@ -18,7 +18,7 @@ module.exports = (req, res) => {
   const payment = req.payment
   const product = req.product
   const correlationId = req.correlationId
-  logger.info(`[${correlationId}] routing payment complete based on product type ${product.type}`)
+  logger.info(`Routing payment complete based on product type ${product.type}`)
   switch (product.type) {
     case ('DEMO'):
       res.redirect(lodash.get(payment, 'govukStatus', '').toLowerCase() === 'success' ? demoPayment.success : demoPayment.failure)
@@ -31,7 +31,7 @@ module.exports = (req, res) => {
       lodash.get(payment, 'govukStatus', '').toLowerCase() === 'success' ? paymentStatus(req, res) : res.redirect(pay.product.replace(':productExternalId', product.externalId))
       break
     default:
-      logger.error(`[${correlationId}] error routing payment complete based on product type ${product.type}`)
+      logger.error(`Error routing payment complete based on product type ${product.type}`)
       return renderErrorView(req, res, errorMessagePath, 500)
   }
 }
