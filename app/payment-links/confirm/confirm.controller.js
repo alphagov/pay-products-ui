@@ -82,11 +82,11 @@ function getPage (req, res, next) {
   const amountProvidedByQueryParams = paymentLinkSession.getAmountProvidedByQueryParams(req, product.externalId)
 
   if (!sessionAmount && !product.price) {
-    logger.info(`[${req.correlationId}] attempted to access confirm page for ${product.externalId} without a price in the session or product. ` +
+    logger.info(`Attempted to access confirm page without a price in the session or product. ` +
     'Redirecting to start page')
     return res.redirect(replaceParamsInPath(paths.pay.product, product.externalId))
   } else if (product.reference_enabled && !sessionReferenceNumber) {
-    logger.info(`[${req.correlationId}] attempted to access confirm page for ${product.externalId} without a reference in the session ` +
+    logger.info('Attempted to access confirm page without a reference in the session ' +
     'for a product that requires a reference.  Redirecting to start page')
     return res.redirect(replaceParamsInPath(paths.pay.product, product.externalId))
   }
@@ -120,7 +120,7 @@ async function postPage (req, res, next) {
   }
 
   try {
-    logger.info(`[${req.correlationId}] creating charge for product ${product.externalId}`)
+    logger.info('Creating charge for product')
 
     const amountToUseForPayment = parseInt(product.price || req.body[HIDDEN_FORM_FIELD_ID_AMOUNT])
     const referenceToUseForPayment = product.reference_enabled ? req.body[HIDDEN_FORM_FIELD_ID_REFERENCE_VALUE] : null
