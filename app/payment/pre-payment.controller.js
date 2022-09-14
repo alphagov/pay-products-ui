@@ -23,7 +23,6 @@ function getContinueUrlForNewPaymentLinkJourney (product, referenceProvidedByQue
 
 module.exports = (req, res) => {
   const product = req.product
-  const correlationId = req.correlationId
   const { reference, amount } = req.query || {}
 
   logger.info(`Routing product of type ${product.type}`)

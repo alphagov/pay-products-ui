@@ -11,7 +11,6 @@ const paymentForbiddenErrorMessagePath = 'error.accountCannotTakePayments'
 
 module.exports = (req, res) => {
   const product = req.product
-  const correlationId = req.correlationId
   const paymentAmount = req.paymentAmount // may be undefined
   const referenceNumber = req.referenceNumber // may be undefined
   if (product) {

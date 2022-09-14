@@ -17,7 +17,6 @@ const errorMessagePath = 'error.internal' // This is the object notation to stri
 module.exports = (req, res) => {
   const payment = req.payment
   const product = req.product
-  const correlationId = req.correlationId
   logger.info(`Routing payment complete based on product type ${product.type}`)
   switch (product.type) {
     case ('DEMO'):

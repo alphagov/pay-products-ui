@@ -43,7 +43,7 @@ function ensureSessionHasCsrfSecret (req, res, next) {
   if (req.session.csrfSecret) return next()
   req.session.csrfSecret = csrf().secretSync()
   const correlationId = req.headers[CORRELATION_HEADER] || ''
-  logger.debug(`Saved csrfSecret: ${req.session.csrfSecret}`)
+  logger.debug(`[${correlationId}] Saved csrfSecret: ${req.session.csrfSecret}`)
 
   return next()
 }
