@@ -9,7 +9,7 @@ const proxyquire = require('proxyquire')
 
 const requestLogger = {}
 const wrapper = proxyquire('./wrapper', {
-  '../../../utils/request-logger': requestLogger
+  '../../utils/request-logger': requestLogger
 })
 
 describe('wrapper: request scenarios', () => {

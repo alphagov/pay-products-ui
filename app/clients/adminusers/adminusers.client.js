@@ -2,8 +2,8 @@
 
 // Local dependencies
 const baseClient = require('../base/base.client')
-const Service = require('../../../models/Service.class')
-const { ADMINUSERS_URL } = require('../../../../config')
+const Service = require('../../models/Service.class')
+const { ADMINUSERS_URL } = require('../../../config')
 
 // Constants
 const SERVICE_NAME = 'adminusers'

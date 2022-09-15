@@ -6,10 +6,10 @@ const joinURL = require('url-join')
 const correlator = require('correlation-id')
 
 // local dependencies
-const requestLogger = require('../../../utils/request-logger')
+const requestLogger = require('../../utils/request-logger')
 
 // constants
-const CORRELATION_HEADER = require('../../../../config').CORRELATION_HEADER
+const CORRELATION_HEADER = require('../../../config').CORRELATION_HEADER
 const SUCCESS_CODES = [200, 201, 202, 204, 206]
 
 module.exports = function (method, verb) {

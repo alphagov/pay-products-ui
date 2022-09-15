@@ -5,10 +5,10 @@ const { Pact } = require('@pact-foundation/pact')
 const { expect } = require('chai')
 const proxyquire = require('proxyquire')
 
-const Payment = require('../../../models/Payment.class')
-const { PactInteractionBuilder } = require('../../../../test/test-helpers/pact/pact-interaction-builder')
-const productFixtures = require('../../../../test/fixtures/product.fixtures')
-const { pactify } = require('../../../../test/test-helpers/pact/pact-base')()
+const Payment = require('../../models/Payment.class')
+const { PactInteractionBuilder } = require('../../../test/test-helpers/pact/pact-interaction-builder')
+const productFixtures = require('../../../test/fixtures/product.fixtures')
+const { pactify } = require('../../../test/test-helpers/pact/pact-base')()
 
 // Constants
 const PRODUCT_RESOURCE = '/v1/api/products'
@@ -20,7 +20,7 @@ let productExternalId
 
 function getProductsClient (baseUrl = `http://localhost:${port}`, productsApiKey = 'ABC1234567890DEF') {
   return proxyquire('./products.client', {
-    '../../../../config': {
+    '../../../config': {
       PRODUCTS_URL: baseUrl
     }
   })

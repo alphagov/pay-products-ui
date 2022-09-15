@@ -5,16 +5,16 @@ const { Pact } = require('@pact-foundation/pact')
 const { expect } = require('chai')
 const proxyquire = require('proxyquire')
 
-const { PactInteractionBuilder } = require('../../../../test/test-helpers/pact/pact-interaction-builder')
-const serviceFixtures = require('../../../../test/fixtures/service.fixtures')
-const { pactify } = require('../../../../test/test-helpers/pact/pact-base')()
+const { PactInteractionBuilder } = require('../../../test/test-helpers/pact/pact-interaction-builder')
+const serviceFixtures = require('../../../test/fixtures/service.fixtures')
+const { pactify } = require('../../../test/test-helpers/pact/pact-base')()
 
 const ADMINUSERS_RESOURCE = '/v1/api/services'
 const port = Math.floor(Math.random() * 48127) + 1024
 
 function getAdminusersClient (baseUrl = `http://localhost:${port}`) {
   return proxyquire('./adminusers.client', {
-    '../../../../config': {
+    '../../../config': {
       ADMINUSERS_URL: baseUrl
     }
   })
