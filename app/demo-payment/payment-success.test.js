@@ -7,7 +7,7 @@ const supertest = require('supertest')
 
 // Local dependencies
 const { SELFSERVICE_TRANSACTIONS_URL } = require('../../config')
-const { getApp } = require('../../server')
+const { getApp } = require('../../config/server')
 const paths = require('../paths')
 
 describe('payment success controller', () => {

@@ -28,8 +28,8 @@
   "scripts": {
     "compile": "grunt generate-assets",
     "clean": "grunt clean",
-    "start": "node ./start.js",
-    "start:dev": "nodemon -e js,njk -r dotenv/config start-dev.js",
+    "start": "node config/start.js",
+    "start:dev": "nodemon -e js,njk -r dotenv/config config/start-dev.js",
     "watch": "chokidar app test *.js --initial -c 'npm run test'",
     "watch-live-reload": "./node_modules/.bin/grunt watch",
     "lint": "./node_modules/.bin/standard --fix",
@@ -39,7 +39,7 @@
     "snyk-protect": "snyk-protect",
     "prepublish": "npm run snyk-protect",
     "publish-pacts": "./bin/publish-pacts.js",
-    "cypress:server": "mb --debug | node --inspect -r dotenv/config start.js dotenv_config_path=test/cypress/test.env",
+    "cypress:server": "mb --debug | node --inspect -r dotenv/config config/start.js dotenv_config_path=test/cypress/test.env",
     "cypress:test": "cypress run",
     "cypress:test-headed": "cypress open",
     "cypress:test-no-watch": "cypress open --config watchForFileChanges=false"

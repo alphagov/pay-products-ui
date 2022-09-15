@@ -4,8 +4,8 @@ const path = require('path')
 const fs = require('fs')
 const throng = require('throng')
 const server = require('./server')
-const logger = require('./app/utils/logger')(__filename)
-const environment = require('./app/services/environment')
+const logger = require('../app/utils/logger')(__filename)
+const environment = require('./environment')
 const pidFile = path.join(__dirname, '/.start.pid')
 const fileOptions = { encoding: 'utf-8' }
 let pid
