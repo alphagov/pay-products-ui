@@ -7,7 +7,7 @@ const paths = require('./paths.js')
 
 // - Controllers
 const staticCtrl = require('./controllers/static.controller')
-const healthcheckCtrl = require('./controllers/healthcheck.controller')
+const healthcheckCtrl = require('./healthcheck/healthcheck.controller')
 const friendlyUrlRedirectCtrl = require('./controllers/friendly-url-redirect.controller')
 const prePaymentCtrl = require('./payment/pre-payment.controller')
 const completeCtrl = require('./payment/payment-complete.controller')
