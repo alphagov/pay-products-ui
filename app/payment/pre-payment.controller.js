@@ -23,10 +23,9 @@ function getContinueUrlForNewPaymentLinkJourney (product, referenceProvidedByQue
 
 module.exports = (req, res) => {
   const product = req.product
-  const correlationId = req.correlationId
   const { reference, amount } = req.query || {}
 
-  logger.info(`[${correlationId}] routing product of type ${product.type}`)
+  logger.info(`Routing product of type ${product.type}`)
   switch (product.type) {
     case ('DEMO'):
     case ('PROTOTYPE'):
@@ -50,7 +49,7 @@ module.exports = (req, res) => {
       })
     }
     default:
-      logger.error(`[${correlationId}] error routing product of type ${product.type}`)
+      logger.error(`Error routing product of type ${product.type}`)
       return renderErrorView(req, res, errorMessagePath, 500)
   }
 }
