@@ -3,7 +3,7 @@
 const url = require('url')
 
 const logger = require('../utils/logger')(__filename)
-const productsClient = require('../services/clients/products/products.client')
+const productsClient = require('../clients/products/products.client')
 const { renderErrorView } = require('../utils/response')
 const replaceParamsInPath = require('../utils/replace-params-in-path')
 const paths = require('../paths')

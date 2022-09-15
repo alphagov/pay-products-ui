@@ -2,8 +2,8 @@
 
 // Custom dependencies
 const { renderErrorView } = require('../utils/response')
-const productsClient = require('../services/clients/products/products.client')
-const adminusersClient = require('../services/clients/adminusers/adminusers.client')
+const productsClient = require('../clients/products/products.client')
+const adminusersClient = require('../clients/adminusers/adminusers.client')
 const { addLoggingField } = require('../utils/log-context')
 const { GATEWAY_ACCOUNT_ID, SERVICE_EXTERNAL_ID, PAYMENT_EXTERNAL_ID, PRODUCT_EXTERNAL_ID } = require('@govuk-pay/pay-js-commons').logging.keys
 

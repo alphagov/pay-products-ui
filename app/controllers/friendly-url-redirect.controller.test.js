@@ -12,7 +12,7 @@ const controller = proxyquire('./friendly-url-redirect.controller', {
   '../utils/response': {
     renderErrorView: renderErrorViewSpy
   },
-  '../services/clients/products/products.client': {
+  '../clients/products/products.client': {
     product: {
       getByProductPath: getProductStub
     }

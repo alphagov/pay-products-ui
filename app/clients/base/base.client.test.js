@@ -7,7 +7,7 @@ const nock = require('nock')
 const { expect } = require('chai')
 
 // local dependencies
-const config = require('../../../../config')
+const config = require('../../../config')
 const baseClient = require('./base.client')
 
 describe('baseClient', () => {
