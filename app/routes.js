@@ -6,9 +6,9 @@ const generateRoute = require('./utils/generate-route')
 const paths = require('./paths.js')
 
 // - Controllers
-const staticCtrl = require('./controllers/static.controller')
+const staticCtrl = require('./naxsi/static.controller')
 const healthcheckCtrl = require('./healthcheck/healthcheck.controller')
-const friendlyUrlRedirectCtrl = require('./controllers/friendly-url-redirect.controller')
+const friendlyUrlRedirectCtrl = require('./product/friendly-url-redirect.controller')
 const prePaymentCtrl = require('./payment/pre-payment.controller')
 const completeCtrl = require('./payment/payment-complete.controller')
 const failedCtrl = require('./demo-payment/payment-failed.controller')
