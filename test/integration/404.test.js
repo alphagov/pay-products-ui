@@ -1,5 +1,5 @@
 const request = require('supertest')
-const app = require('../../server.js').getApp()
+const app = require('../../config/server.js').getApp()
 const expect = require('chai').expect
 
 describe('Invalid pages redirect to 404 page', function () {

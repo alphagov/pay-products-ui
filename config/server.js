@@ -9,24 +9,24 @@ const bodyParser = require('body-parser')
 const argv = require('minimist')(process.argv.slice(2))
 const flash = require('connect-flash')
 const cookieParser = require('cookie-parser')
-const staticify = require('staticify')(path.join(__dirname, 'public'))
+const staticify = require('staticify')(path.join(__dirname, '../public'))
 const i18n = require('i18n')
-const i18nPayTranslation = require('./config/pay-translation')
+const i18nPayTranslation = require('./pay-translation')
 
 exports.staticify = staticify
 
 // Custom dependencies
-const router = require('./app/routes')
-const noCache = require('./app/utils/no-cache')
-const errorHandler = require('./app/middleware/error-handler')
-const middlewareUtils = require('./app/utils/middleware')
-const cookieUtil = require('./app/utils/cookie')
-const i18nConfig = require('./config/i18n')
-const logger = require('./app/utils/logger')(__filename)
-const loggingMiddleware = require('./app/middleware/logging-middleware')
-const { logContextMiddleware } = require('./app/utils/log-context')
-const Sentry = require('./app/utils/sentry.js').initialiseSentry()
-const replaceParamsInPath = require('./app/utils/replace-params-in-path')
+const router = require('../app/routes')
+const noCache = require('../app/utils/no-cache')
+const errorHandler = require('../app/middleware/error-handler')
+const middlewareUtils = require('../app/utils/middleware')
+const cookieUtil = require('../app/utils/cookie')
+const i18nConfig = require('./i18n')
+const logger = require('../app/utils/logger')(__filename)
+const loggingMiddleware = require('../app/middleware/logging-middleware')
+const { logContextMiddleware } = require('../app/utils/log-context')
+const Sentry = require('../app/utils/sentry.js').initialiseSentry()
+const replaceParamsInPath = require('../app/utils/replace-params-in-path')
 
 // Global constants
 const JAVASCRIPT_PATH = staticify.getVersionedPath('/js/application.min.js')
@@ -42,11 +42,11 @@ function warnIfAnalyticsNotSet () {
 }
 // Define app views
 const APP_VIEWS = [
-  path.join(__dirname, 'node_modules/govuk-frontend/'),
-  path.join(__dirname, '/app/views'),
-  path.join(__dirname, '/app/payment-links'),
-  path.join(__dirname, '/app/demo-payment'),
-  path.join(__dirname, '/app/payment')
+  path.join(__dirname, '../node_modules/govuk-frontend/'),
+  path.join(__dirname, '../app/views'),
+  path.join(__dirname, '../app/payment-links'),
+  path.join(__dirname, '../app/demo-payment'),
+  path.join(__dirname, '../app/payment')
 ]
 
 function initialiseGlobalMiddleware (app) {
@@ -60,7 +60,7 @@ function initialiseGlobalMiddleware (app) {
   if (process.env.DISABLE_REQUEST_LOGGING !== 'true') {
     app.use(/\/((?!public|favicon.ico).)*/, loggingMiddleware())
   }
-  app.use(favicon(path.join(__dirname, '/node_modules/govuk-frontend/govuk/assets/images', 'favicon.ico')))
+  app.use(favicon(path.join(__dirname, '../node_modules/govuk-frontend/govuk/assets/images', 'favicon.ico')))
   app.use(staticify.middleware)
 
   app.use(function (req, res, next) {
@@ -107,9 +107,9 @@ function initialiseTemplateEngine (app) {
 }
 
 function initialisePublic (app) {
-  app.use('/public', express.static(path.join(__dirname, '/public')))
-  app.use('/public', express.static(path.join(__dirname, '/node_modules/@govuk-pay/pay-js-commons/')))
-  app.use('/', express.static(path.join(__dirname, '/node_modules/govuk-frontend/govuk/')))
+  app.use('/public', express.static(path.join(__dirname, '../public')))
+  app.use('/public', express.static(path.join(__dirname, '../node_modules/@govuk-pay/pay-js-commons/')))
+  app.use('/', express.static(path.join(__dirname, '../node_modules/govuk-frontend/govuk/')))
 }
 
 function initialisei18n (app) {

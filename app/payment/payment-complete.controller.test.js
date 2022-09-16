@@ -8,7 +8,7 @@ const supertest = require('supertest')
 
 // Local dependencies
 const { PRODUCTS_URL, ADMINUSERS_URL, SELFSERVICE_DASHBOARD_URL } = require('../../config')
-const { getApp } = require('../../server')
+const { getApp } = require('../../config/server')
 const productFixtures = require('../../test/fixtures/product.fixtures')
 const serviceFixtures = require('../../test/fixtures/service.fixtures')
 const paths = require('../paths')

@@ -5,7 +5,7 @@ const { expect } = require('chai')
 const supertest = require('supertest')
 
 // Local dependencies
-const { getApp } = require('../../server')
+const { getApp } = require('../../config/server')
 const paths = require('../paths')
 
 describe('healthcheck controller', () => {
