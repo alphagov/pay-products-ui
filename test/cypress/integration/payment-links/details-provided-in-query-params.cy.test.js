@@ -56,3 +56,39 @@ describe('Payment link visited with amount and reference provided as query param
     })
   })
 })
+
+describe('Payment link visited with invalid amount in query params', () => {
+  beforeEach(() => {
+    cy.task('setupStubs', [
+      productStubs.getProductByPathStub(productOpts),
+      productStubs.getProductByExternalIdStub(productOpts),
+      serviceStubs.getServiceSuccess({
+        gatewayAccountId: gatewayAccountId
+      })
+    ])
+  })
+
+  it('should show an error page when the payment link is visited', () => {
+    cy.visit(`/redirect/${serviceNamePath}/${productNamePath}?amount=not-valid`, { failOnStatusCode: false })
+    cy.get('h1').should('have.text', 'An error occurred:')
+    cy.get('[data-cy=error-message]').should('have.text', 'Please contact the service you are trying to make a payment to.')
+  })
+})
+
+describe('Payment link visited with invalid reference in query params', () => {
+  beforeEach(() => {
+    cy.task('setupStubs', [
+      productStubs.getProductByPathStub(productOpts),
+      productStubs.getProductByExternalIdStub(productOpts),
+      serviceStubs.getServiceSuccess({
+        gatewayAccountId: gatewayAccountId
+      })
+    ])
+  })
+
+  it('should show an error page when the payment link is visited', () => {
+    cy.visit(`/redirect/${serviceNamePath}/${productNamePath}?reference=<>`, { failOnStatusCode: false })
+    cy.get('h1').should('have.text', 'An error occurred:')
+    cy.get('[data-cy=error-message]').should('have.text', 'Please contact the service you are trying to make a payment to.')
+  })
+})

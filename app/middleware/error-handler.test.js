@@ -2,14 +2,19 @@
 
 const sinon = require('sinon')
 const proxyquire = require('proxyquire')
-const { NotFoundError, AccountCannotTakePaymentsError } = require('../errors')
+const {
+  NotFoundError,
+  AccountCannotTakePaymentsError,
+  InvalidPrefilledAmountError,
+  InvalidPrefilledReferenceError
+} = require('../errors')
 
 const req = {
   correlationId: 1234
 }
 
 describe('Error handler middleware', () => {
-  let res, errorHandler, infoLoggerSpy
+  let res, errorHandler, infoLoggerSpy, errorLoggerSpy
 
   const next = sinon.spy()
   const responseSpy = sinon.spy()
@@ -27,10 +32,12 @@ describe('Error handler middleware', () => {
     }
 
     infoLoggerSpy = sinon.spy()
+    errorLoggerSpy = sinon.spy()
     errorHandler = proxyquire('./error-handler', {
       '../utils/logger': () => {
         return {
-          info: infoLoggerSpy
+          info: infoLoggerSpy,
+          error: errorLoggerSpy
         }
       },
       '../utils/response': mockResponses
@@ -44,7 +51,7 @@ describe('Error handler middleware', () => {
     sinon.assert.calledOnceWithExactly(statusSpy, 404)
     sinon.assert.calledOnceWithExactly(responseSpy, req, res, '404')
 
-    const expectedMessage = '[1234] NotFoundError handled: 404 test error. Rendering 404 page'
+    const expectedMessage = 'NotFoundError handled: 404 test error. Rendering 404 page'
     sinon.assert.calledWith(infoLoggerSpy, expectedMessage)
   })
 
@@ -53,9 +60,31 @@ describe('Error handler middleware', () => {
     errorHandler(err, req, res, next)
     sinon.assert.notCalled(next)
     sinon.assert.calledOnceWithExactly(statusSpy, 400)
-    sinon.assert.calledOnceWithExactly(responseSpy, req, res, 'error', { message: 'error.accountCannotTakePayments' })
+    sinon.assert.calledOnceWithExactly(responseSpy, req, res, 'error', { message: 'error.contactService' })
 
-    const expectedMessage = '[1234] AccountCannotTakePaymentsError handled: test error. Rendering error page'
+    const expectedMessage = 'AccountCannotTakePaymentsError handled: test error. Rendering error page'
     sinon.assert.calledWith(infoLoggerSpy, expectedMessage)
+  })
+
+  it('should render a 400 page and log message when InvalidPrefilledAmountError handled', () => {
+    const err = new InvalidPrefilledAmountError('test error')
+    errorHandler(err, req, res, next)
+    sinon.assert.notCalled(next)
+    sinon.assert.calledOnceWithExactly(statusSpy, 400)
+    sinon.assert.calledOnceWithExactly(responseSpy, req, res, 'error', { message: 'error.contactService' })
+
+    const expectedMessage = 'InvalidPrefilledAmountError handled: test error. Rendering error page'
+    sinon.assert.calledWith(errorLoggerSpy, expectedMessage)
+  })
+
+  it('should render a 400 page and log message when InvalidPrefilledReferenceError handled', () => {
+    const err = new InvalidPrefilledReferenceError('test error')
+    errorHandler(err, req, res, next)
+    sinon.assert.notCalled(next)
+    sinon.assert.calledOnceWithExactly(statusSpy, 400)
+    sinon.assert.calledOnceWithExactly(responseSpy, req, res, 'error', { message: 'error.contactService' })
+
+    const expectedMessage = 'InvalidPrefilledReferenceError handled: test error. Rendering error page'
+    sinon.assert.calledWith(errorLoggerSpy, expectedMessage)
   })
 })
