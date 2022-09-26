@@ -1,9 +1,9 @@
 'use strict'
 
 const validations = require('@govuk-pay/pay-js-commons').utils.fieldValidationChecks
+const { isAboveMaxAmountInPounds } = require('./amount-validations')
 
 // Constants
-const MAX_AMOUNT = 100000
 const MAX_REFERENCE_LENGTH = 255
 
 const validationMessageKeys = {
@@ -46,7 +46,7 @@ function isNotCurrency (value) {
 }
 
 function isAboveMaxAmount (value) {
-  if (!isNotCurrency(value) && parseFloat(value) > MAX_AMOUNT) {
+  if (!isNotCurrency(value) && isAboveMaxAmountInPounds(parseFloat(value))) {
     return validationMessageKeys.enterAnAmountUnderMaxAmount
   }
   return false

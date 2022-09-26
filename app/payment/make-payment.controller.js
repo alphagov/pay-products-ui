@@ -7,7 +7,7 @@ const productsClient = require('../clients/products/products.client')
 
 // Constants
 const errorMessagePath = 'error.internal' // This is the object notation to string in en.json
-const paymentForbiddenErrorMessagePath = 'error.accountCannotTakePayments'
+const paymentForbiddenErrorMessagePath = 'error.contactService'
 
 module.exports = (req, res) => {
   const product = req.product

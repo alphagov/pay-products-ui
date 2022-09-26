@@ -1,10 +1,15 @@
 'use strict'
 
-const { NotFoundError, AccountCannotTakePaymentsError } = require('../errors')
+const {
+  NotFoundError,
+  AccountCannotTakePaymentsError,
+  InvalidPrefilledAmountError,
+  InvalidPrefilledReferenceError
+} = require('../errors')
 const { response } = require('../utils/response')
 
 const logger = require('../utils/logger')(__filename)
-const accountCannotTakePaymentsErrorMessagePath = 'error.accountCannotTakePayments'
+const contactServiceErrorMessagePath = 'error.contactService'
 
 module.exports = function (err, req, res, next) {
   const errorPayload = {
@@ -25,21 +30,31 @@ module.exports = function (err, req, res, next) {
   }
 
   if (res.headersSent) {
-    logger.warn(`[${req.correlationId}] Headers already sent for error`, errorPayload)
+    logger.warn('Headers already sent for error', errorPayload)
     return next(err)
   }
 
   if (err instanceof NotFoundError) {
-    logger.info(`[${req.correlationId}] NotFoundError handled: ${err.message}. Rendering 404 page`)
+    logger.info(`NotFoundError handled: ${err.message}. Rendering 404 page`)
     res.status(404)
     return response(req, res, '404')
   }
   if (err instanceof AccountCannotTakePaymentsError) {
-    logger.info(`[${req.correlationId}] AccountCannotTakePaymentsError handled: ${err.message}. Rendering error page`)
+    logger.info(`AccountCannotTakePaymentsError handled: ${err.message}. Rendering error page`)
     res.status(400)
-    return response(req, res, 'error', { message: accountCannotTakePaymentsErrorMessagePath })
+    return response(req, res, 'error', { message: contactServiceErrorMessagePath })
+  }
+  if (err instanceof InvalidPrefilledAmountError) {
+    logger.error(`InvalidPrefilledAmountError handled: ${err.message}. Rendering error page`)
+    res.status(400)
+    return response(req, res, 'error', { message: contactServiceErrorMessagePath })
+  }
+  if (err instanceof InvalidPrefilledReferenceError) {
+    logger.error(`InvalidPrefilledReferenceError handled: ${err.message}. Rendering error page`)
+    res.status(400)
+    return response(req, res, 'error', { message: contactServiceErrorMessagePath })
   }
 
-  logger.error(`[requestId=${req.correlationId}] Internal server error`, errorPayload)
+  logger.error(`Internal server error`, errorPayload)
   return response(req, res, '500')
 }

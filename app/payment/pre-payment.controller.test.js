@@ -6,6 +6,7 @@ const { expect } = require('chai')
 
 const productFixtures = require('../../test/fixtures/product.fixtures')
 const Product = require('../models/Product.class')
+const { InvalidPrefilledAmountError, InvalidPrefilledReferenceError } = require('../errors')
 
 const mockResponse = {
   response: sinon.spy()
@@ -15,10 +16,10 @@ const controller = proxyquire('./pre-payment.controller', {
   '../utils/response': mockResponse
 })
 const productExternalId = 'product-external-id'
-const queryParamAmount = '1111'
+const queryParamAmount = '10000000'
 const queryParamReference = 'abcd'
 
-function createProduct (referenceEnabled, fixedPrice) {
+function createProduct(referenceEnabled, fixedPrice) {
   return new Product(productFixtures.validProductResponse({
     type: 'ADHOC',
     external_id: productExternalId,
@@ -177,11 +178,9 @@ describe('Pre payment controller', () => {
           }
           const res = {}
 
-          controller(req, res)
+          expect(() => controller(req, res)).to.throw(InvalidPrefilledReferenceError, 'Invalid reference: []<>')
 
           expect(req).to.not.have.property('session')
-
-          sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/reference` })
         })
       })
     })
@@ -209,7 +208,7 @@ describe('Pre payment controller', () => {
           sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/reference` })
         })
       })
-      it('should ignore amount in query parameter when it is invalid', () => {
+      it('should throw error when amount in query parameter is invalid', () => {
         const product = createProduct(false, null)
         const req = {
           product,
@@ -219,11 +218,37 @@ describe('Pre payment controller', () => {
         }
         const res = {}
 
-        controller(req, res)
+        expect(() => controller(req, res)).to.throw(InvalidPrefilledAmountError, 'Invalid amount: not-valid-amount')
 
         expect(req).to.not.have.property('session')
+      })
+      it('should throw error when amount in query parameter is above the maximum', () => {
+        const product = createProduct(false, null)
+        const req = {
+          product,
+          query: {
+            amount: '10000001'
+          }
+        }
+        const res = {}
 
-        sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/amount` })
+        expect(() => controller(req, res)).to.throw(InvalidPrefilledAmountError, 'Invalid amount: 10000001')
+
+        expect(req).to.not.have.property('session')
+      })
+      it('should throw error when amount in query parameter is negative', () => {
+        const product = createProduct(false, null)
+        const req = {
+          product,
+          query: {
+            amount: '-1000'
+          }
+        }
+        const res = {}
+
+        expect(() => controller(req, res)).to.throw(InvalidPrefilledAmountError, 'Invalid amount: -1000')
+
+        expect(req).to.not.have.property('session')
       })
     })
     describe('Values have previously been loaded from query params and page is revisited', () => {

@@ -6,7 +6,9 @@ const makePayment = require('./make-payment.controller')
 const replaceParamsInPath = require('../utils/replace-params-in-path')
 const { paymentLinks } = require('../paths')
 const paymentLinkSession = require('../payment-links/utils/payment-link-session')
-const { validateReference, validateAmount } = require('../utils/validation/form-validations')
+const { validateReference } = require('../utils/validation/form-validations')
+const { isAboveMaxAmountInPence } = require('../utils/validation/amount-validations')
+const { InvalidPrefilledAmountError, InvalidPrefilledReferenceError } = require('../errors')
 
 // Constants
 const errorMessagePath = 'error.internal' // This is the object notation to string in en.json
@@ -19,6 +21,10 @@ function getContinueUrlForNewPaymentLinkJourney (product, referenceProvidedByQue
     return replaceParamsInPath(paymentLinks.amount, product.externalId)
   }
   return replaceParamsInPath(paymentLinks.confirm, product.externalId)
+}
+
+function isPositiveNumber (value) {
+  return value.match(/^\d+$/)
 }
 
 module.exports = (req, res) => {
@@ -35,10 +41,16 @@ module.exports = (req, res) => {
       if (reference || amount) {
         paymentLinkSession.deletePaymentLinkSession(req, product.externalId)
       }
-      if (product.reference_enabled && reference && validateReference(reference).valid) {
+      if (product.reference_enabled && reference) {
+        if (!validateReference(reference).valid) {
+          throw new InvalidPrefilledReferenceError(`Invalid reference: ${reference}`)
+        }
         paymentLinkSession.setReference(req, product.externalId, reference, true)
       }
-      if (!product.price && amount && validateAmount(amount).valid) {
+      if (!product.price && amount) {
+        if (!isPositiveNumber(amount) || isAboveMaxAmountInPence(parseInt(amount))) {
+          throw new InvalidPrefilledAmountError(`Invalid amount: ${amount}`)
+        }
         paymentLinkSession.setAmount(req, product.externalId, amount, true)
       }
       const referenceProvidedByQueryParams = paymentLinkSession.getReferenceProvidedByQueryParams(req, product.externalId)
