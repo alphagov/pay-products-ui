@@ -94,7 +94,7 @@
     "@pact-foundation/pact": "^9.18.1",
     "@pact-foundation/pact-node": "10.17.6",
     "@snyk/protect": "^1.1058.x",
-    "chai": "^4.3.6",
+    "chai": "^4.3.7",
     "cheerio": "^1.0.0-rc.12",
     "chokidar-cli": "latest",
     "cypress": "^9.7.0",
