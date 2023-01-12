@@ -115,7 +115,7 @@
     "lint-staged": "^13.1.0",
     "mocha": "7.2.x",
     "mountebank": "^2.8.1",
-    "nock": "13.2.x",
+    "nock": "13.3.x",
     "nodemon": "^2.0.20",
     "nunjucksify": "^2.2.0",
     "nyc": "^15.1.0",
