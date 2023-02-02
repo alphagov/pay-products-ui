@@ -3,18 +3,18 @@
 const urlJoin = require('url-join')
 
 const staticify = require('../../config/server').staticify
-const { SELFSERVICE_TRANSACTIONS_URL, DOCS_URL } = require('../../config')
+const { SELFSERVICE_DEMO_PAYMENT_RETURN_URL, DOCS_URL } = require('../../config')
 
 const CONFIRM_FAILURE_VIEW = './demo-payment-failed'
 
-const data = {
-  scenarioDocsLink: urlJoin(DOCS_URL, '/#payment-flow-payment-fails'),
-  cardNumbersDocsLink: urlJoin(DOCS_URL, '/#mock-card-numbers-for-testing-purposes'),
-  transactionsLink: SELFSERVICE_TRANSACTIONS_URL,
-  exampleImgSrc: staticify.getVersionedPath('/images/error-page.png')
-}
-
 module.exports = (req, res) => {
+  const transactionsLink = SELFSERVICE_DEMO_PAYMENT_RETURN_URL.replace(':productExternalId', req.params.productExternalId)
+  const data = {
+    scenarioDocsLink: urlJoin(DOCS_URL, '/#payment-flow-payment-fails'),
+    cardNumbersDocsLink: urlJoin(DOCS_URL, '/#mock-card-numbers-for-testing-purposes'),
+    transactionsLink,
+    exampleImgSrc: staticify.getVersionedPath('/images/error-page.png')
+  }
   res
     .status(200)
     .render(CONFIRM_FAILURE_VIEW, data)

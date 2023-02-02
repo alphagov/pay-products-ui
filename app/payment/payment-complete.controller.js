@@ -20,7 +20,7 @@ module.exports = (req, res) => {
   logger.info(`Routing payment complete based on product type ${product.type}`)
   switch (product.type) {
     case ('DEMO'):
-      res.redirect(lodash.get(payment, 'govukStatus', '').toLowerCase() === 'success' ? demoPayment.success : demoPayment.failure)
+      res.redirect(lodash.get(payment, 'govukStatus', '').toLowerCase() === 'success' ? demoPayment.success.replace(':productExternalId', product.externalId) : demoPayment.failure.replace(':productExternalId', product.externalId))
       break
     case ('PROTOTYPE'):
       res.redirect(product.returnUrl)

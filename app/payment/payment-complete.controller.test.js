@@ -41,7 +41,7 @@ describe('payment complete controller', () => {
       })
 
       it('should redirect to the payment success page', () => {
-        expect(response.headers).to.have.property('location').to.equal(paths.demoPayment.success)
+        expect(response.headers).to.have.property('location').to.equal(paths.demoPayment.success.replace(':productExternalId', product.external_id))
       })
     })
 
@@ -71,7 +71,7 @@ describe('payment complete controller', () => {
       })
 
       it('should redirect to the payment failed page', () => {
-        expect(response.headers).to.have.property('location').to.equal(paths.demoPayment.failure)
+        expect(response.headers).to.have.property('location').to.equal(paths.demoPayment.failure.replace(':productExternalId', product.external_id))
       })
     })
   })
