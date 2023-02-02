@@ -3,14 +3,16 @@
 const urlJoin = require('url-join')
 
 const staticify = require('../../config/server').staticify
-const { SELFSERVICE_TRANSACTIONS_URL, DOCS_URL } = require('../../config')
+const { SELFSERVICE_DEMO_PAYMENT_RETURN_URL, DOCS_URL } = require('../../config')
 
 const CONFIRM_SUCCESS_VIEW = './demo-payment-success'
 
-const data = {
-  scenarioDocsLink: urlJoin(DOCS_URL, '/#confirmation-page'),
-  transactionsLink: SELFSERVICE_TRANSACTIONS_URL,
-  exampleImgSrc: staticify.getVersionedPath('/images/confirmation-page.png')
+module.exports = (req, res) => {
+  const transactionsLink = SELFSERVICE_DEMO_PAYMENT_RETURN_URL.replace(':productExternalId', req.params.productExternalId)
+  const data = {
+    scenarioDocsLink: urlJoin(DOCS_URL, '/#confirmation-page'),
+    transactionsLink,
+    exampleImgSrc: staticify.getVersionedPath('/images/confirmation-page.png')
+  }
+  res.status(200).render(CONFIRM_SUCCESS_VIEW, data)
 }
-
-module.exports = (req, res) => res.status(200).render(CONFIRM_SUCCESS_VIEW, data)

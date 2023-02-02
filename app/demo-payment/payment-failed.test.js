@@ -6,15 +6,16 @@ const cheerio = require('cheerio')
 const supertest = require('supertest')
 
 // Local dependencies
-const { SELFSERVICE_TRANSACTIONS_URL } = require('../../config')
+const { SELFSERVICE_DEMO_PAYMENT_RETURN_URL } = require('../../config')
 const { getApp } = require('../../config/server')
 const paths = require('../paths')
 
 describe('payment failed controller', () => {
+  const productExternalId = 'a-product-external-id'
   let response, $
   before(done => {
     supertest(getApp())
-      .get(paths.demoPayment.failure)
+      .get(paths.demoPayment.failure.replace(':productExternalId', productExternalId))
       .end((err, res) => {
         response = res
         $ = cheerio.load(response.text)
@@ -53,6 +54,6 @@ describe('payment failed controller', () => {
     expect($('p.transactions-prompt').text()).to.equal('You can now view this payment in your transactions list on GOV.UK Pay.')
     const transactionsLink = $('a.transactions-link')
     expect(transactionsLink.text()).to.contain('Go to transactions')
-    expect(transactionsLink.attr('href')).to.equal(SELFSERVICE_TRANSACTIONS_URL)
+    expect(transactionsLink.attr('href')).to.equal(SELFSERVICE_DEMO_PAYMENT_RETURN_URL.replace(':productExternalId', productExternalId))
   })
 })

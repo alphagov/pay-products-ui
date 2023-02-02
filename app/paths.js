@@ -22,8 +22,8 @@ module.exports = {
     confirm: '/pay/:productExternalId/confirm'
   },
   demoPayment: {
-    success: '/successful',
-    failure: '/failed'
+    success: '/successful/:productExternalId',
+    failure: '/failed/:productExternalId'
   },
   healthcheck: {
     path: '/healthcheck'
