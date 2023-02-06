@@ -68,23 +68,23 @@ npm run compile && npm test
 
 ## Key runtime environment variables
 
-| Variable                       | Description                               |
-| ------------------------------ |:----------------------------------------- |
-| `ADMINUSERS_URL`               | 
-| `ANALYTICS_TRACKING_ID`        | 
-| `COOKIE_MAX_AGE`               | 
-| `CORRELATION_HEADER_NAME`      | Default `x-request-id`
-| `DISABLE_INTERNAL_HTTPS`       | 
-| `DISABLE_REQUEST_LOGGING`      | 
-| `MAX_SOCKETS`                  | 
-| `METRICS_HOST`                 | 
-| `NODE_ENV`                     | 
-| `NODE_WORKER_COUNT`            | Default `1`
-| `PORT`                         | Default `3000`
-| `PRODUCTS_URL`                 | 
-| `SELFSERVICE_DASHBOARD_URL`    | 
-| `SELFSERVICE_TRANSACTIONS_URL` | 
-| `SESSION_ENCRYPTION_KEY`       | 
+| Variable                              | Description                               |
+|---------------------------------------|:----------------------------------------- |
+| `ADMINUSERS_URL`                      | 
+| `ANALYTICS_TRACKING_ID`               | 
+| `COOKIE_MAX_AGE`                      | 
+| `CORRELATION_HEADER_NAME`             | Default `x-request-id`
+| `DISABLE_INTERNAL_HTTPS`              | 
+| `DISABLE_REQUEST_LOGGING`             | 
+| `MAX_SOCKETS`                         | 
+| `METRICS_HOST`                        | 
+| `NODE_ENV`                            | 
+| `NODE_WORKER_COUNT`                   | Default `1`
+| `PORT`                                | Default `3000`
+| `PRODUCTS_URL`                        | 
+| `SELFSERVICE_DASHBOARD_URL`           | 
+| `SELFSERVICE_DEMO_PAYMENT_RETURN_URL` | 
+| `SESSION_ENCRYPTION_KEY`              | 
 
 
 ## Key build-time environment variables
