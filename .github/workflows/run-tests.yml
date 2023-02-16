@@ -26,7 +26,7 @@ jobs:
         uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c
       - name: Parse Node version
         id: parse-node-version
-        run: echo "##[set-output name=nvmrc;]$(cat .nvmrc)" 
+        run: echo NVMRC=`cat .nvmrc` >> $GITHUB_ENV
   install-and-compile:
     runs-on: ubuntu-latest
     name: Install and compile
