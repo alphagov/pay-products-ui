@@ -100,7 +100,7 @@
     "cypress": "^9.7.0",
     "dotenv": "^16.0.3",
     "envfile": "^5.2.0",
-    "eslint": "8.35.x",
+    "eslint": "8.36.x",
     "eslint-plugin-import": "^2.27.5",
     "grunt": "1.6.x",
     "grunt-babel": "^8.0.0",
