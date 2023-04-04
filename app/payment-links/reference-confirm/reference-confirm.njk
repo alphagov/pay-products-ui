@@ -42,7 +42,7 @@
 
     {% set radioErrorMessage = { text: errors['confirm-reference'], attributes: { 'data-cy': 'error-message'} } if errors['confirm-reference'] %}  
 
-    <form method="post">
+    <form method="post" novalidate>
       <input id="csrf" name="csrfToken" type="hidden" value="{{ csrf }}"/>
 
       {{ govukRadios({
