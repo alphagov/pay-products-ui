@@ -41,7 +41,7 @@
 
       {% include "./_summary-list.njk" %}
 
-      <form method="post" data-cy="form">
+      <form method="post" data-cy="form" novalidate>
         <input id="csrf" name="csrfToken" type="hidden" value="{{ csrf }}"/>
 
         {% if productReferenceLabel %}
