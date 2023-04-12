@@ -42,6 +42,8 @@ describe('Reference and reference confirm page', () => {
 
         cy.get('[data-cy=label]').should('contain', 'Enter your invoice number')
         cy.get('[data-cy=button]').should('exist')
+
+        cy.percySnapshot()
       })
 
       it('when an reference is entered that is too long, should display an error', () => {
@@ -56,6 +58,8 @@ describe('Reference and reference confirm page', () => {
           .should('have.attr', 'href', '#payment-reference')
 
         cy.get('[data-cy=error-message]').should('contain', 'Invoice number must be 255 characters or fewer')
+
+        cy.percySnapshot()
       })
 
       it('when an reference is entered that looks like a card number, should go to the `reference confirm` page', () => {
@@ -66,6 +70,8 @@ describe('Reference and reference confirm page', () => {
         cy.get('[data-cy=button]').click()
 
         cy.title().should('contain', 'Confirm your invoice number - A Product Name')
+
+        cy.percySnapshot()
       })
     })
 
@@ -77,6 +83,8 @@ describe('Reference and reference confirm page', () => {
         cy.get('h1').should('contain', 'Confirm your invoice number')
         cy.get('[data-cy=reference]').should('contain', '4444333322221111')
         cy.get('[data-cy=button]').should('exist')
+
+        cy.percySnapshot()
       })
 
       it('when no radio option is selected and the `Continue` button is clicked, should display an error', () => {
@@ -88,6 +96,8 @@ describe('Reference and reference confirm page', () => {
           .should('have.attr', 'href', '#confirm-reference')
 
         cy.get('[data-cy=error-message]').should('contain', 'Select yes if your invoice number is correct')
+
+        cy.percySnapshot()
       })
 
       it('when `Yes` is selected and `Continue` is clicked, should then go to the amount page', () => {
@@ -96,6 +106,8 @@ describe('Reference and reference confirm page', () => {
         cy.get('[data-cy=button]').click()
 
         cy.title().should('contain', 'Enter amount to pay - A Product Name')
+
+        cy.percySnapshot()
       })
     })
   })

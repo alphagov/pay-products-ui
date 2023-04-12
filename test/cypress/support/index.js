@@ -9,6 +9,8 @@
 // https://on.cypress.io/configuration
 // ***********************************************************
 
+import '@percy/cypress'
+
 beforeEach(() => {
   cy.task('clearStubs')
 })

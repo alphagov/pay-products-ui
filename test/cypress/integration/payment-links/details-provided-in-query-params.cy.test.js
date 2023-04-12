@@ -32,6 +32,8 @@ describe('Payment link visited with amount and reference provided as query param
 
   it('should show confirm page with details provided in the query params when "Continue" is clicked', () => {
     cy.visit(`/redirect/${serviceNamePath}/${productNamePath}?amount=5689&reference=REF123`)
+    cy.percySnapshot()
+
     cy.get('h1').should('have.text', productName)
 
     cy.get('[data-cy=button]').click()
@@ -54,6 +56,8 @@ describe('Payment link visited with amount and reference provided as query param
         cy.get('dd').eq(1).should('not.exist')
       })
     })
+
+    cy.percySnapshot()
   })
 })
 
@@ -72,6 +76,8 @@ describe('Payment link visited with invalid amount in query params', () => {
     cy.visit(`/redirect/${serviceNamePath}/${productNamePath}?amount=not-valid`, { failOnStatusCode: false })
     cy.get('h1').should('have.text', 'An error occurred:')
     cy.get('[data-cy=error-message]').should('have.text', 'Please contact the service you are trying to make a payment to.')
+
+    cy.percySnapshot()
   })
 })
 
@@ -90,5 +96,7 @@ describe('Payment link visited with invalid reference in query params', () => {
     cy.visit(`/redirect/${serviceNamePath}/${productNamePath}?reference=<>`, { failOnStatusCode: false })
     cy.get('h1').should('have.text', 'An error occurred:')
     cy.get('[data-cy=error-message]').should('have.text', 'Please contact the service you are trying to make a payment to.')
+
+    cy.percySnapshot()
   })
 })

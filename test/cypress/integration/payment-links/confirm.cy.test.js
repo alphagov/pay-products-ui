@@ -81,6 +81,8 @@ describe('Confirm page', () => {
         cy.get('[data-cy=form]').get('#reference-value').should('not.exist')
         cy.get('[data-cy=form]').get('#amount').should('value', '1000')
         cy.get('[data-cy=continue-to-payment-button]').should('exist')
+
+        cy.percySnapshot()
       })
     })
 
@@ -105,6 +107,7 @@ describe('Confirm page', () => {
 
         // Visit the reference page - to enter a reference
         cy.visit('/pay/a-product-id/reference')
+        cy.percySnapshot()
 
         cy.get('[data-cy=label]').should('contain', 'Enter your invoice number')
 
@@ -125,6 +128,8 @@ describe('Confirm page', () => {
 
         cy.get('[data-cy=form]').get('#reference-value').eq(0).should('value', 'a-invoice-number')
         cy.get('[data-cy=form]').get('#amount').eq(0).should('value', '1000')
+
+        cy.percySnapshot()
       })
     })
 
@@ -146,6 +151,7 @@ describe('Confirm page', () => {
         ])
 
         cy.visit('/pay/a-product-id/confirm')
+        cy.percySnapshot()
 
         cy.get('.g-recaptcha').should('exist')
       })
@@ -169,6 +175,7 @@ describe('Confirm page', () => {
         ])
 
         cy.visit('/pay/a-product-id/confirm')
+        cy.percySnapshot()
 
         cy.get('.g-recaptcha').should('not.exist')
       })
@@ -215,6 +222,8 @@ describe('Confirm page', () => {
 
         cy.get('[data-cy=form]').get('#reference-value').should('not.exist')
         cy.get('[data-cy=form]').get('#amount').should('value', '1000')
+
+        cy.percySnapshot()
       })
     })
 
@@ -239,6 +248,7 @@ describe('Confirm page', () => {
 
         // Visit the reference page - to enter a reference
         cy.visit('/pay/a-product-id/reference')
+        cy.percySnapshot()
 
         cy.get('[data-cy=label]').should('contain', 'Enter your invoice number')
 
@@ -249,6 +259,7 @@ describe('Confirm page', () => {
 
         // Visit the amount page - to enter an amount
         cy.url().should('include', '/pay/a-product-id/amount')
+        cy.percySnapshot()
 
         cy.get('[data-cy=label]').should('contain', 'Enter amount to pay')
 

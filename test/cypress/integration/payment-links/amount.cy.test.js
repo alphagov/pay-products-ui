@@ -34,6 +34,8 @@ describe('Amount page', () => {
       cy.get('[data-cy=label]').should('contain', 'Enter amount to pay')
       cy.get('#payment-amount-hint').should('contain', 'Find it somewhere')
       cy.get('[data-cy=button]').should('exist')
+
+      cy.percySnapshot()
     })
 
     it('when the amount is in the wrong format, should display an error', () => {
@@ -46,6 +48,8 @@ describe('Amount page', () => {
         .should('have.attr', 'href', '#payment-amount')
 
       cy.get('[data-cy=error-message]').should('contain', 'Enter an amount in pounds and pence using digits and a decimal point, like 123.45 or 156.00')
+
+      cy.percySnapshot()
     })
 
     it('when a valid amount is entered, should then go to the `confirm` page', () => {
@@ -56,6 +60,8 @@ describe('Amount page', () => {
       cy.get('[data-cy=button]').click()
 
       cy.title().should('contain', 'Confirm - A Product Name')
+
+      cy.percySnapshot()
     })
   })
 })

@@ -40,6 +40,7 @@ describe('The payment link start page', () => {
 
     it('should render the start page', () => {
       cy.visit(`/redirect/${serviceNamePath}/${productNamePath}`)
+      cy.percySnapshot()
 
       cy.get('[data-cy=header-service-name]').should('contain', productName)
       cy.title().should('contain', `Make a payment - ${productName}`)
@@ -54,6 +55,7 @@ describe('The payment link start page', () => {
         expect(location.pathname).to.eq(`/pay/${productExternalId}/reference`)
       })
       cy.get('[data-cy=label]').should('contain', `Enter your ${referenceLabel}`)
+      cy.percySnapshot()
     })
   })
 
@@ -75,6 +77,8 @@ describe('The payment link start page', () => {
 
       cy.visit(`/pay/${productExternalId}`)
       cy.get('[data-cy=heading-caption]').should('have.text', serviceName)
+
+      cy.percySnapshot()
     })
   })
 
@@ -98,6 +102,8 @@ describe('The payment link start page', () => {
 
       cy.visit(`/redirect/${serviceNamePath}/${productNamePath}`)
       cy.get('[data-cy=product-description]').should('not.exist')
+
+      cy.percySnapshot()
     })
   })
 })

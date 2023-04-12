@@ -43,6 +43,8 @@ describe('Welsh - reference page', () => {
 
         cy.get('[data-cy=label]').should('contain', 'Cofnodwch eich rhif anfoneb')
         cy.get('[data-cy=button]').should('exist')
+
+        cy.percySnapshot()
       })
 
       it('when an reference is entered that is too long, should display an error', () => {
@@ -57,6 +59,8 @@ describe('Welsh - reference page', () => {
           .should('have.attr', 'href', '#payment-reference')
 
         cy.get('[data-cy=error-message]').should('contain', 'Mae’n rhaid i rhif anfoneb fod yn 255 nod neu lai')
+
+        cy.percySnapshot()
       })
     })
   })

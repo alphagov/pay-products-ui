@@ -42,6 +42,8 @@
     "cypress:server": "mb --debug | node --inspect -r dotenv/config config/start.js dotenv_config_path=test/cypress/test.env",
     "cypress:test": "cypress run",
     "cypress:test-headed": "cypress open",
+    "cypress:test-percy-open": "percy exec -- cypress open",
+    "cypress:test-percy": "percy exec -- cypress run",
     "cypress:test-no-watch": "cypress open --config watchForFileChanges=false"
   },
   "lint-staged": {
@@ -72,7 +74,7 @@
     "csrf": "3.1.x",
     "currency-formatter": "^1.5.9",
     "express": "4.18.x",
-    "govuk-frontend": "^3.14.0",
+    "govuk-frontend": "^4.5.0",
     "i18n": "^0.15.1",
     "lodash": "4.17.x",
     "luhn-js": "^1.1.2",
@@ -93,6 +95,8 @@
     "@babel/preset-env": "^7.19.3",
     "@pact-foundation/pact": "^9.18.1",
     "@pact-foundation/pact-node": "10.17.6",
+    "@percy/cli": "^1.21.0",
+    "@percy/cypress": "^3.1.2",
     "@snyk/protect": "^1.1021.x",
     "chai": "^4.3.6",
     "cheerio": "^1.0.0-rc.12",
