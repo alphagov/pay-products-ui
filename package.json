@@ -78,7 +78,7 @@
     "luhn-js": "^1.1.2",
     "minimist": "^1.2.8",
     "morgan": "1.10.x",
-    "nunjucks": "^3.2.3",
+    "nunjucks": "^3.2.4",
     "request": "^2.88.2",
     "requestretry": "^7.1.0",
     "serve-favicon": "2.5.0",
