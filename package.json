@@ -129,5 +129,10 @@
     "stylelint-order": "^6.0.3",
     "supertest": "^6.3.3"
   },
+  "overrides": {
+    "request": {
+      "qs": "6.11.1"
+    }
+  },
   "snyk": true
 }
