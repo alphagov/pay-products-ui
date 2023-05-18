@@ -61,7 +61,7 @@
     ]
   },
   "dependencies": {
-    "@govuk-pay/pay-js-commons": "3.8.12",
+    "@govuk-pay/pay-js-commons": "3.8.13",
     "@sentry/node": "7.51.2",
     "body-parser": "1.20.x",
     "chokidar": "^3.5.3",
