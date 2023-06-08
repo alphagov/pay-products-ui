@@ -132,6 +132,9 @@
   "overrides": {
     "request": {
       "qs": "6.11.1"
+    },
+    "mountebank-formatters": {
+      "ejs": "3.1.8"
     }
   },
   "snyk": true
