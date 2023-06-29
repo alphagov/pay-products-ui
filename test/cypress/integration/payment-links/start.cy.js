@@ -49,6 +49,7 @@ describe('The payment link start page', () => {
     })
 
     it('should continue to the reference page when continue is clicked', () => {
+      cy.visit(`/redirect/${serviceNamePath}/${productNamePath}`)
       cy.get('[data-cy=button]').click()
       cy.location().should((location) => {
         expect(location.pathname).to.eq(`/pay/${productExternalId}/reference`)

@@ -34,7 +34,6 @@ describe('Welsh - reference page', () => {
 
     describe('Reference page', () => {
       it('should redirect to the Reference page', () => {
-        Cypress.Cookies.preserveOnce('session')
         cy.visit('/pay/a-product-id/reference')
 
         cy.get('[data-cy=back-link]')
@@ -46,7 +45,7 @@ describe('Welsh - reference page', () => {
       })
 
       it('when an reference is entered that is too long, should display an error', () => {
-        Cypress.Cookies.preserveOnce('session')
+        cy.visit('/pay/a-product-id/reference')
         cy.get('[data-cy=input]').type(textThatIs256CharactersLong, { delay: 0 })
         cy.get('[data-cy=button]').click()
 
