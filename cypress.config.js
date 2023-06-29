@@ -1,0 +1,23 @@
+const { defineConfig } = require('cypress')
+
+module.exports = defineConfig({
+  fileServerFolder: './test/cypress',
+  screenshotsFolder: './test/cypress/screenshots',
+  videosFolder: './test/cypress/videos',
+  video: false,
+  env: {
+    TEST_SESSION_ENCRYPTION_KEY: 'naskjwefvwei72rjkwfmjwfi72rfkjwefmjwefiuwefjkbwfiu24fmjbwfk',
+    MOUNTEBANK_URL: 'http://localhost:2525',
+    MOUNTEBANK_IMPOSTERS_PORT: 8000
+  },
+  e2e: {
+    setupNodeEvents (on, config) {
+      return require('./test/cypress/plugins')(on, config)
+    },
+    baseUrl: 'http://localhost:3000',
+    specPattern: './test/cypress/integration/**/*.cy.js',
+    supportFile: './test/cypress/support',
+    viewportHeight: 800,
+    viewportWidth: 1280
+  },
+})

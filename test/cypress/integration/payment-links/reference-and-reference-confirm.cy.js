@@ -7,8 +7,8 @@ const gatewayAccountId = 666
 const productExternalId = 'a-product-id'
 
 const textThatIs256CharactersLong = 'This is a piece of text that contains exactly 256 characters and this is 1 higher '
-    + 'than 255 characters and as such it will fail any validation that checks if the text has a length of 255 '
-    + 'characters or fewer because it is exactly 1 character longer than that'
+  + 'than 255 characters and as such it will fail any validation that checks if the text has a length of 255 '
+  + 'characters or fewer because it is exactly 1 character longer than that'
 
 describe('Reference and reference confirm page', () => {
   describe('when the Payment Link has no price', () => {
@@ -33,7 +33,6 @@ describe('Reference and reference confirm page', () => {
 
     describe('Reference page', () => {
       it('should redirect to the Reference page', () => {
-        Cypress.Cookies.preserveOnce('session')
         cy.visit('/pay/a-product-id/reference')
 
         cy.get('[data-cy=back-link]')
@@ -45,7 +44,7 @@ describe('Reference and reference confirm page', () => {
       })
 
       it('when an reference is entered that is too long, should display an error', () => {
-        Cypress.Cookies.preserveOnce('session')
+        cy.visit('/pay/a-product-id/reference')
         cy.get('[data-cy=input]').type(textThatIs256CharactersLong, { delay: 0 })
         cy.get('[data-cy=button]').click()
 
@@ -59,7 +58,7 @@ describe('Reference and reference confirm page', () => {
       })
 
       it('when an reference is entered that looks like a card number, should go to the `reference confirm` page', () => {
-        Cypress.Cookies.preserveOnce('session')
+        cy.visit('/pay/a-product-id/reference')
         cy.get('[data-cy=input]')
           .clear()
           .type('4444333322221111', { delay: 0 })
@@ -70,17 +69,20 @@ describe('Reference and reference confirm page', () => {
     })
 
     describe('Reference confirm page', () => {
-      it('should display the `reference confirm` page correctly', () => {
-        Cypress.Cookies.preserveOnce('session')
+      it('should display the `reference confirm` page when card number is entered and continue to amount page correctly', () => {
+
+        cy.visit('/pay/a-product-id/reference')
+        cy.get('[data-cy=input]')
+          .clear()
+          .type('4444333322221111', { delay: 0 })
+        cy.get('[data-cy=button]').click()
 
         cy.get('[data-cy=back-link]').should('have.attr', 'href', '/pay/a-product-id/reference')
         cy.get('h1').should('contain', 'Confirm your invoice number')
         cy.get('[data-cy=reference]').should('contain', '4444333322221111')
         cy.get('[data-cy=button]').should('exist')
-      })
 
-      it('when no radio option is selected and the `Continue` button is clicked, should display an error', () => {
-        Cypress.Cookies.preserveOnce('session')
+        cy.log('No radio option is selected and when the `Continue` button is clicked, it should display an error')
         cy.get('[data-cy=button]').click()
 
         cy.get('[data-cy=error-summary] a')
@@ -88,10 +90,8 @@ describe('Reference and reference confirm page', () => {
           .should('have.attr', 'href', '#confirm-reference')
 
         cy.get('[data-cy=error-message]').should('contain', 'Select yes if your invoice number is correct')
-      })
 
-      it('when `Yes` is selected and `Continue` is clicked, should then go to the amount page', () => {
-        Cypress.Cookies.preserveOnce('session')
+        cy.log('`Yes` is selected and `Continue` is clicked, it then go to the amount page')
         cy.get('[data-cy=yes-radio]').click()
         cy.get('[data-cy=button]').click()
 

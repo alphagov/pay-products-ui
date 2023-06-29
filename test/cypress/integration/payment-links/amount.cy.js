@@ -27,7 +27,6 @@ describe('Amount page', () => {
     })
 
     it('should redirect to the `Amount` page', () => {
-      Cypress.Cookies.preserveOnce('session')
       cy.visit('/pay/a-product-id/amount')
 
       cy.get('[data-cy=back-link]').should('have.attr', 'href', '/pay/a-product-id')
@@ -37,7 +36,7 @@ describe('Amount page', () => {
     })
 
     it('when the amount is in the wrong format, should display an error', () => {
-      Cypress.Cookies.preserveOnce('session')
+      cy.visit('/pay/a-product-id/amount')
       cy.get('[data-cy=input]').type('invalid amount', { delay: 0 })
       cy.get('[data-cy=button]').click()
 
@@ -49,6 +48,7 @@ describe('Amount page', () => {
     })
 
     it('when a valid amount is entered, should then go to the `confirm` page', () => {
+      cy.visit('/pay/a-product-id/amount')
       cy.get('[data-cy=input]')
         .clear()
         .type('10.50', { delay: 0 })
