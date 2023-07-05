@@ -2,6 +2,7 @@
 
 const productStubs = require('../../stubs/products-stubs')
 const serviceStubs = require('../../stubs/service-stubs')
+const paymentStubs = require('../../stubs/payment-stubs')
 
 const gatewayAccountId = 666
 const productExternalId = 'a-product-id'
@@ -125,6 +126,52 @@ describe('Confirm page', () => {
 
         cy.get('[data-cy=form]').get('#reference-value').eq(0).should('value', 'a-invoice-number')
         cy.get('[data-cy=form]').get('#amount').eq(0).should('value', '1000')
+      })
+
+      it('should redirect to reference page when creating payment and products returns CARD_NUMBER_IN_PAYMENT_LINK_REFERENCE_REJECTED error', () => {
+        cy.task('setupStubs', [
+          productStubs.getProductByExternalIdStub({
+            external_id: productExternalId,
+            reference_enabled: true,
+            reference_label: 'invoice number',
+            reference_hint: 'Invoice number hint',
+            type: 'ADHOC',
+            price: 1000
+          }),
+          serviceStubs.getServiceSuccess({
+            gatewayAccountId: gatewayAccountId,
+            serviceName: {
+              en: 'Test service name'
+            }
+          }),
+          paymentStubs.createPaymentErrorStub({
+            product_external_id: productExternalId
+          })
+        ])
+
+        cy.log('Visit the reference page - to enter a reference')
+        cy.visit('/pay/a-product-id/reference')
+
+        cy.get('[data-cy=label]').should('contain', 'Enter your invoice number')
+
+        cy.get('[data-cy=input]')
+          .clear()
+          .type('4242424242424242', { delay: 0 })
+
+        cy.get('[data-cy=button]').click()
+
+        cy.log('Confirm reference number and continue')
+        cy.get('[data-cy=yes-radio]').click()
+        cy.get('[data-cy=button]').click()
+
+        cy.log('Continue to make a payment')
+        cy.get('[data-cy=continue-to-payment-button]').click()
+
+        cy.url().should('include', 'pay/a-product-id/reference')
+        cy.get('[data-cy=error-summary] a')
+          .should('contain', 'Check that you’ve entered the number correctly before making the payment. Do not enter your debit or credit card number')
+          .should('have.attr', 'href', '#payment-reference')
+        cy.get('[data-cy=error-message]').should('contain', 'Check that you’ve entered the number correctly before making the payment. Do not enter your debit or credit card number')
       })
     })
 

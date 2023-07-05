@@ -23,7 +23,8 @@ describe('Confirm Page Controller', () => {
     getReference: sinon.stub(),
     getReferenceProvidedByQueryParams: sinon.stub(),
     getAmountProvidedByQueryParams: sinon.stub(),
-    deletePaymentLinkSession: sinon.stub()
+    deletePaymentLinkSession: sinon.stub(),
+    setError: sinon.stub()
   }
 
   const mockCaptcha = {
@@ -550,6 +551,36 @@ describe('Confirm Page Controller', () => {
         const expectedError = sinon.match.instanceOf(AccountCannotTakePaymentsError)
           .and(sinon.match.has('message', 'Forbidden response returned by Public API when creating payment'))
         sinon.assert.calledWith(next, expectedError)
+      })
+
+      it('should return 400 and redirect to reference page for CARD_NUMBER_IN_PAYMENT_LINK_REFERENCE_REJECTED error', async () => {
+        req = {
+          correlationId: '123',
+          product,
+          body: {
+            amount: '1000'
+          }
+        }
+        res = {
+          redirect: sinon.stub()
+        }
+        const next = sinon.stub()
+
+        const error = new Error('Failed to create payment.')
+        error.errorCode = 400
+        error.error_identifier = 'CARD_NUMBER_IN_PAYMENT_LINK_REFERENCE_REJECTED'
+        mockProductsClient.payment.create.rejects(error)
+
+        await controller.postPage(req, res, next)
+
+        sinon.assert.calledWith(
+          mockProductsClient.payment.create,
+          'an-external-id',
+          1000
+        )
+
+        sinon.assert.calledWith(res.redirect, '/pay/an-external-id/reference')
+        sinon.assert.calledWith(mockPaymentLinkSession.setError, req, 'an-external-id', 'fieldValidation.potentialPANInReference')
       })
     })
 
