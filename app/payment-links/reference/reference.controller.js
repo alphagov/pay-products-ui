@@ -8,7 +8,6 @@ const { NotFoundError } = require('../../errors')
 const getBackLinkUrl = require('./get-back-link-url')
 const { validateReference } = require('../../utils/validation/form-validations')
 const replaceParamsInPath = require('../../utils/replace-params-in-path')
-const isAPotentialPan = require('./is-a-potential-pan')
 const paymentLinkSession = require('../utils/payment-link-session')
 
 const PAYMENT_REFERENCE = 'payment-reference'
@@ -29,9 +28,7 @@ function validateReferenceFormValue (reference, referenceLabel, res) {
 }
 
 function getNextPageUrl (productPrice, isEditing, reference, amountProvidedByQueryParams) {
-  if (isAPotentialPan(reference)) {
-    return paths.paymentLinks.referenceConfirm + (isEditing ? '?change=true' : '')
-  } else if (productPrice || isEditing || amountProvidedByQueryParams) {
+  if (productPrice || isEditing || amountProvidedByQueryParams) {
     return paths.paymentLinks.confirm
   } else {
     return paths.paymentLinks.amount

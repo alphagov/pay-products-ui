@@ -15,7 +15,6 @@ const failedCtrl = require('./demo-payment/payment-failed.controller')
 const successCtrl = require('./demo-payment/payment-success.controller')
 const amountCtrl = require('./payment-links/amount/amount.controller')
 const referenceCtrl = require('./payment-links/reference/reference.controller')
-const referenceConfirmCtrl = require('./payment-links/reference-confirm/reference-confirm.controller')
 const confirmCtrl = require('./payment-links/confirm/confirm.controller')
 
 // Middleware
@@ -64,9 +63,6 @@ module.exports.bind = function (app) {
   // ADHOC AND AGENT_INITIATED_MOTO SPECIFIC SCREENS
   app.get(paymentLinks.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceCtrl.getPage)
   app.post(paymentLinks.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceCtrl.postPage)
-
-  app.get(paymentLinks.referenceConfirm, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceConfirmCtrl.getPage)
-  app.post(paymentLinks.referenceConfirm, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceConfirmCtrl.postPage)
 
   app.get(paymentLinks.amount, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, amountCtrl.getPage)
   app.post(paymentLinks.amount, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, amountCtrl.postPage)

@@ -226,69 +226,6 @@ describe('Reference Page Controller', () => {
         sinon.assert.calledWith(res.redirect, '/pay/an-external-id/confirm')
       })
 
-      it('when reference is a potential card number, it should  ' +
-        'redirect to the REFERENCE CONFIRM page', () => {
-        req = {
-          correlationId: '123',
-          product,
-          body: {
-            'payment-reference': '4242424242424242'
-          }
-        }
-
-        res = {
-          redirect: sinon.spy()
-        }
-
-        controller.postPage(req, res)
-
-        sinon.assert.calledWith(mockPaymentLinkSession.setReference, req, product.externalId, '4242424242424242')
-        sinon.assert.calledWith(res.redirect, '/pay/an-external-id/reference/confirm')
-      })
-
-      it('when reference is a potential card number and there is an amount in the session, it should  ' +
-        'redirect to the REFERENCE CONFIRM page', () => {
-        req = {
-          correlationId: '123',
-          product,
-          body: {
-            'payment-reference': '4242424242424242'
-          }
-        }
-
-        res = {
-          redirect: sinon.spy()
-        }
-
-        controller.postPage(req, res)
-
-        sinon.assert.calledWith(mockPaymentLinkSession.setReference, req, product.externalId, '4242424242424242')
-        sinon.assert.calledWith(res.redirect, '/pay/an-external-id/reference/confirm')
-      })
-
-      it('when reference is a potential card number and there is the `change` query parameter, it should  ' +
-        'redirect to the REFERENCE CONFIRM page with the `change` query parameter', () => {
-        req = {
-          correlationId: '123',
-          product,
-          body: {
-            'payment-reference': '4242424242424242'
-          },
-          query: {
-            change: 'true'
-          }
-        }
-
-        res = {
-          redirect: sinon.spy()
-        }
-
-        controller.postPage(req, res)
-
-        sinon.assert.calledWith(mockPaymentLinkSession.setReference, req, product.externalId, '4242424242424242')
-        sinon.assert.calledWith(res.redirect, '/pay/an-external-id/reference/confirm?change=true')
-      })
-
       it('when an empty reference is entered, it should display an error message with the `reference_label` and the back link correctly', () => {
         req = {
           correlationId: '123',

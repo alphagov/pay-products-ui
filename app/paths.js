@@ -18,7 +18,6 @@ module.exports = {
     product: '/pay/:productExternalId',
     amount: '/pay/:productExternalId/amount',
     reference: '/pay/:productExternalId/reference',
-    referenceConfirm: '/pay/:productExternalId/reference/confirm',
     confirm: '/pay/:productExternalId/confirm'
   },
   demoPayment: {
