@@ -55,6 +55,14 @@ function getPage (req, res, next) {
 
   const sessionReferenceNumber = paymentLinkSession.getReference(req, product.externalId)
 
+  if (paymentLinkSession.getError(req, product.externalId)) {
+    const errors = {}
+    const errorMessage = res.locals.__p(paymentLinkSession.getError(req, product.externalId))
+    errors[PAYMENT_REFERENCE] = capitaliseFirstLetter(errorMessage)
+    paymentLinkSession.setError(req, product.externalId, '')
+    data.errors = errors
+  }
+
   data.backLinkHref = getBackLinkUrl(change, product)
 
   if (sessionReferenceNumber) {

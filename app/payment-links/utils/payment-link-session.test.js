@@ -5,6 +5,7 @@ const paymentLinkSession = require('./payment-link-session')
 const productExternalId = 'a-product-external-id'
 const reference = 'REF123'
 const amount = 1234
+const error = 'some-error'
 
 describe('Payment link session utilities', () => {
   describe('Get reference', () => {
@@ -108,6 +109,35 @@ describe('Payment link session utilities', () => {
 
       const sessionAmount = paymentLinkSession.getAmount(req, productExternalId)
       expect(sessionAmount).to.equal(amount)
+    })
+  })
+
+  describe('Get error', () => {
+    it('should return undefined when there is no session', () => {
+      const req = {}
+      const sessionAmount = paymentLinkSession.getError(req, productExternalId)
+      expect(sessionAmount).to.equal(undefined)
+    })
+
+    it('should return error from session', () => {
+      const req = {
+        session: {
+          'a-product-external-id': {
+            error
+          }
+        }
+      }
+      const sessionRef = paymentLinkSession.getError(req, productExternalId)
+      expect(sessionRef).to.equal('some-error')
+    })
+  })
+
+  describe('Set error', () => {
+    it('should set the error when there is no payment link session', () => {
+      const req = {}
+      paymentLinkSession.setError(req, productExternalId, error)
+
+      expect(paymentLinkSession.getError(req, productExternalId)).to.equal(error)
     })
   })
 

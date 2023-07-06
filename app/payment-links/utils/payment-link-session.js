@@ -7,6 +7,7 @@ const REFERENCE_KEY = 'reference'
 const AMOUNT_KEY = 'amount'
 const REFERENCE_PROVIDED_BY_QUERY_PARAMS_KEY = 'referenceProvidedByQueryParams'
 const AMOUNT_PROVIDED_BY_QUERY_PARAMS_KEY = 'amountProvidedByQueryParams'
+const ERROR_KEY = 'error'
 
 function cookieIndex (key, productExternalId) {
   return `${getSessionCookieName()}.${productExternalId}.${key}`
@@ -42,6 +43,14 @@ function getAmountProvidedByQueryParams (req, productExternalId) {
   return lodash.get(req, cookieIndex(AMOUNT_PROVIDED_BY_QUERY_PARAMS_KEY, productExternalId), false)
 }
 
+function getError (req, productExternalId) {
+  return lodash.get(req, cookieIndex(ERROR_KEY, productExternalId))
+}
+
+function setError (req, productExternalId, error) {
+  lodash.set(req, cookieIndex(ERROR_KEY, productExternalId), error)
+}
+
 function deletePaymentLinkSession (req, productExternalId) {
   lodash.unset(req, `${getSessionCookieName()}.${productExternalId}`)
 }
@@ -53,5 +62,7 @@ module.exports = {
   setAmount,
   getReferenceProvidedByQueryParams,
   getAmountProvidedByQueryParams,
-  deletePaymentLinkSession
+  deletePaymentLinkSession,
+  getError,
+  setError
 }

@@ -16,12 +16,12 @@ const mockResponses = {
 }
 
 const textThatIs255CharactersLong = 'This text contains exactly 255 characters and this is the precise maximum number '
-    + 'allowed for a payment reference and therefore it should pass the validation that checks the text is at most 255 '
-    + 'characters in length and not a single character more than that'
+  + 'allowed for a payment reference and therefore it should pass the validation that checks the text is at most 255 '
+  + 'characters in length and not a single character more than that'
 
 const textThatIs256CharactersLong = 'This is a piece of text that contains exactly 256 characters and this is 1 higher '
-    + 'than 255 characters and as such it will fail any validation that checks if the text has a length of 255 '
-    + 'characters or fewer because it is exactly 1 character longer than that'
+  + 'than 255 characters and as such it will fail any validation that checks if the text has a length of 255 '
+  + 'characters or fewer because it is exactly 1 character longer than that'
 
 let req, res
 
@@ -29,7 +29,9 @@ describe('Reference Page Controller', () => {
   const mockPaymentLinkSession = {
     getReference: sinon.stub(),
     getAmount: sinon.stub(),
-    setReference: sinon.stub()
+    setReference: sinon.stub(),
+    setError: sinon.stub(),
+    getError: sinon.stub()
   }
 
   const controller = proxyquire('./reference.controller', {
@@ -92,6 +94,35 @@ describe('Reference Page Controller', () => {
         const pageData = mockResponses.response.args[0][3]
         expect(pageData.backLinkHref).to.equal('/pay/an-external-id/confirm')
         expect(pageData.reference).to.equal('reference test value')
+      })
+
+      it('should include error in the response and clear error if found in session', () => {
+        req = {
+          correlationId: '123',
+          product,
+          service
+        }
+        res = {
+          locals: {
+            __p: sinon.stub()
+          }
+        }
+        mockPaymentLinkSession.getError.withArgs(req, product.externalId).returns('fieldValidation.potentialPANInReference')
+        mockPaymentLinkSession.getReference.withArgs(req, product.externalId).returns('4242')
+        res.locals.__p.withArgs('fieldValidation.potentialPANInReference').returns('error message')
+
+        controller.getPage(req, res)
+
+        sinon.assert.calledWith(mockPaymentLinkSession.setError, req, product.externalId, '')
+        sinon.assert.calledWith(responseSpy, req, res, 'reference/reference', {
+          productExternalId: 'an-external-id',
+          productName: 'A Product Name',
+          paymentReferenceLabel: undefined,
+          paymentReferenceHint: undefined,
+          backLinkHref: '/pay/an-external-id',
+          reference: '4242',
+          errors: { 'payment-reference': 'Error message' }
+        })
       })
     })
 
@@ -196,7 +227,7 @@ describe('Reference Page Controller', () => {
       })
 
       it('when reference is a potential card number, it should  ' +
-      'redirect to the REFERENCE CONFIRM page', () => {
+        'redirect to the REFERENCE CONFIRM page', () => {
         req = {
           correlationId: '123',
           product,
@@ -216,7 +247,7 @@ describe('Reference Page Controller', () => {
       })
 
       it('when reference is a potential card number and there is an amount in the session, it should  ' +
-      'redirect to the REFERENCE CONFIRM page', () => {
+        'redirect to the REFERENCE CONFIRM page', () => {
         req = {
           correlationId: '123',
           product,
@@ -236,7 +267,7 @@ describe('Reference Page Controller', () => {
       })
 
       it('when reference is a potential card number and there is the `change` query parameter, it should  ' +
-      'redirect to the REFERENCE CONFIRM page with the `change` query parameter', () => {
+        'redirect to the REFERENCE CONFIRM page with the `change` query parameter', () => {
         req = {
           correlationId: '123',
           product,
@@ -315,7 +346,7 @@ describe('Reference Page Controller', () => {
       })
 
       it('when an invalid reference is entered and the change query parameter is present, it should display an error ' +
-      'message and set the back link to the CONFIRM page', () => {
+        'message and set the back link to the CONFIRM page', () => {
         req = {
           correlationId: '123',
           product,

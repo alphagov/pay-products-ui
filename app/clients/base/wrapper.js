@@ -43,6 +43,9 @@ module.exports = function (method, verb) {
         if (errors && errors.constructor.name === 'Array') errors = errors.join(', ')
         const err = new Error(errors || body || 'Unknown error')
         err.errorCode = response.statusCode
+        if (lodash.get(body, 'error_identifier')) {
+          err.error_identifier = lodash.get(body, 'error_identifier')
+        }
         reject(err)
       }
     })
