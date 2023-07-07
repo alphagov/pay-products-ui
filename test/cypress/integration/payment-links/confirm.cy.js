@@ -160,10 +160,6 @@ describe('Confirm page', () => {
 
         cy.get('[data-cy=button]').click()
 
-        cy.log('Confirm reference number and continue')
-        cy.get('[data-cy=yes-radio]').click()
-        cy.get('[data-cy=button]').click()
-
         cy.log('Continue to make a payment')
         cy.get('[data-cy=continue-to-payment-button]').click()
 
