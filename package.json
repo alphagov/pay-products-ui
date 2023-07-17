@@ -100,7 +100,7 @@
     "chokidar-cli": "latest",
     "cypress": "^12.17.1",
     "dotenv": "^16.3.1",
-    "eslint": "8.44.x",
+    "eslint": "8.45.x",
     "eslint-plugin-import": "^2.27.5",
     "grunt": "1.6.x",
     "grunt-babel": "^8.0.0",
