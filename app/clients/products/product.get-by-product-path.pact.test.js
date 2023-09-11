@@ -19,7 +19,7 @@ let productExternalId
 let serviceNamePath
 let productNamePath
 
-function getProductsClient (baseUrl = `http://localhost:${port}`) {
+function getProductsClient (baseUrl = `http://127.0.0.1:${port}`) {
   return proxyquire('./products.client', {
     '../../../config': {
       PRODUCTS_URL: baseUrl

@@ -17,7 +17,7 @@ let result
 let response
 let productExternalId
 
-function getProductsClient (baseUrl = `http://localhost:${port}`, productsApiKey = 'ABC1234567890DEF') {
+function getProductsClient (baseUrl = `http://127.0.0.1:${port}`, productsApiKey = 'ABC1234567890DEF') {
   return proxyquire('./products.client', {
     '../../../config': {
       PRODUCTS_URL: baseUrl

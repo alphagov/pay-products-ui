@@ -12,7 +12,7 @@ const { pactify } = require('../../../test/test-helpers/pact/pact-base')()
 const ADMINUSERS_RESOURCE = '/v1/api/services'
 const port = Math.floor(Math.random() * 48127) + 1024
 
-function getAdminusersClient (baseUrl = `http://localhost:${port}`) {
+function getAdminusersClient (baseUrl = `http://127.0.0.1:${port}`) {
   return proxyquire('./adminusers.client', {
     '../../../config': {
       ADMINUSERS_URL: baseUrl
