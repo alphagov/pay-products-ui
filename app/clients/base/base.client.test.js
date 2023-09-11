@@ -44,8 +44,8 @@ describe('baseClient', () => {
         res.end()
       }).listen()
       baseClient
-        .get({ url: `http://localhost:${server.address().port}/alpha` }, captureConnection)
-        .then(() => baseClient.get({ url: `http://localhost:${server.address().port}/beta` }, captureConnection))
+        .get({ url: `http://127.0.0.1:${server.address().port}/alpha` }, captureConnection)
+        .then(() => baseClient.get({ url: `http://127.0.0.1:${server.address().port}/beta` }, captureConnection))
         .then(() => done())
         .catch(done)
 

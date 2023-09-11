@@ -26,7 +26,7 @@ npm install && npm run compile
 npm run start:dev
 ```
 
-Visit the site on http://localhost:3000.
+Visit the site on http://127.0.0.1:3000.
 
 ### Debug using Visual Studio Code
 

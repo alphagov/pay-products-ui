@@ -14,7 +14,7 @@ const port = Math.floor(Math.random() * 48127) + 1024
 
 let response, result, gatewayAccountId, referenceNumber
 
-function getProductsClient (baseUrl = `http://localhost:${port}`) {
+function getProductsClient (baseUrl = `http://127.0.0.1:${port}`) {
   return proxyquire('./products.client', {
     '../../../config': {
       PRODUCTS_URL: baseUrl
