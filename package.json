@@ -125,7 +125,7 @@
     "sass": "^1.66.1",
     "sinon": "15.2.x",
     "standard": "^14.3.4",
-    "stylelint": "^15.10.2",
+    "stylelint": "^15.10.3",
     "stylelint-config-gds": "^1.0.0",
     "stylelint-order": "^6.0.3",
     "supertest": "^6.3.3"
