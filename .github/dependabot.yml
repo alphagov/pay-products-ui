@@ -5,7 +5,7 @@ updates:
   schedule:
     interval: daily
     time: "03:00"
-  open-pull-requests-limit: 5
+  open-pull-requests-limit: 0
   labels:
   - dependencies
   - govuk-pay
@@ -28,7 +28,7 @@ updates:
   ignore:
   - dependency-name: node
     versions:
-    - ">= 18"
+    - "> 18"
 - package-ecosystem: github-actions
   directory: "/"
   schedule:
