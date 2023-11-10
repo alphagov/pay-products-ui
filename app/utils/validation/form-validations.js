@@ -37,6 +37,13 @@ function isEmptyAmount (value) {
   }
 }
 
+function isZeroAmount (value) {
+  if (!isNotCurrency(value) && (['0', '0.0', '0.00'].indexOf(value.trim()) > -1)) {
+    return validationMessageKeys.enterAnAmountInPounds
+  }
+  return false
+}
+
 function isNotCurrency (value) {
   if (validations.isCurrency(value)) {
     return validationMessageKeys.enterAnAmountInTheCorrectFormat
@@ -90,6 +97,11 @@ function validateAmount (amount) {
   const isAboveMaxAmountErrorMessageKey = isAboveMaxAmount(amount)
   if (isAboveMaxAmountErrorMessageKey) {
     return notValidReturnObject(isAboveMaxAmountErrorMessageKey)
+  }
+
+  const isZeroAmountErrorMessageKey = isZeroAmount(amount)
+  if (isZeroAmountErrorMessageKey) {
+    return notValidReturnObject(isZeroAmountErrorMessageKey)
   }
 
   return validReturnObject

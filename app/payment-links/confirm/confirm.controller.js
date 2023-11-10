@@ -2,12 +2,15 @@
 const lodash = require('lodash')
 
 const { response } = require('../../utils/response')
+const { renderErrorView } = require('../../utils/response')
+
 const paths = require('../../paths')
 const replaceParamsInPath = require('../../utils/replace-params-in-path')
 const captcha = require('../../utils/captcha')
 const logger = require('../../utils/logger')(__filename)
 const productsClient = require('../../clients/products/products.client')
 const paymentLinkSession = require('../utils/payment-link-session')
+const { validateAmount } = require('../../utils/validation/form-validations')
 const { convertPenceToPoundsAndPence } = require('../../utils/currency')
 const { AccountCannotTakePaymentsError } = require('../../errors')
 
@@ -82,7 +85,7 @@ function getPage (req, res, next) {
   const amountProvidedByQueryParams = paymentLinkSession.getAmountProvidedByQueryParams(req, product.externalId)
 
   if (!sessionAmount && !product.price) {
-    logger.info(`Attempted to access confirm page without a price in the session or product. ` +
+    logger.info('Attempted to access confirm page without a price in the session or product. ' +
     'Redirecting to start page')
     return res.redirect(replaceParamsInPath(paths.pay.product, product.externalId))
   } else if (product.reference_enabled && !sessionReferenceNumber) {
@@ -103,6 +106,14 @@ async function postPage (req, res, next) {
   const sessionAmount = paymentLinkSession.getAmount(req, product.externalId)
   const referenceProvidedByQueryParams = paymentLinkSession.getReferenceProvidedByQueryParams(req, product.externalId)
   const amountProvidedByQueryParams = paymentLinkSession.getAmountProvidedByQueryParams(req, product.externalId)
+  const isPrefilledPayment = paymentLinkSession.getPrefilledFlag(req, product.externalId)
+
+  if (isPrefilledPayment !== 'false' &&
+    validateAmount(amountProvidedByQueryParams) &&
+    !validateAmount(amountProvidedByQueryParams).valid) {
+    const zeroAmountErrorMessagePath = 'error.contactService'
+    return renderErrorView(req, res, zeroAmountErrorMessagePath, 400)
+  }
 
   if (product.requireCaptcha) {
     const errors = await validateRecaptcha(
