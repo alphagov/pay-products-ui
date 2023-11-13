@@ -8,6 +8,7 @@ const MAX_REFERENCE_LENGTH = 255
 
 const validationMessageKeys = {
   enterAnAmountInPounds: 'paymentLinks.fieldValidation.enterAnAmountInPounds',
+  enterANonZeroAmountInPounds: 'paymentLinks.fieldValidation.enterANonZeroAmountInPounds',
   enterAnAmountInTheCorrectFormat: 'paymentLinks.fieldValidation.enterAnAmountInTheCorrectFormat',
   enterAnAmountUnderMaxAmount: 'paymentLinks.fieldValidation.enterAnAmountUnderMaxAmount',
   enterAReference: 'paymentLinks.fieldValidation.enterAReference',
@@ -39,7 +40,7 @@ function isEmptyAmount (value) {
 
 function isZeroAmount (value) {
   if (!isNotCurrency(value) && (['0', '0.0', '0.00'].indexOf(value.trim()) > -1)) {
-    return validationMessageKeys.enterAnAmountInPounds
+    return validationMessageKeys.enterANonZeroAmountInPounds
   }
   return false
 }

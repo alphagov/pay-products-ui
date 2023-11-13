@@ -111,7 +111,7 @@ async function postPage (req, res, next) {
   if (isPrefilledPayment !== 'false' &&
     validateAmount(amountProvidedByQueryParams) &&
     !validateAmount(amountProvidedByQueryParams).valid) {
-    const zeroAmountErrorMessagePath = 'error.contactService'
+    const zeroAmountErrorMessagePath = 'error.contactServiceForZeroValuePayment'
     return renderErrorView(req, res, zeroAmountErrorMessagePath, 400)
   }
 
