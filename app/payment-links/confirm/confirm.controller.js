@@ -10,7 +10,7 @@ const captcha = require('../../utils/captcha')
 const logger = require('../../utils/logger')(__filename)
 const productsClient = require('../../clients/products/products.client')
 const paymentLinkSession = require('../utils/payment-link-session')
-const { validateAmount } = require('../../utils/validation/form-validations')
+const formValidation = require('../../utils/validation/form-validations')
 const { convertPenceToPoundsAndPence } = require('../../utils/currency')
 const { AccountCannotTakePaymentsError } = require('../../errors')
 
@@ -18,6 +18,7 @@ const HIDDEN_FORM_FIELD_ID_REFERENCE_VALUE = 'reference-value'
 const HIDDEN_FORM_FIELD_ID_AMOUNT = 'amount'
 const GOOGLE_RECAPTCHA_FORM_NAME = 'g-recaptcha-response'
 const ERROR_KEY_RECAPTCHA = 'recaptcha'
+const CONTACT_SERVICE_ZERO_VALUE_PAYMENT_ERROR = 'error.contactServiceForZeroValuePayment'
 
 function getBackLinkUrl (product, referenceProvidedByQueryParams, amountProvidedByQueryParams) {
   if (!product.price && !amountProvidedByQueryParams) {
@@ -106,13 +107,12 @@ async function postPage (req, res, next) {
   const sessionAmount = paymentLinkSession.getAmount(req, product.externalId)
   const referenceProvidedByQueryParams = paymentLinkSession.getReferenceProvidedByQueryParams(req, product.externalId)
   const amountProvidedByQueryParams = paymentLinkSession.getAmountProvidedByQueryParams(req, product.externalId)
-  const isPrefilledPayment = paymentLinkSession.getPrefilledFlag(req, product.externalId)
 
-  if (isPrefilledPayment !== 'false' &&
-    validateAmount(amountProvidedByQueryParams) &&
-    !validateAmount(amountProvidedByQueryParams).valid) {
-    const zeroAmountErrorMessagePath = 'error.contactServiceForZeroValuePayment'
-    return renderErrorView(req, res, zeroAmountErrorMessagePath, 400)
+  if (amountProvidedByQueryParams &&
+    formValidation.validateAmount(sessionAmount.toString()) &&
+    !formValidation.validateAmount(sessionAmount.toString()).valid
+  ) {
+    return renderErrorView(req, res, CONTACT_SERVICE_ZERO_VALUE_PAYMENT_ERROR, 400)
   }
 
   if (product.requireCaptcha) {

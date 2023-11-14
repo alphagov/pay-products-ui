@@ -521,37 +521,72 @@ describe('Confirm Page Controller', () => {
         sinon.assert.calledWith(next, expectedError)
       })
 
-      it('when creating a payment returns a 403, should call next() with an AccountCannotTakePaymentsError', async () => {
-        req = {
-          correlationId: '123',
-          product,
-          body: {
-            amount: '1000'
+      it('when creating a prefilled payment link with an amount equals to £0.00, should render an error view with the correct message',
+        async () => {
+          req = {
+            correlationId: '123',
+            product,
+            body: {
+              amount: '0'
+            }
           }
-        }
 
-        res = {
-          redirect: sinon.stub()
-        }
+          res = {
+            setHeader: sinon.stub(),
+            status: sinon.stub(),
+            render: sinon.stub(),
+            locals: {
+              __p: sinon.stub()
+            }
+          }
 
-        const next = sinon.stub()
+          const next = sinon.stub()
 
-        const error = new Error('Failed to create payment.')
-        error.errorCode = 403
-        mockProductsClient.payment.create.rejects(error)
+          mockPaymentLinkSession.getReference.withArgs(req, product.externalId).returns('test invoice number')
+          mockPaymentLinkSession.getAmount.withArgs(req, product.externalId).returns(0)
+          mockPaymentLinkSession.getReferenceProvidedByQueryParams.withArgs(req, product.externalId).returns(true)
+          mockPaymentLinkSession.getAmountProvidedByQueryParams.withArgs(req, product.externalId).returns(true)
+          res.locals.__p.withArgs('paymentLinks.confirm.totalToPay').returns('Total to pay')
 
-        await controller.postPage(req, res, next)
+          await controller.postPage(req, res, next)
 
-        sinon.assert.calledWith(
-          mockProductsClient.payment.create,
-          'an-external-id',
-          1000
-        )
+          sinon.assert.calledWith(res.setHeader, 'Content-Type', 'text/html')
+          sinon.assert.calledWith(res.status, 400)
+          sinon.assert.calledWith(res.render, 'error', { message: 'error.contactServiceForZeroValuePayment' })
+        })
 
-        const expectedError = sinon.match.instanceOf(AccountCannotTakePaymentsError)
-          .and(sinon.match.has('message', 'Forbidden response returned by Public API when creating payment'))
-        sinon.assert.calledWith(next, expectedError)
-      })
+      it('when creating a payment returns a 403, should call next() with an AccountCannotTakePaymentsError',
+        async () => {
+          req = {
+            correlationId: '123',
+            product,
+            body: {
+              amount: '1000'
+            }
+          }
+
+          res = {
+            redirect: sinon.stub()
+          }
+
+          const next = sinon.stub()
+
+          const error = new Error('Failed to create payment.')
+          error.errorCode = 403
+          mockProductsClient.payment.create.rejects(error)
+
+          await controller.postPage(req, res, next)
+
+          sinon.assert.calledWith(
+            mockProductsClient.payment.create,
+            'an-external-id',
+            1000
+          )
+
+          const expectedError = sinon.match.instanceOf(AccountCannotTakePaymentsError)
+            .and(sinon.match.has('message', 'Forbidden response returned by Public API when creating payment'))
+          sinon.assert.calledWith(next, expectedError)
+        })
 
       it('should return 400 and redirect to reference page for CARD_NUMBER_IN_PAYMENT_LINK_REFERENCE_REJECTED error', async () => {
         req = {

@@ -8,7 +8,6 @@ const AMOUNT_KEY = 'amount'
 const REFERENCE_PROVIDED_BY_QUERY_PARAMS_KEY = 'referenceProvidedByQueryParams'
 const AMOUNT_PROVIDED_BY_QUERY_PARAMS_KEY = 'amountProvidedByQueryParams'
 const ERROR_KEY = 'error'
-const PRE_FILLED_KEY = 'prefilled'
 
 function cookieIndex (key, productExternalId) {
   return `${getSessionCookieName()}.${productExternalId}.${key}`
@@ -56,13 +55,6 @@ function deletePaymentLinkSession (req, productExternalId) {
   lodash.unset(req, `${getSessionCookieName()}.${productExternalId}`)
 }
 
-function getPrefilledFlag (req, productExternalId) {
-  return lodash.get(req, cookieIndex(PRE_FILLED_KEY, productExternalId))
-}
-function setPrefilledFlag (req, productExternalId, prefilled) {
-  lodash.set(req, cookieIndex(PRE_FILLED_KEY, productExternalId), prefilled)
-}
-
 module.exports = {
   getReference,
   setReference,
@@ -72,7 +64,5 @@ module.exports = {
   getAmountProvidedByQueryParams,
   deletePaymentLinkSession,
   getError,
-  setError,
-  setPrefilledFlag,
-  getPrefilledFlag
+  setError
 }

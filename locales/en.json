@@ -19,7 +19,7 @@
 		"default": "There’s a problem with the payments platform. Please try again later",
 		"internal": "Sorry, we’re unable to process your request. Try again later.",
 		"contactService": "Please contact the service you are trying to make a payment to.",
-		"contactServiceForZeroValuePayment": "Please contact the service regarding the zero amount payment error."
+		"contactServiceForZeroValuePayment": "There is a problem with the link you have been sent to use to pay. The payment amount cannot be £0.00. Contact the service you’re trying to make a payment to."
 	},
 	"404Page": {
 		"title": "Page not found",
@@ -82,7 +82,7 @@
 		},
 		"fieldValidation": {
 			"enterAnAmountInPounds": "Enter an amount of money to pay",
-			"enterANonZeroAmountInPounds": "Enter an amount that is £0.01 or more",
+			"enterANonZeroAmountInPounds": "Amount must be £0.01 or more",
 			"enterAnAmountInTheCorrectFormat": "Enter an amount in pounds and pence using digits and a decimal point, like 123.45 or 156.00",
 			"enterAnAmountUnderMaxAmount": "Enter an amount that is £100,000 or less",
 			"enterAReference": "You must enter your %s",
