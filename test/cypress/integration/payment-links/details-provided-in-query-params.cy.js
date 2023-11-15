@@ -55,6 +55,29 @@ describe('Payment link visited with amount and reference provided as query param
       })
     })
   })
+
+  it('should show error page when confirmation page has a £0 amount and the "Continue to payment" button is clicked', () => {
+    cy.visit(`/redirect/${serviceNamePath}/${productNamePath}?amount=0&reference=REF123`)
+    cy.get('h1').should('have.text', productName)
+
+    cy.get('[data-cy=button]').click()
+
+    cy.location().should((location) => {
+      expect(location.pathname).to.eq(`/pay/${productExternalId}/confirm`)
+    })
+
+    cy.get('.govuk-summary-list__row').eq(1).within(() => {
+      cy.get('dt').should('contain', 'Total to pay')
+      cy.get('dd').eq(0).should('contain', '£0')
+      // should have no change link
+      cy.get('dd').eq(1).should('not.exist')
+    })
+
+    cy.get('[data-cy=continue-to-payment-button]').click()
+    cy.get('h1').should('have.text', 'An error occurred:')
+    cy.get('[data-cy=error-message]').should('have.text', 'There is a problem with the link you have been sent to use to pay. ' +
+      'The payment amount cannot be £0.00. Contact the service you’re trying to make a payment to.')
+  })
 })
 
 describe('Payment link visited with invalid amount in query params', () => {
