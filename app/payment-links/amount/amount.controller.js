@@ -73,6 +73,7 @@ function postPage (req, res, next) {
   const paymentAmountInPence = convertPoundsAndPenceToPence(paymentAmount)
 
   paymentLinkSession.setAmount(req, product.externalId, paymentAmountInPence)
+
   return res.redirect(replaceParamsInPath(paths.paymentLinks.confirm, product.externalId))
 }
 
