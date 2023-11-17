@@ -18,7 +18,9 @@
     "title": "An error occurred:",
     "default": "There’s a problem with the payments platform. Please try again later",
     "internal": "Sorry, we’re unable to process your request. Try again later.",
-    "contactService": "Please contact the service you are trying to make a payment to."
+    "contactService": "Please contact the service you are trying to make a payment to.",
+    "invalidReference": "Reference must be 255 characters or fewer. You can’t use any of the following characters < > ; : ` ( ) \" ' = | \",\" ~ [ ]",
+    "invalidAmount": "Amount must be in pounds and pence using digits and a decimal point, like 123.45 or 156.00 and £100,000 or less."
   },
   "404Page": {
     "title": "Page not found",
