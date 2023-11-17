@@ -3,7 +3,15 @@
 {% block pageTitle %}{{ __p('error.title') }} - GOV.UK Pay{% endblock %}
 
 {% block contentBody %}
-  <h1 class="govuk-heading-l">{{ __p('error.title') }}</h1>
-
-  <div id="errorMsg" class="govuk-body" data-cy="error-message">{{ __p(message) }}</div>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l">{{ __p('error.title') }}</h1>
+      {% if messageReference %}
+      <div id="errorMsg" class="govuk-body" data-cy="error-message">{{ __p(messageReference)  }}</div>
+      {% endif %}
+      {% if messageAmount%}
+      <div id="errorMsg" class="govuk-body" data-cy="error-message">{{ __p(messageAmount)  }}</div>
+      {% endif %}
+    <div id="errorMsg" class="govuk-body" data-cy="error-message">{{ __p(message) }}</div>    </div>
+  </div>
 {% endblock %}
