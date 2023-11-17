@@ -71,7 +71,8 @@ describe('Payment link visited with invalid amount in query params', () => {
   it('should show an error page when the payment link is visited', () => {
     cy.visit(`/redirect/${serviceNamePath}/${productNamePath}?amount=not-valid`, { failOnStatusCode: false })
     cy.get('h1').should('have.text', 'An error occurred:')
-    cy.get('[data-cy=error-message]').should('have.text', 'Please contact the service you are trying to make a payment to.')
+    cy.get('[data-cy=error-message]').should('contain.text', 'Amount must be in pounds and pence using digits and a decimal point, like 123.45 or 156.00 and £100,000 or less.')
+    cy.get('[data-cy=error-message]').should('contain.text', 'Please contact the service you are trying to make a payment to.')
   })
 })
 
@@ -89,6 +90,7 @@ describe('Payment link visited with invalid reference in query params', () => {
   it('should show an error page when the payment link is visited', () => {
     cy.visit(`/redirect/${serviceNamePath}/${productNamePath}?reference=<>`, { failOnStatusCode: false })
     cy.get('h1').should('have.text', 'An error occurred:')
-    cy.get('[data-cy=error-message]').should('have.text', 'Please contact the service you are trying to make a payment to.')
+    cy.get('[data-cy=error-message]').should('contain.text', 'Reference must be 255 characters or fewer. You can’t use any of the following characters')
+    cy.get('[data-cy=error-message]').should('contain.text', 'Please contact the service you are trying to make a payment to.')
   })
 })
