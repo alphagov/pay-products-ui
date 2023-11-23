@@ -23,8 +23,8 @@
   "paymentLinkError": {
     "title": "Digwyddodd gwall:",
     "invalidReference": "Rhif mae’n rhaid i fod yn 255 nod neu lai. Ni allwch ddefnyddio unrhyw rai o’r nodau canlynol < > ; : ` ( ) \" ' = &#124; \",\" ~ [ ] .",
-    "invalidAmount": "Cofnodwch swm mewn punnoedd a cheiniogau gan ddefnyddio digidau a phwynt degol, fel 123.45 neu 156.00 a yn £100,000 neu lai.",
-    "linkProblem": "Mae problem gyda'r ddolen sydd wedi cael ei hanfon atoch i'w defnyddio i dalu. Cysylltwch â'r gwasanaeth rydych yn ceisio gwneud taliad iddo."
+    "invalidAmount": "Cofnodwch swm mewn ceiniogau. Er enghraifft “2000”.",
+    "linkProblem": "Mae problem gyda’r ddolen sydd wedi cael ei hanfon atoch i’w defnyddio i dalu. Cysylltwch â’r gwasanaeth rydych chi’n ceisio gwneud taliad iddo."
   },
   "404Page": {
     "title": "Ni chanfuwyd y dudalen",
