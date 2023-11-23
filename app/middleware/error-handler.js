@@ -50,12 +50,12 @@ module.exports = function (err, req, res, next) {
   if (err instanceof InvalidPrefilledAmountError) {
     logger.info(`InvalidPrefilledAmountError handled: ${err.message}. Rendering error page`)
     res.status(400)
-    return response(req, res, 'error', { message: linkProblem, messageAmountReference: invalidAmount })
+    return response(req, res, 'error', { message: linkProblem, messagePreamble: invalidAmount })
   }
   if (err instanceof InvalidPrefilledReferenceError) {
     logger.info(`InvalidPrefilledReferenceError handled: ${err.message}. Rendering error page`)
     res.status(400)
-    return response(req, res, 'error', { message: linkProblem, messageAmountReference: invalidReference })
+    return response(req, res, 'error', { message: linkProblem, messagePreamble: invalidReference })
   }
 
   logger.error(`Internal server error`, errorPayload)

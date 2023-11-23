@@ -5,6 +5,6 @@
 {% block contentBody %}
   <h1 class="govuk-heading-l">{{ __p('error.title') }}</h1>
 
-  {% if messageAmountReference %}<div id="errorMsg" class="govuk-body" data-cy="error-message">{{ __p(messageAmountReference) }}</div>{% endif %}
+  {% if messagePreamble %}<div id="errorMsg" class="govuk-body" data-cy="error-message">{{ __p(messagePreamble) }}</div>{% endif %}
   <div id="errorMsg" class="govuk-body" data-cy="error-message">{{ __p(message) }}</div>
 {% endblock %}
