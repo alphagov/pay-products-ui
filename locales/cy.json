@@ -23,7 +23,7 @@
   "paymentLinkError": {
     "title": "Digwyddodd gwall:",
     "invalidReference": "Rhif mae’n rhaid i fod yn 255 nod neu lai. Ni allwch ddefnyddio unrhyw rai o’r nodau canlynol < > ; : ` ( ) \" ' = &#124; \",\" ~ [ ] .",
-    "invalidAmount": "Cofnodwch swm mewn ceiniogau. Er enghraifft “2000”.",
+    "invalidAmount": "Cofnodwch swm mewn ceiniogau. Er enghraifft ’2000’.",
     "linkProblem": "Mae problem gyda’r ddolen sydd wedi cael ei hanfon atoch i’w defnyddio i dalu. Cysylltwch â’r gwasanaeth rydych chi’n ceisio gwneud taliad iddo."
   },
   "404Page": {

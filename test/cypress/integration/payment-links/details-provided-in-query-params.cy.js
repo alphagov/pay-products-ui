@@ -71,7 +71,7 @@ describe('Payment link visited with invalid amount in query params', () => {
   it('should show an error page when the payment link is visited', () => {
     cy.visit(`/redirect/${serviceNamePath}/${productNamePath}?amount=not-valid`, { failOnStatusCode: false })
     cy.get('h1').should('have.text', 'An error occurred:')
-    cy.get('[data-cy=error-message]').should('contain.text', 'Enter an amount in pence. For example “2000”.')
+    cy.get('[data-cy=error-message]').should('contain.text', 'Enter an amount in pence. For example ’2000’.')
     cy.get('[data-cy=error-message]').should('contain.text', 'There is a problem with the link you have been sent to use to pay. Please contact the service you are trying to make a payment to.')
   })
 })
