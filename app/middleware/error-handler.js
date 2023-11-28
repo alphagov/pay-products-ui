@@ -10,6 +10,9 @@ const { response } = require('../utils/response')
 
 const logger = require('../utils/logger')(__filename)
 const contactServiceErrorMessagePath = 'error.contactService'
+const linkProblem = 'paymentLinkError.linkProblem'
+const invalidReference = 'paymentLinkError.invalidReference'
+const invalidAmount = 'paymentLinkError.invalidAmount'
 
 module.exports = function (err, req, res, next) {
   const errorPayload = {
@@ -45,14 +48,14 @@ module.exports = function (err, req, res, next) {
     return response(req, res, 'error', { message: contactServiceErrorMessagePath })
   }
   if (err instanceof InvalidPrefilledAmountError) {
-    logger.error(`InvalidPrefilledAmountError handled: ${err.message}. Rendering error page`)
+    logger.info(`InvalidPrefilledAmountError handled: ${err.message}. Rendering error page`)
     res.status(400)
-    return response(req, res, 'error', { message: contactServiceErrorMessagePath })
+    return response(req, res, 'error', { message: linkProblem, messagePreamble: invalidAmount })
   }
   if (err instanceof InvalidPrefilledReferenceError) {
-    logger.error(`InvalidPrefilledReferenceError handled: ${err.message}. Rendering error page`)
+    logger.info(`InvalidPrefilledReferenceError handled: ${err.message}. Rendering error page`)
     res.status(400)
-    return response(req, res, 'error', { message: contactServiceErrorMessagePath })
+    return response(req, res, 'error', { message: linkProblem, messagePreamble: invalidReference })
   }
 
   logger.error(`Internal server error`, errorPayload)
