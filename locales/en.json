@@ -1,100 +1,110 @@
 {
-  "adhoc": {
-    "title": "Make a payment to ",
-    "paymentAmount": "Payment amount",
-    "inCurrency": "in £",
-    "currencyInput": {
-      "ariaLabel": "Enter amount in pounds",
-      "confirmationLabel": "Amount to pay:"
-    }
-  },
-  "buttons": {
-    "proceed": "Proceed to payment",
-    "continue": "Continue",
-    "confirmAndContinue": "Confirm and continue",
-    "edit": "Edit"
-  },
-  "error": {
-    "title": "An error occurred:",
-    "default": "There’s a problem with the payments platform. Please try again later",
-    "internal": "Sorry, we’re unable to process your request. Try again later.",
-    "contactService": "Please contact the service you are trying to make a payment to.",
-	"contactServiceForZeroValuePayment": "There is a problem with the link you have been sent to use to pay. The payment amount cannot be £0.00. Contact the service you’re trying to make a payment to."
-  },
-  "404Page": {
-    "title": "Page not found",
-    "bodyTextParagraph1": "If you typed the web address, check it is correct.",
-    "bodyTextParagraph2": "If you pasted the web address, check that you copied the entire address.",
-    "bodyTextParagraph3": "If the web address is correct or you selected a link or button, please contact the service you are trying to make a payment to."
-  },
-  "confirmation": {
-    "title": "Your payment was successful",
-    "titleMoto": "The payment was successful",
-    "referenceNumber": "Your payment reference number is",
-    "referenceNumberMoto": "The payment reference number is",
-    "next": {
-      "title": "What happens next",
-      "body": "We have sent you a confirmation email.",
-      "bodyMoto": "We have sent the user a confirmation email."
-    },
-    "paymentSummary": {
-      "title": "Payment summary",
-      "description": "Payment for:",
-      "amount": "Total amount:"
-    },
-    "goToDashboard": "Go to the dashboard"
-  },
-  "failed": {
-    "title": "Your payment has been declined",
-    "body": "Contact your bank for more details. No money has been taken from your account.",
-    "tryAgain": "Go back to try the payment again"
-  },
-  "fieldValidation": {
-    "summary": "The following fields are missing or contain errors",
-    "generic": "Enter a valid %s",
-    "required": "This field can’t be blank",
-    "currency": "Choose an amount in pounds and pence using digits and a decimal point. For example “10.50”",
-    "isAboveMaxAmount": "Choose an amount under £%s",
-    "isGreaterThanMaxLengthChars": "Text is too long. It can be no more than 50 characters.",
-    "invalidCharacters": "You can’t use any of the following characters < > ; : ` ( ) \" ' = &#124; \",\" ~ [ ]",
-    "potentialPANInReferenceTitle": "Are you sure this is a reference number?",
-    "potentialPANInReference": "Check that you’ve entered the number correctly before making the payment. Do not enter your debit or credit card number."
-  },
-  "paymentLinks": {
-    "common": {
-      "back": "Back",
-      "thereIsAProblem": "There is a problem"
-    },
-    "start": {
-      "title": "Make a payment"
-    },
-    "reference": {
-      "pleaseEnterYour": "Enter your"
-    },
-    "amount": {
-      "enterAmountToPay": "Enter amount to pay"
-    },
-    "confirm": {
-      "checkYourDetails": "Check your details",
-      "totalToPay": "Total to pay",
-      "change": "Change",
-      "continueToPayment": "Continue to payment"
-    },
-    "fieldValidation": {
-      "enterAnAmountInPounds": "Enter an amount of money to pay",
-	  "enterANonZeroAmountInPounds": "Amount must be £0.01 or more",
-      "enterAnAmountInTheCorrectFormat": "Enter an amount in pounds and pence using digits and a decimal point, like 123.45 or 156.00",
-      "enterAnAmountUnderMaxAmount": "Enter an amount that is £100,000 or less",
-      "enterAReference": "You must enter your %s",
-      "referenceTooLong": "%s must be 255 characters or fewer",
-      "referenceCantUseInvalidChars": "%s must not include any of the following characters < > ; : ` ( ) \" ' = | \",\" ~ [ ]",
-      "youMustSelectIAmNotARobot": "You must select 'I’m not a robot' before proceeding to payment."
-    },
-    "error": {
-      "internal": {
-        "title": "Sorry, there is a problem with the service",
-        "message": "Try again later or contact the service you are trying to make a payment to."
-      }
-    }
-  }
+	"adhoc": {
+		"title": "Make a payment to ",
+		"paymentAmount": "Payment amount",
+		"inCurrency": "in £",
+		"currencyInput": {
+			"ariaLabel": "Enter amount in pounds",
+			"confirmationLabel": "Amount to pay:"
+		}
+	},
+	"buttons": {
+		"proceed": "Proceed to payment",
+		"continue": "Continue",
+		"confirmAndContinue": "Confirm and continue",
+		"edit": "Edit"
+	},
+	"error": {
+		"title": "An error occurred:",
+		"default": "There’s a problem with the payments platform. Please try again later",
+		"internal": "Sorry, we’re unable to process your request. Try again later.",
+		"contactService": "Please contact the service you are trying to make a payment to.",
+		"contactServiceForZeroValuePayment": "There is a problem with the link you have been sent to use to pay. The payment amount cannot be £0.00. Contact the service you’re trying to make a payment to."
+	},
+	"paymentLinkError": {
+		"title": "An error occurred:",
+		"invalidReference": "Reference must be 255 characters or fewer. You cannot use any of the following characters < > ; : ` ( ) \" ' = | \",\" ~ [ ]",
+		"invalidAmount": "Enter an amount in pence. For example ’2000’.",
+		"linkProblem": "There is a problem with the link you have been sent to use to pay. Please contact the service you are trying to make a payment to."
+	},
+	"404Page": {
+		"title": "Page not found",
+		"bodyTextParagraph1": "If you typed the web address, check it is correct.",
+		"bodyTextParagraph2": "If you pasted the web address, check that you copied the entire address.",
+		"bodyTextParagraph3": "If the web address is correct or you selected a link or button, please contact the service you are trying to make a payment to."
+	},
+	"confirmation": {
+		"title": "Your payment was successful",
+		"titleMoto": "The payment was successful",
+		"referenceNumber": "Your payment reference number is",
+		"referenceNumberMoto": "The payment reference number is",
+		"next": {
+			"title": "What happens next",
+			"body": "We have sent you a confirmation email.",
+			"bodyMoto": "We have sent the user a confirmation email."
+		},
+		"paymentSummary": {
+			"title": "Payment summary",
+			"description": "Payment for:",
+			"amount": "Total amount:"
+		},
+		"goToDashboard": "Go to the dashboard"
+	},
+	"failed": {
+		"title": "Your payment has been declined",
+		"body": "Contact your bank for more details. No money has been taken from your account.",
+		"tryAgain": "Go back to try the payment again"
+	},
+	"fieldValidation": {
+		"summary": "The following fields are missing or contain errors",
+		"generic": "Enter a valid %s",
+		"required": "This field can’t be blank",
+		"currency": "Choose an amount in pounds and pence using digits and a decimal point. For example “10.50”",
+		"isAboveMaxAmount": "Choose an amount under £%s",
+		"isGreaterThanMaxLengthChars": "Text is too long. It can be no more than 50 characters.",
+		"invalidCharacters": "You can’t use any of the following characters < > ; : ` ( ) \" ' = &#124; \",\" ~ [ ]",
+		"potentialPANInReferenceTitle": "Are you sure this is a reference number?",
+		"potentialPANInReference": "Check that you’ve entered the number correctly before making the payment. Do not enter your debit or credit card number."
+	},
+	"paymentLinks": {
+		"common": {
+			"back": "Back",
+			"thereIsAProblem": "There is a problem"
+		},
+		"start": {
+			"title": "Make a payment"
+		},
+		"reference": {
+			"pleaseEnterYour": "Enter your"
+		},
+		"amount": {
+			"enterAmountToPay": "Enter amount to pay"
+		},
+		"confirm": {
+			"checkYourDetails": "Check your details",
+			"totalToPay": "Total to pay",
+			"change": "Change",
+			"continueToPayment": "Continue to payment"
+		},
+		"fieldValidation": {
+			"enterAnAmountInPounds": "Enter an amount of money to pay",
+			"enterANonZeroAmountInPounds": "Amount must be £0.01 or more",
+			"enterAnAmountInTheCorrectFormat": "Enter an amount in pounds and pence using digits and a decimal point, like 123.45 or 156.00",
+			"enterAnAmountUnderMaxAmount": "Enter an amount that is £100,000 or less",
+			"enterAReference": "You must enter your %s",
+			"referenceTooLong": "%s must be 255 characters or fewer",
+			"referenceCantUseInvalidChars": "%s must not include any of the following characters < > ; : ` ( ) \" ' = | \",\" ~ [ ]",
+			"youMustSelectIAmNotARobot": "You must select 'I’m not a robot' before proceeding to payment."
+		},
+		"error": {
+			"internal": {
+				"title": "Sorry, there is a problem with the service",
+				"message": "Try again later or contact the service you are trying to make a payment to."
+			}
+		}
+	},
+	"paymentLinkError": {
+		"linkProblem": "paymentLinkError.linkProblem",
+		"invalidAmount": "paymentLinkError.invalidAmount"
+	}
 }

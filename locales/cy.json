@@ -21,6 +21,12 @@
     "contactService": "Mae problem gyda’r cyfleuster taliadau. Rhowch gynnig arall arni wedyn",
     "contactServiceForZeroValuePayment": "Mae yna broblem gyda'r ddolen rydych chi wedi'i hanfon i'w defnyddio i dalu. Ni all swm y taliad fod yn £0.00. Cysylltwch â’r gwasanaeth rydych chi’n ceisio gwneud taliad iddo."
   },
+  "paymentLinkError": {
+    "title": "Digwyddodd gwall:",
+    "invalidReference": "Rhif mae’n rhaid i fod yn 255 nod neu lai. Ni allwch ddefnyddio unrhyw rai o’r nodau canlynol < > ; : ` ( ) \" ' = | \",\" ~ [ ]",
+    "invalidAmount": "Cofnodwch swm mewn ceiniogau. Er enghraifft ’2000’.",
+    "linkProblem": "Mae problem gyda’r ddolen sydd wedi cael ei hanfon atoch i’w defnyddio i dalu. Cysylltwch â’r gwasanaeth rydych chi’n ceisio gwneud taliad iddo."
+  },
   "404Page": {
     "title": "Ni chanfuwyd y dudalen",
     "bodyTextParagraph1": "Os wnaethoch deipio’r gwegyfeiriad, gwiriwch ei fod yn gywir.",
