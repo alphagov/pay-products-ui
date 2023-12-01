@@ -234,6 +234,32 @@ describe('Amount Page Controller', () => {
       sinon.assert.calledWith(res.locals.__p, 'paymentLinks.fieldValidation.enterAnAmountInPounds')
     })
 
+    it('when a zero value amount is entered, it should display an error message and the back link correctly', () => {
+      req = {
+        correlationId: '123',
+        product,
+        body: {
+          'payment-amount': '0.00'
+        }
+      }
+
+      res = {
+        redirect: sinon.spy(),
+        locals: {
+          __p: sinon.spy()
+        }
+      }
+
+      controller.postPage(req, res)
+
+      sinon.assert.calledWith(responseSpy, req, res, 'amount/amount')
+
+      const pageData = mockResponses.response.args[0][3]
+      expect(pageData.backLinkHref).to.equal('/pay/an-external-id/reference')
+
+      sinon.assert.calledWith(res.locals.__p, 'paymentLinks.fieldValidation.enterANonZeroAmountInPounds')
+    })
+
     it('when an invalid amount is entered and the change query parameter is present, it should display an error' +
       'message and set the back link to the CONFIRM page', () => {
       req = {
