@@ -39,7 +39,7 @@ function isEmptyAmount (value) {
 }
 
 function isZeroAmount (value) {
-  if (!isNotCurrency(value) && parseInt(value.trim()) === 0) {
+  if (!isNotCurrency(value) && (['0', '0.0', '0.00'].indexOf(value) > -1)) {
     return validationMessageKeys.enterANonZeroAmountInPounds
   }
   return false
