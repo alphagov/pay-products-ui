@@ -48,7 +48,7 @@ module.exports = (req, res) => {
         paymentLinkSession.setReference(req, product.externalId, reference, true)
       }
       if (!product.price && amount) {
-        if (!isPositiveNumber(amount) || isAboveMaxAmountInPence(parseInt(amount))) {
+        if (!isPositiveNumber(amount) || isAboveMaxAmountInPence(parseInt(amount)) || (parseInt(amount) === 0)) {
           throw new InvalidPrefilledAmountError(`Invalid amount: ${amount}`)
         }
         paymentLinkSession.setAmount(req, product.externalId, amount, true)

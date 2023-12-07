@@ -87,6 +87,7 @@
     },
     "fieldValidation": {
       "enterAnAmountInPounds": "Cofnodwch swm o arian i’w dalu",
+      "enterANonZeroAmountInPounds": "Rhaid i'r swm fod yn £0.01 neu fwy",
       "enterAnAmountInTheCorrectFormat": "Cofnodwch swm mewn punnoedd a cheiniogau gan ddefnyddio digidau a phwynt degol, fel 123.45 neu 156.00",
       "enterAnAmountUnderMaxAmount": "Cofnodwch swm sy’n £100,000 neu lai",
       "enterAReference": "Mae’n rhaid i chi gofnodi’ch %s",
