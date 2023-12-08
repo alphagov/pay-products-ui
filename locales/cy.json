@@ -22,7 +22,7 @@
   },
   "paymentLinkError": {
     "title": "Digwyddodd gwall:",
-    "invalidReference": "Rhif mae’n rhaid i fod yn 255 nod neu lai. Ni allwch ddefnyddio unrhyw rai o’r nodau canlynol < > ; : ` ( ) \" ' = | \",\" ~ [ ]",
+    "invalidReference": "Rhif mae’n rhaid i fod yn 255 nod neu lai. Ni allwch ddefnyddio unrhyw rai o’r nodau canlynol < > ; : ` ( ) \" = | \",\" ~ [ ]",
     "invalidAmount": "Cofnodwch swm mewn ceiniogau. Er enghraifft ’2000’.",
     "linkProblem": "Mae problem gyda’r ddolen sydd wedi cael ei hanfon atoch i’w defnyddio i dalu. Cysylltwch â’r gwasanaeth rydych chi’n ceisio gwneud taliad iddo."
   },
@@ -61,7 +61,7 @@
     "currency": "Dewiswch swm mewn punnoedd a cheiniogau drwy ddefnyddio digidau a phwynt degol. Er enghraifft “10.50”",
     "isAboveMaxAmount": "Dewiswch swm sy’n llai na £%s",
     "isGreaterThanMaxLengthChars": "Mae’r testun yn rhy hir. Ni all fod yn fwy na 50 o nodau.",
-    "invalidCharacters": "Ni allwch ddefnyddio unrhyw rai o’r nodau canlynol < > ; : ` ( ) \" ' = &#124; \",\" ~ [ ]",
+    "invalidCharacters": "Ni allwch ddefnyddio unrhyw rai o’r nodau canlynol < > ; : ` ( ) \" = &#124; \",\" ~ [ ]",
     "potentialPANInReferenceTitle": "Ydych chi’n siŵr mae rhif cyfeirnod yw hwn? ",
     "potentialPANInReference": "Gwiriwch eich bod wedi nodi’r rhif yn gywir cyn gwneud y taliad. Peidiwch â nodi’ch rhif cerdyn debyd neu gredyd."
   },
@@ -92,7 +92,7 @@
       "enterAnAmountUnderMaxAmount": "Cofnodwch swm sy’n £100,000 neu lai",
       "enterAReference": "Mae’n rhaid i chi gofnodi’ch %s",
       "referenceTooLong": "Mae’n rhaid i %s fod yn 255 nod neu lai",
-      "referenceCantUseInvalidChars": "Mae’n rhaid i %s beidio â chynnwys unrhyw un o’r nodau canlynol < > ; : ` ( ) \" ’ = | \",\" ~ [ ]",
+      "referenceCantUseInvalidChars": "Mae’n rhaid i %s beidio â chynnwys unrhyw un o’r nodau canlynol < > ; : ` ( ) \" = | \",\" ~ [ ]",
       "youMustSelectIAmNotARobot": "Mae’n rhaid i chi ddewis ’dw i ddim yn robot’ cyn symud ymlaen at dalu"
     },
     "error": {
