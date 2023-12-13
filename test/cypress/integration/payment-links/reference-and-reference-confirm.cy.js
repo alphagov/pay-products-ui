@@ -6,6 +6,7 @@ const serviceStubs = require('../../stubs/service-stubs')
 const gatewayAccountId = 666
 const productExternalId = 'a-product-id'
 
+const textThatIsInvalid= 'This is a piece of text that contains invalid characters e.g. < > ; : ` ( ) " = | "," ~ [ ]'
 const textThatIs256CharactersLong = 'This is a piece of text that contains exactly 256 characters and this is 1 higher ' +
   'than 255 characters and as such it will fail any validation that checks if the text has a length of 255 ' +
   'characters or fewer because it is exactly 1 character longer than that'
@@ -55,6 +56,20 @@ describe('Reference and reference confirm page', () => {
           .should('have.attr', 'href', '#payment-reference')
 
         cy.get('[data-cy=error-message]').should('contain', 'Invoice number must be 255 characters or fewer')
+      })
+
+      it('when an reference is entered that contains invalid characters, should display an error', () => {
+        cy.visit('/pay/a-product-id/reference')
+        cy.get('[data-cy=input]').type(textThatIsInvalid, { delay: 0 })
+        cy.get('[data-cy=button]').click()
+
+        cy.get('[data-cy=error-summary] h2').should('contain', 'There is a problem')
+
+        cy.get('[data-cy=error-summary] a')
+          .should('contain', 'Invoice number must not include any of the following characters < > ; : ` ( ) " = | "," ~ [ ]')
+          .should('have.attr', 'href', '#payment-reference')
+
+        cy.get('[data-cy=error-message]').should('contain', 'Invoice number must not include any of the following characters < > ; : ` ( ) " = | "," ~ [ ]')
       })
     })
   })
