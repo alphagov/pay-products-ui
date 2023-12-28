@@ -16,6 +16,12 @@ jobs:
       - name: Detect secrets
         uses: alphagov/pay-ci/actions/detect-secrets@master
 
+  check-dockerfile-for-valid-manifest-shas:
+    uses: alphagov/pay-ci/.github/workflows/_check_docker_sha_is_manifest.yaml@master
+    with:
+      file-path: Dockerfile
+    name: Check Dockerfile for valid manifest SHAs
+
   version:
     runs-on: ubuntu-latest
     name: Parse versions
