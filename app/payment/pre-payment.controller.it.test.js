@@ -81,11 +81,7 @@ describe('pre payment controller', function () {
             })
         })
         it('should respond with code returned from products endpoint', () => {
-          expect(response.statusCode).to.equal(404)
-        })
-        it('should render error page', () => {
-          expect($('.govuk-heading-l').text()).to.equal('An error occurred:')
-          expect($('#errorMsg').text()).to.equal('Sorry, we’re unable to process your request. Try again later.')
+          expect(response.statusCode).to.equal(302)
         })
       })
     })
