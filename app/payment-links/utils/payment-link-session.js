@@ -24,6 +24,10 @@ function setReference (req, productExternalId, reference, providedByQueryParams 
   }
 }
 
+function removeReference (req, productExternalId) {
+  lodash.unset(req, cookieIndex(REFERENCE_KEY, productExternalId))
+}
+
 function getAmount (req, productExternalId) {
   return lodash.get(req, cookieIndex(AMOUNT_KEY, productExternalId))
 }
@@ -58,6 +62,7 @@ function deletePaymentLinkSession (req, productExternalId) {
 module.exports = {
   getReference,
   setReference,
+  removeReference,
   getAmount,
   setAmount,
   getReferenceProvidedByQueryParams,

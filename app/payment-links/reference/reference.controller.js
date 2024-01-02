@@ -56,7 +56,7 @@ function getPage (req, res, next) {
     errors[PAYMENT_REFERENCE] = capitaliseFirstLetter(errorMessage)
     paymentLinkSession.setError(req, product.externalId, '')
     data.errors = errors
-    paymentLinkSession.setReference(req, product.externalId, '')
+    paymentLinkSession.removeReference(req, product.externalId)
   }
 
   data.backLinkHref = getBackLinkUrl(change, product)
