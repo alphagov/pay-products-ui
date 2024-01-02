@@ -15,13 +15,13 @@ const mockResponses = {
   response: responseSpy
 }
 
-const textThatIs255CharactersLong = 'This text contains exactly 255 characters and this is the precise maximum number '
-  + 'allowed for a payment reference and therefore it should pass the validation that checks the text is at most 255 '
-  + 'characters in length and not a single character more than that'
+const textThatIs255CharactersLong = 'This text contains exactly 255 characters and this is the precise maximum number ' +
+  'allowed for a payment reference and therefore it should pass the validation that checks the text is at most 255 ' +
+  'characters in length and not a single character more than that'
 
-const textThatIs256CharactersLong = 'This is a piece of text that contains exactly 256 characters and this is 1 higher '
-  + 'than 255 characters and as such it will fail any validation that checks if the text has a length of 255 '
-  + 'characters or fewer because it is exactly 1 character longer than that'
+const textThatIs256CharactersLong = 'This is a piece of text that contains exactly 256 characters and this is 1 higher ' +
+  'than 255 characters and as such it will fail any validation that checks if the text has a length of 255 ' +
+  'characters or fewer because it is exactly 1 character longer than that'
 
 let req, res
 
@@ -30,6 +30,7 @@ describe('Reference Page Controller', () => {
     getReference: sinon.stub(),
     getAmount: sinon.stub(),
     setReference: sinon.stub(),
+    removeReference: sinon.stub(),
     setError: sinon.stub(),
     getError: sinon.stub()
   }
@@ -123,6 +124,7 @@ describe('Reference Page Controller', () => {
           reference: '4242',
           errors: { 'payment-reference': 'Error message' }
         })
+        sinon.assert.calledWith(mockPaymentLinkSession.removeReference, req, product.externalId)
       })
     })
 
