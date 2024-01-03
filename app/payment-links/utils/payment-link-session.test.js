@@ -45,6 +45,21 @@ describe('Payment link session utilities', () => {
       expect(paymentLinkSession.getReferenceProvidedByQueryParams(req, productExternalId)).to.equal(true)
     })
 
+    it('should remove the reference', () => {
+      const req = {
+        session: {
+          'a-product-external-id': {
+            reference: 'REFTOREMOVE'
+          }
+        }
+      }
+      paymentLinkSession.removeReference(req, productExternalId)
+
+      const sessionRef = paymentLinkSession.getReference(req, productExternalId)
+      // eslint-disable-next-line no-unused-expressions
+      expect(sessionRef).to.be.undefined
+    })
+
     it('should override existing reference', () => {
       const req = {
         session: {

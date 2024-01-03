@@ -167,6 +167,7 @@ describe('Confirm page', () => {
         cy.get('[data-cy=error-summary] a')
           .should('contain', 'Check that you’ve entered the number correctly before making the payment. Do not enter your debit or credit card number')
           .should('have.attr', 'href', '#payment-reference')
+        cy.get('[data-cy=input]').should('have.value', '')
         cy.get('[data-cy=error-message]').should('contain', 'Check that you’ve entered the number correctly before making the payment. Do not enter your debit or credit card number')
       })
     })
