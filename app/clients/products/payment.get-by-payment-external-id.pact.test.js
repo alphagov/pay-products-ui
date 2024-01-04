@@ -38,6 +38,7 @@ describe('products client - find a payment by it\'s own external id', function (
 
   before(() => provider.setup())
   after(() => provider.finalize())
+  afterEach(() => provider.verify())
 
   describe('when a product is successfully found', () => {
     before(done => {

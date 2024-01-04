@@ -38,6 +38,7 @@ describe('products client - find products associated with a particular gateway a
 
   before(() => provider.setup())
   after(() => provider.finalize())
+  afterEach(() => provider.verify())
 
   describe('when products are successfully found', () => {
     before(done => {

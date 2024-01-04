@@ -40,6 +40,7 @@ describe('products client - find a product by it\'s product path', function () {
 
   before(() => provider.setup())
   after(() => provider.finalize())
+  afterEach(() => provider.verify())
 
   describe('when a product is successfully found', () => {
     before(done => {

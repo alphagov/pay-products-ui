@@ -35,6 +35,7 @@ describe('adminusers client - find a service associated with a particular gatewa
 
   before(() => provider.setup())
   after(() => provider.finalize())
+  afterEach(() => provider.verify())
 
   describe('when a service is found', () => {
     const customBranding = {
