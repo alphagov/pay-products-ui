@@ -58,7 +58,8 @@ describe('resolve product middleware', () => {
       res = {
         status: sinon.spy(),
         setHeader: sinon.spy(),
-        render: sinon.spy(() => done())
+        render: sinon.spy(),
+        redirect: sinon.spy(() => done())
       }
       lodash.set(req, 'params.productExternalId', product.external_id)
       next = sinon.spy(err => done(err))
@@ -69,13 +70,8 @@ describe('resolve product middleware', () => {
       nock.cleanAll()
     })
 
-    it('should return error 404 to the user', () => {
-      expect(res.status.lastCall.args[0]).to.equal(404)
-    })
-
-    it('should render the error view', () => {
-      expect(res.render.lastCall.args[0]).to.equal('error')
-      expect(res.render.lastCall.args[1]).to.have.property('message').to.equal('error.internal')
+    it('should return a redirect to the user', () => {
+      sinon.assert.calledWith(res.redirect, 'https://www.gov.uk/404')
     })
 
     it('it should not call \'next\'', () => {

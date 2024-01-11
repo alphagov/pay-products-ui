@@ -27,6 +27,10 @@ module.exports = function (req, res, next) {
       next()
     })
     .catch(err => {
-      renderErrorView(req, res, 'error.internal', err.errorCode || 500)
+      if (err.errorCode === 404) {
+        res.redirect('https://www.gov.uk/404')
+      } else {
+        renderErrorView(req, res, 'error.internal', err.errorCode || 500)
+      }
     })
 }
