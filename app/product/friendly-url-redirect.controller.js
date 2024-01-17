@@ -28,11 +28,12 @@ module.exports = async function redirectToProduct (req, res) {
     logger.info(`Redirecting to ${payUrl}`)
     return res.redirect(payUrl)
   } catch (err) {
-    if (err.errorCode && err.errorCode >= 500) {
+    if (err.errorCode === 404) {
       logger.error(`Error getting product: ${err.message} errorCode=${err.errorCode}`)
+      res.redirect('https://www.gov.uk/404')
     } else {
       logger.info(`Error getting product: ${err.message} errorCode=${err.errorCode}`)
+      return renderErrorView(req, res, errorMessagePath, err.errorCode || 500)
     }
-    return renderErrorView(req, res, errorMessagePath, err.errorCode || 500)
   }
 }

@@ -60,7 +60,18 @@ describe('Redirect to product controller', () => {
     sinon.assert.calledWith(res.redirect, `/pay/${product.externalId}?reference=ABCD&amount=1000`)
   })
 
-  it('should render error view if products client returns error', async () => {
+  it('should render error view if products client returns server error', async () => {
+    const req = {
+      params: {
+        serviceNamePath, productNamePath
+      }
+    }
+    getProductStub.withArgs(serviceNamePath, productNamePath).throws({ errorCode: 500 })
+    await controller(req, res)
+    sinon.assert.calledWith(renderErrorViewSpy, req, res, 'error.internal', 500)
+  })
+
+  it('should redirect if product does not exist', async () => {
     const req = {
       params: {
         serviceNamePath, productNamePath
@@ -68,6 +79,6 @@ describe('Redirect to product controller', () => {
     }
     getProductStub.withArgs(serviceNamePath, productNamePath).throws({ errorCode: 404 })
     await controller(req, res)
-    sinon.assert.calledWith(renderErrorViewSpy, req, res, 'error.internal', 404)
+    sinon.assert.calledWith(res.redirect, 'https://www.gov.uk/404')
   })
 })
