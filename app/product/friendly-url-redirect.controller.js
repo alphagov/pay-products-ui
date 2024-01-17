@@ -28,7 +28,11 @@ module.exports = async function redirectToProduct (req, res) {
     logger.info(`Redirecting to ${payUrl}`)
     return res.redirect(payUrl)
   } catch (err) {
-    if (err.errorCode && err.errorCode >= 500) {
+    if (err.errorCode === 404) {
+      res.redirect('https://www.gov.uk/404')
+      return
+    }
+    if (err.errorCode >= 500) {
       logger.error(`Error getting product: ${err.message} errorCode=${err.errorCode}`)
     } else {
       logger.info(`Error getting product: ${err.message} errorCode=${err.errorCode}`)
