@@ -21,9 +21,9 @@
 		"contactService": "Please contact the service you are trying to make a payment to."
 	},
 	"paymentLinkError": {
-		"title": "An error occurred:",
+		"title": "There is a problem",
 		"invalidReference": "Reference must be 255 characters or fewer. You cannot use any of the following characters < > ; : ` ( ) \" = | \",\" ~ [ ]",
-		"invalidAmount": "Enter an amount in pence. For example ’2000’.",
+		"invalidAmount": "The payment amount cannot be less than £0.01 and it cannot be more than £100,000 .",
 		"linkProblem": "There is a problem with the link you have been sent to use to pay. Please contact the service you are trying to make a payment to."
 	},
 	"404Page": {

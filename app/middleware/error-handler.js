@@ -13,6 +13,7 @@ const contactServiceErrorMessagePath = 'error.contactService'
 const linkProblem = 'paymentLinkError.linkProblem'
 const invalidReference = 'paymentLinkError.invalidReference'
 const invalidAmount = 'paymentLinkError.invalidAmount'
+const linkTitle = 'paymentLinkError.title'
 
 module.exports = function (err, req, res, next) {
   const errorPayload = {
@@ -50,12 +51,12 @@ module.exports = function (err, req, res, next) {
   if (err instanceof InvalidPrefilledAmountError) {
     logger.info(`InvalidPrefilledAmountError handled: ${err.message}. Rendering error page`)
     res.status(400)
-    return response(req, res, 'error', { message: linkProblem, messagePreamble: invalidAmount })
+    return response(req, res, 'prefilled-link-error', { title: linkTitle, message: invalidAmount, messagePreamble: linkProblem })
   }
   if (err instanceof InvalidPrefilledReferenceError) {
     logger.info(`InvalidPrefilledReferenceError handled: ${err.message}. Rendering error page`)
     res.status(400)
-    return response(req, res, 'error', { message: linkProblem, messagePreamble: invalidReference })
+    return response(req, res, 'prefilled-link-error', { title: linkTitle, message: invalidReference, messagePreamble: linkProblem })
   }
 
   logger.error(`Internal server error`, errorPayload)
