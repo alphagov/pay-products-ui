@@ -22,7 +22,7 @@
   },
   "paymentLinkError": {
     "title": "Mae yna broblem",
-    "invalidReference": "Rhif mae’n rhaid i fod yn 255 nod neu lai. Ni allwch ddefnyddio unrhyw rai o’r nodau canlynol < > ; : ` ( ) \" = | \",\" ~ [ ]",
+    "invalidReference": "Mae’n rhaid i’r cyfeirnod fod yn 255 nod neu lai. Ni allwch ddefnyddio unrhyw rai o’r nodau canlynol < > ; : ` ( ) \" = | \",\" ~ [ ]",
     "invalidAmount": "Ni all swm y taliad fod yn llai na £0.01 ac ni all fod yn fwy na £100,000 .",
     "linkProblem": "Mae problem gyda’r ddolen sydd wedi cael ei hanfon atoch i’w defnyddio i dalu. Cysylltwch â’r gwasanaeth rydych chi’n ceisio gwneud taliad iddo."
   },
