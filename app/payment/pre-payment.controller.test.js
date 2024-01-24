@@ -19,12 +19,12 @@ const productExternalId = 'product-external-id'
 const queryParamAmount = '10000000'
 const queryParamReference = 'abcd'
 
-function createProduct(referenceEnabled, fixedPrice) {
+function createProduct (referenceEnabled, fixedPrice) {
   return new Product(productFixtures.validProductResponse({
     type: 'ADHOC',
     external_id: productExternalId,
     reference_enabled: referenceEnabled,
-    price: fixedPrice,
+    price: fixedPrice
   }))
 }
 
@@ -39,8 +39,9 @@ describe('Pre payment controller', () => {
         const product = createProduct(true, 1000)
         const req = { product }
         const res = {}
+        const next = {}
 
-        controller(req, res)
+        controller(req, res, next)
 
         sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/reference` })
       })
@@ -50,8 +51,9 @@ describe('Pre payment controller', () => {
         const product = createProduct(false, null)
         const req = { product }
         const res = {}
+        const next = {}
 
-        controller(req, res)
+        controller(req, res, next)
 
         sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/amount` })
       })
@@ -61,8 +63,9 @@ describe('Pre payment controller', () => {
         const product = createProduct(false, 1000)
         const req = { product }
         const res = {}
+        const next = {}
 
-        controller(req, res)
+        controller(req, res, next)
 
         sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/confirm` })
       })
@@ -79,8 +82,9 @@ describe('Pre payment controller', () => {
             }
           }
           const res = {}
+          const next = {}
 
-          controller(req, res)
+          controller(req, res, next)
 
           expect(req).to.have.property('session')
           expect(req.session).to.have.property(product.externalId)
@@ -105,8 +109,9 @@ describe('Pre payment controller', () => {
               }
             }
             const res = {}
+            const next = {}
 
-            controller(req, res)
+            controller(req, res, next)
 
             expect(req).to.have.property('session')
             expect(req.session).to.have.property(product.externalId)
@@ -130,8 +135,9 @@ describe('Pre payment controller', () => {
               }
             }
             const res = {}
+            const next = {}
 
-            controller(req, res)
+            controller(req, res, next)
 
             expect(req).to.have.property('session')
             expect(req.session).to.have.property(product.externalId)
@@ -156,8 +162,9 @@ describe('Pre payment controller', () => {
             }
           }
           const res = {}
+          const next = {}
 
-          controller(req, res)
+          controller(req, res, next)
 
           expect(req).to.have.property('session')
           expect(req.session).to.have.property(product.externalId)
@@ -177,8 +184,14 @@ describe('Pre payment controller', () => {
             }
           }
           const res = {}
+          const next = sinon.spy()
 
-          expect(() => controller(req, res)).to.throw(InvalidPrefilledReferenceError, 'Invalid reference: []<>')
+          controller(req, res, next)
+
+          const expectedError = sinon.match.instanceOf(InvalidPrefilledReferenceError)
+            .and(sinon.match.has('message', 'Invalid reference: []<>'))
+
+          sinon.assert.calledWith(next, expectedError)
 
           expect(req).to.not.have.property('session')
         })
@@ -195,8 +208,9 @@ describe('Pre payment controller', () => {
             }
           }
           const res = {}
+          const next = {}
 
-          controller(req, res)
+          controller(req, res, next)
 
           expect(req).to.have.property('session')
           expect(req.session).to.have.property(product.externalId)
@@ -217,8 +231,14 @@ describe('Pre payment controller', () => {
           }
         }
         const res = {}
+        const next = sinon.spy()
 
-        expect(() => controller(req, res)).to.throw(InvalidPrefilledAmountError, 'Invalid amount: not-valid-amount')
+        controller(req, res, next)
+
+        const expectedError = sinon.match.instanceOf(InvalidPrefilledAmountError)
+          .and(sinon.match.has('message', 'Invalid amount: not-valid-amount'))
+
+        sinon.assert.calledWith(next, expectedError)
 
         expect(req).to.not.have.property('session')
       })
@@ -231,8 +251,14 @@ describe('Pre payment controller', () => {
           }
         }
         const res = {}
+        const next = sinon.spy()
 
-        expect(() => controller(req, res)).to.throw(InvalidPrefilledAmountError, 'Invalid amount: 10000001')
+        controller(req, res, next)
+
+        const expectedError = sinon.match.instanceOf(InvalidPrefilledAmountError)
+          .and(sinon.match.has('message', 'Invalid amount: 10000001'))
+
+        sinon.assert.calledWith(next, expectedError)
 
         expect(req).to.not.have.property('session')
       })
@@ -245,8 +271,14 @@ describe('Pre payment controller', () => {
           }
         }
         const res = {}
+        const next = sinon.spy()
 
-        expect(() => controller(req, res)).to.throw(InvalidPrefilledAmountError, 'Invalid amount: -1000')
+        controller(req, res, next)
+
+        const expectedError = sinon.match.instanceOf(InvalidPrefilledAmountError)
+          .and(sinon.match.has('message', 'Invalid amount: -1000'))
+
+        sinon.assert.calledWith(next, expectedError)
 
         expect(req).to.not.have.property('session')
       })
