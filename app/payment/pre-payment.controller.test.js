@@ -19,12 +19,12 @@ const productExternalId = 'product-external-id'
 const queryParamAmount = '10000000'
 const queryParamReference = 'abcd'
 
-function createProduct(referenceEnabled, fixedPrice) {
+function createProduct (referenceEnabled, fixedPrice) {
   return new Product(productFixtures.validProductResponse({
     type: 'ADHOC',
     external_id: productExternalId,
     reference_enabled: referenceEnabled,
-    price: fixedPrice,
+    price: fixedPrice
   }))
 }
 
@@ -39,8 +39,9 @@ describe('Pre payment controller', () => {
         const product = createProduct(true, 1000)
         const req = { product }
         const res = {}
+        const next = {}
 
-        controller(req, res)
+        controller(req, res, next)
 
         sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/reference` })
       })
@@ -50,8 +51,9 @@ describe('Pre payment controller', () => {
         const product = createProduct(false, null)
         const req = { product }
         const res = {}
+        const next = {}
 
-        controller(req, res)
+        controller(req, res, next)
 
         sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/amount` })
       })
@@ -61,8 +63,9 @@ describe('Pre payment controller', () => {
         const product = createProduct(false, 1000)
         const req = { product }
         const res = {}
+        const next = {}
 
-        controller(req, res)
+        controller(req, res, next)
 
         sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/confirm` })
       })
@@ -79,8 +82,9 @@ describe('Pre payment controller', () => {
             }
           }
           const res = {}
+          const next = {}
 
-          controller(req, res)
+          controller(req, res, next)
 
           expect(req).to.have.property('session')
           expect(req.session).to.have.property(product.externalId)
@@ -105,8 +109,9 @@ describe('Pre payment controller', () => {
               }
             }
             const res = {}
+            const next = {}
 
-            controller(req, res)
+            controller(req, res, next)
 
             expect(req).to.have.property('session')
             expect(req.session).to.have.property(product.externalId)
@@ -130,8 +135,9 @@ describe('Pre payment controller', () => {
               }
             }
             const res = {}
+            const next = {}
 
-            controller(req, res)
+            controller(req, res, next)
 
             expect(req).to.have.property('session')
             expect(req.session).to.have.property(product.externalId)
@@ -156,8 +162,9 @@ describe('Pre payment controller', () => {
             }
           }
           const res = {}
+          const next = {}
 
-          controller(req, res)
+          controller(req, res, next)
 
           expect(req).to.have.property('session')
           expect(req.session).to.have.property(product.externalId)

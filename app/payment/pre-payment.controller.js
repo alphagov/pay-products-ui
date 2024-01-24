@@ -43,13 +43,13 @@ module.exports = (req, res, next) => {
       }
       if (product.reference_enabled && reference) {
         if (!validateReference(reference).valid) {
-          return next ( new InvalidPrefilledReferenceError(`Invalid reference: ${reference}`) )
+          return next(new InvalidPrefilledReferenceError(`Invalid reference: ${reference}`))
         }
         paymentLinkSession.setReference(req, product.externalId, reference, true)
       }
       if (!product.price && amount) {
         if (!isPositiveNumber(amount) || isAboveMaxAmountInPence(parseInt(amount)) || (parseInt(amount) === 0)) {
-          return next ( new InvalidPrefilledAmountError(`Invalid amount: ${amount}`) )
+          return next(new InvalidPrefilledAmountError(`Invalid amount: ${amount}`))
         }
         paymentLinkSession.setAmount(req, product.externalId, amount, true)
       }
