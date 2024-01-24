@@ -71,12 +71,18 @@ describe('adminusers client - find a service associated with a particular gatewa
 
     it('should find a service', () => {
       const plainResponse = response
-      expect(result.serviceName.en).to.equal(plainResponse.service_name.en)
+      // expect(result.serviceName.en).to.equal(plainResponse.service_name.en)
+      // expect(result.name).to.equal(plainResponse.name)
+      // expect(result.externalId).to.equal(plainResponse.external_id)
+      // expect(result.gatewayAccountIds[0]).to.equal(`${gatewayAccountId}`)
+      // expect(result.customBranding.cssUrl).to.equal(plainResponse.custom_branding.css_url)
+      // expect(result.customBranding.imageUrl).to.equal(plainResponse.custom_branding.image_url)
+      expect(result.service_name.en).to.equal(plainResponse.service_name.en)
       expect(result.name).to.equal(plainResponse.name)
-      expect(result.externalId).to.equal(plainResponse.external_id)
-      expect(result.gatewayAccountIds[0]).to.equal(`${gatewayAccountId}`)
-      expect(result.customBranding.cssUrl).to.equal(plainResponse.custom_branding.css_url)
-      expect(result.customBranding.imageUrl).to.equal(plainResponse.custom_branding.image_url)
+      expect(result.external_id).to.equal(plainResponse.external_id)
+      expect(result.gateway_account_ids[0]).to.equal(`${gatewayAccountId}`)
+      expect(result.custom_branding.css_url).to.equal(plainResponse.custom_branding.css_url)
+      expect(result.custom_branding.image_url).to.equal(plainResponse.custom_branding.image_url)
     })
   })
 

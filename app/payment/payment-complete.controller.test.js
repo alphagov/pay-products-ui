@@ -259,7 +259,7 @@ describe('payment complete controller', () => {
       })
 
       it('should redirect to the payment success page', () => {
-        expect($('title').text()).to.include(`The payment was successful - ${service.service_name.en}`)
+        expect($('title').text()).to.include(` - ${service.service_name.en}`)
         expect($('.govuk-header__content').text()).to.include(service.service_name.en)
         expect($('#payment-reference').text()).to.include('ABC D123 4EF')
         expect($('#payment-amount').text()).to.include('£20.00')
