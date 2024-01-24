@@ -27,7 +27,7 @@ function isPositiveNumber (value) {
   return value.match(/^\d+$/)
 }
 
-module.exports = (req, res) => {
+module.exports = (req, res, next) => {
   const product = req.product
   const { reference, amount } = req.query || {}
 
@@ -43,13 +43,13 @@ module.exports = (req, res) => {
       }
       if (product.reference_enabled && reference) {
         if (!validateReference(reference).valid) {
-          throw new InvalidPrefilledReferenceError(`Invalid reference: ${reference}`)
+          return next ( new InvalidPrefilledReferenceError(`Invalid reference: ${reference}`) )
         }
         paymentLinkSession.setReference(req, product.externalId, reference, true)
       }
       if (!product.price && amount) {
         if (!isPositiveNumber(amount) || isAboveMaxAmountInPence(parseInt(amount)) || (parseInt(amount) === 0)) {
-          throw new InvalidPrefilledAmountError(`Invalid amount: ${amount}`)
+          return next ( new InvalidPrefilledAmountError(`Invalid amount: ${amount}`) )
         }
         paymentLinkSession.setAmount(req, product.externalId, amount, true)
       }
