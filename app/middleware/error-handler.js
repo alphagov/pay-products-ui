@@ -59,6 +59,6 @@ module.exports = function (err, req, res, next) {
     return response(req, res, 'prefilled-link-error', { title: linkTitle, message: invalidReference, messagePreamble: linkProblem })
   }
 
-  logger.error(`Internal server error`, errorPayload)
+  logger.error('Internal server error', errorPayload)
   return response(req, res, '500')
 }
