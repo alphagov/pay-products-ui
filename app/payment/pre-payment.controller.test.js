@@ -6,7 +6,6 @@ const { expect } = require('chai')
 
 const productFixtures = require('../../test/fixtures/product.fixtures')
 const Product = require('../models/Product.class')
-const { InvalidPrefilledAmountError, InvalidPrefilledReferenceError } = require('../errors')
 
 const mockResponse = {
   response: sinon.spy()
@@ -175,7 +174,7 @@ describe('Pre payment controller', () => {
 
           sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/amount` })
         })
-        it('should ignore reference if it is not valid', () => {
+        it('should show pre-filled payment link problem page if reference is not valid', () => {
           const product = createProduct(true, null)
           const req = {
             product,
@@ -184,14 +183,14 @@ describe('Pre payment controller', () => {
             }
           }
           const res = {}
-          const next = sinon.spy()
 
-          controller(req, res, next)
+          controller(req, res)
 
-          const expectedError = sinon.match.instanceOf(InvalidPrefilledReferenceError)
-            .and(sinon.match.has('message', 'Invalid reference: []<>'))
-
-          sinon.assert.calledWith(next, expectedError)
+          sinon.assert.calledWith(mockResponse.response, req, res,'prefilled-link-error', {
+            title: 'paymentLinkError.title',
+            message: 'paymentLinkError.invalidReference',
+            messagePreamble: 'paymentLinkError.linkProblem'
+          })
 
           expect(req).to.not.have.property('session')
         })
@@ -222,7 +221,7 @@ describe('Pre payment controller', () => {
           sinon.assert.calledWith(mockResponse.response, req, res, 'start/start', { continueUrl: `/pay/${productExternalId}/reference` })
         })
       })
-      it('should throw error when amount in query parameter is invalid', () => {
+      it('should show pre-filled payment link problem page when amount in query parameter is invalid', () => {
         const product = createProduct(false, null)
         const req = {
           product,
@@ -231,18 +230,18 @@ describe('Pre payment controller', () => {
           }
         }
         const res = {}
-        const next = sinon.spy()
 
-        controller(req, res, next)
+        controller(req, res)
 
-        const expectedError = sinon.match.instanceOf(InvalidPrefilledAmountError)
-          .and(sinon.match.has('message', 'Invalid amount: not-valid-amount'))
-
-        sinon.assert.calledWith(next, expectedError)
+        sinon.assert.calledWith(mockResponse.response, req, res,'prefilled-link-error', {
+          title: 'paymentLinkError.title',
+          message: 'paymentLinkError.invalidAmount',
+          messagePreamble: 'paymentLinkError.linkProblem'
+        })
 
         expect(req).to.not.have.property('session')
       })
-      it('should throw error when amount in query parameter is above the maximum', () => {
+      it('should show pre-filled payment link problem page when amount in query parameter is above the maximum', () => {
         const product = createProduct(false, null)
         const req = {
           product,
@@ -251,18 +250,18 @@ describe('Pre payment controller', () => {
           }
         }
         const res = {}
-        const next = sinon.spy()
 
-        controller(req, res, next)
+        controller(req, res)
 
-        const expectedError = sinon.match.instanceOf(InvalidPrefilledAmountError)
-          .and(sinon.match.has('message', 'Invalid amount: 10000001'))
-
-        sinon.assert.calledWith(next, expectedError)
+        sinon.assert.calledWith(mockResponse.response, req, res,'prefilled-link-error', {
+          title: 'paymentLinkError.title',
+          message: 'paymentLinkError.invalidAmount',
+          messagePreamble: 'paymentLinkError.linkProblem'
+        })
 
         expect(req).to.not.have.property('session')
       })
-      it('should throw error when amount in query parameter is negative', () => {
+      it('should show pre-filled payment link problem page when amount in query parameter is negative', () => {
         const product = createProduct(false, null)
         const req = {
           product,
@@ -271,14 +270,14 @@ describe('Pre payment controller', () => {
           }
         }
         const res = {}
-        const next = sinon.spy()
 
-        controller(req, res, next)
+        controller(req, res)
 
-        const expectedError = sinon.match.instanceOf(InvalidPrefilledAmountError)
-          .and(sinon.match.has('message', 'Invalid amount: -1000'))
-
-        sinon.assert.calledWith(next, expectedError)
+        sinon.assert.calledWith(mockResponse.response, req, res,'prefilled-link-error', {
+          title: 'paymentLinkError.title',
+          message: 'paymentLinkError.invalidAmount',
+          messagePreamble: 'paymentLinkError.linkProblem'
+        })
 
         expect(req).to.not.have.property('session')
       })

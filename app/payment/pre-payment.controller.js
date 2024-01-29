@@ -8,7 +8,11 @@ const { paymentLinks } = require('../paths')
 const paymentLinkSession = require('../payment-links/utils/payment-link-session')
 const { validateReference } = require('../utils/validation/form-validations')
 const { isAboveMaxAmountInPence } = require('../utils/validation/amount-validations')
-const { InvalidPrefilledAmountError, InvalidPrefilledReferenceError } = require('../errors')
+
+const linkProblemMessageKey = 'paymentLinkError.linkProblem'
+const invalidReferenceMessageKey = 'paymentLinkError.invalidReference'
+const invalidAmountMessageKey = 'paymentLinkError.invalidAmount'
+const linkTitleMessageKey = 'paymentLinkError.title'
 
 // Constants
 const errorMessagePath = 'error.internal' // This is the object notation to string in en.json
@@ -43,13 +47,15 @@ module.exports = (req, res, next) => {
       }
       if (product.reference_enabled && reference) {
         if (!validateReference(reference).valid) {
-          return next(new InvalidPrefilledReferenceError(`Invalid reference: ${reference}`))
+          logger.info(`InvalidPrefilledReferenceError handled: Invalid reference: ${reference}. Rendering problem page`)
+          return response(req, res, 'prefilled-link-error', { title: linkTitleMessageKey, message: invalidReferenceMessageKey, messagePreamble: linkProblemMessageKey })
         }
         paymentLinkSession.setReference(req, product.externalId, reference, true)
       }
       if (!product.price && amount) {
         if (!isPositiveNumber(amount) || isAboveMaxAmountInPence(parseInt(amount)) || (parseInt(amount) === 0)) {
-          return next(new InvalidPrefilledAmountError(`Invalid amount: ${amount}`))
+          logger.info(`InvalidPrefilledAmountError handled: Invalid amount: ${amount}. Rendering problem page`)
+          return response(req, res, 'prefilled-link-error', { title: linkTitleMessageKey, message: invalidAmountMessageKey, messagePreamble: linkProblemMessageKey })
         }
         paymentLinkSession.setAmount(req, product.externalId, amount, true)
       }
