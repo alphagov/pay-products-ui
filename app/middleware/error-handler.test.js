@@ -4,9 +4,7 @@ const sinon = require('sinon')
 const proxyquire = require('proxyquire')
 const {
   NotFoundError,
-  AccountCannotTakePaymentsError,
-  InvalidPrefilledAmountError,
-  InvalidPrefilledReferenceError
+  AccountCannotTakePaymentsError
 } = require('../errors')
 
 const req = {
@@ -63,28 +61,6 @@ describe('Error handler middleware', () => {
     sinon.assert.calledOnceWithExactly(responseSpy, req, res, 'error', { message: 'error.contactService' })
 
     const expectedMessage = 'AccountCannotTakePaymentsError handled: test error. Rendering error page'
-    sinon.assert.calledWith(infoLoggerSpy, expectedMessage)
-  })
-
-  it('should render a 400 page and log message when InvalidPrefilledAmountError handled', () => {
-    const err = new InvalidPrefilledAmountError('test error')
-    errorHandler(err, req, res, next)
-    sinon.assert.notCalled(next)
-    sinon.assert.calledOnceWithExactly(statusSpy, 400)
-    sinon.assert.calledOnceWithExactly(responseSpy, req, res, 'prefilled-link-error', { title: 'paymentLinkError.title', message: 'paymentLinkError.invalidAmount', messagePreamble: 'paymentLinkError.linkProblem' })
-
-    const expectedMessage = 'InvalidPrefilledAmountError handled: test error. Rendering error page'
-    sinon.assert.calledWith(infoLoggerSpy, expectedMessage)
-  })
-
-  it('should render a 400 page and log message when InvalidPrefilledReferenceError handled', () => {
-    const err = new InvalidPrefilledReferenceError('test error')
-    errorHandler(err, req, res, next)
-    sinon.assert.notCalled(next)
-    sinon.assert.calledOnceWithExactly(statusSpy, 400)
-    sinon.assert.calledOnceWithExactly(responseSpy, req, res, 'prefilled-link-error', { title: 'paymentLinkError.title', message: 'paymentLinkError.invalidReference', messagePreamble: 'paymentLinkError.linkProblem' })
-
-    const expectedMessage = 'InvalidPrefilledReferenceError handled: test error. Rendering error page'
     sinon.assert.calledWith(infoLoggerSpy, expectedMessage)
   })
 })

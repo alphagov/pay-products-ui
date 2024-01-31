@@ -47,15 +47,17 @@ module.exports = (req, res, next) => {
       }
       if (product.reference_enabled && reference) {
         if (!validateReference(reference).valid) {
-          logger.info(`InvalidPrefilledReferenceError handled: Invalid reference: ${reference}. Rendering problem page`)
-          return response(req, res, 'prefilled-link-error', { title: linkTitleMessageKey, message: invalidReferenceMessageKey, messagePreamble: linkProblemMessageKey })
+          logger.info(`Invalid prefilled reference error handled: Invalid reference: ${reference}. Rendering problem page`)
+          res.status(400)
+          return response(req, res, 'prefilled-link-error', { title: linkTitleMessageKey, message: invalidReferenceMessageKey, messagePreamble: linkProblemMessageKey }, 400)
         }
         paymentLinkSession.setReference(req, product.externalId, reference, true)
       }
       if (!product.price && amount) {
         if (!isPositiveNumber(amount) || isAboveMaxAmountInPence(parseInt(amount)) || (parseInt(amount) === 0)) {
-          logger.info(`InvalidPrefilledAmountError handled: Invalid amount: ${amount}. Rendering problem page`)
-          return response(req, res, 'prefilled-link-error', { title: linkTitleMessageKey, message: invalidAmountMessageKey, messagePreamble: linkProblemMessageKey })
+          logger.info(`Invalid prefilled amount error handled: Invalid amount: ${amount}. Rendering problem page`)
+          res.status(400)
+          return response(req, res, 'prefilled-link-error', { title: linkTitleMessageKey, message: invalidAmountMessageKey, messagePreamble: linkProblemMessageKey }, 400)
         }
         paymentLinkSession.setAmount(req, product.externalId, amount, true)
       }
