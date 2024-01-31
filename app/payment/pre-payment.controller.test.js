@@ -11,6 +11,8 @@ const mockResponse = {
   response: sinon.spy()
 }
 
+const statusSpy = sinon.spy()
+
 const controller = proxyquire('./pre-payment.controller', {
   '../utils/response': mockResponse
 })
@@ -30,6 +32,7 @@ function createProduct (referenceEnabled, fixedPrice) {
 describe('Pre payment controller', () => {
   beforeEach(() => {
     mockResponse.response.resetHistory()
+    statusSpy.resetHistory()
   })
 
   describe('The product type is ADHOC', () => {
@@ -182,7 +185,9 @@ describe('Pre payment controller', () => {
               reference: '[]<>'
             }
           }
-          const res = {}
+          const res = {
+            status: statusSpy
+          }
 
           controller(req, res)
 
@@ -191,6 +196,7 @@ describe('Pre payment controller', () => {
             message: 'paymentLinkError.invalidReference',
             messagePreamble: 'paymentLinkError.linkProblem'
           })
+          sinon.assert.calledOnceWithExactly(statusSpy, 400)
 
           expect(req).to.not.have.property('session')
         })
@@ -229,7 +235,9 @@ describe('Pre payment controller', () => {
             amount: 'not-valid-amount'
           }
         }
-        const res = {}
+        const res = {
+          status: statusSpy
+        }
 
         controller(req, res)
 
@@ -238,6 +246,7 @@ describe('Pre payment controller', () => {
           message: 'paymentLinkError.invalidAmount',
           messagePreamble: 'paymentLinkError.linkProblem'
         })
+        sinon.assert.calledOnceWithExactly(statusSpy, 400)
 
         expect(req).to.not.have.property('session')
       })
@@ -249,7 +258,9 @@ describe('Pre payment controller', () => {
             amount: '10000001'
           }
         }
-        const res = {}
+        const res = {
+          status: statusSpy
+        }
 
         controller(req, res)
 
@@ -258,6 +269,7 @@ describe('Pre payment controller', () => {
           message: 'paymentLinkError.invalidAmount',
           messagePreamble: 'paymentLinkError.linkProblem'
         })
+        sinon.assert.calledOnceWithExactly(statusSpy, 400)
 
         expect(req).to.not.have.property('session')
       })
@@ -269,7 +281,9 @@ describe('Pre payment controller', () => {
             amount: '-1000'
           }
         }
-        const res = {}
+        const res = {
+          status: statusSpy
+        }
 
         controller(req, res)
 
@@ -278,6 +292,7 @@ describe('Pre payment controller', () => {
           message: 'paymentLinkError.invalidAmount',
           messagePreamble: 'paymentLinkError.linkProblem'
         })
+        sinon.assert.calledOnceWithExactly(statusSpy, 400)
 
         expect(req).to.not.have.property('session')
       })
