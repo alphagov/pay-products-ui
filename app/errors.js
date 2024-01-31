@@ -14,15 +14,7 @@ class NotFoundError extends DomainError {
 class AccountCannotTakePaymentsError extends DomainError {
 }
 
-class InvalidPrefilledAmountError extends DomainError {
-}
-
-class InvalidPrefilledReferenceError extends DomainError {
-}
-
 module.exports = {
   NotFoundError,
-  AccountCannotTakePaymentsError,
-  InvalidPrefilledAmountError,
-  InvalidPrefilledReferenceError
+  AccountCannotTakePaymentsError
 }
