@@ -12,19 +12,14 @@ function asGBP (amountInPence) {
   return currencyFormatter.format((amountInPence / 100).toFixed(2), { code: 'GBP' })
 }
 
-function beautify (reference) {
-  return reference.slice(0, 3) + ' ' + reference.slice(3, 7) + ' ' + reference.slice(7)
-}
-
 module.exports = (req, res) => {
   const product = req.product
   const payment = req.payment
   const data = {}
 
   if (payment.govukStatus.toLowerCase() === 'success') {
-    const reference = product.reference_enabled ? payment.referenceNumber : beautify(payment.referenceNumber)
     data.payment = {
-      reference: reference,
+      reference: payment.referenceNumber,
       amount: asGBP(payment.amount)
     }
     if (product.type === 'AGENT_INITIATED_MOTO') {
