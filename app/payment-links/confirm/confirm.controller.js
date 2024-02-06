@@ -133,7 +133,7 @@ async function postPage (req, res, next) {
 
     res.redirect(303, payment.links.next.href)
   } catch (error) {
-    if (error.error_identifier && error.error_identifier === 'CARD_NUMBER_IN_PAYMENT_LINK_REFERENCE_REJECTED') {
+    if (error.errorIdentifier && error.errorIdentifier === 'CARD_NUMBER_IN_PAYMENT_LINK_REFERENCE_REJECTED') {
       paymentLinkSession.setError(req, product.externalId, 'fieldValidation.potentialPANInReference')
       return res.redirect(replaceParamsInPath(paths.paymentLinks.reference, product.externalId))
     }

@@ -568,7 +568,7 @@ describe('Confirm Page Controller', () => {
 
         const error = new Error('Failed to create payment.')
         error.errorCode = 400
-        error.error_identifier = 'CARD_NUMBER_IN_PAYMENT_LINK_REFERENCE_REJECTED'
+        error.errorIdentifier = 'CARD_NUMBER_IN_PAYMENT_LINK_REFERENCE_REJECTED'
         mockProductsClient.payment.create.rejects(error)
 
         await controller.postPage(req, res, next)

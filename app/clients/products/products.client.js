@@ -3,7 +3,8 @@
 // Local Dependencies
 const Product = require('../../models/Product.class')
 const Payment = require('../../models/Payment.class')
-const baseClient = require('../base/base.client')
+const { Client } = require('@govuk-pay/pay-js-commons/lib/utils/axios-base-client/axios-base-client')
+const { configureClient } = require('../base/config')
 const { PRODUCTS_URL } = require('../../../config')
 
 // Constants
@@ -31,13 +32,12 @@ module.exports = {
  * @param {String} externalProductId: the external id of the product you wish to retrieve
  * @returns {Promise<Product>}
  */
-function getProductByExternalId (externalProductId) {
-  return baseClient.get({
-    baseUrl,
-    url: `/products/${externalProductId}`,
-    description: 'find a product by it\'s external id',
-    service: SERVICE_NAME
-  }).then(product => new Product(product))
+async function getProductByExternalId (externalProductId) {
+  this.client = new Client(SERVICE_NAME)
+  const url = `${baseUrl}/products/${externalProductId}`
+  configureClient(this.client, url)
+  const response = await this.client.get(url, 'find a product by it\'s external id')
+  return new Product(response.data)
 }
 
 /**
@@ -45,26 +45,24 @@ function getProductByExternalId (externalProductId) {
  * @param {String} productNamePath: the product name path of the product you wish to retrieve
  * @returns {Promise<Product>}
  */
-function getProductByPath (serviceNamePath, productNamePath) {
-  return baseClient.get({
-    baseUrl,
-    url: `/products?serviceNamePath=${serviceNamePath}&productNamePath=${productNamePath}`,
-    description: 'find a product by it\'s product path',
-    service: SERVICE_NAME
-  }).then(product => new Product(product))
+async function getProductByPath (serviceNamePath, productNamePath) {
+    this.client = new Client(SERVICE_NAME)
+    const url = `${baseUrl}/products?serviceNamePath=${serviceNamePath}&productNamePath=${productNamePath}`
+    configureClient(this.client, url)
+    const response = await this.client.get(url, 'find a product by it\'s product path')
+    return new Product(response.data)
 }
 
 /**
  * @param {String} gatewayAccountId - The id of the gateway account to retrieve products associated with
  * @returns {Promise<Array<Product>>}
  */
-function getProductsByGatewayAccountId (gatewayAccountId) {
-  return baseClient.get({
-    baseUrl,
-    url: `/gateway-account/${gatewayAccountId}/products`,
-    description: 'find a list products associated with a gateway account',
-    service: SERVICE_NAME
-  }).then(products => products.map(product => new Product(product)))
+async function getProductsByGatewayAccountId (gatewayAccountId) {
+  this.client = new Client(SERVICE_NAME)
+  const url = `${baseUrl}/gateway-account/${gatewayAccountId}/products`
+  configureClient(this.client, url)
+  const response = await this.client.get(url, 'find a list products associated with a gateway account')
+  return response.data.map(product => new Product(product))
 }
 
 // PAYMENT
@@ -73,7 +71,7 @@ function getProductsByGatewayAccountId (gatewayAccountId) {
  * @param {int} price: The override price for the payment. If not present it will default to product price
  * @returns Promise<Payment>
  */
-function createPayment (productExternalId, price, referenceNumber) {
+async function createPayment (productExternalId, price, referenceNumber) {
   const createPaymentRequest = {
     baseUrl,
     url: `/products/${productExternalId}/payments`,
@@ -87,34 +85,35 @@ function createPayment (productExternalId, price, referenceNumber) {
   if (referenceNumber) {
     createPaymentRequest.body.reference_number = referenceNumber
   }
-  return baseClient.post(createPaymentRequest)
-    .then(payment => new Payment(payment))
+  this.client = new Client(SERVICE_NAME)
+  const url = `${baseUrl}/products/${productExternalId}/payments`
+  configureClient(this.client, url)
+  const response = await this.client.post(url, createPaymentRequest.body, 'create a payment for a product')
+  return new Payment(response.data)
 }
 
 /**
  * @param {String} paymentExternalId
  * @returns Promise<Payment>
  */
-function getPaymentByPaymentExternalId (paymentExternalId) {
-  return baseClient.get({
-    baseUrl,
-    url: `/payments/${paymentExternalId}`,
-    description: 'find a payment by it\'s external id',
-    service: SERVICE_NAME
-  }).then(charge => new Payment(charge))
+async function getPaymentByPaymentExternalId (paymentExternalId) {
+  this.client = new Client(SERVICE_NAME)
+  const url = `${baseUrl}/payments/${paymentExternalId}`
+  configureClient(this.client, url)
+  const response = await this.client.get(url, 'find a payment by it\'s external id')
+  return new Payment(response.data)
 }
 
 /**
  * @param {String} productExternalId
  * @returns Promise<Array<Payment>>
  */
-function getPaymentsByProductExternalId (productExternalId) {
-  return baseClient.get({
-    baseUrl,
-    url: `/products/${productExternalId}/payments`,
-    description: 'find a payments associated with a particular product',
-    service: SERVICE_NAME
-  }).then(payments => payments.map(payment => new Payment(payment)))
+async function getPaymentsByProductExternalId (productExternalId) {
+  this.client = new Client(SERVICE_NAME)
+  const url = `${baseUrl}/products/${productExternalId}/payments`
+  configureClient(this.client, url)
+  const response = await  this.client.get(url, 'find a payments associated with a particular product')
+  return response.data.map(payment => new Payment(payment))
 }
 
 /**
@@ -122,11 +121,10 @@ function getPaymentsByProductExternalId (productExternalId) {
  * @param {String} paymentReference
  * @returns Promise<Payment>
  */
-function getPaymentByGatewayExternalIdAndReference (gatewayAccountId, paymentReference) {
-  return baseClient.get({
-    baseUrl,
-    url: `/payments/${gatewayAccountId}/${paymentReference}`,
-    description: 'find a payment by gateway account id and reference',
-    service: SERVICE_NAME
-  }).then((value) => new Payment(value))
+async function getPaymentByGatewayExternalIdAndReference (gatewayAccountId, paymentReference) {
+  this.client = new Client(SERVICE_NAME)
+  const url = `${baseUrl}/payments/${gatewayAccountId}/${paymentReference}`
+  configureClient(this.client, url)
+  const response = await this.client.get(url, 'find a payment by gateway account id and reference')
+  return new Payment(response.data)
 }
