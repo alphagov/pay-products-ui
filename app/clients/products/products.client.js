@@ -23,8 +23,7 @@ module.exports = {
   payment: {
     create: createPayment,
     getByPaymentExternalId: getPaymentByPaymentExternalId,
-    getByProductExternalId: getPaymentsByProductExternalId,
-    getByGatewayAccountIdAndReference: getPaymentByGatewayExternalIdAndReference
+    getByProductExternalId: getPaymentsByProductExternalId
   }
 }
 
@@ -114,17 +113,4 @@ async function getPaymentsByProductExternalId (productExternalId) {
   configureClient(this.client, url)
   const response = await  this.client.get(url, 'find a payments associated with a particular product')
   return response.data.map(payment => new Payment(payment))
-}
-
-/**
- * @param {String} gatewayAccountId
- * @param {String} paymentReference
- * @returns Promise<Payment>
- */
-async function getPaymentByGatewayExternalIdAndReference (gatewayAccountId, paymentReference) {
-  this.client = new Client(SERVICE_NAME)
-  const url = `${baseUrl}/payments/${gatewayAccountId}/${paymentReference}`
-  configureClient(this.client, url)
-  const response = await this.client.get(url, 'find a payment by gateway account id and reference')
-  return new Payment(response.data)
 }
