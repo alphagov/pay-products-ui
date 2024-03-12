@@ -43,7 +43,7 @@ function warnIfAnalyticsNotSet () {
 }
 // Define app views
 const APP_VIEWS = [
-  path.join(__dirname, '../node_modules/govuk-frontend/'),
+  path.join(__dirname, '../node_modules/govuk-frontend/dist'),
   path.join(__dirname, '../app/views'),
   path.join(__dirname, '../app/payment-links'),
   path.join(__dirname, '../app/demo-payment'),
@@ -61,7 +61,7 @@ function initialiseGlobalMiddleware (app) {
   if (process.env.DISABLE_REQUEST_LOGGING !== 'true') {
     app.use(/\/((?!public|favicon.ico).)*/, loggingMiddleware())
   }
-  app.use(favicon(path.join(__dirname, '../node_modules/govuk-frontend/govuk/assets/images', 'favicon.ico')))
+  app.use(favicon(path.join(__dirname, '../node_modules/govuk-frontend/dist/govuk/assets/images', 'favicon.ico')))
   app.use(staticify.middleware)
 
   app.use(function (req, res, next) {
@@ -110,7 +110,7 @@ function initialiseTemplateEngine (app) {
 function initialisePublic (app) {
   app.use('/public', express.static(path.join(__dirname, '../public')))
   app.use('/public', express.static(path.join(__dirname, '../node_modules/@govuk-pay/pay-js-commons/')))
-  app.use('/', express.static(path.join(__dirname, '../node_modules/govuk-frontend/govuk/')))
+  app.use('/', express.static(path.join(__dirname, '../node_modules/govuk-frontend/dist/govuk/')))
 }
 
 function initialisei18n (app) {
