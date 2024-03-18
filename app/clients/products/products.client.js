@@ -17,8 +17,7 @@ const baseUrl = `${PRODUCTS_URL}/v1/api`
 module.exports = {
   product: {
     getByProductExternalId: getProductByExternalId,
-    getByProductPath: getProductByPath,
-    getByGatewayAccountId: getProductsByGatewayAccountId
+    getByProductPath: getProductByPath
   },
   payment: {
     create: createPayment,
@@ -50,18 +49,6 @@ async function getProductByPath (serviceNamePath, productNamePath) {
     configureClient(this.client, url)
     const response = await this.client.get(url, 'find a product by it\'s product path')
     return new Product(response.data)
-}
-
-/**
- * @param {String} gatewayAccountId - The id of the gateway account to retrieve products associated with
- * @returns {Promise<Array<Product>>}
- */
-async function getProductsByGatewayAccountId (gatewayAccountId) {
-  this.client = new Client(SERVICE_NAME)
-  const url = `${baseUrl}/gateway-account/${gatewayAccountId}/products`
-  configureClient(this.client, url)
-  const response = await this.client.get(url, 'find a list products associated with a gateway account')
-  return response.data.map(product => new Product(product))
 }
 
 // PAYMENT
