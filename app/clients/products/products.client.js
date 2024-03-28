@@ -3,7 +3,7 @@
 // Local Dependencies
 const Product = require('../../models/Product.class')
 const Payment = require('../../models/Payment.class')
-const { Client } = require('@govuk-pay/pay-js-commons/lib/utils/axios-base-client/axios-base-client')
+const { HttpsBaseClient } = require('@govuk-pay/pay-js-commons')
 const { configureClient } = require('../base/config')
 const { PRODUCTS_URL } = require('../../../config')
 
@@ -31,7 +31,7 @@ module.exports = {
  * @returns {Promise<Product>}
  */
 async function getProductByExternalId (externalProductId) {
-  this.client = new Client(SERVICE_NAME)
+  this.client = new HttpsBaseClient(SERVICE_NAME)
   const url = `${baseUrl}/products/${externalProductId}`
   configureClient(this.client, url)
   const response = await this.client.get(url, 'find a product by it\'s external id')
@@ -44,11 +44,11 @@ async function getProductByExternalId (externalProductId) {
  * @returns {Promise<Product>}
  */
 async function getProductByPath (serviceNamePath, productNamePath) {
-    this.client = new Client(SERVICE_NAME)
-    const url = `${baseUrl}/products?serviceNamePath=${serviceNamePath}&productNamePath=${productNamePath}`
-    configureClient(this.client, url)
-    const response = await this.client.get(url, 'find a product by it\'s product path')
-    return new Product(response.data)
+  this.client = new HttpsBaseClient(SERVICE_NAME)
+  const url = `${baseUrl}/products?serviceNamePath=${serviceNamePath}&productNamePath=${productNamePath}`
+  configureClient(this.client, url)
+  const response = await this.client.get(url, 'find a product by it\'s product path')
+  return new Product(response.data)
 }
 
 // PAYMENT
@@ -71,7 +71,7 @@ async function createPayment (productExternalId, price, referenceNumber) {
   if (referenceNumber) {
     createPaymentRequest.body.reference_number = referenceNumber
   }
-  this.client = new Client(SERVICE_NAME)
+  this.client = new HttpsBaseClient(SERVICE_NAME)
   const url = `${baseUrl}/products/${productExternalId}/payments`
   configureClient(this.client, url)
   const response = await this.client.post(url, createPaymentRequest.body, 'create a payment for a product')
@@ -83,7 +83,7 @@ async function createPayment (productExternalId, price, referenceNumber) {
  * @returns Promise<Payment>
  */
 async function getPaymentByPaymentExternalId (paymentExternalId) {
-  this.client = new Client(SERVICE_NAME)
+  this.client = new HttpsBaseClient(SERVICE_NAME)
   const url = `${baseUrl}/payments/${paymentExternalId}`
   configureClient(this.client, url)
   const response = await this.client.get(url, 'find a payment by it\'s external id')
@@ -95,9 +95,9 @@ async function getPaymentByPaymentExternalId (paymentExternalId) {
  * @returns Promise<Array<Payment>>
  */
 async function getPaymentsByProductExternalId (productExternalId) {
-  this.client = new Client(SERVICE_NAME)
+  this.client = new HttpsBaseClient(SERVICE_NAME)
   const url = `${baseUrl}/products/${productExternalId}/payments`
   configureClient(this.client, url)
-  const response = await  this.client.get(url, 'find a payments associated with a particular product')
+  const response = await this.client.get(url, 'find a payments associated with a particular product')
   return response.data.map(payment => new Payment(payment))
 }

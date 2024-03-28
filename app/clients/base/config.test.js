@@ -4,7 +4,7 @@ const nock = require('nock')
 const sinon = require('sinon')
 const proxyquire = require('proxyquire')
 const { expect } = require('chai')
-const { Client } = require('@govuk-pay/pay-js-commons/lib/utils/axios-base-client/axios-base-client')
+const { HttpsBaseClient } = require('@govuk-pay/pay-js-commons')
 
 const baseUrl = 'http://localhost:8000'
 const app = 'an-app'
@@ -32,7 +32,7 @@ describe('Client config', () => {
 
   describe('Headers', () => {
     it('should add correlation ID as header when correlation ID exists on request context', async () => {
-      const client = new Client(app)
+      const client = new HttpsBaseClient(app)
       const config = getConfigWithMocks('abc123')
 
       config.configureClient(client, baseUrl)
@@ -48,7 +48,7 @@ describe('Client config', () => {
     })
 
     it('should not add correlation ID as header when correlation ID does not exist on request context', async () => {
-      const client = new Client(app)
+      const client = new HttpsBaseClient(app)
       const config = getConfigWithMocks()
       config.configureClient(client, baseUrl)
 
@@ -64,7 +64,7 @@ describe('Client config', () => {
 
   describe('Logging', () => {
     it('should log request start', async () => {
-      const client = new Client(app)
+      const client = new HttpsBaseClient(app)
       const config = getConfigWithMocks('abc123')
       config.configureClient(client, baseUrl)
 
