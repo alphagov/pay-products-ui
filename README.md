@@ -6,7 +6,7 @@ User interface app for product payments (Prototype/Demo/Ad-hoc etc) integrated w
 ### Prerequisites
 
 * This requires the [Pay CLI](https://github.com/alphagov/pay-infra/tree/master/cli), which is not publicly available at present.
-* You have [set up your local development environment](https://pay-team-manual.cloudapps.digital/manual/setup-local-dev-environment.html)
+* You have [set up your local development environment](https://manual.payments.service.gov.uk/manual/development-processes/setup-local-dev-environment.html)
 * Clone this repo locally.
 
 ### Starting app
