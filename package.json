@@ -5,7 +5,7 @@
   "private": true,
   "license": "MIT",
   "engines": {
-    "node": "18.17.1"
+    "node": "^18.20.4"
   },
   "standard": {
     "globals": [
@@ -97,7 +97,7 @@
     "chai": "^4.3.7",
     "cheerio": "^1.0.0-rc.12",
     "chokidar-cli": "latest",
-    "cypress": "^13.3.1",
+    "cypress": "^13.8.0",
     "dotenv": "^16.3.1",
     "eslint": "8.47.x",
     "eslint-plugin-import": "^2.28.1",
