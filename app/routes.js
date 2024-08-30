@@ -22,8 +22,6 @@ const { validateAndRefreshCsrf, ensureSessionHasCsrfSecret } = require('./middle
 const resolveProduct = require('./middleware/resolve-product')
 const resolvePaymentAndProduct = require('./middleware/resolve-payment-and-product')
 const resolveLanguage = require('./middleware/resolve-language')
-// - Middleware
-const correlationId = require('./middleware/correlation-id')
 
 // Assignments
 const { healthcheck, staticPaths, friendlyUrl, pay, demoPayment, paymentLinks } = paths
@@ -34,9 +32,6 @@ module.exports.paths = paths
 
 module.exports.bind = function (app) {
   app.get('/style-guide', (req, res) => response(req, res, 'style_guide'))
-
-  // APPLY CORRELATION MIDDLEWARE
-  app.use('*', correlationId)
 
   // HEALTHCHECK
   app.get(healthcheck.path, healthcheckCtrl)
