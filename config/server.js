@@ -25,7 +25,7 @@ const cookieUtil = require('../app/utils/cookie')
 const i18nConfig = require('./i18n')
 const logger = require('../app/utils/logger')(__filename)
 const loggingMiddleware = require('../app/middleware/logging-middleware')
-const { logContextMiddleware } = require('../app/utils/log-context')
+const { requestContextMiddleware } = require('../app/clients/base/request-context')
 const Sentry = require('../app/utils/sentry.js').initialiseSentry()
 const replaceParamsInPath = require('../app/utils/replace-params-in-path')
 
@@ -52,7 +52,7 @@ const APP_VIEWS = [
 
 function initialiseGlobalMiddleware (app) {
   app.use(cookieParser())
-  app.use(logContextMiddleware)
+  app.use(requestContextMiddleware)
   logger.stream = {
     write: function (message) {
       logger.info(message)
