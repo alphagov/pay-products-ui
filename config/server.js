@@ -31,6 +31,7 @@ const replaceParamsInPath = require('../app/utils/replace-params-in-path')
 
 // Global constants
 const JAVASCRIPT_PATH = staticify.getVersionedPath('/js/application.min.js')
+const BIND_HOST = process.env.BIND_HOST || "127.0.0.1"
 const PORT = process.env.PORT || 3000
 const { NODE_ENV } = process.env
 const unconfiguredApp = express()
@@ -139,8 +140,8 @@ function initialiseCookies (app) {
 
 function listen () {
   const app = initialise()
-  app.listen(PORT)
-  logger.info('Listening on port ' + PORT)
+  app.listen(PORT, BIND_HOST)
+  logger.info(`Listening on ${BIND_HOST}:${PORT}`)
 }
 
 /**

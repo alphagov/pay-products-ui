@@ -67,10 +67,11 @@ npm run compile && npm test
 
 ## Key runtime environment variables
 
-| Variable                              | Description                               |
-|---------------------------------------|:----------------------------------------- |
+| Variable                              | Description                                                          |
+|---------------------------------------|:-------------------------------------------------------------------- |
 | `ADMINUSERS_URL`                      | 
 | `ANALYTICS_TRACKING_ID`               | 
+| `BIND_HOST`                           | The IP address for the application to bind to. Defaults to 127.0.0.1
 | `COOKIE_MAX_AGE`                      | 
 | `CORRELATION_HEADER_NAME`             | Default `x-request-id`
 | `DISABLE_INTERNAL_HTTPS`              | 
