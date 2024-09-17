@@ -35,7 +35,8 @@ function sessionCookie () {
     cookie: {
       ephemeral: false, // when true, cookie expires when the browser closes
       httpOnly: true, // when true, cookie is not accessible from javascript
-      secureProxy: !DISABLE_INTERNAL_HTTPS
+      secureProxy: !DISABLE_INTERNAL_HTTPS,
+      SameSite: 'Lax'
     }
   })
 }
