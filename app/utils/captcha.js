@@ -12,7 +12,7 @@ const captchaEnterpriseUrl = formatEnterpriseUrl(GOOGLE_RECAPTCHA_ENTERPRISE_PRO
 const captchaBasicUrl = 'https://www.recaptcha.net/recaptcha/api/siteverify'
 
 function formatEnterpriseUrl (projectId) {
-  return urlJoin('https://recaptchaenterprise.googleapis.com/v1beta1/projects', String(projectId), 'assessments')
+  return urlJoin('https://recaptchaenterprise.googleapis.com/v1/projects', String(projectId), 'assessments')
 }
 
 async function verifyCAPTCHAEnterpriseVersion (token) {
@@ -40,21 +40,23 @@ async function verifyCAPTCHAEnterpriseVersion (token) {
     }
   )
 
+  // https://cloud.google.com/recaptcha/docs/reference/rest/v1/projects.assessments
   if (response.status === HTTP_SUCCESS_CODE) {
-    const body = response.data
-    // https://cloud.google.com/recaptcha-enterprise/docs/interpret-assessment
-    if (!body.score || body.score < 0.9) {
+    const body = response.data || {}
+    const riskAnalysis = body.riskAnalysis || {}
+    const score = riskAnalysis.score
+    const reasons = riskAnalysis.reasons || []
+
+    if (typeof score !== 'number' || score < 0.9) {
       logger.info('Failed reCAPTCHA response', {
-        tokenProperties: body.tokenProperties,
-        score: body.score,
-        reasons: body.reasons
+        tokenProperties: body.tokenProperties || {},
+        score: score || 'N/A',
+        reasons
       })
       return false
     }
-
     return true
   }
-
   throw new Error(`Unknown reCAPTCHA response ${response.statusCode}`)
 }
 

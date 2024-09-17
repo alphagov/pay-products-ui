@@ -40,7 +40,7 @@ describe('CAPTCHA verification utility', () => {
     })
 
     it('returns the captcha enterprise URL given a valid project ID', () => {
-      expect(captcha.formatEnterpriseUrl('102030')).to.equal('https://recaptchaenterprise.googleapis.com/v1beta1/projects/102030/assessments')
+      expect(captcha.formatEnterpriseUrl('102030')).to.equal('https://recaptchaenterprise.googleapis.com/v1/projects/102030/assessments')
     })
   })
 
@@ -51,9 +51,8 @@ describe('CAPTCHA verification utility', () => {
 
     it('rejects non-success HTTP responses', async () => {
       process.env.GOOGLE_RECAPTCHA_USE_ENTERPRISE_VERSION = 'true'
-
       nock('https://recaptchaenterprise.googleapis.com')
-        .post('/v1beta1/projects/102030/assessments?key=8Pf-i72rjkwfmjwfi72rfkjwefmjwef')
+        .post('/v1/projects/102030/assessments?key=8Pf-i72rjkwfmjwfi72rfkjwefmjwef')
         .reply(403)
 
       try {
@@ -69,14 +68,14 @@ describe('CAPTCHA verification utility', () => {
       const token = 'a-valid-session-token'
 
       nock('https://recaptchaenterprise.googleapis.com')
-        .post('/v1beta1/projects/102030/assessments?key=8Pf-i72rjkwfmjwfi72rfkjwefmjwef', (body) => {
+        .post('/v1/projects/102030/assessments?key=8Pf-i72rjkwfmjwfi72rfkjwefmjwef', (body) => {
           if (body.event.token === token) {
             return true
           } else {
             return false
           }
         })
-        .reply(200, { success: true, score: 1 })
+        .reply(200, { riskAnalysis: { success: true, score: 1 } })
 
       const validResponseWithExpectedBody = await captcha.verifyCAPTCHAToken(token)
       expect(validResponseWithExpectedBody).to.equal(true)
@@ -88,14 +87,14 @@ describe('CAPTCHA verification utility', () => {
       const token = 'a-valid-session-token'
 
       nock('https://recaptchaenterprise.googleapis.com')
-        .post('/v1beta1/projects/102030/assessments?key=8Pf-i72rjkwfmjwfi72rfkjwefmjwef', (body) => {
+        .post('/v1/projects/102030/assessments?key=8Pf-i72rjkwfmjwfi72rfkjwefmjwef', (body) => {
           if (body.event.token === token) {
             return true
           } else {
             return false
           }
         })
-        .reply(200, { success: true, score: 0.8 })
+        .reply(200, { riskAnalysis: { success: true, score: 0.8 } })
 
       const validResponseWithExpectedBody = await captcha.verifyCAPTCHAToken(token)
       expect(validResponseWithExpectedBody).to.equal(false)
