@@ -25,7 +25,7 @@ describe('cookie configuration', function () {
           ephemeral: false,
           httpOnly: true,
           secureProxy: true,
-          SameSite: 'Lax'
+          sameSite: 'Lax'
         }
       }
 
