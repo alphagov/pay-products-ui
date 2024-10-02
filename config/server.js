@@ -28,6 +28,7 @@ const loggingMiddleware = require('../app/middleware/logging-middleware')
 const { requestContextMiddleware } = require('../app/clients/base/request-context')
 const Sentry = require('../app/utils/sentry.js').initialiseSentry()
 const replaceParamsInPath = require('../app/utils/replace-params-in-path')
+const { formatMarkdown } = require('../app/utils/format-markdown')
 
 // Global constants
 const JAVASCRIPT_PATH = staticify.getVersionedPath('/js/application.min.js')
@@ -106,6 +107,9 @@ function initialiseTemplateEngine (app) {
   // if it's not production we want to re-evaluate the assets on each file change
   nunjucksEnvironment.addGlobal('css_path', staticify.getVersionedPath('/stylesheets/application.min.css'))
   nunjucksEnvironment.addGlobal('js_path', NODE_ENV === 'production' ? JAVASCRIPT_PATH : staticify.getVersionedPath('/js/application.js'))
+
+  // Load custom Nunjucks filters
+  nunjucksEnvironment.addFilter('formatMarkdown', formatMarkdown)
 }
 
 function initialisePublic (app) {

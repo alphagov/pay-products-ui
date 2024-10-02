@@ -20,7 +20,10 @@ describe('The payment link start page', () => {
       external_id: productExternalId,
       reference_enabled: true,
       reference_label: referenceLabel,
-      description: 'Once payment is received your permit will be printed and posted to you. Please note that this can take up to 10 working days from receipt of payment.',
+      description: 'You can request a refund due to:\n' +
+        '\n' +
+        '* illness\n' +
+        '* deep regret\n',
       type: 'ADHOC'
     }
 
@@ -45,7 +48,8 @@ describe('The payment link start page', () => {
       cy.title().should('contain', `Make a payment - ${productName}`)
       cy.get('[data-cy=heading-caption]').should('have.text', organisationName)
       cy.get('h1').should('have.text', productName)
-      cy.get('[data-cy=product-description]').should('contain', 'Once payment is received')
+      cy.get('[data-cy=product-description]').should('contain', 'You can request a refund due to:')
+      cy.get('[data-cy=product-description]').find('ul').find('li').first().should('contain', 'illness')
     })
 
     it('should continue to the reference page when continue is clicked', () => {
