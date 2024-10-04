@@ -15,7 +15,7 @@
     <h1 class="govuk-heading-l">{{ product.name }}</h1>
 
     {% if product.description %}
-    <p class="govuk-body" data-cy="product-description">{{ product.description | striptags(true) | escape | nl2br }}</p>
+    <div data-cy="product-description">{{ product.description | striptags(true) | formatMarkdown | safe }}</div>
     {% endif %}
   
     {{ govukButton({
