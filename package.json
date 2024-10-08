@@ -39,7 +39,7 @@
     "snyk-protect": "snyk-protect",
     "prepublish": "npm run snyk-protect",
     "publish-pacts": "./bin/publish-pacts.js",
-    "cypress:server": "mb --debug | node --inspect -r dotenv/config config/start.js dotenv_config_path=test/cypress/test.env",
+    "cypress:server": "http-configurable-mock-server --port=8000 --debug | node --inspect -r dotenv/config config/start.js dotenv_config_path=test/cypress/test.env",
     "cypress:test": "cypress run",
     "cypress:test-headed": "cypress open",
     "cypress:test-no-watch": "cypress open --config watchForFileChanges=false"
@@ -91,6 +91,7 @@
   "devDependencies": {
     "@babel/core": "^7.23.2",
     "@babel/preset-env": "^7.23.2",
+    "@govuk-pay/http-configurable-mock-server": "github:alphagov/http-configurable-mock-server#ac13d2d",
     "@pact-foundation/pact": "^12.1.1",
     "@pact-foundation/pact-core": "^14.0.5",
     "@snyk/protect": "^1.1235.x",
@@ -113,7 +114,6 @@
     "html5shiv": "3.7.x",
     "lint-staged": "^13.2.3",
     "mocha": "^10.2.0",
-    "mountebank": "^2.9.1",
     "nock": "13.3.x",
     "nodemon": "^3.0.1",
     "nunjucksify": "^2.2.0",

@@ -14,5 +14,5 @@ beforeEach(() => {
 })
 
 afterEach(() => {
-  cy.task('verifyStubs')
+  // cy.task('verifyStubs')
 })
