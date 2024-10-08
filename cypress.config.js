@@ -7,8 +7,8 @@ module.exports = defineConfig({
   video: false,
   env: {
     TEST_SESSION_ENCRYPTION_KEY: 'naskjwefvwei72rjkwfmjwfi72rfkjwefmjwefiuwefjkbwfiu24fmjbwfk',
-    MOUNTEBANK_URL: 'http://127.0.0.1:2525',
-    MOUNTEBANK_IMPOSTERS_PORT: 8000
+    MOCK_HTTP_SERVER_URL: 'http://127.0.0.1:8000',
+    MOCK_HTTP_SERVER_PORT: 8000
   },
   e2e: {
     setupNodeEvents (on, config) {
