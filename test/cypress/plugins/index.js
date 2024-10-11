@@ -13,7 +13,7 @@ const axios = require('axios')
 // the project's config changing)
 module.exports = (on, config) => {
   const stubSetupUrl = config.env.MOCK_HTTP_SERVER_URL + '/__add-mock-endpoints__'
-  const stubResetUrl = config.env.MOCK_HTTP_SERVER_URL + '/__clear-all-endpoints__'
+  const stubResetUrl = config.env.MOCK_HTTP_SERVER_URL + '/__clear-mock-endpoints__'
 
   on('task', {
     /**
