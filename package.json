@@ -63,7 +63,7 @@
   "dependencies": {
     "@govuk-pay/pay-js-commons": "^6.0.14",
     "@govuk-pay/pay-js-metrics": "^1.0.6",
-    "@sentry/node": "7.74.0",
+    "@sentry/node": "7.119.2",
     "axios": "^1.7.4",
     "body-parser": "1.20.x",
     "chokidar": "^3.5.3",
@@ -73,7 +73,7 @@
     "correlation-id": "^5.0.3",
     "csrf": "3.1.x",
     "currency-formatter": "^1.5.9",
-    "express": "4.20.x",
+    "express": "4.21.x",
     "govuk-frontend": "^5.2.0",
     "i18n": "^0.15.1",
     "lodash": "4.17.x",
