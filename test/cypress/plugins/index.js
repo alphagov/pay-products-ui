@@ -17,8 +17,7 @@ module.exports = (on, config) => {
 
   on('task', {
     /**
-     * Makes a post request to Mountebank to setup an Imposter with stubs built using the array of
-     * stubs
+     * Makes a post request to @govuk-pay/run-amock to setup stubs built using the array of stubs
      *
      * Note: this task can only be called once per test, so all stubs for a test must be set up in
      * the same call.
@@ -26,7 +25,7 @@ module.exports = (on, config) => {
     setupStubs (stubs) {
       return axios.post(stubSetupUrl,
         {
-          port: config.env.MOUNTEBANK_IMPOSTERS_PORT,
+          port: config.env.MOCK_HTTP_SERVER_PORT,
           protocol: 'http',
           stubs
         })
@@ -34,12 +33,12 @@ module.exports = (on, config) => {
         .catch(function (error) { throw error})
     },
     /**
-     * Makes a request to Mountebank to delete the existing Imposter along with all stubs that have been set up.
+     * Makes a request to @govuk-pay to delete the existing stubs that have been set up.
      */
     clearStubs () {
       return axios.post(stubResetUrl)
-        .then(function () { return ''})
-        .catch(function (error) { throw error})
+        .then(function () { return '' })
+        .catch(function (error) { throw error })
     }
   })
 

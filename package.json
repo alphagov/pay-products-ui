@@ -91,7 +91,7 @@
   "devDependencies": {
     "@babel/core": "^7.23.2",
     "@babel/preset-env": "^7.23.2",
-    "@govuk-pay/run-amock": "0.0.3",
+    "@govuk-pay/run-amock": "0.0.4",
     "@pact-foundation/pact": "^12.1.1",
     "@pact-foundation/pact-core": "^14.0.5",
     "@snyk/protect": "^1.1235.x",
@@ -126,11 +126,6 @@
     "stylelint-config-gds": "^1.0.0",
     "stylelint-order": "^6.0.3",
     "supertest": "^6.3.3"
-  },
-  "overrides": {
-    "mountebank-formatters": {
-      "ejs": "3.1.8"
-    }
   },
   "snyk": true
 }
