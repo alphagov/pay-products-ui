@@ -1,5 +1,5 @@
 'use strict'
-
+const { CORRELATION_HEADER } = require('../../../config')
 const { CORRELATION_ID } = require('@govuk-pay/pay-js-commons').logging.keys
 
 const { AsyncLocalStorage } = require('async_hooks')
@@ -9,10 +9,10 @@ const asyncLocalStorage = new AsyncLocalStorage()
 
 function requestContextMiddleware (req, res, next) {
   asyncLocalStorage.run({}, () => {
-    const correlationId = req.headers[CORRELATION_ID] || crypto.randomBytes(16).toString('hex')
+    const correlationId = req.headers[CORRELATION_HEADER] || crypto.randomBytes(16).toString('hex')
 
-    asyncLocalStorage.getStore()[CORRELATION_ID] =  correlationId
-    
+    asyncLocalStorage.getStore()[CORRELATION_ID] = correlationId
+
     next()
   })
 }

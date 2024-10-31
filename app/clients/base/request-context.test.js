@@ -5,20 +5,21 @@ const sinon = require('sinon')
 const { CORRELATION_ID } = require('@govuk-pay/pay-js-commons').logging.keys
 
 const { expect } = require('chai')
+const { CORRELATION_HEADER } = require('../../../config')
 
 let asyncStorageMock = {}
 
 function getRequestContext () {
   return proxyquire('./request-context', {
-    'crypto': {
-      randomBytes : function () {
+    crypto: {
+      randomBytes: function () {
         return 'test-correlation-id'
       }
     },
-    'async_hooks': {
-      AsyncLocalStorage : function () {
+    async_hooks: {
+      AsyncLocalStorage: function () {
         return {
-          getStore: function (){
+          getStore: function () {
             return asyncStorageMock
           },
           run: function (object, callback) {
@@ -32,7 +33,7 @@ function getRequestContext () {
 
 describe('Request Context', () => {
   beforeEach(() => {
-    asyncStorageMock = {} 
+    asyncStorageMock = {}
   })
 
   it('sets the correlation id when there is no x-request-id header', () => {
@@ -41,7 +42,7 @@ describe('Request Context', () => {
     const req = {
       headers: {}
     }
-    const res = null 
+    const res = null
     const next = sinon.spy()
 
     requestContext.requestContextMiddleware(req, res, next)
@@ -56,10 +57,10 @@ describe('Request Context', () => {
     const req = {
       headers: {}
     }
-    
-    req.headers[CORRELATION_ID] = xRequestIdHeaderValue
-    
-    const res = null 
+
+    req.headers[CORRELATION_HEADER] = xRequestIdHeaderValue
+
+    const res = null
     const next = sinon.spy()
 
     requestContext.requestContextMiddleware(req, res, next)
