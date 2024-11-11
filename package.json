@@ -39,7 +39,7 @@
     "snyk-protect": "snyk-protect",
     "prepublish": "npm run snyk-protect",
     "publish-pacts": "./bin/publish-pacts.js",
-    "cypress:server": "run-amock --port=8000 --debug | node --inspect -r dotenv/config config/start.js dotenv_config_path=test/cypress/test.env",
+    "cypress:server": "run-amock --port=8000 | node --inspect -r dotenv/config config/start.js dotenv_config_path=test/cypress/test.env",
     "cypress:test": "cypress run",
     "cypress:test-headed": "cypress open",
     "cypress:test-no-watch": "cypress open --config watchForFileChanges=false"
@@ -91,7 +91,7 @@
   "devDependencies": {
     "@babel/core": "^7.23.2",
     "@babel/preset-env": "^7.23.2",
-    "@govuk-pay/run-amock": "0.0.4",
+    "@govuk-pay/run-amock": "0.0.5",
     "@pact-foundation/pact": "^12.1.1",
     "@pact-foundation/pact-core": "^14.0.5",
     "@snyk/protect": "^1.1235.x",
