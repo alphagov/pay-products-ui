@@ -8,7 +8,11 @@ function getServiceSuccess (opts) {
     gateway_account_ids: [opts.gatewayAccountId],
     service_name: opts.serviceName,
     external_id: opts.serviceExternalId,
-    organisationName: opts.organisationName
+    organisationName: opts.organisationName,
+    custom_branding: opts.customBranding ? {
+      image_url: opts.customBranding.imageUrl,
+      css_url: opts.customBranding.cssUrl
+    } : null
   }
 
   const path = '/v1/api/services'
