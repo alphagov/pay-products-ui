@@ -10,3 +10,20 @@ div.govuk-panel--confirmation {
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
+
+/*
+  There are some minor spacing issues that cause the 'test payment' notification banner to move up and down the page
+  slightly when changing page views. This rule checks if the payment banner is within the container, if found it sets
+  a min height of 50px on the beforeContent container (accommodating the back link) and disables padding on the main
+  content wrapper to ensure consistency across views. It isn't ideal that we have to override the design system in this
+  way but it does ensure consistent element placing when transitioning from products-ui to frontend and vice versa on
+  desktop and mobile views
+ */
+.govuk-width-container:has(div.test-payment-banner) {
+  .govuk-main-wrapper {
+    padding-top: 0;
+  }
+  .products-ui--before-content {
+    min-height: 50px;
+  }
+}

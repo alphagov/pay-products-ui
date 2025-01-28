@@ -14,6 +14,22 @@ function createPaymentErrorStub (opts) {
   })
 }
 
+function getPaymentByExternalId (opts) {
+  const path = `/v1/api/payments/${opts.paymentExternalId}`
+  return stubBuilder('GET', path, 200, {
+    response: {
+      external_id: opts.paymentExternalId,
+      product_external_id: opts.productExternalId,
+      amount: opts.amount,
+      govuk_status: opts.govukStatus,
+      reference_number: opts.referenceNumber,
+      next_url: opts.nextUrl || '',
+      _links: opts.links || []
+    }
+  })
+}
+
 module.exports = {
-  createPaymentErrorStub
+  createPaymentErrorStub,
+  getPaymentByExternalId
 }

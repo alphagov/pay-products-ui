@@ -24,6 +24,7 @@ const lodash = require('lodash')
  * @property {object} links.self
  * @property {string} links.self.href - url to use to re-fetch the product
  * @property {string} links.self.method - the http method to use to re-fetch the product
+ * @property {boolean} isTestPaymentLink - boolean flag indicating if this payment link is for a test gateway account
  */
 class Product {
   /**
@@ -46,6 +47,7 @@ class Product {
    * @param {string} opts._links[].rel - the name of the link
    * @param {string=} opts.description - The name of the product
    * @param {string=} opts.return_url - return url of where to redirect for any charge of this product
+   * @param {string} opts.pay_api_token - api token used by the payment link
    **/
   constructor (opts) {
     this.externalId = opts.external_id
@@ -63,6 +65,7 @@ class Product {
     this.amountHint = opts.amount_hint
     this.language = opts.language
     this.requireCaptcha = opts.require_captcha
+    this.isTestPaymentLink = opts?.pay_api_token?.startsWith('api_test_') ?? false // used in layout and test-payment-notification-banner njk templates
     opts._links.forEach(link => lodash.set(this, `links.${link.rel}`, { method: link.method, href: link.href }))
   }
 }

@@ -8,7 +8,7 @@
   {{ __p('paymentLinks.amount.enterAmountToPay') }} - {{ productName }}
 {% endblock %}
 
-{% block beforeContent %}
+{% block beforeContentBody %}
   {{ govukBackLink({
     text: __p('paymentLinks.common.back'),
     href: backLinkHref,

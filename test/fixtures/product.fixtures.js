@@ -77,6 +77,9 @@ module.exports = {
         method: 'GET'
       })
     }
+    if (opts.test_api_key) {
+      data.pay_api_token = 'api_test_totallyrealapikeyrofl1337' // pragma: allowlist secret
+    }
 
     return data
   }
