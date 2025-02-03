@@ -41,16 +41,6 @@ module.exports = function (grunt) {
 
     // Copies templates and assets from external modules and dirs
     copy: {
-      html5shiv: {
-        files: [
-          {
-            expand: true,
-            cwd: 'node_modules/html5shiv/dist',
-            src: 'html5shiv.min.js',
-            dest: 'public/vendor/'
-          }
-        ]
-      },
       assets: {
         files: [
           {
