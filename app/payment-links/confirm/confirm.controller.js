@@ -133,6 +133,11 @@ async function postPage (req, res, next) {
 
     res.redirect(303, payment.links.next.href)
   } catch (error) {
+    if (error.errorIdentifier && error.errorIdentifier === 'AMOUNT_BELOW_MINIMUM') {
+      paymentLinkSession.setError(req, product.externalId, 'Amount must be £0.30 or more')
+      return res.redirect(replaceParamsInPath(paths.paymentLinks.amount, product.externalId))
+    }
+
     if (error.errorIdentifier && error.errorIdentifier === 'CARD_NUMBER_IN_PAYMENT_LINK_REFERENCE_REJECTED') {
       paymentLinkSession.setError(req, product.externalId, 'fieldValidation.potentialPANInReference')
       return res.redirect(replaceParamsInPath(paths.paymentLinks.reference, product.externalId))
