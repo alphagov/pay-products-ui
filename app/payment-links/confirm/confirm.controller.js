@@ -82,7 +82,7 @@ function getPage (req, res, next) {
   const amountProvidedByQueryParams = paymentLinkSession.getAmountProvidedByQueryParams(req, product.externalId)
 
   if (!sessionAmount && !product.price) {
-    logger.info(`Attempted to access confirm page without a price in the session or product. ` +
+    logger.info('Attempted to access confirm page without a price in the session or product. ' +
     'Redirecting to start page')
     return res.redirect(replaceParamsInPath(paths.pay.product, product.externalId))
   } else if (product.reference_enabled && !sessionReferenceNumber) {
