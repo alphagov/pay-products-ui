@@ -32,6 +32,10 @@ function getAmount (req, productExternalId) {
   return lodash.get(req, cookieIndex(AMOUNT_KEY, productExternalId))
 }
 
+function removeAmount (req, productExternalId) {
+  lodash.unset(req, cookieIndex(AMOUNT_KEY, productExternalId))
+}
+
 function setAmount (req, productExternalId, amount, providedByQueryParams = false) {
   lodash.set(req, cookieIndex(AMOUNT_KEY, productExternalId), amount)
   if (providedByQueryParams) {
@@ -64,6 +68,7 @@ module.exports = {
   setReference,
   removeReference,
   getAmount,
+  removeAmount,
   setAmount,
   getReferenceProvidedByQueryParams,
   getAmountProvidedByQueryParams,
