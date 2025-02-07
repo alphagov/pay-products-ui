@@ -51,6 +51,40 @@ function checkChangeAmountLink (rowNumber, shouldExist) {
 }
 
 describe('Confirm page', () => {
+  describe('when the product price fails validation', () => {
+    it('should redirect to the amount page', () => {
+      cy.task('setupStubs', [
+        productStubs.getProductByExternalIdStub({
+          external_id: productExternalId,
+          reference_enabled: true,
+          reference_label: 'invoice number',
+          reference_hint: 'Invoice number hint',
+          type: 'ADHOC'
+        }),
+        serviceStubs.getServiceSuccess({
+          gatewayAccountId: gatewayAccountId,
+          serviceName: {
+            en: 'Test service name'
+          }
+        }),
+        paymentStubs.createPaymentErrorStub(productExternalId, 'AMOUNT_BELOW_MINIMUM')
+      ])
+
+      cy.visit('/pay/a-product-id/reference')
+      cy.get('#payment-reference').clear().type('a ref')
+      cy.get('[data-cy=button]').click()
+      cy.get('#payment-amount').clear().type('0.29')
+      cy.get('[data-cy=button]').click()
+      cy.get('[data-cy=continue-to-payment-button]').click()
+      cy.url().should('include', 'pay/a-product-id/amount')
+      cy.get('[data-cy=error-summary] a')
+        .should('contain', 'Amount must be £0.30 or more')
+        .should('have.attr', 'href', '#payment-amount')
+      cy.get('[data-cy=input]').should('have.value', '0.29')
+      cy.get('[data-cy=error-message]').should('contain', 'Amount must be £0.30 or more')
+    })
+  })
+
   describe('when the product.price=1000', () => {
     describe('when there is no reference', () => {
       it('should display the Confirm page with the amount row and no `Change` amount link', () => {
@@ -144,9 +178,7 @@ describe('Confirm page', () => {
               en: 'Test service name'
             }
           }),
-          paymentStubs.createPaymentErrorStub({
-            product_external_id: productExternalId
-          })
+          paymentStubs.createPaymentErrorStub(productExternalId)
         ])
 
         cy.log('Visit the reference page - to enter a reference')
