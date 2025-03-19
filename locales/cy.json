@@ -55,15 +55,15 @@
     "tryAgain": "Mynd yn ôl i geisio’r taliad eto"
   },
   "fieldValidation": {
-    "summary": "Mae’r meysydd canlynol yn wag neu yn cynnwys camgymeriadau",
-    "generic": "Rhowch %s dilys",
-    "required": "Ni all y maes hwn fod yn wag",
     "currency": "Dewiswch swm mewn punnoedd a cheiniogau drwy ddefnyddio digidau a phwynt degol. Er enghraifft “10.50”",
+    "generic": "Rhowch %s dilys",
+    "invalidCharacters": "Ni allwch ddefnyddio unrhyw rai o’r nodau canlynol < > ; : ` ( ) \" = &#124; \",\" ~ [ ]",
     "isAboveMaxAmount": "Dewiswch swm sy’n llai na £%s",
     "isGreaterThanMaxLengthChars": "Mae’r testun yn rhy hir. Ni all fod yn fwy na 50 o nodau.",
-    "invalidCharacters": "Ni allwch ddefnyddio unrhyw rai o’r nodau canlynol < > ; : ` ( ) \" = &#124; \",\" ~ [ ]",
+    "potentialPANInReference": "Gwiriwch eich bod wedi nodi’r rhif yn gywir cyn gwneud y taliad. Peidiwch â nodi’ch rhif cerdyn debyd neu gredyd.",
     "potentialPANInReferenceTitle": "Ydych chi’n siŵr mae rhif cyfeirnod yw hwn? ",
-    "potentialPANInReference": "Gwiriwch eich bod wedi nodi’r rhif yn gywir cyn gwneud y taliad. Peidiwch â nodi’ch rhif cerdyn debyd neu gredyd."
+    "required": "Ni all y maes hwn fod yn wag",
+    "summary": "Mae’r meysydd canlynol yn wag neu yn cynnwys camgymeriadau"
   },
   "paymentLinks": {
     "common": {
@@ -86,6 +86,7 @@
       "continueToPayment": "Parhau at daliad"
     },
     "fieldValidation": {
+      "amountBelowMinimum": "Rhaid i'r swm fod yn £0.30 neu fwy",
       "enterAnAmountInPounds": "Cofnodwch swm o arian i’w dalu",
       "enterANonZeroAmountInPounds": "Rhaid i'r swm fod yn £0.01 neu fwy",
       "enterAnAmountInTheCorrectFormat": "Cofnodwch swm mewn punnoedd a cheiniogau gan ddefnyddio digidau a phwynt degol, fel 123.45 neu 156.00",

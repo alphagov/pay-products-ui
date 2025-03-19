@@ -46,7 +46,7 @@ function getPage (req, res, next) {
 
   if (paymentLinkSession.getError(req, product.externalId)) {
     const errors = {}
-    const errorMessage = paymentLinkSession.getError(req, product.externalId) // res.locals.__p(paymentLinkSession.getError(req, product.externalId))
+    const errorMessage = paymentLinkSession.getError(req, product.externalId)
     errors[PAYMENT_AMOUNT] = errorMessage
     paymentLinkSession.setError(req, product.externalId, '')
     data.errors = errors

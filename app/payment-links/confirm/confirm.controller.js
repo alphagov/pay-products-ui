@@ -134,7 +134,7 @@ async function postPage (req, res, next) {
     res.redirect(303, payment.links.next.href)
   } catch (error) {
     if (error.errorIdentifier && error.errorIdentifier === 'AMOUNT_BELOW_MINIMUM') {
-      paymentLinkSession.setError(req, product.externalId, 'Amount must be £0.30 or more')
+      paymentLinkSession.setError(req, product.externalId, res.locals.__p('paymentLinks.fieldValidation.amountBelowMinimum'))
       return res.redirect(replaceParamsInPath(paths.paymentLinks.amount, product.externalId))
     }
 
