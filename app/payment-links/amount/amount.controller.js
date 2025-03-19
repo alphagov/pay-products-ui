@@ -44,6 +44,15 @@ function getPage (req, res, next) {
     data.amount = convertPenceToPoundsAndPence(sessionAmount)
   }
 
+  if (paymentLinkSession.getError(req, product.externalId)) {
+    const errors = {}
+    const errorMessage = paymentLinkSession.getError(req, product.externalId)
+    errors[PAYMENT_AMOUNT] = errorMessage
+    paymentLinkSession.setError(req, product.externalId, '')
+    data.errors = errors
+    paymentLinkSession.removeAmount(req, product.externalId)
+  }
+
   return response(req, res, 'amount/amount', data)
 }
 

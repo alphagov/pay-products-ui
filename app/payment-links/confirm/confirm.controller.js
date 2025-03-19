@@ -82,7 +82,7 @@ function getPage (req, res, next) {
   const amountProvidedByQueryParams = paymentLinkSession.getAmountProvidedByQueryParams(req, product.externalId)
 
   if (!sessionAmount && !product.price) {
-    logger.info(`Attempted to access confirm page without a price in the session or product. ` +
+    logger.info('Attempted to access confirm page without a price in the session or product. ' +
     'Redirecting to start page')
     return res.redirect(replaceParamsInPath(paths.pay.product, product.externalId))
   } else if (product.reference_enabled && !sessionReferenceNumber) {
@@ -133,6 +133,11 @@ async function postPage (req, res, next) {
 
     res.redirect(303, payment.links.next.href)
   } catch (error) {
+    if (error.errorIdentifier && error.errorIdentifier === 'AMOUNT_BELOW_MINIMUM') {
+      paymentLinkSession.setError(req, product.externalId, res.locals.__p('paymentLinks.fieldValidation.amountBelowMinimum'))
+      return res.redirect(replaceParamsInPath(paths.paymentLinks.amount, product.externalId))
+    }
+
     if (error.errorIdentifier && error.errorIdentifier === 'CARD_NUMBER_IN_PAYMENT_LINK_REFERENCE_REJECTED') {
       paymentLinkSession.setError(req, product.externalId, 'fieldValidation.potentialPANInReference')
       return res.redirect(replaceParamsInPath(paths.paymentLinks.reference, product.externalId))

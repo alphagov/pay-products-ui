@@ -55,15 +55,15 @@
 		"tryAgain": "Go back to try the payment again"
 	},
 	"fieldValidation": {
-		"summary": "The following fields are missing or contain errors",
-		"generic": "Enter a valid %s",
-		"required": "This field can’t be blank",
 		"currency": "Choose an amount in pounds and pence using digits and a decimal point. For example “10.50”",
+		"generic": "Enter a valid %s",
+		"invalidCharacters": "You can’t use any of the following characters < > ; : ` ( ) \" = &#124; \",\" ~ [ ]",
 		"isAboveMaxAmount": "Choose an amount under £%s",
 		"isGreaterThanMaxLengthChars": "Text is too long. It can be no more than 50 characters.",
-		"invalidCharacters": "You can’t use any of the following characters < > ; : ` ( ) \" = &#124; \",\" ~ [ ]",
+		"potentialPANInReference": "Check that you’ve entered the number correctly before making the payment. Do not enter your debit or credit card number.",
 		"potentialPANInReferenceTitle": "Are you sure this is a reference number?",
-		"potentialPANInReference": "Check that you’ve entered the number correctly before making the payment. Do not enter your debit or credit card number."
+		"required": "This field can’t be blank",
+		"summary": "The following fields are missing or contain errors"
 	},
 	"paymentLinks": {
 		"common": {
@@ -86,6 +86,7 @@
 			"continueToPayment": "Continue to payment"
 		},
 		"fieldValidation": {
+			"amountBelowMinimum": "Amount must be £0.30 or more",
 			"enterAnAmountInPounds": "Enter an amount of money to pay",
 			"enterANonZeroAmountInPounds": "Amount must be £0.01 or more",
 			"enterAnAmountInTheCorrectFormat": "Enter an amount in pounds and pence using digits and a decimal point, like 123.45 or 156.00",
@@ -101,5 +102,6 @@
 				"message": "Try again later or contact the service you are trying to make a payment to."
 			}
 		}
-	}
+	},
+	"Enter an amount of money to pay": "Enter an amount of money to pay"
 }

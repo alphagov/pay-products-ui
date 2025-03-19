@@ -49,7 +49,12 @@ module.exports = (req, res, next) => {
         if (!validateReference(reference).valid) {
           logger.info(`Invalid prefilled reference error handled: Invalid reference: ${reference}. Rendering problem page`)
           res.status(400)
-          return response(req, res, 'prefilled-link-error', { title: linkTitleMessageKey, message: invalidReferenceMessageKey, messagePreamble: linkProblemMessageKey }, 400)
+          return response(req, res, 'prefilled-link-error',
+            {
+              title: linkTitleMessageKey,
+              message: invalidReferenceMessageKey,
+              messagePreamble: linkProblemMessageKey
+            }, 400)
         }
         paymentLinkSession.setReference(req, product.externalId, reference, true)
       }
