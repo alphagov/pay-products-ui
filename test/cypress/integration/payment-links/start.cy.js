@@ -41,11 +41,21 @@ describe('The payment link start page', () => {
     it('should render the start page', () => {
       cy.visit(`/redirect/${serviceNamePath}/${productNamePath}`)
 
-      cy.get('[data-cy=header-service-name]').should('contain', productName)
       cy.title().should('contain', `Make a payment - ${productName}`)
       cy.get('[data-cy=heading-caption]').should('have.text', organisationName)
       cy.get('h1').should('have.text', productName)
       cy.get('[data-cy=product-description]').should('contain', 'Once payment is received')
+
+      cy.log('Should display the GOV.UK header correctly')
+
+      cy.get('[data-cy=header]').should('have.css', 'background-color', 'rgb(11, 12, 12)')
+      cy.get('[data-cy=header]').should('have.css', 'color', 'rgb(255, 255, 255)')
+      cy.get('[data-cy=header]')
+        .find('.govuk-header__container')
+        .should('have.css', 'border-bottom-color', 'rgb(29, 112, 184)')
+      cy.get('[data-cy=header]')
+        .find('.govuk-header__service-name')
+        .should('contain', productName)
     })
 
     it('should continue to the reference page when continue is clicked', () => {
