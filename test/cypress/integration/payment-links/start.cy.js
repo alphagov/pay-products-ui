@@ -128,7 +128,16 @@ describe('The payment link start page', () => {
 
       cy.get('[data-cy=header]').should('have.css', 'background-color', 'rgb(255, 255, 255)')
       cy.get('[data-cy=header-container]').should('have.css', 'border-bottom-color', 'rgb(0, 0, 0)')
+
+      cy.get('[data-cy=header-container]')
+        .should('have.css', 'border-bottom-color', 'rgb(0, 0, 0)')
+        .and('have.css', 'border-bottom-width')
+        .then((borderWidth) => {
+          expect(borderWidth).not.to.eq('0px')
+        })
+
       cy.get('[data-cy=service-name]').should('have.css', 'color', 'rgb(0, 0, 0)')
+      cy.get('[data-cy=custom-branding-image-container]').should('have.css', 'background-color', 'rgba(0, 0, 0, 0)')
       cy.get('[data-cy=custom-branding-image]').should('have.attr', 'src', '/public/images/custom/cypress-testing.svg')
     })
 
@@ -149,7 +158,16 @@ describe('The payment link start page', () => {
 
       cy.get('[data-cy=header]').should('have.css', 'background-color', 'rgb(191, 64, 191)')
       cy.get('[data-cy=header-container]').should('have.css', 'border-bottom-color', 'rgb(0, 0, 0)')
+
+      cy.get('[data-cy=header-container]')
+        .should('have.css', 'border-bottom-color', 'rgb(0, 0, 0)')
+        .and('have.css', 'border-bottom-width')
+        .then((borderWidth) => {
+          expect(borderWidth).not.to.eq('0px')
+        })
+
       cy.get('[data-cy=service-name]').should('have.css', 'color', 'rgb(255, 255, 255)')
+      cy.get('[data-cy=custom-branding-image-container]').should('have.css', 'background-color', 'rgba(0, 0, 0, 0)')
       cy.get('[data-cy=custom-branding-image]').should('have.attr', 'src', '/public/images/custom/cypress-testing.svg')
     })
   })
