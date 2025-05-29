@@ -67,7 +67,7 @@ describe('Amount page', () => {
 
       cy.get('[data-cy=button]').click()
 
-      cy.title().should('contain', 'Confirm - A Product Name')
+      cy.title().should('contain', 'Check the details of your payment - A Product Name')
     })
   })
 })
