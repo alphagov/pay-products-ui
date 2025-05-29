@@ -30,7 +30,7 @@ describe('Amount page', () => {
       cy.visit('/pay/a-product-id/amount')
 
       cy.get('[data-cy=back-link]').should('have.attr', 'href', '/pay/a-product-id')
-      cy.get('[data-cy=label]').should('contain', 'Enter amount to pay')
+      cy.get('[data-cy=label]').should('contain', 'Enter amount to pay in pounds')
       cy.get('#payment-amount-hint').should('contain', 'Find it somewhere')
       cy.get('[data-cy=button]').should('exist')
     })
