@@ -23,12 +23,15 @@
 
 {% set headerText = product.name if product and product.type === 'ADHOC' else serviceName %}
 
+{% set govukRebrand = enableRebrand %}
+
 {% block header %}
   {% if service and service.customBranding and service.customBranding.cssUrl %}
     {% include "includes/custom.njk" %}
   {% else %}
     {{ govukHeader({
       serviceName: headerText,
+      rebrand: enableRebrand,
       attributes : {
         'data-cy': 'header'
       }
@@ -62,6 +65,7 @@
 
 {% block footer %}
   {{ govukFooter({
+    rebrand: enableRebrand,
     meta: {
       items: [
         {
