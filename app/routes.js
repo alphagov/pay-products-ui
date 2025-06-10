@@ -22,6 +22,7 @@ const { validateAndRefreshCsrf, ensureSessionHasCsrfSecret } = require('./middle
 const resolveProduct = require('./middleware/resolve-product')
 const resolvePaymentAndProduct = require('./middleware/resolve-payment-and-product')
 const resolveLanguage = require('./middleware/resolve-language')
+const addRebrandFlag = require('./middleware/add-rebrand-flag.js')
 
 // Assignments
 const { healthcheck, staticPaths, friendlyUrl, pay, demoPayment, paymentLinks } = paths
@@ -43,27 +44,27 @@ module.exports.bind = function (app) {
   app.get(friendlyUrl.redirect, friendlyUrlRedirectCtrl)
 
   // CREATE PAYMENT
-  app.get(pay.product, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, prePaymentCtrl)
+  app.get(pay.product, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, prePaymentCtrl, addRebrandFlag)
 
   // CREATE REFERENCE
-  app.get(pay.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, prePaymentCtrl)
+  app.get(pay.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, prePaymentCtrl, addRebrandFlag)
 
   // PAYMENT COMPLETE
-  app.get(pay.complete, resolvePaymentAndProduct, resolveLanguage, completeCtrl)
+  app.get(pay.complete, resolvePaymentAndProduct, resolveLanguage, completeCtrl, addRebrandFlag)
 
   // DEMO SPECIFIC SCREENS
-  app.get(demoPayment.failure, failedCtrl)
-  app.get(demoPayment.success, successCtrl)
+  app.get(demoPayment.failure, failedCtrl, addRebrandFlag)
+  app.get(demoPayment.success, successCtrl, addRebrandFlag)
 
   // ADHOC AND AGENT_INITIATED_MOTO SPECIFIC SCREENS
-  app.get(paymentLinks.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceCtrl.getPage)
-  app.post(paymentLinks.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceCtrl.postPage)
+  app.get(paymentLinks.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, addRebrandFlag, referenceCtrl.getPage)
+  app.post(paymentLinks.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, addRebrandFlag, referenceCtrl.postPage)
 
-  app.get(paymentLinks.amount, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, amountCtrl.getPage)
-  app.post(paymentLinks.amount, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, amountCtrl.postPage)
+  app.get(paymentLinks.amount, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, addRebrandFlag, amountCtrl.getPage)
+  app.post(paymentLinks.amount, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, addRebrandFlag, amountCtrl.postPage)
 
-  app.get(paymentLinks.confirm, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, confirmCtrl.getPage)
-  app.post(paymentLinks.confirm, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, confirmCtrl.postPage)
+  app.get(paymentLinks.confirm, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, addRebrandFlag, confirmCtrl.getPage)
+  app.post(paymentLinks.confirm, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, addRebrandFlag, confirmCtrl.postPage)
 
   // security.txt — https://gds-way.cloudapps.digital/standards/vulnerability-disclosure.html
   const securitytxt = 'https://vdp.cabinetoffice.gov.uk/.well-known/security.txt'
