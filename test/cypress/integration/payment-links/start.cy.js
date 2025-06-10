@@ -33,14 +33,16 @@ describe('The payment link start page', () => {
           serviceName: {
             en: serviceName
           },
-          organisationName
+          organisationName,
+          merchant_details: {
+            name: organisationName
+          }
         })
       ])
     })
 
     it('should render the start page', () => {
       cy.visit(`/redirect/${serviceNamePath}/${productNamePath}`)
-
       cy.title().should('contain', `Make a payment - ${productName}`)
       cy.get('[data-cy=heading-caption]').should('have.text', organisationName)
       cy.get('h1').should('have.text', productName)
