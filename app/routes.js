@@ -44,17 +44,17 @@ module.exports.bind = function (app) {
   app.get(friendlyUrl.redirect, friendlyUrlRedirectCtrl)
 
   // CREATE PAYMENT
-  app.get(pay.product, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, prePaymentCtrl, addRebrandFlag)
+  app.get(pay.product, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, addRebrandFlag, prePaymentCtrl)
 
   // CREATE REFERENCE
-  app.get(pay.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, prePaymentCtrl, addRebrandFlag)
+  app.get(pay.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, addRebrandFlag, prePaymentCtrl)
 
   // PAYMENT COMPLETE
-  app.get(pay.complete, resolvePaymentAndProduct, resolveLanguage, completeCtrl, addRebrandFlag)
+  app.get(pay.complete, resolvePaymentAndProduct, resolveLanguage, addRebrandFlag, completeCtrl)
 
   // DEMO SPECIFIC SCREENS
-  app.get(demoPayment.failure, failedCtrl, addRebrandFlag)
-  app.get(demoPayment.success, successCtrl, addRebrandFlag)
+  app.get(demoPayment.failure, addRebrandFlag, failedCtrl)
+  app.get(demoPayment.success, addRebrandFlag, successCtrl)
 
   // ADHOC AND AGENT_INITIATED_MOTO SPECIFIC SCREENS
   app.get(paymentLinks.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, addRebrandFlag, referenceCtrl.getPage)
