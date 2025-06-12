@@ -9,6 +9,7 @@ function getServiceSuccess (opts) {
     service_name: opts.serviceName,
     external_id: opts.serviceExternalId,
     organisationName: opts.organisationName,
+    merchant_details: opts.merchant_details,
     custom_branding: opts.customBranding ? {
       image_url: opts.customBranding.imageUrl,
       css_url: opts.customBranding.cssUrl

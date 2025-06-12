@@ -64,6 +64,33 @@
 {% endblock %}
 
 {% block footer %}
+  {% if service and service.merchantDetails and service.merchantDetails.name %}
+    {% set footerMetaText = 'Service provided by ' + service.merchantDetails.name %}
+
+    {% if service.merchantDetails.addressLine1 %}
+      {% set footerMetaText = footerMetaText + ', ' + service.merchantDetails.addressLine1 %}
+    {% endif %}
+
+    {% if service.merchantDetails.addressLine2 %}
+      {% set footerMetaText = footerMetaText + ', ' + service.merchantDetails.addressLine2 %}
+    {% endif %}
+
+    {% if service.merchantDetails.city %}
+      {% set footerMetaText = footerMetaText + ', ' + service.merchantDetails.city %}
+    {% endif %}
+
+    {% if service.merchantDetails.postcode %}
+      {% set footerMetaText = footerMetaText + ', ' + service.merchantDetails.postcode %}
+    {% endif %}
+
+    {% if service.merchantDetails.country %}
+      {% set footerMetaText = footerMetaText + ', ' + service.merchantDetails.country %}
+    {% endif %}
+
+  {% else %}
+    {% set footerMetaText = '' %}
+  {% endif %}
+
   {{ govukFooter({
     rebrand: enableRebrand,
     meta: {
@@ -84,7 +111,11 @@
           text: 'Accessibility statement',
           href: 'https://www.payments.service.gov.uk/accessibility-statement/'
         }
-      ]
+      ],
+      text: footerMetaText
+    },
+    attributes : {
+      'data-cy': 'footer'
     }
   }) }}
 {% endblock %}
