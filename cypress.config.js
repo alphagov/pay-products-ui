@@ -15,9 +15,12 @@ module.exports = defineConfig({
       return require('./test/cypress/plugins')(on, config)
     },
     baseUrl: 'http://127.0.0.1:3000',
-    specPattern: './test/cypress/integration/**/*.cy.js',
+    specPattern: [
+      './test/cypress/integration/**/*.cy.js',
+      './test/cypress/integration/**/*.rebrand.js'
+    ],
     supportFile: './test/cypress/support',
     viewportHeight: 800,
     viewportWidth: 1280
-  },
+  }
 })
