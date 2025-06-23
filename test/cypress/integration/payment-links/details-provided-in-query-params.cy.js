@@ -68,8 +68,23 @@ describe('Payment link visited with invalid amount in query params', () => {
     ])
   })
 
-  it('should show an error page when the payment link is visited', () => {
+  it('should show an error page when the payment link is visited with the correct branding for the header and footer', () => {
     cy.visit(`/redirect/${serviceNamePath}/${productNamePath}?amount=not-valid`, { failOnStatusCode: false })
+
+    cy.log('Should display the GOV.UK header correctly')
+
+    cy.get('[data-cy=header]').should('have.css', 'background-color', 'rgb(11, 12, 12)')
+    cy.get('[data-cy=header]').should('have.css', 'color', 'rgb(255, 255, 255)')
+    cy.get('[data-cy=header]')
+      .find('.govuk-header__container')
+      .should('have.css', 'border-bottom-color', 'rgb(29, 112, 184)')
+
+    cy.log('Should display the GOV.UK footer correctly')
+
+    cy.get('[data-cy=footer]')
+      .should('have.css', 'background-color', 'rgb(243, 242, 241)')
+      .should('have.css', 'border-top-color', 'rgb(29, 112, 184)')
+
     cy.get('h1').should('have.text', 'There is a problem')
     cy.get('[data-cy=error-message]').should('contain.text', 'There is a problem with the link you have been sent to use to pay. Please contact the service you are trying to make a payment to.')
   })

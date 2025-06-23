@@ -6,7 +6,7 @@ const serviceStubs = require('../../stubs/service-stubs')
 const gatewayAccountId = 666
 const productExternalId = 'a-product-id'
 
-const textThatIsInvalid= 'This is a piece of text that contains invalid characters e.g. < > ; : ` ( ) " = | "," ~ [ ]'
+const textThatIsInvalid = 'This is a piece of text that contains invalid characters e.g. < > ; : ` ( ) " = | "," ~ [ ]'
 const textThatIs256CharactersLong = 'This is a piece of text that contains exactly 256 characters and this is 1 higher ' +
   'than 255 characters and as such it will fail any validation that checks if the text has a length of 255 ' +
   'characters or fewer because it is exactly 1 character longer than that'
