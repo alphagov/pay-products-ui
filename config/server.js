@@ -28,6 +28,7 @@ const loggingMiddleware = require('../app/middleware/logging-middleware')
 const { requestContextMiddleware } = require('../app/clients/base/request-context')
 const Sentry = require('../app/utils/sentry.js').initialiseSentry()
 const replaceParamsInPath = require('../app/utils/replace-params-in-path')
+const addRebrandFlagToNunjucks = require('../app/utils/add-rebrand-flag-to-nunjucks')
 
 // Global constants
 const JAVASCRIPT_PATH = staticify.getVersionedPath('/js/application.min.js')
@@ -106,6 +107,8 @@ function initialiseTemplateEngine (app) {
   // if it's not production we want to re-evaluate the assets on each file change
   nunjucksEnvironment.addGlobal('css_path', staticify.getVersionedPath('/stylesheets/application.min.css'))
   nunjucksEnvironment.addGlobal('js_path', NODE_ENV === 'production' ? JAVASCRIPT_PATH : staticify.getVersionedPath('/js/application.js'))
+
+  addRebrandFlagToNunjucks(nunjucksEnvironment)
 }
 
 function initialisePublic (app) {
