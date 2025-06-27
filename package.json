@@ -40,10 +40,8 @@
     "prepublish": "npm run snyk-protect",
     "publish-pacts": "./bin/publish-pacts.js",
     "cypress:server": "run-amock --port=8000 | node --inspect -r dotenv/config config/start.js dotenv_config_path=test/cypress/test.env",
-    "cypress:test": "cypress run --spec './test/cypress/integration/**/*.cy.js'",
+    "cypress:test": "cypress run",
     "cypress:test-headed": "cypress open",
-    "cypress:server-rebrand": "run-amock --port=8000 | ENABLE_REBRAND=true node -r dotenv/config config/start.js dotenv_config_path=test/cypress/test.env",
-    "cypress:test-rebrand": "cypress run --spec './test/cypress/integration/payment-links/rebrand-header-footer.cy.rebrand.js,./test/cypress/integration/payment-links/details-provided-in-query-params.cy.rebrand.js,./test/cypress/integration/payment-links/custom-branding.cy.js'",
     "cypress:test-no-watch": "cypress open --config watchForFileChanges=false"
   },
   "lint-staged": {
