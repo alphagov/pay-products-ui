@@ -28,6 +28,7 @@
     {% include "includes/custom.njk" %}
   {% else %}
     {{ govukHeader({
+      homepageUrl: "https://www.gov.uk/",
       serviceName: headerText,
       attributes : {
         'data-cy': 'header'
