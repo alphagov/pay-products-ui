@@ -81,8 +81,8 @@
       {% set footerMetaText = footerMetaText + ', ' + service.merchantDetails.postcode %}
     {% endif %}
 
-    {% if service.merchantDetails.country %}
-      {% set footerMetaText = footerMetaText + ', ' + service.merchantDetails.country %}
+    {% if service.merchantDetails.countryName %}
+      {% set footerMetaText = footerMetaText + ', ' + service.merchantDetails.countryName %}
     {% endif %}
 
   {% else %}
