@@ -26,11 +26,11 @@ describe('The footer displayed on payment', () => {
         organisationName,
         merchant_details: {
           name: organisationName,
-          addressLine1: '6 starling Street',
-          addressLine2: 'Borough',
-          city: 'Swift',
-          postcode: 'AW1H 9UX',
-          country: 'United Kingdom'
+          address_line1: '6 starling Street',
+          address_line2: 'Borough',
+          address_city: 'Swift',
+          address_postcode: 'AW1H 9UX',
+          address_country: 'GB'
         }
       }
 
@@ -68,20 +68,20 @@ describe('The footer displayed on payment', () => {
 
       cy.get('[data-cy=footer]')
         .find('.govuk-footer__meta-custom')
-        .should('contain', 'Service provided by Swift Council, 6 starling Street, Borough, Swift, AW1H 9UX, United Kingdom')
+        .should('contain', 'Service provided by Swift Council, 6 starling Street, Borough, Swift, AW1H 9UX, GB')
     })
   })
 
-  it('should display the service name and address when service does not have a second line', () => {
+  it('should display the service name and address when service does not have a second address line', () => {
     const serviceOpts = {
       gatewayAccountId: gatewayAccountId,
       organisationName,
       merchant_details: {
         name: organisationName,
-        addressLine1: '6 starling Street',
-        city: 'Swift',
-        postcode: 'AW1H 9UX',
-        country: 'United Kingdom'
+        address_line1: '6 starling Street',
+        address_city: 'Swift',
+        address_postcode: 'AW1H 9UX',
+        address_country: 'GB'
       }
     }
 
@@ -94,7 +94,7 @@ describe('The footer displayed on payment', () => {
     cy.visit(`/redirect/${serviceNamePath}/${productNamePath}`)
     cy.get('[data-cy=footer]')
       .find('.govuk-footer__meta-custom')
-      .should('contain', 'Service provided by Swift Council, 6 starling Street, Swift, AW1H 9UX, United Kingdom')
+      .should('contain', 'Service provided by Swift Council, 6 starling Street, Swift, AW1H 9UX, GB')
   })
 
   it('should not display the service details if there are no organisation for the service', () => {
@@ -120,11 +120,11 @@ describe('The footer displayed on payment', () => {
       gatewayAccountId: gatewayAccountId,
       merchant_details: {
         name: null,
-        addressLine1: '6 starling Street',
-        addressLine2: 'Borough',
-        city: 'Swift',
-        postcode: 'AW1H 9UX',
-        country: 'United Kingdom'
+        address_line1: '6 starling Street',
+        address_line2: 'Borough',
+        address_city: 'Swift',
+        address_postcode: 'AW1H 9UX',
+        address_country: 'GB'
       }
     }
 
@@ -141,15 +141,15 @@ describe('The footer displayed on payment', () => {
       .should('not.exist')
   })
 
-  it('should display just the service name when mandatory address fields are missing', () => {
+  it('should display just the service namei and address when some address fields are missing', () => {
     const serviceOpts = {
       gatewayAccountId: gatewayAccountId,
       organisationName,
       merchant_details: {
         name: organisationName,
-        city: 'Swift',
-        postcode: 'AW1H 9UX',
-        country: 'United Kingdom'
+        address_city: 'Swift',
+        address_postcode: 'AW1H 9UX',
+        address_country: 'GB'
       }
     }
 
@@ -162,6 +162,6 @@ describe('The footer displayed on payment', () => {
     cy.visit(`/redirect/${serviceNamePath}/${productNamePath}`)
     cy.get('[data-cy=footer]')
       .find('.govuk-footer__meta-custom')
-      .should('contain', 'Service provided by Swift Council, Swift, AW1H 9UX, United Kingdom')
+      .should('contain', 'Service provided by Swift Council, Swift, AW1H 9UX, GB')
   })
 })

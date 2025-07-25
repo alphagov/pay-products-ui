@@ -14,8 +14,20 @@ class Service {
     this.name = serviceData.name
     this.serviceName = serviceData.service_name
     this.gatewayAccountIds = serviceData.gateway_account_ids
+
     this.organisationName = serviceData.merchant_details && serviceData.merchant_details.name
+
     this.merchantDetails = serviceData.merchant_details
+      ? {
+        name: serviceData.merchant_details.name,
+        addressLine1: serviceData.merchant_details.address_line1,
+        addressLine2: serviceData.merchant_details.address_line2,
+        city: serviceData.merchant_details.address_city,
+        postcode: serviceData.merchant_details.address_postcode,
+        countryName: serviceData.merchant_details.address_country
+      }
+      : undefined
+
     this.customBranding =
       serviceData.custom_branding ? {
         cssUrl: serviceData.custom_branding.css_url,
