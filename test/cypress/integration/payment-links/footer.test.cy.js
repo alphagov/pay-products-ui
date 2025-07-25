@@ -68,7 +68,7 @@ describe('The footer displayed on payment', () => {
 
       cy.get('[data-cy=footer]')
         .find('.govuk-footer__meta-custom')
-        .should('contain', 'Service provided by Swift Council, 6 starling Street, Borough, Swift, AW1H 9UX, GB')
+        .should('contain', 'Service provided by Swift Council, 6 starling Street, Borough, Swift, AW1H 9UX, United Kingdom')
     })
   })
 
@@ -94,7 +94,7 @@ describe('The footer displayed on payment', () => {
     cy.visit(`/redirect/${serviceNamePath}/${productNamePath}`)
     cy.get('[data-cy=footer]')
       .find('.govuk-footer__meta-custom')
-      .should('contain', 'Service provided by Swift Council, 6 starling Street, Swift, AW1H 9UX, GB')
+      .should('contain', 'Service provided by Swift Council, 6 starling Street, Swift, AW1H 9UX, United Kingdom')
   })
 
   it('should not display the service details if there are no organisation for the service', () => {
@@ -162,6 +162,6 @@ describe('The footer displayed on payment', () => {
     cy.visit(`/redirect/${serviceNamePath}/${productNamePath}`)
     cy.get('[data-cy=footer]')
       .find('.govuk-footer__meta-custom')
-      .should('contain', 'Service provided by Swift Council, Swift, AW1H 9UX, GB')
+      .should('contain', 'Service provided by Swift Council, Swift, AW1H 9UX, United Kingdom')
   })
 })

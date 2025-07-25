@@ -26,7 +26,36 @@ describe('Service model from service raw data', () => {
     expect(serviceModel.merchantDetails.addressLine2).to.equal('10 Downing Street')
     expect(serviceModel.merchantDetails.city).to.equal('London')
     expect(serviceModel.merchantDetails.postcode).to.equal('AW1H 9UX')
-    expect(serviceModel.merchantDetails.countryName).to.equal('GB')
+    expect(serviceModel.merchantDetails.countryName).to.equal('United Kingdom')
+  })
+
+  it('when the country code is invalid then it should return undefined', () => {
+    const serviceModel = new Service(serviceFixtures.validServiceResponse({
+      organisationName: 'Give Me Your Money',
+      merchant_details: {
+        address_line1: 'Clive House',
+        address_line2: '10 Downing Street',
+        address_city: 'London',
+        address_postcode: 'AW1H 9UX',
+        address_country: 'ZZ' // ZZ is guaranteed to never be used as a country code
+      }
+    }))
+
+    expect(serviceModel.merchantDetails.countryName).to.equal(undefined)
+  })
+
+  it('when the country code is empty then it should return undefined', () => {
+    const serviceModel = new Service(serviceFixtures.validServiceResponse({
+      organisationName: 'Give Me Your Money',
+      merchant_details: {
+        address_line1: 'Clive House',
+        address_line2: '10 Downing Street',
+        address_city: 'London',
+        address_postcode: 'AW1H 9UX'
+      }
+    }))
+
+    expect(serviceModel.merchantDetails.countryName).to.equal(undefined)
   })
 
   it('should return merchant details as undefined when not in raw data', () => {
