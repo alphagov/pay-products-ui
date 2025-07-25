@@ -1,5 +1,7 @@
 'use strict'
 
+const { translateAlpha2 } = require('@govuk-pay/pay-js-commons').utils.countries
+
 /**
  * @class Service
  * @property {string} externalId - The external ID of the service
@@ -24,7 +26,7 @@ class Service {
         addressLine2: serviceData.merchant_details.address_line2,
         city: serviceData.merchant_details.address_city,
         postcode: serviceData.merchant_details.address_postcode,
-        countryName: serviceData.merchant_details.address_country
+        countryName: serviceData.merchant_details.address_country ? translateAlpha2(serviceData.merchant_details.address_country) : undefined
       }
       : undefined
 
