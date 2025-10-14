@@ -30,5 +30,8 @@ module.exports = {
   staticPaths: {
     naxsiError: '/request-denied'
   },
+  csp: {
+    path: '/csp-report'
+  },
   generateRoute
 }
