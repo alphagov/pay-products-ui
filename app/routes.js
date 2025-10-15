@@ -1,9 +1,19 @@
 'use strict'
 
+const express = require('express')
+const {
+  rateLimitMiddleware,
+  requestParseMiddleware,
+  detectErrorsMiddleware,
+  captureEventMiddleware
+} = require('@govuk-pay/pay-js-commons/lib/utils/middleware/csp')
+
 // Local Dependencies
 const response = require('./utils/response.js').response
 const generateRoute = require('./utils/generate-route')
 const paths = require('./paths.js')
+const logger = require('./utils/logger')(__filename)
+const Sentry = require('./utils/sentry.js').initialiseSentry()
 
 // - Controllers
 const staticCtrl = require('./naxsi/static.controller')
@@ -29,6 +39,16 @@ const { healthcheck, staticPaths, friendlyUrl, pay, demoPayment, paymentLinks } 
 // Exports
 module.exports.generateRoute = generateRoute
 module.exports.paths = paths
+
+const cspMiddlewareStack = [
+  rateLimitMiddleware,
+  requestParseMiddleware(50000, express),
+  detectErrorsMiddleware(logger),
+  captureEventMiddleware([
+    'www.facebook.com',
+    'spay.samsung.com'
+  ], logger, Sentry)
+]
 
 module.exports.bind = function (app) {
   app.get('/style-guide', (req, res) => response(req, res, 'style_guide'))
@@ -69,6 +89,8 @@ module.exports.bind = function (app) {
   const securitytxt = 'https://vdp.cabinetoffice.gov.uk/.well-known/security.txt'
   app.get('/.well-known/security.txt', (req, res) => res.redirect(securitytxt))
   app.get('/security.txt', (req, res) => res.redirect(securitytxt))
+
+  app.post(paths.csp.path, cspMiddlewareStack)
 
   // route to gov.uk 404 page
   // this has to be the last route registered otherwise it will redirect other routes
