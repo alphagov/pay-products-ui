@@ -21,7 +21,7 @@ describe('CSP middleware', () => {
 
     const next = sinon.spy()
     const response = { setHeader: sinon.spy(), removeHeader: sinon.spy() }
-    csp.cardDetails(mockRequest, response, next)
+    csp.setCspHeader(mockRequest, response, next)
 
     expect(next.called).to.be.true
     expect(response.setHeader.called).to.be.false
@@ -34,7 +34,7 @@ describe('CSP middleware', () => {
 
     const next = sinon.spy()
     const response = { setHeader: sinon.spy(), removeHeader: sinon.spy() }
-    csp.cardDetails(mockRequest, response, next)
+    csp.setCspHeader(mockRequest, response, next)
 
     sinon.assert.calledWith(response.setHeader, 'Content-Security-Policy-Report-Only')
   })
@@ -46,7 +46,7 @@ describe('CSP middleware', () => {
 
     const next = sinon.spy()
     const response = { setHeader: sinon.spy(), removeHeader: sinon.spy() }
-    csp.cardDetails(mockRequest, response, next)
+    csp.setCspHeader(mockRequest, response, next)
 
     sinon.assert.calledWith(response.setHeader, 'Content-Security-Policy')
   })
