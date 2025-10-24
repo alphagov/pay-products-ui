@@ -17,7 +17,7 @@ const reportingEndpointName = 'govukpay-csp-reporting'
 
 const skipSendingCspHeader = (req, res, next) => { next() }
 
-const productsUiCsp = helmet({
+const setCspHeader = helmet({
   contentSecurityPolicy: {
     directives: {
       reportUri: [paths.csp.path],
@@ -34,7 +34,8 @@ const productsUiCsp = helmet({
       manifestSrc: CSP_SELF,
       mediaSrc: CSP_NONE,
       objectSrc: CSP_NONE,
-      baseUri: CSP_NONE
+      baseUri: CSP_NONE,
+      defaultSrc: CSP_NONE
     },
     reportOnly: !enforceCsp
   }
@@ -47,5 +48,5 @@ const setReportingEndpoints = (req, res, next) => {
 
 module.exports = {
   setReportingEndpoints: sendCspHeader ? setReportingEndpoints : skipSendingCspHeader,
-  cardDetails: sendCspHeader ? productsUiCsp : skipSendingCspHeader
+  setCspHeader: sendCspHeader ? setCspHeader : skipSendingCspHeader
 }
