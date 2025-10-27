@@ -11,7 +11,12 @@ const govUkFrontendLayoutJsEnabledScriptHash = '\'sha256-GUQ5ad8JK5KmEWmROf3LZd9
 const CSP_NONE = ['\'none\'']
 const CSP_SELF = ['\'self\'']
 
-const scriptSource = ['\'self\'', govUkFrontendLayoutJsEnabledScriptHash]
+const scriptSource = ['\'self\'',
+  govUkFrontendLayoutJsEnabledScriptHash,
+  (req, res) => `'nonce-${res.locals && res.locals.nonce}'`,
+  'https://www.recaptcha.net',
+  'https://recaptchaenterprise.googleapis.com'
+]
 
 const reportingEndpointName = 'govukpay-csp-reporting'
 

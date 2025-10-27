@@ -5,7 +5,7 @@
 {% endif %}
 
 {% if analyticsTrackingId %}
-<script>
+<script nonce="{{ nonce }}">
   {# The below code is commented out so we don't store Google Analytic cookies for ICO compliance.
     We create a empty ga() function so not to throw a ReferenceError
     Uncomment when we enable opt-in for cookies and remove the ga() function. #}
