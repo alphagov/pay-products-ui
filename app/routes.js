@@ -40,8 +40,6 @@ const { healthcheck, staticPaths, friendlyUrl, pay, demoPayment, paymentLinks } 
 module.exports.generateRoute = generateRoute
 module.exports.paths = paths
 
-const { setCspHeader } = require('../app/middleware/csp.js')
-
 const cspMiddlewareStack = [
   rateLimitMiddleware,
   requestParseMiddleware(50000, express),
@@ -53,46 +51,46 @@ const cspMiddlewareStack = [
 ]
 
 module.exports.bind = function (app) {
-  app.post(paths.csp.path, cspMiddlewareStack)
-
   app.get('/style-guide', (req, res) => response(req, res, 'style_guide'))
 
   // HEALTHCHECK
-  app.get(healthcheck.path, setCspHeader, healthcheckCtrl)
+  app.get(healthcheck.path, healthcheckCtrl)
 
   // STATIC
-  app.all(staticPaths.naxsiError, setCspHeader, staticCtrl.naxsiError)
+  app.all(staticPaths.naxsiError, staticCtrl.naxsiError)
 
   // FRIENDLY URL
   app.get(friendlyUrl.redirect, friendlyUrlRedirectCtrl)
 
   // CREATE PAYMENT
-  app.get(pay.product, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, setCspHeader, prePaymentCtrl)
+  app.get(pay.product, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, prePaymentCtrl)
 
   // CREATE REFERENCE
-  app.get(pay.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, setCspHeader, prePaymentCtrl)
+  app.get(pay.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, prePaymentCtrl)
 
   // PAYMENT COMPLETE
-  app.get(pay.complete, resolvePaymentAndProduct, resolveLanguage, setCspHeader, completeCtrl)
+  app.get(pay.complete, resolvePaymentAndProduct, resolveLanguage, completeCtrl)
 
   // DEMO SPECIFIC SCREENS
-  app.get(demoPayment.failure, setCspHeader, failedCtrl)
-  app.get(demoPayment.success, setCspHeader, successCtrl)
+  app.get(demoPayment.failure, failedCtrl)
+  app.get(demoPayment.success, successCtrl)
 
   // ADHOC AND AGENT_INITIATED_MOTO SPECIFIC SCREENS
-  app.get(paymentLinks.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, setCspHeader, referenceCtrl.getPage)
-  app.post(paymentLinks.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, setCspHeader, referenceCtrl.postPage)
+  app.get(paymentLinks.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceCtrl.getPage)
+  app.post(paymentLinks.reference, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, referenceCtrl.postPage)
 
-  app.get(paymentLinks.amount, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, setCspHeader, amountCtrl.getPage)
-  app.post(paymentLinks.amount, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, setCspHeader, amountCtrl.postPage)
+  app.get(paymentLinks.amount, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, amountCtrl.getPage)
+  app.post(paymentLinks.amount, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, amountCtrl.postPage)
 
-  app.get(paymentLinks.confirm, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, setCspHeader, confirmCtrl.getPage)
-  app.post(paymentLinks.confirm, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, setCspHeader, confirmCtrl.postPage)
+  app.get(paymentLinks.confirm, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, confirmCtrl.getPage)
+  app.post(paymentLinks.confirm, ensureSessionHasCsrfSecret, validateAndRefreshCsrf, resolveProduct, resolveLanguage, confirmCtrl.postPage)
 
   // security.txt — https://gds-way.cloudapps.digital/standards/vulnerability-disclosure.html
   const securitytxt = 'https://vdp.cabinetoffice.gov.uk/.well-known/security.txt'
   app.get('/.well-known/security.txt', (req, res) => res.redirect(securitytxt))
   app.get('/security.txt', (req, res) => res.redirect(securitytxt))
+
+  app.post(paths.csp.path, cspMiddlewareStack)
 
   // route to gov.uk 404 page
   // this has to be the last route registered otherwise it will redirect other routes
