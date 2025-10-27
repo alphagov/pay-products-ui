@@ -12,6 +12,7 @@ const flash = require('connect-flash')
 const cookieParser = require('cookie-parser')
 const staticify = require('staticify')(path.join(__dirname, '../public'))
 const i18n = require('i18n')
+const crypto = require('crypto')
 const i18nPayTranslation = require('./pay-translation')
 
 exports.staticify = staticify
@@ -73,6 +74,9 @@ function initialiseGlobalMiddleware (app) {
     res.locals.GOOGLE_RECAPTCHA_SITE_KEY = process.env.GOOGLE_RECAPTCHA_SITE_KEY
     res.locals.replaceParamsInPath = replaceParamsInPath
     noCache(res)
+
+    res.locals.nonce = crypto.randomBytes(16).toString('hex')
+
     next()
   })
   app.use(bodyParser.json())
