@@ -82,7 +82,6 @@ npm run compile && npm test
 | `NODE_WORKER_COUNT`                   | Default `1`
 | `PORT`                                | Default `3000`
 | `PRODUCTS_URL`                        | 
-| `PRODUCTS_UI_URL`                     | The HTTPS URL of the app - required when enabling the content security policy (CSP). 
 | `SELFSERVICE_DASHBOARD_URL`           | 
 | `SELFSERVICE_DEMO_PAYMENT_RETURN_URL` | 
 | `SESSION_ENCRYPTION_KEY`              | 

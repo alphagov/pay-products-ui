@@ -13,7 +13,6 @@ const cookieParser = require('cookie-parser')
 const staticify = require('staticify')(path.join(__dirname, '../public'))
 const i18n = require('i18n')
 const i18nPayTranslation = require('./pay-translation')
-const { setReportingEndpoints } = require('../app/middleware/csp.js')
 
 exports.staticify = staticify
 
@@ -155,8 +154,6 @@ function initialise () {
   if (NODE_ENV !== 'test') {
     app.use(metrics.initialise())
   }
-
-  app.use(setReportingEndpoints) // adds reporting-endpoints header to all responses
   app.disable('x-powered-by')
   app.use(Sentry.Handlers.requestHandler())
   initialiseTLS()
