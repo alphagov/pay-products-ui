@@ -1,7 +1,7 @@
 const helmet = require('helmet')
 const paths = require('../paths')
 
-const sendCspHeader = process.env.CSP_SEND_HEADER === 'true'
+const isSendCspHeader = process.env.CSP_SEND_HEADER === 'true'
 const enforceCsp = process.env.CSP_ENFORCE === 'true'
 const productsUiUrl = process.env.PRODUCTS_UI_URL || ''
 // Script responsible for setting 'js-enabled' class, extends GOV.UK frontend `layout` which we have no control over
@@ -22,7 +22,7 @@ const reportingEndpointName = 'govukpay-csp-reporting'
 
 const skipSendingCspHeader = (req, res, next) => { next() }
 
-const productsUiCsp = helmet({
+const sendCspHeader = helmet({
   contentSecurityPolicy: {
     directives: {
       reportUri: [paths.csp.path],
@@ -51,6 +51,6 @@ const setReportingEndpoints = (req, res, next) => {
 }
 
 module.exports = {
-  setReportingEndpoints: sendCspHeader ? setReportingEndpoints : skipSendingCspHeader,
-  cardDetails: sendCspHeader ? productsUiCsp : skipSendingCspHeader
+  setReportingEndpoints: isSendCspHeader ? setReportingEndpoints : skipSendingCspHeader,
+  sendCspHeader: isSendCspHeader ? sendCspHeader : skipSendingCspHeader
 }
