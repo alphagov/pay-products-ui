@@ -14,6 +14,7 @@ const staticify = require('staticify')(path.join(__dirname, '../public'))
 const i18n = require('i18n')
 const crypto = require('crypto')
 const i18nPayTranslation = require('./pay-translation')
+const { setReportingEndpoints } = require('../app/middleware/csp.js')
 
 exports.staticify = staticify
 
@@ -65,6 +66,8 @@ function initialiseGlobalMiddleware (app) {
   }
   app.use(favicon(path.join(__dirname, '../node_modules/govuk-frontend/dist/govuk/assets/images', 'favicon.ico')))
   app.use(staticify.middleware)
+
+  app.use(setReportingEndpoints)
 
   app.use(function (req, res, next) {
     res.locals.asset_path = '/public/'
