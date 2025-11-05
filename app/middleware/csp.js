@@ -15,9 +15,22 @@ const scriptSource = ['\'self\'',
   govUkFrontendLayoutJsEnabledScriptHash,
   (req, res) => `'nonce-${res.locals && res.locals.nonce}'`,
   'https://www.recaptcha.net',
-  'https://recaptchaenterprise.googleapis.com'
+  'https://recaptchaenterprise.googleapis.com',
+  'https://www.google.com/recaptcha/',
+  'https://www.gstatic.com/recaptcha/'
 ]
 
+const frameSource = [
+  "'self'",
+  'https://www.google.com/recaptcha/',
+  'https://recaptcha.google.com/recaptcha/'
+]
+const connectSource = [
+  "'self'",
+  'https://www.google.com/recaptcha/',
+  'https://www.recaptcha.net',
+  'https://recaptchaenterprise.googleapis.com'
+]
 const reportingEndpointName = 'govukpay-csp-reporting'
 
 const skipSendingCspHeader = (req, res, next) => { next() }
@@ -27,11 +40,11 @@ const sendCspHeader = helmet({
     directives: {
       reportUri: [paths.csp.path],
       reportTo: [reportingEndpointName],
-      frameSrc: CSP_SELF,
+      frameSrc: frameSource,
       childSrc: CSP_SELF,
       imgSrc: CSP_SELF,
       scriptSrc: scriptSource,
-      connectSrc: CSP_SELF,
+      connectSrc: connectSource,
       styleSrc: CSP_SELF,
       formAction: CSP_SELF,
       fontSrc: CSP_SELF,
