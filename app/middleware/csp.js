@@ -27,10 +27,10 @@ const frameSource = [
 ]
 const connectSource = [
   "'self'",
-  'https://www.google.com/recaptcha/',
-  'https://www.recaptcha.net',
-  'https://recaptchaenterprise.googleapis.com'
+  'https://www.google.com/recaptcha/'
 ]
+
+
 const reportingEndpointName = 'govukpay-csp-reporting'
 
 const skipSendingCspHeader = (req, res, next) => { next() }
