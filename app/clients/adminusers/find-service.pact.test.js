@@ -24,7 +24,7 @@ describe('adminusers client - find a service associated with a particular gatewa
   const provider = new Pact({
     consumer: 'products-ui',
     provider: 'adminusers',
-    port: port,
+    port,
     log: path.resolve(process.cwd(), 'logs', 'mockserver-integration.log'),
     dir: path.resolve(process.cwd(), 'pacts'),
     spec: 2,

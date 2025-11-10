@@ -24,7 +24,7 @@ describe('Reference and reference confirm page', () => {
           type: 'ADHOC'
         }),
         serviceStubs.getServiceSuccess({
-          gatewayAccountId: gatewayAccountId,
+          gatewayAccountId,
           serviceName: {
             en: 'Test service name'
           }

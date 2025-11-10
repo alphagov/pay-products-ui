@@ -22,7 +22,7 @@ describe('The footer displayed on payment', () => {
   describe('Product with organisation name and description', () => {
     it('should display the service name, address and country when service has full organisation details', () => {
       const serviceOpts = {
-        gatewayAccountId: gatewayAccountId,
+        gatewayAccountId,
         organisationName,
         merchant_details: {
           name: organisationName,
@@ -74,7 +74,7 @@ describe('The footer displayed on payment', () => {
 
   it('should display the service name and address when service does not have a second address line', () => {
     const serviceOpts = {
-      gatewayAccountId: gatewayAccountId,
+      gatewayAccountId,
       organisationName,
       merchant_details: {
         name: organisationName,
@@ -117,7 +117,7 @@ describe('The footer displayed on payment', () => {
 
   it('should not display the service details if there is an organisation address but no organisation name', () => {
     const serviceOpts = {
-      gatewayAccountId: gatewayAccountId,
+      gatewayAccountId,
       merchant_details: {
         name: null,
         address_line1: '6 starling Street',
@@ -143,7 +143,7 @@ describe('The footer displayed on payment', () => {
 
   it('should display just the service namei and address when some address fields are missing', () => {
     const serviceOpts = {
-      gatewayAccountId: gatewayAccountId,
+      gatewayAccountId,
       organisationName,
       merchant_details: {
         name: organisationName,

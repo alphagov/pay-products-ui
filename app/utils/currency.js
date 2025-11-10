@@ -5,19 +5,19 @@
  * '131.20', to a pence amount, such as 13120,
  * while avoiding the perils of IEEE floating-
  * point arithmetic.
- * 
+ *
  * Acceptable input strings are either whole
  * pound amounts, such as '131', amounts with two
  * decimal places, such as '131.20', or amounts
  * with one decimal place, such as '131.2' (which
  * is equivalent to '131.20').
- * 
+ *
  * Examples:
- * 
+ *
  * 131 → 131
- * 
+ *
  * 131.20 → 13120
- * 
+ *
  * 131.2 → 13120
  *
  * @param {string} poundsAndPenceAmount
@@ -51,18 +51,18 @@ function convertPoundsAndPenceToPence (poundsAndPenceAmount) {
 /**
  * Converts a pence amount, such as '510', to a
  * pounds and pence amount, such as '5.10'.
- * 
+ *
  * This will work fine for all numbers that have
  * up to 15 significant digits, which is a
  * ludicrous amount of money (hundreds of
  * trillions of pounds).
- * 
+ *
  * Examples:
- * 
+ *
  * 510 → 5.10
- * 
+ *
  * 10 → 0.10
- * 
+ *
  * 1 → 0.01
  *
  * @param {string} penceAmount

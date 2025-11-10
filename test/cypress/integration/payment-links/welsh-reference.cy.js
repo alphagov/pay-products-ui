@@ -6,9 +6,9 @@ const serviceStubs = require('../../stubs/service-stubs')
 const gatewayAccountId = 666
 const productExternalId = 'a-product-id'
 
-const textThatIs256CharactersLong = 'This is a piece of text that contains exactly 256 characters, which is 1 higher '
-    + 'than 255 characters, and as such it will fail any validation that checks if some text has a length of 255 '
-    + 'characters or fewer because it is exactly 1 character longer than that'
+const textThatIs256CharactersLong = 'This is a piece of text that contains exactly 256 characters, which is 1 higher ' +
+    'than 255 characters, and as such it will fail any validation that checks if some text has a length of 255 ' +
+    'characters or fewer because it is exactly 1 character longer than that'
 
 describe('Welsh - reference page', () => {
   describe('when the Payment Link has no price', () => {
@@ -24,7 +24,7 @@ describe('Welsh - reference page', () => {
           language: 'cy'
         }),
         serviceStubs.getServiceSuccess({
-          gatewayAccountId: gatewayAccountId,
+          gatewayAccountId,
           serviceName: {
             cy: 'Welsh test service name'
           }

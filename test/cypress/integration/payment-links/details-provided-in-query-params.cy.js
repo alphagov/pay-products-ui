@@ -25,7 +25,7 @@ describe('Payment link visited with amount and reference provided as query param
       productStubs.getProductByPathStub(productOpts),
       productStubs.getProductByExternalIdStub(productOpts),
       serviceStubs.getServiceSuccess({
-        gatewayAccountId: gatewayAccountId
+        gatewayAccountId
       })
     ])
   })
@@ -63,7 +63,7 @@ describe('Payment link visited with invalid amount in query params', () => {
       productStubs.getProductByPathStub(productOpts),
       productStubs.getProductByExternalIdStub(productOpts),
       serviceStubs.getServiceSuccess({
-        gatewayAccountId: gatewayAccountId
+        gatewayAccountId
       })
     ])
   })
@@ -96,7 +96,7 @@ describe('Payment link visited with invalid reference in query params', () => {
       productStubs.getProductByPathStub(productOpts),
       productStubs.getProductByExternalIdStub(productOpts),
       serviceStubs.getServiceSuccess({
-        gatewayAccountId: gatewayAccountId
+        gatewayAccountId
       })
     ])
   })

@@ -10,10 +10,12 @@ function getServiceSuccess (opts) {
     external_id: opts.serviceExternalId,
     organisationName: opts.organisationName,
     merchant_details: opts.merchant_details,
-    custom_branding: opts.customBranding ? {
-      image_url: opts.customBranding.imageUrl,
-      css_url: opts.customBranding.cssUrl
-    } : null
+    custom_branding: opts.customBranding
+      ? {
+          image_url: opts.customBranding.imageUrl,
+          css_url: opts.customBranding.cssUrl
+        }
+      : null
   }
 
   const path = '/v1/api/services'

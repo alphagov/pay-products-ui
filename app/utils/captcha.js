@@ -29,7 +29,7 @@ async function verifyCAPTCHAEnterpriseVersion (token) {
     captchaEnterpriseUrl,
     {
       event: {
-        token: token,
+        token,
         siteKey: GOOGLE_RECAPTCHA_SITE_KEY
       }
     },

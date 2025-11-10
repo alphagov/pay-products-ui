@@ -69,7 +69,7 @@ function postPage (req, res, next) {
   const data = {
     productExternalId: product.externalId,
     productName: product.name,
-    backLinkHref: backLinkHref
+    backLinkHref
   }
 
   if (!lodash.isEmpty(errors)) {

@@ -29,7 +29,7 @@ describe('The payment link start page', () => {
         productStubs.getProductByPathStub(productOpts),
         productStubs.getProductByExternalIdStub(productOpts),
         serviceStubs.getServiceSuccess({
-          gatewayAccountId: gatewayAccountId,
+          gatewayAccountId,
           serviceName: {
             en: serviceName
           },
@@ -79,7 +79,7 @@ describe('The payment link start page', () => {
           type: 'ADHOC'
         }),
         serviceStubs.getServiceSuccess({
-          gatewayAccountId: gatewayAccountId,
+          gatewayAccountId,
           serviceName: {
             en: serviceName
           }
@@ -105,7 +105,7 @@ describe('The payment link start page', () => {
         productStubs.getProductByPathStub(productOpts),
         productStubs.getProductByExternalIdStub(productOpts),
         serviceStubs.getServiceSuccess({
-          gatewayAccountId: gatewayAccountId
+          gatewayAccountId
         })
       ])
 
