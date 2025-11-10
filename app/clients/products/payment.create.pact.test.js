@@ -29,7 +29,7 @@ describe('products client - creating a new payment', () => {
   const provider = new Pact({
     consumer: 'products-ui-to-be',
     provider: 'products',
-    port: port,
+    port,
     log: path.resolve(process.cwd(), 'logs', 'mockserver-integration.log'),
     dir: path.resolve(process.cwd(), 'pacts'),
     spec: 2,

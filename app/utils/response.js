@@ -12,7 +12,7 @@ function response (req, res, template, data) {
 
 function errorResponse (req, res, msg = ERROR_MESSAGE, status = 500) {
   const errorMeta = {
-    status: status,
+    status,
     error_message: msg
   }
   errorMeta[CORRELATION_ID] = req.correlationId
@@ -29,6 +29,6 @@ function errorResponse (req, res, msg = ERROR_MESSAGE, status = 500) {
 }
 
 module.exports = {
-  response: response,
+  response,
   renderErrorView: errorResponse
 }

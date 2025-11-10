@@ -1,36 +1,36 @@
-var sinon = require('sinon')
-var assert = require('assert')
-var proxyquire = require('proxyquire')
+const sinon = require('sinon')
+const assert = require('assert')
+const proxyquire = require('proxyquire')
 
 describe('CSRF', function () {
   it('should create a CSRF token', function () {
-    var verify = sinon.stub()
+    const verify = sinon.stub()
       .withArgs("it's a secret", 'submitted token')
       .returns(true)
 
-    var create = sinon.stub()
+    const create = sinon.stub()
       .withArgs("it's a secret")
       .returns('newly-created token')
 
-    var csrf = proxyquire('./csrf.js',
+    const csrf = proxyquire('./csrf.js',
       {
         csrf: () => {
           return {
-            verify: verify,
-            create: create
+            verify,
+            create
           }
         }
       }).validateAndRefreshCsrf
 
-    var req = {
+    const req = {
       route: { methods: { post: {} } },
       session: { csrfSecret: "it's a secret" },
       body: { csrfToken: 'submitted token' }
     }
 
-    var res = { locals: {} }
+    const res = { locals: {} }
 
-    var next = sinon.spy()
+    const next = sinon.spy()
 
     csrf(req, res, next)
 
@@ -39,21 +39,21 @@ describe('CSRF', function () {
   })
 
   it('should error if session not present', function () {
-    var renderErrorView = sinon.spy()
-    var csrf = proxyquire('./csrf.js', {
+    const renderErrorView = sinon.spy()
+    const csrf = proxyquire('./csrf.js', {
       '../utils/response.js': {
-        renderErrorView: renderErrorView
+        renderErrorView
       }
     }).validateAndRefreshCsrf
 
-    var req = {
+    const req = {
       route: { methods: { post: {} } },
       body: { csrfToken: 'submitted token' }
     }
 
-    var res = { locals: {} }
+    const res = { locals: {} }
 
-    var next = sinon.spy()
+    const next = sinon.spy()
 
     csrf(req, res, next)
 
@@ -61,22 +61,22 @@ describe('CSRF', function () {
   })
 
   it('should error if session has no CSRF secret', function () {
-    var renderErrorView = sinon.spy()
-    var csrf = proxyquire('./csrf.js', {
+    const renderErrorView = sinon.spy()
+    const csrf = proxyquire('./csrf.js', {
       '../utils/response.js': {
-        renderErrorView: renderErrorView
+        renderErrorView
       }
     }).validateAndRefreshCsrf
 
-    var req = {
+    const req = {
       route: { methods: { post: {} } },
       session: {},
       body: { csrfToken: 'submitted token' }
     }
 
-    var res = { locals: {} }
+    const res = { locals: {} }
 
-    var next = sinon.spy()
+    const next = sinon.spy()
 
     csrf(req, res, next)
 
@@ -84,30 +84,30 @@ describe('CSRF', function () {
   })
 
   it('should error if CSFR token is not valid', function () {
-    var renderErrorView = sinon.spy()
-    var verify = sinon.stub()
+    const renderErrorView = sinon.spy()
+    const verify = sinon.stub()
       .withArgs("it's a secret", 'forged token - call the police')
       .returns(false)
-    var csrf = proxyquire('./csrf.js', {
+    const csrf = proxyquire('./csrf.js', {
       '../utils/response.js': {
-        renderErrorView: renderErrorView
+        renderErrorView
       },
       csrf: () => {
         return {
-          verify: verify
+          verify
         }
       }
     }).validateAndRefreshCsrf
 
-    var req = {
+    const req = {
       route: { methods: { post: {} } },
       session: { csrfSecret: "it's a secret" },
       body: { csrfToken: 'forged token - call the police' }
     }
 
-    var res = { locals: {} }
+    const res = { locals: {} }
 
-    var next = sinon.spy()
+    const next = sinon.spy()
 
     csrf(req, res, next)
 
@@ -115,33 +115,33 @@ describe('CSRF', function () {
   })
 
   it('should not error if CSRF token is not valid but method is GET', function () {
-    var verify = sinon.stub()
+    const verify = sinon.stub()
       .withArgs("it's a secret", "submitted forged token - but we don't really care")
       .returns(false)
 
-    var create = sinon.stub()
+    const create = sinon.stub()
       .withArgs("it's a secret")
       .returns('newly-created token')
 
-    var csrf = proxyquire('./csrf.js',
+    const csrf = proxyquire('./csrf.js',
       {
         csrf: () => {
           return {
-            verify: verify,
-            create: create
+            verify,
+            create
           }
         }
       }).validateAndRefreshCsrf
 
-    var req = {
+    const req = {
       method: 'GET',
       session: { csrfSecret: "it's a secret" },
       body: { csrfToken: "submitted forged token - but we don't really care" }
     }
 
-    var res = { locals: {} }
+    const res = { locals: {} }
 
-    var next = sinon.spy()
+    const next = sinon.spy()
 
     csrf(req, res, next)
 

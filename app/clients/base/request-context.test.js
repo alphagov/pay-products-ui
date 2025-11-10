@@ -52,7 +52,7 @@ describe('Request Context', () => {
 
   it('sets the correlation id using the x-request-id header when it exists', () => {
     const requestContext = getRequestContext()
-    const xRequestIdHeaderValue = 'x-request-id-value' 
+    const xRequestIdHeaderValue = 'x-request-id-value'
 
     const req = {
       headers: {}

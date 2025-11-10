@@ -12,4 +12,3 @@
 beforeEach(() => {
   cy.task('clearStubs')
 })
-

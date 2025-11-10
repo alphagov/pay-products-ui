@@ -18,7 +18,7 @@ describe('Amount page', () => {
           amount_hint: 'Find it somewhere'
         }),
         serviceStubs.getServiceSuccess({
-          gatewayAccountId: gatewayAccountId,
+          gatewayAccountId,
           serviceName: {
             en: 'Test service name'
           }

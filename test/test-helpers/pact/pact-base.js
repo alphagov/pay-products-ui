@@ -38,8 +38,8 @@ module.exports = function (options = {}) {
   }
 
   return {
-    pactifyNestedArray: pactifyNestedArray,
-    pactify: pactify,
-    withPactified: withPactified
+    pactifyNestedArray,
+    pactify,
+    withPactified
   }
 }

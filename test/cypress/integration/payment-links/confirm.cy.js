@@ -62,7 +62,7 @@ describe('Confirm page', () => {
           type: 'ADHOC'
         }),
         serviceStubs.getServiceSuccess({
-          gatewayAccountId: gatewayAccountId,
+          gatewayAccountId,
           serviceName: {
             en: 'Test service name'
           }
@@ -96,7 +96,7 @@ describe('Confirm page', () => {
             price: 1000
           }),
           serviceStubs.getServiceSuccess({
-            gatewayAccountId: gatewayAccountId,
+            gatewayAccountId,
             serviceName: {
               en: 'Test service name'
             }
@@ -131,7 +131,7 @@ describe('Confirm page', () => {
             price: 1000
           }),
           serviceStubs.getServiceSuccess({
-            gatewayAccountId: gatewayAccountId,
+            gatewayAccountId,
             serviceName: {
               en: 'Test service name'
             }
@@ -173,7 +173,7 @@ describe('Confirm page', () => {
             price: 1000
           }),
           serviceStubs.getServiceSuccess({
-            gatewayAccountId: gatewayAccountId,
+            gatewayAccountId,
             serviceName: {
               en: 'Test service name'
             }
@@ -214,7 +214,7 @@ describe('Confirm page', () => {
             require_captcha: true
           }),
           serviceStubs.getServiceSuccess({
-            gatewayAccountId: gatewayAccountId,
+            gatewayAccountId,
             serviceName: {
               en: 'Test service name'
             }
@@ -237,7 +237,7 @@ describe('Confirm page', () => {
             require_captcha: false
           }),
           serviceStubs.getServiceSuccess({
-            gatewayAccountId: gatewayAccountId,
+            gatewayAccountId,
             serviceName: {
               en: 'Test service name'
             }
@@ -262,7 +262,7 @@ describe('Confirm page', () => {
             price: null
           }),
           serviceStubs.getServiceSuccess({
-            gatewayAccountId: gatewayAccountId,
+            gatewayAccountId,
             serviceName: {
               en: 'Test service name'
             }
@@ -306,7 +306,7 @@ describe('Confirm page', () => {
             price: null
           }),
           serviceStubs.getServiceSuccess({
-            gatewayAccountId: gatewayAccountId,
+            gatewayAccountId,
             serviceName: {
               en: 'Test service name'
             }

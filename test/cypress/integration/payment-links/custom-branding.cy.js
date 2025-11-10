@@ -20,7 +20,7 @@ describe('Custom branding on the start page', () => {
       productStubs.getProductByPathStub(productOpts),
       productStubs.getProductByExternalIdStub(productOpts),
       serviceStubs.getServiceSuccess({
-        gatewayAccountId: gatewayAccountId,
+        gatewayAccountId,
         customBranding: {
           imageUrl: '/public/images/custom/cypress-testing.svg',
           cssUrl: '/public/stylesheets/custom/cypress-testing-white-background.min.css'
@@ -50,7 +50,7 @@ describe('Custom branding on the start page', () => {
       productStubs.getProductByPathStub(productOpts),
       productStubs.getProductByExternalIdStub(productOpts),
       serviceStubs.getServiceSuccess({
-        gatewayAccountId: gatewayAccountId,
+        gatewayAccountId,
         customBranding: {
           imageUrl: '/public/images/custom/cypress-testing.svg',
           cssUrl: '/public/stylesheets/custom/cypress-testing-purple-background.min.css'

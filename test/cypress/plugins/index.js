@@ -30,8 +30,8 @@ module.exports = (on, config) => {
           protocol: 'http',
           stubs
         })
-        .then(function () { return ''})
-        .catch(function (error) { throw error})
+        .then(function () { return '' })
+        .catch(function (error) { throw error })
     },
     /**
      * Makes a request to @govuk-pay to delete the existing stubs that have been set up.

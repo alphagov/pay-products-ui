@@ -191,7 +191,7 @@ describe('Pre payment controller', () => {
 
           controller(req, res)
 
-          sinon.assert.calledWith(mockResponse.response, req, res,'prefilled-link-error', {
+          sinon.assert.calledWith(mockResponse.response, req, res, 'prefilled-link-error', {
             title: 'paymentLinkError.title',
             message: 'paymentLinkError.invalidReference',
             messagePreamble: 'paymentLinkError.linkProblem'
@@ -241,7 +241,7 @@ describe('Pre payment controller', () => {
 
         controller(req, res)
 
-        sinon.assert.calledWith(mockResponse.response, req, res,'prefilled-link-error', {
+        sinon.assert.calledWith(mockResponse.response, req, res, 'prefilled-link-error', {
           title: 'paymentLinkError.title',
           message: 'paymentLinkError.invalidAmount',
           messagePreamble: 'paymentLinkError.linkProblem'
@@ -264,7 +264,7 @@ describe('Pre payment controller', () => {
 
         controller(req, res)
 
-        sinon.assert.calledWith(mockResponse.response, req, res,'prefilled-link-error', {
+        sinon.assert.calledWith(mockResponse.response, req, res, 'prefilled-link-error', {
           title: 'paymentLinkError.title',
           message: 'paymentLinkError.invalidAmount',
           messagePreamble: 'paymentLinkError.linkProblem'
@@ -287,7 +287,7 @@ describe('Pre payment controller', () => {
 
         controller(req, res)
 
-        sinon.assert.calledWith(mockResponse.response, req, res,'prefilled-link-error', {
+        sinon.assert.calledWith(mockResponse.response, req, res, 'prefilled-link-error', {
           title: 'paymentLinkError.title',
           message: 'paymentLinkError.invalidAmount',
           messagePreamble: 'paymentLinkError.linkProblem'

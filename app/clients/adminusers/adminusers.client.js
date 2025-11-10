@@ -19,5 +19,5 @@ async function getServiceByGatewayAccountId (gatewayAccountId, correlationId) {
 }
 
 module.exports = {
-  getServiceByGatewayAccountId: getServiceByGatewayAccountId
+  getServiceByGatewayAccountId
 }
