@@ -23,7 +23,8 @@ const scriptSource = ['\'self\'',
 const frameSource = [
   "'self'",
   'https://www.google.com/recaptcha/',
-  'https://recaptcha.google.com/recaptcha/'
+  'https://recaptcha.google.com/recaptcha/',
+  'https://www.recaptcha.net'
 ]
 const connectSource = [
   "'self'",
