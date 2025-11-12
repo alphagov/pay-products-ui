@@ -28,7 +28,8 @@ const frameSource = [
 ]
 const connectSource = [
   "'self'",
-  'https://www.google.com/recaptcha/'
+  'https://www.google.com/recaptcha/',
+  'https://www.recaptcha.net'
 ]
 
 
