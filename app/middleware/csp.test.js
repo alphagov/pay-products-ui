@@ -62,4 +62,68 @@ describe('CSP middleware', () => {
 
     sinon.assert.calledWith(response.setHeader, 'Reporting-Endpoints')
   })
+
+  describe('form-action CSP attribute', () => {
+    it('should should add the FRONTEND_URL to the form action when is set', () => {
+      process.env.CSP_SEND_HEADER = 'true'
+      process.env.CSP_ENFORCE = 'true'
+      process.env.FRONTEND_URL = 'https://www.example.com'
+      const csp = requireHelper('./csp.js')
+
+      const next = sinon.spy()
+      const response = { setHeader: sinon.spy(), removeHeader: sinon.spy() }
+      csp.sendCspHeader(mockRequest, response, next)
+
+      const cspSetHeaderCall = response.setHeader.getCall(0);
+
+      expect(cspSetHeaderCall.args[1]).to.include("form-action 'self' https://www.example.com;");
+    })
+
+    it('should should NOT add the FRONTEND_URL to the form action when it is not set', () => {
+      process.env.CSP_SEND_HEADER = 'true'
+      process.env.CSP_ENFORCE = 'true'
+      process.env.FRONTEND_URL = ''
+      const csp = requireHelper('./csp.js')
+
+      const next = sinon.spy()
+      const response = { setHeader: sinon.spy(), removeHeader: sinon.spy() }
+      csp.sendCspHeader(mockRequest, response, next)
+
+      const cspSetHeaderCall = response.setHeader.getCall(0);
+
+      expect(cspSetHeaderCall.args[1]).to.include("form-action 'self';");
+    })
+  })
+
+  describe('script-src CSP attribute', () => {
+    it('should should set the CSP script-src attribute correctly', () => {
+      process.env.CSP_SEND_HEADER = 'true'
+      process.env.CSP_ENFORCE = 'true'
+      process.env.FRONTEND_URL = 'https://www.example.com'
+      const csp = requireHelper('./csp.js')
+
+      const next = sinon.spy()
+      const response = { 
+        setHeader: sinon.spy(), 
+        removeHeader: sinon.spy(),
+        locals: {
+          nonce: '12345'
+        }
+      }
+      csp.sendCspHeader(mockRequest, response, next)
+
+      const cspSetHeaderCall = response.setHeader.getCall(0);
+
+      expect(cspSetHeaderCall.args[1]).to.include(
+        "script-src" 
+        + " 'self'"
+        + " 'sha256-GUQ5ad8JK5KmEWmROf3LZd9ge94daqNvd8xy9YS1iDw='"
+        + " 'nonce-12345'"
+        + " https://www.recaptcha.net" 
+        + " https://recaptchaenterprise.googleapis.com" 
+        + " https://www.google.com/recaptcha/" 
+        + " https://www.gstatic.com/recaptcha/;"
+      );
+    })
+  })
 })
