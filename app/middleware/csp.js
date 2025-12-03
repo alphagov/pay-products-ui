@@ -4,6 +4,7 @@ const paths = require('../paths')
 const isSendCspHeader = process.env.CSP_SEND_HEADER === 'true'
 const enforceCsp = process.env.CSP_ENFORCE === 'true'
 const productsUiUrl = process.env.PRODUCTS_UI_URL || ''
+const frontendUrl = process.env.FRONTEND_URL || ''
 // Script responsible for setting 'js-enabled' class, extends GOV.UK frontend `layout` which we have no control over
 // and never changes
 const govUkFrontendLayoutJsEnabledScriptHash = '\'sha256-GUQ5ad8JK5KmEWmROf3LZd9ge94daqNvd8xy9YS1iDw=\''
@@ -32,6 +33,10 @@ const connectSource = [
   'https://www.recaptcha.net'
 ]
 
+const formAction = [
+  CSP_SELF,
+  frontendUrl
+].filter(Boolean)
 
 const reportingEndpointName = 'govukpay-csp-reporting'
 
@@ -48,7 +53,7 @@ const sendCspHeader = helmet({
       scriptSrc: scriptSource,
       connectSrc: connectSource,
       styleSrc: CSP_SELF,
-      formAction: CSP_SELF,
+      formAction: formAction,
       fontSrc: CSP_SELF,
       frameAncestors: CSP_SELF,
       manifestSrc: CSP_SELF,
