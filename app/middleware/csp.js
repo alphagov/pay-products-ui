@@ -45,6 +45,7 @@ const skipSendingCspHeader = (req, res, next) => { next() }
 const sendCspHeader = helmet({
   contentSecurityPolicy: {
     directives: {
+      defaultSrc: CSP_NONE,
       reportUri: [paths.csp.path],
       reportTo: [reportingEndpointName],
       frameSrc: frameSource,
