@@ -64,7 +64,7 @@ describe('CSP middleware', () => {
   })
 
   describe('form-action CSP attribute', () => {
-    it('should should add the FRONTEND_URL to the form action when is set', () => {
+    it('should add the FRONTEND_URL to the form action when is set', () => {
       process.env.CSP_SEND_HEADER = 'true'
       process.env.CSP_ENFORCE = 'true'
       process.env.FRONTEND_URL = 'https://www.example.com'
@@ -79,7 +79,7 @@ describe('CSP middleware', () => {
       expect(cspSetHeaderCall.args[1]).to.include("form-action 'self' https://www.example.com;");
     })
 
-    it('should should NOT add the FRONTEND_URL to the form action when it is not set', () => {
+    it('should NOT add the FRONTEND_URL to the form action when it is not set', () => {
       process.env.CSP_SEND_HEADER = 'true'
       process.env.CSP_ENFORCE = 'true'
       process.env.FRONTEND_URL = ''
@@ -96,7 +96,7 @@ describe('CSP middleware', () => {
   })
 
   describe('script-src CSP attribute', () => {
-    it('should should set the CSP script-src attribute correctly', () => {
+    it('should set the CSP script-src attribute correctly', () => {
       process.env.CSP_SEND_HEADER = 'true'
       process.env.CSP_ENFORCE = 'true'
       process.env.FRONTEND_URL = 'https://www.example.com'
