@@ -47,14 +47,29 @@ async function verifyCAPTCHAEnterpriseVersion (token) {
     const score = riskAnalysis.score
     const reasons = riskAnalysis.reasons || []
 
-    if (typeof score !== 'number' || score < 0.9) {
-      logger.info('Failed reCAPTCHA response', {
+    if (typeof score !== 'number') {
+      logger.warn('Failed reCAPTCHA response (not a number)', {
         tokenProperties: body.tokenProperties || {},
         score: score || 'N/A',
         reasons
       })
       return false
     }
+
+    if (score < 0.5) {
+      logger.info('Failed reCAPTCHA response (Low Score)', {
+        tokenProperties: body.tokenProperties || {},
+        score: score,
+        reasons
+      })
+      return false
+    }
+
+    logger.info('Successful reCAPTCHA response', {
+      tokenProperties: body.tokenProperties || {},
+      score: score || 'N/A',
+      reasons
+    })
     return true
   }
   throw new Error(`Unknown reCAPTCHA response ${response.statusCode}`)

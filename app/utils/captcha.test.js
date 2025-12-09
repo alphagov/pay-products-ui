@@ -81,7 +81,7 @@ describe('CAPTCHA verification utility', () => {
       expect(validResponseWithExpectedBody).to.equal(true)
     })
 
-    it('CAPTCHA fails when the body score is < 0.9', async () => {
+    it('CAPTCHA fails when the body score is not a number', async () => {
       process.env.GOOGLE_RECAPTCHA_USE_ENTERPRISE_VERSION = 'true'
 
       const token = 'a-valid-session-token'
@@ -94,7 +94,26 @@ describe('CAPTCHA verification utility', () => {
             return false
           }
         })
-        .reply(200, { riskAnalysis: { success: true, score: 0.8 } })
+        .reply(200, { riskAnalysis: { success: true, score: 'not a number' } })
+
+      const validResponseWithExpectedBody = await captcha.verifyCAPTCHAToken(token)
+      expect(validResponseWithExpectedBody).to.equal(false)
+    })
+
+    it('CAPTCHA fails when the body score is < 0.5', async () => {
+      process.env.GOOGLE_RECAPTCHA_USE_ENTERPRISE_VERSION = 'true'
+
+      const token = 'a-valid-session-token'
+
+      nock('https://recaptchaenterprise.googleapis.com')
+        .post('/v1/projects/102030/assessments?key=8Pf-i72rjkwfmjwfi72rfkjwefmjwef', (body) => {
+          if (body.event.token === token) {
+            return true
+          } else {
+            return false
+          }
+        })
+        .reply(200, { riskAnalysis: { success: true, score: 0.4 } })
 
       const validResponseWithExpectedBody = await captcha.verifyCAPTCHAToken(token)
       expect(validResponseWithExpectedBody).to.equal(false)
