@@ -1,13 +1,12 @@
 # pay-products-ui
 
-User interface app for product payments (Prototype/Demo/Ad-hoc etc) integrated with GOVquitUK Pay.
+User interface app for product payments (Prototype/Demo/Ad-hoc etc) integrated with GOV.UK Pay.
 
 ## Running locally
 
 ### Prerequisites
 
-* This requires the [Pay CLI](https://github.com/alphagov/pay-infra/tree/master/cli), which is not publicly available at
-  present.
+* This requires the [Pay CLI](https://www.npmjs.com/package/@govuk-pay/cli)
 * You
   have [set up your local development environment](https://manual.payments.service.gov.uk/manual/development-processes/setup-local-dev-environment.html)
 * Clone this repo locally.
@@ -31,7 +30,7 @@ npm install && npm run compile
 npm run start:dev
 ```
 
-Visit the site on http://127.0.0.1:3000.
+Visit the site on <http://127.0.0.1:3000>.
 
 ### Debug using Visual Studio Code
 
@@ -39,8 +38,8 @@ Visit the site on http://127.0.0.1:3000.
 * From the **Run** toolbar, select tne launch config `Products UI`.
 * Add breakpoints to any file you want to debug - click in the left hand column and a red dot will appear.
 * Press The `green play` button (`F5` MacOS):
-    * This will run the app in debug mode.
-    * Uses `nodemon` so it will automatically restart on code changes.
+  * This will run the app in debug mode.
+  * Uses `nodemon` so it will automatically restart on code changes.
 
 ### Watching for changes
 
@@ -50,9 +49,7 @@ We use [nodemon](https://github.com/remy/nodemon) which watches for changes to f
 
 If you’re making changes to client-side JS or Sass files (anything within [`/browsered/`](app/browsered) or [
 `/assets/`](app/assets/)) then running `npm run watch-live-reload` will watch for changes and recompile. Nodemon does
-not do anything here as that’s not necessary. If you install
-the [livereload browser plugin](http://livereload.com/extensions/) then it will refresh your page once the assets have
-been compiled to the `/public` folder.
+not do anything here as that’s not necessary.
 
 ## Running tests
 
@@ -74,8 +71,8 @@ npm run compile && npm test
 
 * In VSCode, go to the `Debug` view (on MacOS, use shortcut `CMD + shift + D`).
 * From the **Run** toolbar, select the launch config you want to run:
-    * `Mocha All` - runs all tests.
-    * `Mocha Current File` - only run currently open test file.
+  * `Mocha All` - runs all tests.
+  * `Mocha Current File` - only run currently open test file.
 * Add breakpoints to any file you want to debug - click in the left hand column and a red dot will appear.
 * Press The `green play` button or `F5`.
 
@@ -89,14 +86,12 @@ npm run compile && npm test
 | `COOKIE_MAX_AGE`                      |
 | `CORRELATION_HEADER_NAME`             | Default `x-request-id`                                                               |
 | `DISABLE_INTERNAL_HTTPS`              |
-| `DISABLE_REQUEST_LOGGING`             |
-| `MAX_SOCKETS`                         |
-| `METRICS_HOST`                        |
+| `DISABLE_REQUEST_LOGGING`             |                     |
 | `NODE_ENV`                            |
 | `NODE_WORKER_COUNT`                   | Default `1`                                                                          |
 | `PORT`                                | Default `3000`                                                                       |
 | `PRODUCTS_URL`                        |
-| `PRODUCTS_UI_URL`                     | The HTTPS URL of the app - required when enabling the content security policy (CSP). |
+| `PRODUCTS_UI_URL`                     | The HTTPS URL of the app - required when enabling the content security policy (CSP). Default `''` |
 | `SELFSERVICE_DASHBOARD_URL`           |
 | `SELFSERVICE_DEMO_PAYMENT_RETURN_URL` |
 | `SESSION_ENCRYPTION_KEY`              |
