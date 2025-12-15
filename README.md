@@ -98,8 +98,8 @@ npm run compile && npm test
 
 ## Key build-time environment variables
 
-| Variable                | Description |
-|-------------------------|:------------|
+| Variable                |
+|-------------------------|
 | `LOCAL_ENV`             |
 | `PACT_BROKER_PASSWORD`  |
 | `PACT_BROKER_URL`       |
