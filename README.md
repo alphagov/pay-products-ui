@@ -38,8 +38,8 @@ Visit the site on <http://127.0.0.1:3000>.
 * From the **Run** toolbar, select tne launch config `Products UI`.
 * Add breakpoints to any file you want to debug - click in the left hand column and a red dot will appear.
 * Press The `green play` button (`F5` MacOS):
-  * This will run the app in debug mode.
-  * Uses `nodemon` so it will automatically restart on code changes.
+    * This will run the app in debug mode.
+    * Uses `nodemon` so it will automatically restart on code changes.
 
 ### Watching for changes
 
@@ -71,25 +71,25 @@ npm run compile && npm test
 
 * In VSCode, go to the `Debug` view (on MacOS, use shortcut `CMD + shift + D`).
 * From the **Run** toolbar, select the launch config you want to run:
-  * `Mocha All` - runs all tests.
-  * `Mocha Current File` - only run currently open test file.
+    * `Mocha All` - runs all tests.
+    * `Mocha Current File` - only run currently open test file.
 * Add breakpoints to any file you want to debug - click in the left hand column and a red dot will appear.
 * Press The `green play` button or `F5`.
 
 ## Key runtime environment variables
 
-| Variable                              | Description                                                                          |
-|---------------------------------------|:-------------------------------------------------------------------------------------|
+| Variable                              | Description                                                                                       |
+|---------------------------------------|:--------------------------------------------------------------------------------------------------|
 | `ADMINUSERS_URL`                      |
 | `ANALYTICS_TRACKING_ID`               |
-| `BIND_HOST`                           | The IP address for the application to bind to. Defaults to 127.0.0.1                 |
+| `BIND_HOST`                           | The IP address for the application to bind to. Defaults to 127.0.0.1                              |
 | `COOKIE_MAX_AGE`                      |
-| `CORRELATION_HEADER_NAME`             | Default `x-request-id`                                                               |
+| `CORRELATION_HEADER_NAME`             | Default `x-request-id`                                                                            |
 | `DISABLE_INTERNAL_HTTPS`              |
-| `DISABLE_REQUEST_LOGGING`             |                     |
+| `DISABLE_REQUEST_LOGGING`             |                                                                                                   |
 | `NODE_ENV`                            |
-| `NODE_WORKER_COUNT`                   | Default `1`                                                                          |
-| `PORT`                                | Default `3000`                                                                       |
+| `NODE_WORKER_COUNT`                   | Default `1`                                                                                       |
+| `PORT`                                | Default `3000`                                                                                    |
 | `PRODUCTS_URL`                        |
 | `PRODUCTS_UI_URL`                     | The HTTPS URL of the app - required when enabling the content security policy (CSP). Default `''` |
 | `SELFSERVICE_DASHBOARD_URL`           |
