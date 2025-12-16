@@ -1,13 +1,12 @@
 # pay-products-ui
 
-User interface app for product payments (Prototype/Demo/Ad-hoc etc) integrated with GOVquitUK Pay.
+User interface app for product payments (Prototype/Demo/Ad-hoc etc) integrated with GOV.UK Pay.
 
 ## Running locally
 
 ### Prerequisites
 
-* This requires the [Pay CLI](https://github.com/alphagov/pay-infra/tree/master/cli), which is not publicly available at
-  present.
+* This requires the [Pay CLI](https://www.npmjs.com/package/@govuk-pay/cli)
 * You
   have [set up your local development environment](https://manual.payments.service.gov.uk/manual/development-processes/setup-local-dev-environment.html)
 * Clone this repo locally.
@@ -31,7 +30,7 @@ npm install && npm run compile
 npm run start:dev
 ```
 
-Visit the site on http://127.0.0.1:3000.
+Visit the site on <http://127.0.0.1:3000>.
 
 ### Debug using Visual Studio Code
 
@@ -50,9 +49,7 @@ We use [nodemon](https://github.com/remy/nodemon) which watches for changes to f
 
 If you’re making changes to client-side JS or Sass files (anything within [`/browsered/`](app/browsered) or [
 `/assets/`](app/assets/)) then running `npm run watch-live-reload` will watch for changes and recompile. Nodemon does
-not do anything here as that’s not necessary. If you install
-the [livereload browser plugin](http://livereload.com/extensions/) then it will refresh your page once the assets have
-been compiled to the `/public` folder.
+not do anything here as that’s not necessary.
 
 ## Running tests
 
@@ -81,30 +78,28 @@ npm run compile && npm test
 
 ## Key runtime environment variables
 
-| Variable                              | Description                                                                          |
-|---------------------------------------|:-------------------------------------------------------------------------------------|
+| Variable                              | Description                                                                                       |
+|---------------------------------------|:--------------------------------------------------------------------------------------------------|
 | `ADMINUSERS_URL`                      |
 | `ANALYTICS_TRACKING_ID`               |
-| `BIND_HOST`                           | The IP address for the application to bind to. Defaults to 127.0.0.1                 |
+| `BIND_HOST`                           | The IP address for the application to bind to. Defaults to 127.0.0.1                              |
 | `COOKIE_MAX_AGE`                      |
-| `CORRELATION_HEADER_NAME`             | Default `x-request-id`                                                               |
+| `CORRELATION_HEADER_NAME`             | Default `x-request-id`                                                                            |
 | `DISABLE_INTERNAL_HTTPS`              |
-| `DISABLE_REQUEST_LOGGING`             |
-| `MAX_SOCKETS`                         |
-| `METRICS_HOST`                        |
+| `DISABLE_REQUEST_LOGGING`             |                                                                                                   |
 | `NODE_ENV`                            |
-| `NODE_WORKER_COUNT`                   | Default `1`                                                                          |
-| `PORT`                                | Default `3000`                                                                       |
+| `NODE_WORKER_COUNT`                   | Default `1`                                                                                       |
+| `PORT`                                | Default `3000`                                                                                    |
 | `PRODUCTS_URL`                        |
-| `PRODUCTS_UI_URL`                     | The HTTPS URL of the app - required when enabling the content security policy (CSP). |
+| `PRODUCTS_UI_URL`                     | The HTTPS URL of the app - required when enabling the content security policy (CSP). Default `''` |
 | `SELFSERVICE_DASHBOARD_URL`           |
 | `SELFSERVICE_DEMO_PAYMENT_RETURN_URL` |
 | `SESSION_ENCRYPTION_KEY`              |
 
 ## Key build-time environment variables
 
-| Variable                | Description |
-|-------------------------|:------------|
+| Variable                |
+|-------------------------|
 | `LOCAL_ENV`             |
 | `PACT_BROKER_PASSWORD`  |
 | `PACT_BROKER_URL`       |
