@@ -7,6 +7,11 @@ RUN wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.28-r0/
 ###
 
 WORKDIR /app
+
+# Upgrade npm — if updating the Node.js version, check if this
+# is still necessary and make sure it never downgrades npm
+RUN npm install -g npm@11.10.1
+
 COPY package.json .
 COPY package-lock.json .
 RUN npm ci --quiet
