@@ -62,10 +62,10 @@
     ]
   },
   "dependencies": {
-    "@govuk-pay/pay-js-commons": "^7.0.42",
+    "@govuk-pay/pay-js-commons": "^7.0.43",
     "@govuk-pay/pay-js-metrics": "^1.0.14",
     "@sentry/node": "7.119.2",
-    "axios": "^1.13.6",
+    "axios": "1.14.0",
     "body-parser": "1.20.x",
     "chokidar": "^3.5.3",
     "client-sessions": "^0.8.0",
@@ -131,7 +131,11 @@
     "staticify": {
       "send": "0.19.0"
     },
-    "cross-spawn": "^7.0.5"
+    "cross-spawn": "^7.0.5",
+    "axios": "1.14.0"
+  },
+  "resolutions": {
+    "axios": "1.14.0"
   },
   "snyk": true
 }
