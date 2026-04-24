@@ -62,10 +62,10 @@
     ]
   },
   "dependencies": {
-    "@govuk-pay/pay-js-commons": "^7.0.43",
+    "@govuk-pay/pay-js-commons": "^7.0.51",
     "@govuk-pay/pay-js-metrics": "^1.0.14",
     "@sentry/node": "7.119.2",
-    "axios": "1.14.0",
+    "axios": "1.15.0",
     "body-parser": "1.20.x",
     "chokidar": "^3.5.3",
     "client-sessions": "^0.8.0",
@@ -78,7 +78,7 @@
     "govuk-frontend": "^5.10.2",
     "helmet": "^8.1.0",
     "i18n": "^0.15.1",
-    "lodash": "4.17.x",
+    "lodash": "4.18.x",
     "luhn-js": "^1.1.2",
     "minimist": "^1.2.8",
     "morgan": "1.10.x",
@@ -132,10 +132,10 @@
       "send": "0.19.0"
     },
     "cross-spawn": "^7.0.5",
-    "axios": "1.14.0"
+    "axios": "1.15.0"
   },
   "resolutions": {
-    "axios": "1.14.0"
+    "axios": "1.15.0"
   },
   "snyk": true
 }
