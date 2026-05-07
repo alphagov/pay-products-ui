@@ -1,11 +1,5 @@
 FROM node:22.22.2-alpine3.23@sha256:8ea2348b068a9544dae7317b4f3aafcdc032df1647bb7d768a05a5cad1a7683f AS builder
 
-### Needed to run pact-mock-service
-COPY sgerrand.rsa.pub /etc/apk/keys/sgerrand.rsa.pub
-RUN ["apk", "--no-cache", "add", "ca-certificates", "python3", "build-base", "bash", "ruby"]
-RUN wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.28-r0/glibc-2.28-r0.apk && apk add --force-overwrite --no-cache glibc-2.28-r0.apk && rm -f glibc-2.28-r0.apk
-###
-
 WORKDIR /app
 
 # Upgrade npm — if updating the Node.js version, check if this
