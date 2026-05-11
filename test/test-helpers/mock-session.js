@@ -11,7 +11,7 @@ module.exports = {
 
 function createAppWithSession (app, sessionData = {}) {
   const proxyApp = express()
-  proxyApp.all('*path', (req, res, next) => {
+  proxyApp.all('*splat', (req, res, next) => {
     sessionData.destroy = sinon.stub()
     sessionData.csrfSecret = sessionData.csrfSecret || '123'
     req.session = sessionData || {}
