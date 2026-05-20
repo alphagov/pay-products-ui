@@ -62,7 +62,7 @@
     ]
   },
   "dependencies": {
-    "@govuk-pay/pay-js-commons": "^7.0.55",
+    "@govuk-pay/pay-js-commons": "^7.0.56",
     "@govuk-pay/pay-js-metrics": "^2.0.1",
     "@sentry/node": "7.119.2",
     "axios": "1.15.2",
@@ -93,7 +93,7 @@
   "devDependencies": {
     "@babel/core": "^7.23.2",
     "@babel/preset-env": "^7.23.2",
-    "@govuk-pay/run-amock": "0.0.9",
+    "@govuk-pay/run-amock": "0.0.13",
     "@pact-foundation/pact": "^12.1.1",
     "@pact-foundation/pact-core": "^14.0.5",
     "@snyk/protect": "^1.1235.x",
