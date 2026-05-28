@@ -62,7 +62,7 @@
     ]
   },
   "dependencies": {
-    "@govuk-pay/pay-js-commons": "^7.0.56",
+    "@govuk-pay/pay-js-commons": "^7.0.58",
     "@govuk-pay/pay-js-metrics": "^2.0.2",
     "@sentry/node": "7.119.2",
     "axios": "1.15.2",
