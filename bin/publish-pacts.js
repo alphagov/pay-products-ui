@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const { unlink, readdir } = require('fs').promises
 const path = require('path')
-const pact = require('@pact-foundation/pact-core')
+const { PactV2: pact } = require('@pact-foundation/pact-core')
 const pactDirPath = path.join(__dirname, '../pacts')
 const opts = {
   pactFilesOrDirs: [pactDirPath],
@@ -19,6 +19,6 @@ readdir(pactDirPath)
       .map((file) => unlink(path.join(pactDirPath, file)))
   )
   )
-  .then(() => pact.publishPacts(opts))
+  .then(() => pact.publishPacts(opts)) // comment
   .then(() => console.log('>> Pact files have been published'))
   .catch((error) => console.log('Failed to publish pacts', error))
