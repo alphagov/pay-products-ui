@@ -1,6 +1,6 @@
-@import "govuk-frontend/dist/govuk/all";
+@use "govuk-frontend/dist/govuk/index";
 
-@import "modules/currency-input";
+@use "modules/currency-input";
 
 img {
   max-width: 100%;
